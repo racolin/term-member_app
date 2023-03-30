@@ -1,10 +1,10 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:member_app/business_logic/cubits/app_bar_state.dart';
+import 'package:member_app/business_logic/cubits/home_state.dart';
 
-class HomeCubit extends Cubit<AppBarState> {
+class HomeCubit extends Cubit<HomeState> {
   HomeCubit()
       : super(
-          Home(
+          HomeState(
             homeBodyType: HomeBodyType.home,
           ),
         );

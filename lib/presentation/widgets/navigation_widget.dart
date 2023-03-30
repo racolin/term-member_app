@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../business_logic/cubits/app_bar_cubit.dart';
 import '../../business_logic/cubits/home_cubit.dart';
-import '../../business_logic/cubits/app_bar_state.dart';
+import '../../business_logic/cubits/home_state.dart';
 import '../res/dimen/dimens.dart';
 import '../res/strings/values.dart';
 
@@ -16,11 +17,12 @@ class NavigationWidget extends StatefulWidget {
 class _NavigationWidgetState extends State<NavigationWidget> {
   @override
   Widget build(BuildContext context) {
-    return BlocSelector<HomeCubit, AppBarState, int>(
+    return BlocSelector<HomeCubit, HomeState, int>(
       builder: (context, state) {
         return BottomNavigationBar(
           onTap: (index) {
             context.read<HomeCubit>().setBody(HomeBodyType.values[index]);
+            context.read<AppBarCubit>().setAppBar(HomeBodyType.values[index]);
           },
           currentIndex: state,
           unselectedItemColor: Colors.grey,

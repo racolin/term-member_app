@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:member_app/business_logic/cubits/app_bar_state.dart';
+import 'package:member_app/business_logic/cubits/home_state.dart';
 import 'package:member_app/presentation/res/strings/values.dart';
 
 import '../../business_logic/cubits/home_cubit.dart';
@@ -48,7 +48,7 @@ class _FloatingActionWidgetState extends State<FloatingActionWidget>
 
   @override
   Widget build(BuildContext context) {
-    return BlocListener<HomeCubit, AppBarState>(
+    return BlocListener<HomeCubit, HomeState>(
       listenWhen: (previous, current) => previous.isExpandFloating != current.isExpandFloating,
       listener: (context, state) {
         if (state.isExpandFloating) {

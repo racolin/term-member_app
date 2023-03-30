@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:member_app/business_logic/cubits/app_bar_cubit.dart';
+import 'package:member_app/business_logic/cubits/app_bar_state.dart';
 import 'package:member_app/presentation/pages/promotion_body.dart';
 import 'package:member_app/presentation/pages/home_body.dart';
 import 'package:member_app/presentation/pages/order_body.dart';
@@ -10,7 +12,7 @@ import 'package:member_app/presentation/widgets/app_bar_widget.dart';
 import 'package:member_app/presentation/widgets/floating_action_widget.dart';
 
 import '../../business_logic/cubits/home_cubit.dart';
-import '../../business_logic/cubits/app_bar_state.dart';
+import '../../business_logic/cubits/home_state.dart';
 import '../widgets/navigation_widget.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -21,13 +23,20 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+
+  @override
+  void initState() {
+    context.read<AppBarCubit>().loadAppBar();
+    super.initState();
+  }
+
   Widget _getBody(HomeBodyType type) {
     Widget body;
     switch (type) {
       case HomeBodyType.home:
         body = const HomeBody();
         break;
-      case HomeBodyType.product:
+      case HomeBodyType.order:
         body = const StoreBody();
         break;
       case HomeBodyType.store:
@@ -48,7 +57,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<HomeCubit, AppBarState>(
+    return BlocBuilder<HomeCubit, HomeState>(
       builder: (context, state) => Scaffold(
         appBar: AppBarWidget(),
         body: _getBody(state.homeBodyType),

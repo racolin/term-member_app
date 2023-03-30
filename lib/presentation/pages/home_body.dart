@@ -9,9 +9,7 @@ class HomeBody extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
-    return const Center(
-      child: Text('Home'),
-    );
+    return const Center(child: Text('Home Body'),);
   }
 }
 // class HomeBody extends StatefulWidget {
@@ -20,7 +18,7 @@ class HomeBody extends StatelessWidget {
 //   @override
 //   State<HomeBody> createState() => _HomeBodyState();
 // }
-//
+
 // class _HomeBodyState extends State<HomeBody> {
 //   _left = 0;
 //   @override

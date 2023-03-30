@@ -25,7 +25,7 @@ class MyApp extends StatelessWidget {
       child: MaterialApp(
         title: 'Member App',
         theme: ThemeData(
-          primarySwatch: Colors.blue,
+          primaryColor: const Color.fromRGBO(255, 195, 117, 1),
         ),
         initialRoute: '/',
         onGenerateRoute: AppRouter.onGenerateAppRoute,

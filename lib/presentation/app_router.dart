@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:member_app/business_logic/cubits/app_bar_cubit.dart';
 import 'package:member_app/business_logic/cubits/home_cubit.dart';
+import 'package:member_app/business_logic/cubits/slider_cubit.dart';
 import 'package:member_app/data/data_providers/slider_remote_provider.dart';
 import 'package:member_app/presentation/screens/auth_screen.dart';
 import 'package:member_app/presentation/screens/home_screen.dart';
@@ -22,6 +23,9 @@ class AppRouter {
                   ),
                   BlocProvider(
                     create: (context) => AppBarCubit(),
+                  ),
+                  BlocProvider(
+                    create: (context) => SliderCubit(),
                   ),
                 ],
                 child: const HomeScreen(),

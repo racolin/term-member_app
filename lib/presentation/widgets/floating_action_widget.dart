@@ -49,7 +49,8 @@ class _FloatingActionWidgetState extends State<FloatingActionWidget>
   @override
   Widget build(BuildContext context) {
     return BlocListener<HomeCubit, HomeState>(
-      listenWhen: (previous, current) => previous.isExpandFloating != current.isExpandFloating,
+      listenWhen: (previous, current) =>
+          previous.isExpandFloating != current.isExpandFloating,
       listener: (context, state) {
         if (state.isExpandFloating) {
           _controller.forward(from: 0);
@@ -59,71 +60,87 @@ class _FloatingActionWidgetState extends State<FloatingActionWidget>
       },
       child: AnimatedBuilder(
         animation: animation,
-        builder: (context, child) => Container(
-          padding: const EdgeInsets.all(spaceSM),
-          decoration: BoxDecoration(
-            boxShadow: const [
-              BoxShadow(
-                color: Colors.grey,
-                blurRadius: 4,
-                offset: Offset(
-                  1,
-                  3,
-                ),
-              ),
-            ],
-            borderRadius: BorderRadius.circular(
-              _getValue(
-                spaceXS,
-                spaceMD,
-                animation.value,
-              ),
-            ),
-            color: Colors.white,
-          ),
-          margin: EdgeInsets.symmetric(
+        builder: (context, child) => Padding(
+          padding: EdgeInsets.symmetric(
             horizontal: _getValue(
               spaceSM,
               spaceLG,
               animation.value,
             ),
           ),
-          width: double.maxFinite,
-          height: _getValue(widget.maxHeight, widget.minHeight, animation.value),
-          child: Stack(fit: StackFit.expand,
-            children: [
-              Positioned(
-                top: _getValue(0, (widget.minHeight - spaceLG - 2 * spaceSM) / 2, animation.value),
-                child: Row(
-                  children: [
-                    _getIcon(
-                      _getValue(
-                        spaceMD,
-                        spaceLG,
-                        animation.value,
-                      ),
+          child: GestureDetector(
+            onTap: () {},
+            child: Container(
+              padding: const EdgeInsets.all(spaceSM),
+              decoration: BoxDecoration(
+                boxShadow: const [
+                  BoxShadow(
+                    color: Colors.grey,
+                    blurRadius: 4,
+                    offset: Offset(
+                      1,
+                      3,
                     ),
-                    const SizedBox(
-                      width: spaceXS,
-                    ),
-                    Opacity(
-                      opacity: 1 -
-                          (animation.value > 1
-                              ? 1
-                              : animation.value < 0
-                                  ? 0
-                                  : animation.value),
-                      child: _getTypeTitle(),
-                    ),
-                  ],
+                  ),
+                ],
+                borderRadius: BorderRadius.circular(
+                  _getValue(
+                    spaceXS,
+                    spaceMD,
+                    animation.value,
+                  ),
                 ),
+                color: Colors.white,
               ),
-              Positioned(
-                bottom: _getValue(0, (widget.minHeight - fontMD - 2 - 2 * spaceSM) / 2, animation.value),
-                left: _getValue(0, spaceXS + spaceLG, animation.value),
-                child: _getAddress(),
+              width: double.maxFinite,
+              height: _getValue(
+                widget.maxHeight,
+                widget.minHeight,
+                animation.value,
               ),
-            ],
+              child: Stack(
+                fit: StackFit.expand,
+                children: [
+                  Positioned(
+                    top: _getValue(
+                        0,
+                        (widget.minHeight - spaceLG - 2 * spaceSM) / 2,
+                        animation.value),
+                    child: Row(
+                      children: [
+                        _getIcon(
+                          _getValue(
+                            spaceMD,
+                            spaceLG,
+                            animation.value,
+                          ),
+                        ),
+                        const SizedBox(
+                          width: spaceXS,
+                        ),
+                        Opacity(
+                          opacity: 1 -
+                              (animation.value > 1
+                                  ? 1
+                                  : animation.value < 0
+                                      ? 0
+                                      : animation.value),
+                          child: _getTypeTitle(),
+                        ),
+                      ],
+                    ),
+                  ),
+                  Positioned(
+                    bottom: _getValue(
+                        0,
+                        (widget.minHeight - fontMD - 2 - 2 * spaceSM) / 2,
+                        animation.value),
+                    left: _getValue(0, spaceXS + spaceLG, animation.value),
+                    child: _getAddress(),
+                  ),
+                ],
+              ),
+            ),
           ),
         ),
       ),

@@ -8,6 +8,8 @@ abstract class AppBarState {}
 
 class AppBarInitial extends AppBarState {}
 
+class AppBarLoading extends AppBarState {}
+
 class AppBarLoaded extends AppBarState {
   final AppBarModel appBar;
   final HomeBodyType type;

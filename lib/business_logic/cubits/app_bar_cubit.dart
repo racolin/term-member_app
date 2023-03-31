@@ -11,6 +11,7 @@ class AppBarCubit extends Cubit<AppBarState> {
         );
 
   void loadAppBar() {
+    emit(AppBarLoading());
     emit(
       AppBarLoaded(
         appBar: AppBarModel.fromMap({'label': 'Chúc ngủ ngon!'}),

@@ -25,7 +25,22 @@ class MyApp extends StatelessWidget {
       child: MaterialApp(
         title: 'Member App',
         theme: ThemeData(
-          primaryColor: const Color.fromRGBO(255, 195, 117, 1),
+          primarySwatch: const MaterialColor(
+            0xFFFFC375,
+            {
+              50: Color(0xFFFFF4E2),
+              100: Color(0xFFFFE2B6),
+              200: Color(0xFFFFCF87),
+              300: Color(0xFFFFBC58),
+              400: Color(0xFFFFAD37),
+              500: Color(0xFFFF9E22),
+              600: Color(0xFFFB931F),
+              700: Color(0xFFF4841C),
+              800: Color(0xFFEE571A),
+              900: Color(0xFFE45C16),
+            },
+          ),
+          
         ),
         initialRoute: '/',
         onGenerateRoute: AppRouter.onGenerateAppRoute,

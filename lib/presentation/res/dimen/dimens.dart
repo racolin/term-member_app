@@ -33,6 +33,7 @@ const double fontXL = 24;
 const double fontXXL = 28;
 
 // Định nghĩa space
+const double spaceXXS = 4;
 const double spaceXS = 8;
 const double spaceSM = 12;
 const double spaceMD = 16;
@@ -41,9 +42,19 @@ const double spaceXL = 28;
 const double spaceXXL = 32;
 
 // Định nghĩa height, width
+const double dimXXS = 16;
 const double dimXS = 32;
 const double dimSM = 48;
 const double dimMD = 56;
 const double dimLG = 72;
 const double dimXL = 92;
 const double dimXXL = 128;
+
+// Định nghĩa độ mờ opacity
+const double opaXXS = 0.5;
+const double opaXS = 0.1;
+const double opaSM = 0.24;
+const double opaMD = 0.48;
+const double opaLG = 0.64;
+const double opaXL = 0.86;
+const double opaXXL = 1;

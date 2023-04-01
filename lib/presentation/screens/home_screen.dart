@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:member_app/business_logic/cubits/app_bar_cubit.dart';
-import 'package:member_app/business_logic/cubits/app_bar_state.dart';
+import 'package:member_app/business_logic/cubits/card_cubit.dart';
+import 'package:member_app/business_logic/cubits/news_cubit.dart';
+import 'package:member_app/business_logic/cubits/reorder_cubit.dart';
 import 'package:member_app/business_logic/cubits/slider_cubit.dart';
+import 'package:member_app/business_logic/cubits/suggest_product_cubit.dart';
 import 'package:member_app/presentation/pages/promotion_body.dart';
 import 'package:member_app/presentation/pages/home_body.dart';
 import 'package:member_app/presentation/pages/order_body.dart';
@@ -24,11 +27,14 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-
   @override
   void initState() {
     context.read<AppBarCubit>().loadAppBar();
     context.read<SliderCubit>().loadSlider();
+    context.read<CardCubit>().loadCard();
+    context.read<ReOrderCubit>().loadReOrder();
+    context.read<SuggestProductCubit>().loadSuggestProduct();
+    context.read<NewsCubit>().loadNews();
     super.initState();
   }
 

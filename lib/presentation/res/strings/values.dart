@@ -16,6 +16,13 @@ const txtDelivery = "Giao đến";
 const txtOptionDelivery = "Giao hàng";
 const txtOptionTake = "Mang đi";
 
+const txtReOrderTitle = "Đặt lại đơn hàng nhanh";
+const txtReOrder = "Đặt lại";
+const txtSuggestProduct = "Gợi ý riêng cho";
+const txtETC = "...";
+const txtSelect = "Chọn";
+const txtNews = "Khám phá thêm";
+
 
 
 

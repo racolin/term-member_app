@@ -3,13 +3,14 @@ import 'package:member_app/business_logic/cubits/card_state.dart';
 import 'package:member_app/data/models/card_model.dart';
 
 class CardCubit extends Cubit<CardState> {
-  CardCubit() : super(CartInitial());
+  CardCubit() : super(CardInitial());
 
   void loadCard() {
-    emit(CartLoading());
+    emit(CardLoading());
+    // emit(CardWithoutData());
     emit(
-      CartLoaded(
-        cart: CardModel.fromMap({
+      CardLoaded(
+        card: CardModel.fromMap({
           "id": "097595726",
           "name": "Phan Trung Tín",
           "scores": 500,

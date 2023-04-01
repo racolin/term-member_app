@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:member_app/business_logic/cubits/app_bar_cubit.dart';
 import 'package:member_app/business_logic/cubits/card_cubit.dart';
+import 'package:member_app/business_logic/cubits/category_product_cubit.dart';
 import 'package:member_app/business_logic/cubits/home_cubit.dart';
 import 'package:member_app/business_logic/cubits/news_cubit.dart';
+import 'package:member_app/business_logic/cubits/product_cubit.dart';
 import 'package:member_app/business_logic/cubits/reorder_cubit.dart';
 import 'package:member_app/business_logic/cubits/slider_cubit.dart';
 import 'package:member_app/business_logic/cubits/suggest_product_cubit.dart';
@@ -41,6 +43,12 @@ class AppRouter {
                   ),
                   BlocProvider(
                     create: (context) => NewsCubit(),
+                  ),
+                  BlocProvider(
+                    create: (context) => ProductCubit(),
+                  ),
+                  BlocProvider(
+                    create: (context) => CategoryProductCubit(),
                   ),
                 ],
                 child: const HomeScreen(),

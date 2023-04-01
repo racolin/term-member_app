@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:member_app/business_logic/cubits/app_bar_cubit.dart';
 import 'package:member_app/business_logic/cubits/card_cubit.dart';
+import 'package:member_app/business_logic/cubits/category_product_cubit.dart';
 import 'package:member_app/business_logic/cubits/news_cubit.dart';
+import 'package:member_app/business_logic/cubits/product_cubit.dart';
 import 'package:member_app/business_logic/cubits/reorder_cubit.dart';
 import 'package:member_app/business_logic/cubits/slider_cubit.dart';
 import 'package:member_app/business_logic/cubits/suggest_product_cubit.dart';
@@ -35,6 +37,8 @@ class _HomeScreenState extends State<HomeScreen> {
     context.read<ReOrderCubit>().loadReOrder();
     context.read<SuggestProductCubit>().loadSuggestProduct();
     context.read<NewsCubit>().loadNews();
+    context.read<ProductCubit>().loadProducts();
+    context.read<CategoryProductCubit>().loadCategories();
     super.initState();
   }
 
@@ -45,10 +49,10 @@ class _HomeScreenState extends State<HomeScreen> {
         body = const HomeBody();
         break;
       case HomeBodyType.order:
-        body = const StoreBody();
+        body = const OrderBody();
         break;
       case HomeBodyType.store:
-        body = const OrderBody();
+        body = const StoreBody();
         break;
       case HomeBodyType.other:
         body = const OtherBody();

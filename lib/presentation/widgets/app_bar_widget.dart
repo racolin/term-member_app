@@ -6,6 +6,10 @@ import 'package:member_app/business_logic/cubits/app_bar_state.dart';
 import 'package:member_app/business_logic/cubits/home_state.dart';
 import 'package:member_app/presentation/res/dimen/dimens.dart';
 
+import '../res/strings/values.dart';
+import 'categories_widget.dart';
+import 'drag_bar_widget.dart';
+
 class AppBarWidget extends AppBar {
   AppBarWidget({
     Key? key,
@@ -35,7 +39,7 @@ class _AppBarWidgetState extends State<AppBarWidget> {
                       state.appBar.icon,
                     )
                   else
-                    _getTitle(state.label),
+                    _getTitle(state.label, state.type),
                   const Spacer(),
                   if (HomeBodyType.order == state.type)
                     ..._getProductAction()
@@ -248,7 +252,70 @@ class _AppBarWidgetState extends State<AppBarWidget> {
     ];
   }
 
-  Widget _getTitle(String label) {
+  Widget _getTitle(
+    String label,
+    HomeBodyType type,
+  ) {
+    if (type == HomeBodyType.order) {
+      return GestureDetector(
+        onTap: () {
+          showModalBottomSheet(
+            isScrollControlled: true,
+            backgroundColor: Colors.transparent,
+            context: context,
+            builder: (context) {
+              return Container(
+                decoration: const BoxDecoration(
+                  borderRadius: BorderRadius.vertical(
+                    top: Radius.circular(spaceMD),
+                  ),
+                  color: Colors.white,
+                ),
+                child: Wrap(
+                  children: [
+                    const DragBarWidget(margin: spaceXS),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 16),
+                      child: Text(
+                        txtCategory,
+                        style: TextStyle(
+                          fontWeight: FontWeight.w600,
+                          fontSize: fontLG,
+                          color: Colors.black.withAlpha(180),
+                        ),
+                      ),
+                    ),
+                    const Divider(),
+                    CategoriesWidget(
+                      scrollTo: (i) {
+                        // scrollToCategories(i);
+                        // Navigator.pop(context);
+                      },
+                    ),
+                  ],
+                ),
+              );
+            },
+          );
+        },
+        child: Row(
+          children: [
+            Text(
+              label,
+              style: TextStyle(
+                fontSize: fontLG,
+                color: Colors.black.withAlpha(200),
+              ),
+            ),
+            Icon(
+              Icons.keyboard_arrow_down_outlined,
+              color: Colors.black.withAlpha(200),
+              size: fontLG,
+            ),
+          ],
+        ),
+      );
+    }
     return Text(
       label,
       style: TextStyle(

@@ -15,6 +15,7 @@ const txtDelivery = "Giao đến";
 
 const txtOptionDelivery = "Giao hàng";
 const txtOptionTake = "Mang đi";
+const txtCategory = "Danh mục";
 
 const txtReOrderTitle = "Đặt lại đơn hàng nhanh";
 const txtReOrder = "Đặt lại";

@@ -10,14 +10,16 @@ class CardCubit extends Cubit<CardState> {
     // emit(CardWithoutData());
     emit(
       CardLoaded(
-        card: CardModel.fromMap({
-          "id": "097595726",
-          "name": "Phan Trung Tín",
-          "scores": 500,
-          "rankName": "Gold",
-          "nextRankName": "Diamond",
-          "nextRank": 4,
-        }),
+        card: CardModel.fromMap(
+          {
+            "id": "097595726",
+            "name": "Phan Trung Tín",
+            "scores": 500,
+            "rankName": "Gold",
+            "nextRankName": "Diamond",
+            "nextRank": 4,
+          },
+        ),
       ),
     );
   }

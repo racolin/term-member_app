@@ -2,9 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:member_app/business_logic/cubits/card_cubit.dart';
-import 'package:member_app/business_logic/cubits/card_state.dart';
 import 'package:member_app/data/models/card_model.dart';
 import 'package:member_app/supports/extension.dart';
+
+import '../../business_logic/cubits/card_state.dart';
 
 class CardWidget extends StatelessWidget {
   final bool isDetail;

@@ -18,6 +18,7 @@ class CardCubit extends Cubit<CardState> {
             "rankName": "Gold",
             "nextRankName": "Diamond",
             "nextRank": 4,
+            "description": 'Đổi quà không ảnh hưởng đến việc thăng hạng của bạn',
           },
         ),
       ),

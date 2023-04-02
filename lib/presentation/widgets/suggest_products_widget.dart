@@ -17,6 +17,7 @@ class SuggestProductsWidget extends StatefulWidget {
 }
 
 class _SuggestProductsWidgetState extends State<SuggestProductsWidget> {
+  final double height = 268;
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<SuggestProductCubit, SuggestProductState>(
@@ -76,7 +77,7 @@ class _SuggestProductsWidgetState extends State<SuggestProductsWidget> {
                     ),
                   ),
                   SizedBox(
-                    height: 268,
+                    height: height,
                     child: ListView.builder(
                       itemCount: state.suggests.length,
                       itemBuilder: (context, index) {

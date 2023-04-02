@@ -6,6 +6,8 @@ class HomeCubit extends Cubit<HomeState> {
       : super(
           HomeState(
             homeBodyType: HomeBodyType.home,
+            deliveryType: DeliveryType.takeOut,
+            deliveryDescription: '175B Cao Thắng',
           ),
         );
 

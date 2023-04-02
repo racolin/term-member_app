@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:member_app/business_logic/cubits/app_bar_cubit.dart';
 import 'package:member_app/business_logic/cubits/card_cubit.dart';
 import 'package:member_app/business_logic/cubits/category_product_cubit.dart';
+import 'package:member_app/business_logic/cubits/category_product_state.dart';
 import 'package:member_app/business_logic/cubits/news_cubit.dart';
 import 'package:member_app/business_logic/cubits/product_cubit.dart';
 import 'package:member_app/business_logic/cubits/reorder_cubit.dart';
@@ -70,7 +71,7 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<HomeCubit, HomeState>(
-      builder: (context, state) => Scaffold(
+      builder: (_, state) => Scaffold(
         appBar: AppBarWidget(),
         body: _getBody(state.homeBodyType),
         bottomNavigationBar: const NavigationWidget(),

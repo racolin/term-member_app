@@ -23,25 +23,7 @@ class AppBarCubit extends Cubit<AppBarState> {
 
   void setAppBar(HomeBodyType type) async {
     if (state is AppBarLoaded) {
-      String label = '';
-      switch (type) {
-        case HomeBodyType.order:
-          label = txtOrder;
-          break;
-        case HomeBodyType.home:
-          label = txtHome;
-          break;
-        case HomeBodyType.store:
-          label = txtStore;
-          break;
-        case HomeBodyType.promotion:
-          label = txtPromotion;
-          break;
-        case HomeBodyType.other:
-          label = txtOther;
-          break;
-      }
-      emit((state as AppBarLoaded).copyWith(label: label, type: type));
+      emit((state as AppBarLoaded).copyWith(label: type.label, type: type));
     }
   }
 }

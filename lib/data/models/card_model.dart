@@ -7,6 +7,7 @@ class CardModel {
   final String rankName;
   final String nextRankName;
   final String background;
+  final String description;
   final int nextRank;
   final String status;
 
@@ -17,27 +18,10 @@ class CardModel {
     required this.rankName,
     required this.nextRankName,
     required this.background,
+    required this.description,
     required this.nextRank,
     required this.status,
   });
-
-  CardModel copyWith({
-    String? id,
-    String? name,
-    int? scores,
-    String? rankName,
-  }) {
-    return CardModel(
-      id: id ?? this.id,
-      name: name ?? this.name,
-      scores: scores ?? this.scores,
-      rankName: rankName ?? this.rankName,
-      nextRankName: nextRankName,
-      background: background,
-      nextRank: nextRank,
-      status: status,
-    );
-  }
 
   Map<String, dynamic> toMap() {
     return {
@@ -60,8 +44,33 @@ class CardModel {
       rankName: map['rankName'] ?? txtUnknown,
       nextRankName: map['nextRankName'] ?? txtUnknown,
       background: map['background'] ?? linkUnknownIcon,
+      description: map['description'] ?? txtUnknown,
       nextRank: map['nextRank'] ?? 0,
       status: map['status'] ?? txtUnknown,
+    );
+  }
+
+  CardModel copyWith({
+    String? id,
+    String? name,
+    int? scores,
+    String? rankName,
+    String? nextRankName,
+    String? background,
+    String? description,
+    int? nextRank,
+    String? status,
+  }) {
+    return CardModel(
+      id: id ?? this.id,
+      name: name ?? this.name,
+      scores: scores ?? this.scores,
+      rankName: rankName ?? this.rankName,
+      nextRankName: nextRankName ?? this.nextRankName,
+      background: background ?? this.background,
+      description: description ?? this.description,
+      nextRank: nextRank ?? this.nextRank,
+      status: status ?? this.status,
     );
   }
 }

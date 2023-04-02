@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:member_app/business_logic/cubits/card_cubit.dart';
-import 'package:member_app/business_logic/cubits/card_state.dart';
 import 'package:member_app/business_logic/cubits/category_product_cubit.dart';
 import 'package:member_app/business_logic/cubits/category_product_state.dart';
 
@@ -34,7 +32,7 @@ class CategoriesWidget extends StatelessWidget {
               gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
                 maxCrossAxisExtent: 90,
                 mainAxisExtent: 90,
-                crossAxisSpacing: 28,
+                crossAxisSpacing: spaceXL,
               ),
               itemCount: state.categories.length,
               itemBuilder: (context, index) => InkWell(

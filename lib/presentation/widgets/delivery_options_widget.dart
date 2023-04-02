@@ -6,15 +6,15 @@ import '../res/strings/values.dart';
 
 class DeliveryOptionsWidget extends StatelessWidget {
   const DeliveryOptionsWidget({Key? key}) : super(key: key);
-  final double height = 80;
+  final double height = dimXL;
 
   @override
   Widget build(BuildContext context) {
       return Container(
-        margin: const EdgeInsets.all(spaceLG),
+        margin: const EdgeInsets.all(spaceXS),
         decoration: BoxDecoration(
           border: Border.all(color: Colors.grey.withOpacity(0.6)),
-          borderRadius: BorderRadius.circular(16),
+          borderRadius: BorderRadius.circular(spaceSM),
         ),
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.center,
@@ -36,7 +36,7 @@ class DeliveryOptionsWidget extends StatelessWidget {
             ),
             Expanded(
               child: DeliveryOptionWidget(
-                name: txtOptionDelivery,
+                name: txtOptionTake,
                 image: 'https://www.drench-design.com/wp-content/uploads/2018/10/coffeetype2.png',
                 height: height,
               ),

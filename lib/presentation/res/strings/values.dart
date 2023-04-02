@@ -23,6 +23,8 @@ const txtSuggestProduct = "Gợi ý riêng cho";
 const txtETC = "...";
 const txtSelect = "Chọn";
 const txtNews = "Khám phá thêm";
+const txtAccumulate = "Tích điểm";
+const txtScoreName = "BEAN";
 
 
 

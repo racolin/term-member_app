@@ -17,6 +17,7 @@ class ProductModel extends ProductShortModel {
     required this.isFavorite,
   });
 
+  @override
   Map<String, dynamic> toMap() {
     return {
       'images': images,

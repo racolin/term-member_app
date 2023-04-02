@@ -26,6 +26,7 @@ class _SliderWidgetState extends State<SliderWidget> {
             return const LoadingWidget();
           case SliderLoaded:
             state as SliderLoaded;
+            final double widthTotal = spaceLG * (state.sliders.length + spaceXXS / 2);
             return Container(
               margin: const EdgeInsets.all(spaceXS),
               child: Column(
@@ -50,8 +51,8 @@ class _SliderWidgetState extends State<SliderWidget> {
                           if (value != null) {
                             var v = (value - 10000).floor() % state.sliders.length;
                             var space =
-                                (120 - state.sliders.length * 24) / (state.sliders.length - 1) +
-                                    24;
+                                (widthTotal - state.sliders.length * spaceLG) / (state.sliders.length - 1) +
+                                    spaceLG;
                             setState(() {
                               if (v == state.sliders.length - 1) {
                                 _left = (state.sliders.length - 1) *
@@ -67,7 +68,7 @@ class _SliderWidgetState extends State<SliderWidget> {
                         autoPlayAnimationDuration:
                         const Duration(milliseconds: 300),
                         autoPlayCurve: Curves.easeInOut,
-                        autoPlayInterval: const Duration(seconds: 5),
+                        autoPlayInterval: const Duration(seconds: 7),
                         aspectRatio: 2,
                         viewportFraction: 1,
                         initialPage: 0,
@@ -75,33 +76,33 @@ class _SliderWidgetState extends State<SliderWidget> {
                     ),
                   ),
                   const SizedBox(
-                    height: 8,
+                    height: spaceXS,
                   ),
                   Stack(
                     alignment: Alignment.centerLeft,
                     children: [
                       Container(
                         margin: EdgeInsets.only(left: _left),
-                        width: 24,
-                        height: 2,
+                        width: spaceLG,
+                        height: spaceXXS / 2,
                         decoration: BoxDecoration(
                           color: Colors.black,
-                          borderRadius: BorderRadius.circular(2),
+                          borderRadius: BorderRadius.circular(spaceXXS / 2),
                         ),
                       ),
                       SizedBox(
-                        width: 120,
-                        height: 4,
+                        width: widthTotal,
+                        height: spaceXXS,
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: List.generate(
                             state.sliders.length,
                                 (index) => Container(
-                              width: 24,
+                              width: spaceLG,
                               height: 2,
                               decoration: BoxDecoration(
                                 color: Colors.black.withOpacity(0.2),
-                                borderRadius: BorderRadius.circular(2),
+                                borderRadius: BorderRadius.circular(spaceXXS / 2),
                               ),
                             ),
                           ),

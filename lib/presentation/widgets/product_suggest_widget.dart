@@ -17,18 +17,10 @@ class ProductSuggestWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       padding: const EdgeInsets.all(spaceXS),
-      width: 160,
+      width: dimXXL * 1.2,
       height: 268,
       child: GestureDetector(
         onTap: () {
-          // showModalBottomSheet(
-          //   backgroundColor: Colors.transparent,
-          //   isScrollControlled: true,
-          //   context: context,
-          //   builder: (context) => DetailProductBottomSheet(
-          //     id: product.id,
-          //   ),
-          // );
         },
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -61,15 +53,6 @@ class ProductSuggestWidget extends StatelessWidget {
               width: double.maxFinite,
               child: TextButton(
                 onPressed: () {
-                  // context.read<HomeProvider>().increaseCart(
-                  //   context,
-                  //   CartItemModel(
-                  //     id: product.id,
-                  //     amount: 1,
-                  //     sizeName: 'S',
-                  //     toppings: [],
-                  //   ),
-                  // );
                 },
                 style: ButtonStyle(
                   backgroundColor: MaterialStateProperty.all(Colors.orange),

@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 
-import '../res/dimen/dimens.dart';
-
 class DeliveryOptionWidget extends StatefulWidget {
   final double height;
   final String name;
@@ -23,7 +21,7 @@ class _DeliveryOptionWidgetState extends State<DeliveryOptionWidget> {
   Widget build(BuildContext context) {
     return Container(
       alignment: Alignment.center,
-      height: spaceXXL,
+      height: widget.height,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../../data/models/product_short_model.dart';
 import '../../supports/convert.dart';
+import '../res/dimen/dimens.dart';
 
 class ProductWidget extends StatelessWidget {
   final ProductShortModel shortProduct;
@@ -11,29 +12,40 @@ class ProductWidget extends StatelessWidget {
     required this.shortProduct,
   }) : super(key: key);
 
+  final double height = 100;
+  final double width = 120;
+
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: () {
-      },
+      borderRadius: BorderRadius.circular(spaceXS),
+      overlayColor: MaterialStateProperty.all(
+        Theme.of(context).primaryColor.withOpacity(
+              opaXS,
+            ),
+      ),
+      onTap: () {},
       child: SizedBox(
-        height: 100,
+        height: height,
         child: Row(
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             ClipRRect(
-              borderRadius: BorderRadius.circular(8),
+              borderRadius: BorderRadius.circular(spaceXS),
               child: Image.network(
                 shortProduct.mainImage,
-                height: 100,
-                width: 120,
+                height: height,
+                width: width,
                 fit: BoxFit.cover,
               ),
             ),
             Expanded(
               child: Padding(
-                padding: const EdgeInsets.only(top: 8, left: 8, right: 8),
+                padding: const EdgeInsets.symmetric(
+                  vertical: spaceXXS,
+                  horizontal: spaceXS,
+                ),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -45,17 +57,17 @@ class ProductWidget extends StatelessWidget {
                           shortProduct.name,
                           style: const TextStyle(
                             fontWeight: FontWeight.w600,
-                            fontSize: 14,
+                            fontSize: fontMD,
                           ),
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
                         ),
                         const SizedBox(
-                          height: 4,
+                          height: spaceXXS,
                         ),
                         Text(
                           numberToCurrency(shortProduct.price, 'đ'),
-                          style: const TextStyle(fontSize: 14),
+                          style: const TextStyle(fontSize: fontMD),
                         ),
                       ],
                     ),
@@ -64,13 +76,12 @@ class ProductWidget extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.end,
                       children: [
                         IconButton(
-                          onPressed: () {
-
-                          },
+                          onPressed: () {},
+                          splashRadius: spaceXL,
                           icon: const Icon(
                             Icons.add_circle_sharp,
                             color: Colors.deepOrangeAccent,
-                            size: 28,
+                            size: fontXXL,
                           ),
                         ),
                       ],

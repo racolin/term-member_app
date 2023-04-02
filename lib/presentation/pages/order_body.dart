@@ -7,6 +7,8 @@ import 'package:member_app/business_logic/cubits/product_state.dart';
 import 'package:member_app/presentation/res/dimen/dimens.dart';
 import 'package:member_app/presentation/widgets/suggest_products_widget.dart';
 
+import '../../business_logic/cubits/catagory_scroll_cubit.dart';
+import '../../business_logic/cubits/category_scroll_state.dart';
 import '../../data/models/product_short_model.dart';
 import '../widgets/categories_widget.dart';
 import '../widgets/product_widget.dart';
@@ -32,77 +34,88 @@ class _OrderBodyState extends State<OrderBody> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<CategoryProductCubit, CategoryProductState>(
-      builder: (context, state) {
-        switch (state.runtimeType) {
-          case CategoryProductInitial:
-            return const SizedBox();
-          case CategoryProductLoading:
-            return const SizedBox();
-          case CategoryProductLoaded:
-            state as CategoryProductLoaded;
-
-            return BlocBuilder<ProductCubit, ProductState>(
-              builder: (context, stateProduct) {
-                switch (stateProduct.runtimeType) {
-                  case ProductInitial:
-                    return const SizedBox();
-                  case ProductLoading:
-                    return const SizedBox();
-                  case ProductLoaded:
-                    stateProduct as ProductLoaded;
-                    if (heights.isEmpty) {
-                      heights.add(95 * (state.categories.length / 4).ceil());
-                      for (int index = 1;
-                          index < state.categories.length;
-                          index++) {
-                        heights.add(heights[index - 1]);
-                        if (index == 1) {
-                          heights[index] += 300;
-                        }
-                        heights[index] += 42 +
-                            116 *
-                                stateProduct
-                                    .getProductsByID(
-                                        state.categories[index].productIDs)
-                                    .length;
-                      }
-                    }
-                    return ListView.builder(
-                      controller: _scrollController,
-                      padding: EdgeInsets.zero,
-                      itemBuilder: (context, index) {
-                        if (index == 0) {
-                          // height: 90
-                          return CategoriesWidget(scrollTo: scrollToCategories);
-                        }
-                        if (index == 2) {
-                          // height: 301
-                          return const SuggestProductsWidget();
-                        }
-                        if (index == state.categories.length + 2) {
-                          return const SizedBox(
-                            height: dimLG,
-                          );
-                        }
-                        // height: 42 + 116 * n
-                        return _getListProduct(
-                          state.categories[index - (index > 2 ? 2 : 1)].name,
-                          stateProduct.getProductsByID(
-                            state.categories[index - (index > 2 ? 2 : 1)]
-                                .productIDs,
-                          ),
-                        );
-                      },
-                      itemCount: state.categories.length + 3,
-                    );
-                }
-                return const SizedBox();
-              },
-            );
+    return BlocListener<CategoryScrollCubit, CategoryScrollState>(
+      listener: (context, state) {
+        if (state is CategoryScrollIndex) {
+          scrollToCategories(state.index);
         }
-        return const SizedBox();
       },
+      child: BlocBuilder<CategoryProductCubit, CategoryProductState>(
+        builder: (context, state) {
+          switch (state.runtimeType) {
+            case CategoryProductInitial:
+              return const SizedBox();
+            case CategoryProductLoading:
+              return const SizedBox();
+            case CategoryProductLoaded:
+              state as CategoryProductLoaded;
+
+              return BlocBuilder<ProductCubit, ProductState>(
+                builder: (context, stateProduct) {
+                  switch (stateProduct.runtimeType) {
+                    case ProductInitial:
+                      return const SizedBox();
+                    case ProductLoading:
+                      return const SizedBox();
+                    case ProductLoaded:
+                      stateProduct as ProductLoaded;
+                      if (heights.isEmpty) {
+                        heights.add(95 * (state.categories.length / 4).ceil());
+                        for (int index = 1;
+                            index < state.categories.length;
+                            index++) {
+                          heights.add(heights[index - 1]);
+                          if (index == 1) {
+                            heights[index] += 300;
+                          }
+                          heights[index] += 42 +
+                              116 *
+                                  stateProduct
+                                      .getProductsByID(
+                                          state.categories[index].productIDs)
+                                      .length;
+                        }
+                      }
+                      return ListView.builder(
+                        controller: _scrollController,
+                        padding: EdgeInsets.zero,
+                        itemBuilder: (context, index) {
+                          if (index == 0) {
+                            // height: 90
+                            return CategoriesWidget(
+                              scrollTo: (index) {
+                                context.read<CategoryScrollCubit>().setIndex(index);
+                              },
+                            );
+                          }
+                          if (index == 2) {
+                            // height: 301
+                            return const SuggestProductsWidget();
+                          }
+                          if (index == state.categories.length + 2) {
+                            return const SizedBox(
+                              height: dimLG,
+                            );
+                          }
+                          // height: 42 + 116 * n
+                          return _getListProduct(
+                            state.categories[index - (index > 2 ? 2 : 1)].name,
+                            stateProduct.getProductsByID(
+                              state.categories[index - (index > 2 ? 2 : 1)]
+                                  .productIDs,
+                            ),
+                          );
+                        },
+                        itemCount: state.categories.length + 3,
+                      );
+                  }
+                  return const SizedBox();
+                },
+              );
+          }
+          return const SizedBox();
+        },
+      ),
     );
   }
 

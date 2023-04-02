@@ -3,9 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:member_app/business_logic/cubits/app_bar_cubit.dart';
 import 'package:member_app/business_logic/cubits/app_bar_state.dart';
+import 'package:member_app/business_logic/cubits/category_product_cubit.dart';
 import 'package:member_app/business_logic/cubits/home_state.dart';
 import 'package:member_app/presentation/res/dimen/dimens.dart';
 
+import '../../business_logic/cubits/catagory_scroll_cubit.dart';
 import '../res/strings/values.dart';
 import 'categories_widget.dart';
 import 'drag_bar_widget.dart';
@@ -61,49 +63,79 @@ class _AppBarWidgetState extends State<AppBarWidget> {
   List<Widget> _getProductAction() {
     return [
       Container(
-        decoration: BoxDecoration(borderRadius: BorderRadius.circular(20)),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(
+            spaceLG,
+          ),
+        ),
         child: InkWell(
-          borderRadius: BorderRadius.circular(20),
+          overlayColor: MaterialStateProperty.all(
+            Theme.of(context).primaryColor.withOpacity(
+              opaSM,
+            ),
+          ),
+          borderRadius: BorderRadius.circular(spaceLG),
           radius: 40,
           onTap: () {},
           child: Ink(
             width: 40,
             height: 40,
-            decoration: BoxDecoration(boxShadow: const [
-              BoxShadow(
-                color: Colors.grey,
-                offset: Offset(0, 1),
-                blurRadius: 1.0,
+            decoration: BoxDecoration(
+              boxShadow: const [
+                BoxShadow(
+                  color: Colors.grey,
+                  offset: Offset(0, 1),
+                  blurRadius: 1.0,
+                ),
+              ],
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(
+                spaceLG
               ),
-            ], color: Colors.white, borderRadius: BorderRadius.circular(20)),
+            ),
             child: const Icon(
               Icons.search,
-              size: 20,
+              size: fontLG,
               color: Colors.orange,
             ),
           ),
         ),
       ),
-      const SizedBox(width: 4),
+      const SizedBox(width: spaceXXS),
       Container(
-        decoration: BoxDecoration(borderRadius: BorderRadius.circular(20)),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(
+            spaceLG
+          ),
+        ),
         child: InkWell(
-          borderRadius: BorderRadius.circular(20),
+          overlayColor: MaterialStateProperty.all(
+            Theme.of(context).primaryColor.withOpacity(
+              opaSM,
+            ),
+          ),
+          borderRadius: BorderRadius.circular(spaceLG),
           radius: 40,
           onTap: () {},
           child: Ink(
             width: 40,
             height: 40,
-            decoration: BoxDecoration(boxShadow: const [
-              BoxShadow(
-                color: Colors.grey,
-                offset: Offset(0, 1),
-                blurRadius: 1.0,
+            decoration: BoxDecoration(
+              boxShadow: const [
+                BoxShadow(
+                  color: Colors.grey,
+                  offset: Offset(0, 1),
+                  blurRadius: 1.0,
+                ),
+              ],
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(
+                spaceLG,
               ),
-            ], color: Colors.white, borderRadius: BorderRadius.circular(20)),
+            ),
             child: const Icon(
               Icons.favorite_border,
-              size: 20,
+              size: fontLG,
               color: Colors.orange,
             ),
           ),
@@ -120,10 +152,15 @@ class _AppBarWidgetState extends State<AppBarWidget> {
     return [
       Container(
         decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(18),
+          borderRadius: BorderRadius.circular(spaceLG),
         ),
         child: InkWell(
-          borderRadius: BorderRadius.circular(18),
+          overlayColor: MaterialStateProperty.all(
+            Theme.of(context).primaryColor.withOpacity(
+              opaSM,
+            ),
+          ),
+          borderRadius: BorderRadius.circular(spaceLG),
           radius: 40,
           onTap: () {},
           child: Ink(
@@ -138,7 +175,7 @@ class _AppBarWidgetState extends State<AppBarWidget> {
                 ),
               ],
               color: Colors.white,
-              borderRadius: BorderRadius.circular(20),
+              borderRadius: BorderRadius.circular(spaceLG),
             ),
             child: Badge(
               position: const BadgePosition(top: -4, end: -4),
@@ -146,52 +183,62 @@ class _AppBarWidgetState extends State<AppBarWidget> {
                 cartTemplateAmount.toString(),
                 style: const TextStyle(
                   color: Colors.white,
-                  fontSize: 10,
+                  fontSize: fontXS,
                   fontWeight: FontWeight.w700,
                 ),
               ),
               badgeColor: Colors.red,
               child: Icon(
                 Icons.shopping_cart_checkout_outlined,
-                size: 24,
+                size: fontXL,
                 color: Colors.black.withAlpha(200),
               ),
             ),
           ),
         ),
       ),
-      const SizedBox(width: 8),
+      const SizedBox(width: spaceXS),
       TextButton.icon(
         style: ButtonStyle(
+          overlayColor: MaterialStateProperty.all(
+            Theme.of(context).primaryColor.withOpacity(
+              opaSM,
+            ),
+          ),
           elevation: MaterialStateProperty.all(2),
           backgroundColor: MaterialStateProperty.all(Colors.white),
           shape: MaterialStateProperty.all(
             RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(20),
+              borderRadius: BorderRadius.circular(spaceLG),
             ),
           ),
         ),
         onPressed: () {},
         icon: const Icon(
           Icons.confirmation_number_outlined,
-          size: 24,
+          size: fontXL,
           color: Colors.orange,
         ),
         label: Text(
           ticketAmount.toString(),
           style: TextStyle(
-            fontSize: 15,
-            color: Colors.black.withAlpha(200),
+            fontSize: fontLG,
+            color: Colors.black.withAlpha(150),
           ),
         ),
       ),
-      const SizedBox(width: 8),
+      const SizedBox(width: spaceXS),
       Container(
         decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(18),
+          borderRadius: BorderRadius.circular(spaceLG),
         ),
         child: InkWell(
-          borderRadius: BorderRadius.circular(18),
+          borderRadius: BorderRadius.circular(spaceLG),
+          overlayColor: MaterialStateProperty.all(
+            Theme.of(context).primaryColor.withOpacity(
+                  opaSM,
+                ),
+          ),
           radius: 40,
           onTap: () {},
           child: Ink(
@@ -206,7 +253,7 @@ class _AppBarWidgetState extends State<AppBarWidget> {
                 ),
               ],
               color: Colors.white,
-              borderRadius: BorderRadius.circular(20),
+              borderRadius: BorderRadius.circular(spaceLG),
             ),
             child: Badge(
               position: const BadgePosition(top: -4, end: -4),
@@ -214,14 +261,14 @@ class _AppBarWidgetState extends State<AppBarWidget> {
                 notifyAmount.toString(),
                 style: const TextStyle(
                   color: Colors.white,
-                  fontSize: 10,
+                  fontSize: fontXS,
                   fontWeight: FontWeight.w700,
                 ),
               ),
               badgeColor: Colors.red,
               child: Icon(
                 Icons.notifications_outlined,
-                size: 24,
+                size: fontXL,
                 color: Colors.black.withAlpha(200),
               ),
             ),
@@ -263,36 +310,41 @@ class _AppBarWidgetState extends State<AppBarWidget> {
             isScrollControlled: true,
             backgroundColor: Colors.transparent,
             context: context,
-            builder: (context) {
-              return Container(
-                decoration: const BoxDecoration(
-                  borderRadius: BorderRadius.vertical(
-                    top: Radius.circular(spaceMD),
+            builder: (ctx) {
+              return BlocProvider<CategoryProductCubit>.value(
+                value: context.read<CategoryProductCubit>(),
+                child: Container(
+                  decoration: const BoxDecoration(
+                    borderRadius: BorderRadius.vertical(
+                      top: Radius.circular(spaceMD),
+                    ),
+                    color: Colors.white,
                   ),
-                  color: Colors.white,
-                ),
-                child: Wrap(
-                  children: [
-                    const DragBarWidget(margin: spaceXS),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 16),
-                      child: Text(
-                        txtCategory,
-                        style: TextStyle(
-                          fontWeight: FontWeight.w600,
-                          fontSize: fontLG,
-                          color: Colors.black.withAlpha(180),
+                  child: Wrap(
+                    children: [
+                      const DragBarWidget(margin: spaceXS),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: spaceMD,
+                        ),
+                        child: Text(
+                          txtCategory,
+                          style: TextStyle(
+                            fontWeight: FontWeight.w600,
+                            fontSize: fontLG,
+                            color: Colors.black.withAlpha(180),
+                          ),
                         ),
                       ),
-                    ),
-                    const Divider(),
-                    CategoriesWidget(
-                      scrollTo: (i) {
-                        // scrollToCategories(i);
-                        // Navigator.pop(context);
-                      },
-                    ),
-                  ],
+                      const Divider(),
+                      CategoriesWidget(
+                        scrollTo: (index) {
+                          context.read<CategoryScrollCubit>().setIndex(index);
+                          Navigator.pop(context);
+                        },
+                      ),
+                    ],
+                  ),
                 ),
               );
             },

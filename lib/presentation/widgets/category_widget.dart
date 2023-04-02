@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:member_app/presentation/res/dimen/dimens.dart';
 
 import '../../data/models/category_model.dart';
 
@@ -16,15 +17,15 @@ class CategoryWidget extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         CircleAvatar(
-          radius: 28,
+          radius: spaceXL,
           backgroundImage: NetworkImage(category.image),
         ),
         const SizedBox(
-          height: 4,
+          height: spaceXXS,
         ),
         Text(
           category.name,
-          style: const TextStyle(fontSize: 10),
+          style: const TextStyle(fontSize: fontXS),
           textAlign: TextAlign.center,
         ),
       ],

@@ -13,6 +13,8 @@ import 'package:member_app/data/data_providers/slider_remote_provider.dart';
 import 'package:member_app/presentation/screens/auth_screen.dart';
 import 'package:member_app/presentation/screens/home_screen.dart';
 
+import '../business_logic/cubits/catagory_scroll_cubit.dart';
+
 class AppRouter {
   static Route<dynamic>? onGenerateAppRoute(RouteSettings settings) {
     switch (settings.name) {
@@ -49,6 +51,9 @@ class AppRouter {
                   ),
                   BlocProvider(
                     create: (context) => CategoryProductCubit(),
+                  ),
+                  BlocProvider(
+                    create: (context) => CategoryScrollCubit(),
                   ),
                 ],
                 child: const HomeScreen(),

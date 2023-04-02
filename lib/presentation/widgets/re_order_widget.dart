@@ -70,6 +70,11 @@ class ReorderWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(
+          spaceXS,
+        ),
+      ),
       margin: const EdgeInsets.all(spaceXS),
       child: Padding(
         padding: const EdgeInsets.symmetric(vertical: spaceXS),
@@ -117,7 +122,9 @@ class ReorderWidget extends StatelessWidget {
                   fontWeight: FontWeight.w600,
                 ),
               ),
-              const SizedBox(height: spaceXXS,),
+              const SizedBox(
+                height: spaceXXS,
+              ),
               Text(
                 order.title,
                 style: const TextStyle(
@@ -132,7 +139,9 @@ class ReorderWidget extends StatelessWidget {
           subtitle: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const SizedBox(height: spaceXXS,),
+              const SizedBox(
+                height: spaceXXS,
+              ),
               Text(
                 order.address,
                 style: const TextStyle(
@@ -142,7 +151,9 @@ class ReorderWidget extends StatelessWidget {
                 overflow: TextOverflow.ellipsis,
                 maxLines: 1,
               ),
-              const SizedBox(height: spaceXXS,),
+              const SizedBox(
+                height: spaceXXS,
+              ),
               Text(
                 numberToCurrency(order.price, 'đ'),
                 style: const TextStyle(

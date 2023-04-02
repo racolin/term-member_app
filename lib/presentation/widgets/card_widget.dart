@@ -3,12 +3,18 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:member_app/business_logic/cubits/card_cubit.dart';
 import 'package:member_app/data/models/card_model.dart';
+import 'package:member_app/presentation/res/dimen/dimens.dart';
 import 'package:member_app/supports/extension.dart';
 
 import '../../business_logic/cubits/card_state.dart';
+import '../res/strings/values.dart';
 
 class CardWidget extends StatelessWidget {
   final bool isDetail;
+  final double height = 200;
+  final double barHeight = 60;
+  final double barCoverHeight = 96;
+  final double barWidth = 300;
 
   const CardWidget({
     Key? key,
@@ -30,16 +36,16 @@ class CardWidget extends StatelessWidget {
               children: [
                 if (isDetail) _getDetail(state.card),
                 SizedBox(
-                  height: 200,
+                  height: height,
                   child: Card(
                     elevation: 4,
                     shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(8),
+                      borderRadius: BorderRadius.circular(spaceXS),
                     ),
                     color: Colors.orange,
                     child: Container(
                       decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(8),
+                        borderRadius: BorderRadius.circular(spaceXS),
                         image: DecorationImage(
                             image: NetworkImage(
                               state.card.background,
@@ -55,15 +61,15 @@ class CardWidget extends StatelessWidget {
                               _getInfo(state.card),
                               const Spacer(),
                               Container(
-                                margin: const EdgeInsets.only(right: 16),
+                                margin: const EdgeInsets.only(right: spaceMD),
                                 padding: const EdgeInsets.symmetric(
-                                  vertical: 8,
-                                  horizontal: 12,
+                                  vertical: spaceXS,
+                                  horizontal: spaceSM,
                                 ),
                                 decoration: const BoxDecoration(
                                   color: Colors.brown,
                                   borderRadius: BorderRadius.vertical(
-                                    bottom: Radius.circular(8),
+                                    bottom: Radius.circular(spaceXS),
                                   ),
                                 ),
                                 child: Row(
@@ -71,13 +77,13 @@ class CardWidget extends StatelessWidget {
                                     Icon(
                                       Icons.keyboard_double_arrow_down_outlined,
                                       color: Colors.white.withAlpha(200),
-                                      size: 18,
+                                      size: fontLG,
                                     ),
                                     const SizedBox(
-                                      width: 4,
+                                      width: spaceXXS,
                                     ),
                                     const Text(
-                                      'Tích điểm',
+                                      txtAccumulate,
                                       style: TextStyle(
                                         color: Colors.white,
                                       ),
@@ -88,20 +94,15 @@ class CardWidget extends StatelessWidget {
                             ],
                           ),
                           Container(
-                            height: 96,
-                            padding: const EdgeInsets.all(16),
+                            height: barCoverHeight,
+                            padding: const EdgeInsets.all(spaceMD),
                             decoration: BoxDecoration(
                               color: Colors.white,
-                              borderRadius: BorderRadius.circular(6),
+                              borderRadius: BorderRadius.circular(spaceXS),
                             ),
-                            margin: const EdgeInsets.only(
-                              top: 0,
-                              left: 16,
-                              right: 16,
-                              bottom: 16,
-                            ),
+                            margin: const EdgeInsets.all(spaceMD),
                             child: SvgPicture.string(
-                              state.card.id.barcode(300, 60),
+                              state.card.id.barcode(barWidth, barHeight),
                             ),
                           ),
                         ],
@@ -127,7 +128,11 @@ class CardWidget extends StatelessWidget {
         right: 2,
       ),
       elevation: 4,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(
+          spaceXS,
+        ),
+      ),
       color: Colors.white,
       child: SizedBox(
         height: 160,
@@ -135,7 +140,7 @@ class CardWidget extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.end,
           children: [
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16),
+              padding: const EdgeInsets.symmetric(horizontal: spaceMD),
               child: SliderRank(
                 preRankName: card.rankName,
                 nextRankName: card.nextRankName,
@@ -146,20 +151,20 @@ class CardWidget extends StatelessWidget {
             const SizedBox(height: 2),
             Text(
               'Còn ${card.nextRank - card.scores} BEAN nữa bạn sẽ thăng hạng.',
-              style: const TextStyle(fontSize: 13),
+              style: const TextStyle(fontSize: fontSM),
             ),
-            const Text(
-              'Đổi quà không ảnh hưởng đến việc thăng hạng của bạn',
-              style: TextStyle(fontSize: 13),
+            Text(
+              card.description,
+              style: const TextStyle(fontSize: fontSM),
             ),
             const SizedBox(height: 2),
             Text(
               card.status,
               style: const TextStyle(
-                fontSize: 13,
+                fontSize: fontSM,
               ),
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: spaceMD),
           ],
         ),
       ),
@@ -169,10 +174,10 @@ class CardWidget extends StatelessWidget {
   Widget _getInfo(CardModel? card) {
     return Container(
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(8),
-        color: Colors.black54.withOpacity(0.5),
+        borderRadius: BorderRadius.circular(spaceXS),
+        color: Colors.black54.withOpacity(opaMD),
       ),
-      padding: const EdgeInsets.all(8.0),
+      padding: const EdgeInsets.all(spaceXS),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -180,19 +185,20 @@ class CardWidget extends StatelessWidget {
             card != null ? card.name.toUpperCase() : '',
             style: const TextStyle(
               fontWeight: FontWeight.w600,
-              fontSize: 18,
+              fontSize: fontLG,
               color: Colors.white,
             ),
           ),
           const SizedBox(
-            height: 8,
+            height: spaceXS,
           ),
           Text(
-            '${card != null ? card.scores : '0'} BEAN - ${card != null ? card.rankName : ''}',
+            '${card != null ? card.scores : '0'} $txtScoreName '
+                '- ${card != null ? card.rankName : ''}',
             style: const TextStyle(
               color: Colors.white,
               fontWeight: FontWeight.w600,
-              fontSize: 14,
+              fontSize: fontMD,
             ),
           )
         ],
@@ -218,7 +224,7 @@ class SliderRank extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var width = MediaQuery.of(context).size.width * 0.85;
-    var widthSlider = width > 24 ? width - 24 : 0;
+    var widthSlider = width > spaceLG ? width - spaceLG : 0;
     return Column(
       children: [
         Row(
@@ -230,39 +236,39 @@ class SliderRank extends StatelessWidget {
           children: [
             Container(
               width: width,
-              height: 10,
+              height: spaceXS,
               decoration: BoxDecoration(
                 gradient: const LinearGradient(
                   colors: [Colors.orange, Colors.deepOrange],
                 ),
-                borderRadius: BorderRadius.circular(5),
+                borderRadius: BorderRadius.circular(spaceXS / 2),
               ),
             ),
             Container(
               margin: EdgeInsets.only(
                 left: widthSlider * (progress.toDouble() / maxProgress),
               ),
-              height: 24,
-              width: 24,
+              height: spaceLG,
+              width: spaceLG,
               decoration: BoxDecoration(
                 color: Colors.white,
-                borderRadius: BorderRadius.circular(12),
+                borderRadius: BorderRadius.circular(spaceSM),
                 border: Border.all(width: 2, color: Colors.orange),
               ),
               alignment: Alignment.center,
               child: const Icon(
                 Icons.eco,
                 color: Colors.orange,
-                size: 18,
+                size: fontLG,
               ),
             ),
             Container(
               margin: EdgeInsets.only(left: width - 8),
               child: Container(
-                height: 4,
-                width: 4,
+                height: spaceXXS,
+                width: spaceXXS,
                 decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(2),
+                  borderRadius: BorderRadius.circular(spaceXXS / 2),
                   color: Colors.white,
                 ),
               ),

@@ -7,7 +7,7 @@ import 'package:member_app/business_logic/cubits/product_state.dart';
 import 'package:member_app/presentation/res/dimen/dimens.dart';
 import 'package:member_app/presentation/widgets/suggest_products_widget.dart';
 
-import '../../business_logic/cubits/catagory_scroll_cubit.dart';
+import '../../business_logic/cubits/category_scroll_cubit.dart';
 import '../../business_logic/cubits/category_scroll_state.dart';
 import '../../data/models/product_short_model.dart';
 import '../widgets/categories_widget.dart';

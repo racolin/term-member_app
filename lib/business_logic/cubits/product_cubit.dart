@@ -1,8 +1,6 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:member_app/business_logic/cubits/home_state.dart';
 import 'package:member_app/business_logic/cubits/product_state.dart';
-import 'package:member_app/business_logic/cubits/suggest_product_state.dart';
-import 'package:member_app/presentation/res/strings/values.dart';
 
 import '../../data/models/product_short_model.dart';
 

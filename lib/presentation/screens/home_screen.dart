@@ -3,11 +3,11 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:member_app/business_logic/cubits/app_bar_cubit.dart';
 import 'package:member_app/business_logic/cubits/card_cubit.dart';
 import 'package:member_app/business_logic/cubits/category_product_cubit.dart';
-import 'package:member_app/business_logic/cubits/category_product_state.dart';
 import 'package:member_app/business_logic/cubits/news_cubit.dart';
 import 'package:member_app/business_logic/cubits/product_cubit.dart';
 import 'package:member_app/business_logic/cubits/reorder_cubit.dart';
 import 'package:member_app/business_logic/cubits/slider_cubit.dart';
+import 'package:member_app/business_logic/cubits/store_cubit.dart';
 import 'package:member_app/business_logic/cubits/suggest_product_cubit.dart';
 import 'package:member_app/presentation/pages/promotion_body.dart';
 import 'package:member_app/presentation/pages/home_body.dart';
@@ -40,6 +40,7 @@ class _HomeScreenState extends State<HomeScreen> {
     context.read<NewsCubit>().loadNews();
     context.read<ProductCubit>().loadProducts();
     context.read<CategoryProductCubit>().loadCategories();
+    context.read<StoreCubit>().loadStores();
     super.initState();
   }
 

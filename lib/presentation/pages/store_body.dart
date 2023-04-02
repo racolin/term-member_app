@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:member_app/presentation/widgets/store_widget.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:member_app/business_logic/cubits/store_cubit.dart';
+import 'package:member_app/presentation/widgets/stores_widget.dart';
 import 'package:member_app/presentation/res/dimen/dimens.dart';
 
-import '../widgets/store_search_widget.dart';
+import 'store_search_widget.dart';
 
 class StoreBody extends StatelessWidget {
   static const String searchTag = 'Search';
@@ -25,8 +27,13 @@ class StoreBody extends StatelessWidget {
             ),
           ),
         ),
-        const Expanded(
-          child: StoresWidget(searchKey: ''),
+        Expanded(
+          child: StoresWidget(
+            searchKey: '',
+            onClickItem: (id) {
+
+            },
+          ),
         ),
       ],
     );
@@ -46,7 +53,10 @@ class StoreBody extends StatelessWidget {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => const StoreSearchPage(),
+                        builder: (ctx) => BlocProvider.value(
+                          value: context.read<StoreCubit>(),
+                          child: StoreSearchPage(onCLick: (String s) {  },),
+                        ),
                       ),
                     );
                   },

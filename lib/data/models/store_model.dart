@@ -1,24 +1,21 @@
-class StoreModel {
-  final String id;
-  final String mainImage;
+import 'package:member_app/data/models/store_short_model.dart';
+
+class StoreModel extends StoreShortModel {
   final List<String> images;
   final String dailyTime;
   final AddressModel address;
-  final String fullAddress;
   final String contact;
-  final String brandName;
-  final String distance;
 
   StoreModel({
-    required this.id,
-    required this.mainImage,
+    required super.id,
+    required super.mainImage,
     required this.images,
     required this.dailyTime,
     required this.address,
-    required this.fullAddress,
+    required super.fullAddress,
     required this.contact,
-    required this.brandName,
-    required this.distance,
+    required super.name,
+    required super.distance,
   });
 }
 

@@ -8,12 +8,13 @@ import 'package:member_app/business_logic/cubits/news_cubit.dart';
 import 'package:member_app/business_logic/cubits/product_cubit.dart';
 import 'package:member_app/business_logic/cubits/reorder_cubit.dart';
 import 'package:member_app/business_logic/cubits/slider_cubit.dart';
+import 'package:member_app/business_logic/cubits/store_cubit.dart';
 import 'package:member_app/business_logic/cubits/suggest_product_cubit.dart';
 import 'package:member_app/data/data_providers/slider_remote_provider.dart';
 import 'package:member_app/presentation/screens/auth_screen.dart';
 import 'package:member_app/presentation/screens/home_screen.dart';
 
-import '../business_logic/cubits/catagory_scroll_cubit.dart';
+import '../business_logic/cubits/category_scroll_cubit.dart';
 
 class AppRouter {
   static Route<dynamic>? onGenerateAppRoute(RouteSettings settings) {
@@ -54,6 +55,12 @@ class AppRouter {
                   ),
                   BlocProvider(
                     create: (context) => CategoryScrollCubit(),
+                  ),
+                  BlocProvider(
+                    create: (context) => StoreCubit(),
+                  ),
+                  BlocProvider(
+                    create: (context) => StoreCubit(),
                   ),
                 ],
                 child: const HomeScreen(),

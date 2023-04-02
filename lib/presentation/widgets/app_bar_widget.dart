@@ -7,7 +7,7 @@ import 'package:member_app/business_logic/cubits/category_product_cubit.dart';
 import 'package:member_app/business_logic/cubits/home_state.dart';
 import 'package:member_app/presentation/res/dimen/dimens.dart';
 
-import '../../business_logic/cubits/catagory_scroll_cubit.dart';
+import '../../business_logic/cubits/category_scroll_cubit.dart';
 import '../res/strings/values.dart';
 import 'categories_widget.dart';
 import 'drag_bar_widget.dart';
@@ -314,6 +314,7 @@ class _AppBarWidgetState extends State<AppBarWidget> {
               return BlocProvider<CategoryProductCubit>.value(
                 value: context.read<CategoryProductCubit>(),
                 child: Container(
+                  padding: const EdgeInsets.only(bottom: spaceXXL),
                   decoration: const BoxDecoration(
                     borderRadius: BorderRadius.vertical(
                       top: Radius.circular(spaceMD),

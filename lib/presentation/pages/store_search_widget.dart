@@ -1,13 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:member_app/presentation/res/dimen/dimens.dart';
 
-import '../../data/models/store_model.dart';
-import '../pages/store_body.dart';
-import 'store_widget.dart';
+import '../res/strings/values.dart';
+import 'store_body.dart';
+import '../widgets/stores_widget.dart';
 
 class StoreSearchPage extends StatefulWidget {
+  final Function(String) onCLick;
 
   const StoreSearchPage({
     Key? key,
+    required this.onCLick,
   }) : super(key: key);
 
   @override
@@ -23,7 +26,16 @@ class _StoreSearchPageState extends State<StoreSearchPage> {
       body: Column(
         children: [
           _getSearchAddress(context),
-          Expanded(child: _getListAddress(context, [])),
+          Expanded(
+            child: Container(
+              color: Colors.grey.withAlpha(50),
+              padding: const EdgeInsets.all(8),
+              child: StoresWidget(
+                searchKey: '',
+                onClickItem: (id) {},
+              ),
+            ),
+          ),
         ],
       ),
     );
@@ -36,8 +48,8 @@ class _StoreSearchPageState extends State<StoreSearchPage> {
         color: Theme.of(context).primaryColor,
         child: Container(
           color: Colors.white,
-          margin: const EdgeInsets.only(top: 56),
-          padding: const EdgeInsets.all(8.0),
+          margin: const EdgeInsets.only(top: dimMD),
+          padding: const EdgeInsets.all(spaceXS),
           child: Row(
             children: [
               Expanded(
@@ -46,7 +58,7 @@ class _StoreSearchPageState extends State<StoreSearchPage> {
                     contentPadding: const EdgeInsets.all(0),
                     isDense: true,
                     border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(8),
+                      borderRadius: BorderRadius.circular(spaceXS),
                     ),
                     prefixIcon: const Icon(Icons.search),
                   ),
@@ -58,20 +70,20 @@ class _StoreSearchPageState extends State<StoreSearchPage> {
                 ),
               ),
               const SizedBox(
-                width: 4,
+                width: spaceXXS,
               ),
               InkWell(
                 onTap: () {
                   Navigator.pop(context);
                 },
-                borderRadius: BorderRadius.circular(12),
+                borderRadius: BorderRadius.circular(spaceXS),
                 child: Container(
-                  padding: const EdgeInsets.all(6),
+                  padding: const EdgeInsets.all(spaceXXS),
                   decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(8),
+                    borderRadius: BorderRadius.circular(spaceXS),
                   ),
                   child: const Text(
-                    'Huỷ',
+                    txtCancel,
                     style: TextStyle(
                       color: Colors.black,
                       fontWeight: FontWeight.w600,
@@ -82,16 +94,6 @@ class _StoreSearchPageState extends State<StoreSearchPage> {
             ],
           ),
         ),
-      ),
-    );
-  }
-
-  Widget _getListAddress(BuildContext context, List<StoreModel> addresses) {
-    return Container(
-      color: Colors.grey.withAlpha(50),
-      padding: const EdgeInsets.all(8),
-      child: const StoresWidget(
-        searchKey: '',
       ),
     );
   }

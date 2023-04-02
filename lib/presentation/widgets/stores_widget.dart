@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:member_app/business_logic/blocs/store_bloc.dart';
 
-import '../../business_logic/cubits/store_cubit.dart';
-import '../../business_logic/cubits/store_state.dart';
 import '../res/dimen/dimens.dart';
 import 'store_item_widget.dart';
 
@@ -18,7 +17,7 @@ class StoresWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<StoreCubit, StoreState>(
+    return BlocBuilder<StoreBloc, StoreState>(
       builder: (context, state) {
         switch (state.runtimeType) {
           case StoreInitial:

@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:member_app/business_logic/cubits/store_cubit.dart';
 import 'package:member_app/presentation/widgets/stores_widget.dart';
 import 'package:member_app/presentation/res/dimen/dimens.dart';
 
+import '../../business_logic/blocs/store_bloc.dart';
 import 'store_search_widget.dart';
 
 class StoreBody extends StatelessWidget {
@@ -54,7 +54,7 @@ class StoreBody extends StatelessWidget {
                       context,
                       MaterialPageRoute(
                         builder: (ctx) => BlocProvider.value(
-                          value: context.read<StoreCubit>(),
+                          value: context.read<StoreBloc>(),
                           child: StoreSearchPage(onCLick: (String s) {  },),
                         ),
                       ),

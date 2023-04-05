@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:member_app/business_logic/cubits/auth_cubit.dart';
 import 'package:member_app/business_logic/cubits/internet_cubit.dart';
 import 'package:member_app/presentation/app_router.dart';
+import 'package:member_app/presentation/res/dimen/dimens.dart';
 
 void main() {
   runApp(const MyApp());
@@ -25,6 +26,7 @@ class MyApp extends StatelessWidget {
       child: MaterialApp(
         title: 'Member App',
         theme: ThemeData(
+          scaffoldBackgroundColor: const Color.fromRGBO(244, 244, 244, 1),
           primarySwatch: const MaterialColor(
             0xFFFFC375,
             {

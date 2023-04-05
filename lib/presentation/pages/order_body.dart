@@ -84,7 +84,9 @@ class _OrderBodyState extends State<OrderBody> {
                             // height: 90
                             return CategoriesWidget(
                               scrollTo: (index) {
-                                context.read<CategoryScrollCubit>().setIndex(index);
+                                context
+                                    .read<CategoryScrollCubit>()
+                                    .setIndex(index);
                               },
                             );
                           }
@@ -126,14 +128,18 @@ class _OrderBodyState extends State<OrderBody> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const SizedBox(height: 12),
+        const SizedBox(height: spaceSM),
         Padding(
           // height: 25
-          padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 8),
+          padding: const EdgeInsets.symmetric(
+              vertical: spaceXXS, horizontal: spaceXS),
           child: Text(
             // height: 17
             title,
-            style: const TextStyle(fontSize: 17, fontWeight: FontWeight.w700),
+            style: const TextStyle(
+              fontSize: fontLG,
+              fontWeight: FontWeight.w700,
+            ),
           ),
         ),
         ListView.builder(
@@ -142,7 +148,7 @@ class _OrderBodyState extends State<OrderBody> {
           physics: const NeverScrollableScrollPhysics(),
           itemBuilder: (context, index) => Padding(
             // height: 116
-            padding: const EdgeInsets.all(8.0),
+            padding: const EdgeInsets.all(spaceXS),
             child: ProductWidget(
               // height: 100
               shortProduct: shortProducts[index],

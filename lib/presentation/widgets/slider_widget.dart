@@ -26,7 +26,7 @@ class _SliderWidgetState extends State<SliderWidget> {
             return const LoadingWidget();
           case SliderLoaded:
             state as SliderLoaded;
-            final double widthTotal = spaceLG * (state.sliders.length + spaceXXS / 2);
+            final double widthTotal = spaceLG * (state.sliders.length + spaceXXS / 4);
             return Container(
               margin: const EdgeInsets.all(spaceXS),
               child: Column(

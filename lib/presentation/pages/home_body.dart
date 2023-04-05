@@ -1,13 +1,10 @@
-import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
-import 'package:member_app/presentation/widgets/delivery_option_widget.dart';
 import 'package:member_app/presentation/widgets/re_order_widget.dart';
 import 'package:member_app/presentation/res/dimen/dimens.dart';
 import 'package:member_app/presentation/widgets/news_section_widget.dart';
 import 'package:member_app/presentation/widgets/slider_widget.dart';
 import 'package:member_app/presentation/widgets/suggest_products_widget.dart';
 
-import '../widgets/app_bar_widget.dart';
 import '../widgets/card_widget.dart';
 import '../widgets/delivery_options_widget.dart';
 import '../widgets/drag_bar_widget.dart';

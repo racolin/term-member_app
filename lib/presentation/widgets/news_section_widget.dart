@@ -52,37 +52,40 @@ class _NewsSectionWidgetState extends State<NewsSectionWidget> {
                     alignment: WrapAlignment.start,
                     children: [
                       for (int i = 0; i < state.listNews.length; i++)
-                        TextButton(
-                          style: ButtonStyle(
-                            padding: MaterialStateProperty.all(
-                              const EdgeInsets.symmetric(
-                                horizontal: spaceSM,
+                        Padding(
+                          padding: const EdgeInsets.only(right: 8.0),
+                          child: TextButton(
+                            style: ButtonStyle(
+                              padding: MaterialStateProperty.all(
+                                const EdgeInsets.symmetric(
+                                  horizontal: spaceSM,
+                                ),
+                              ),
+                              overlayColor: MaterialStateProperty.all(
+                                Theme.of(context).primaryColor.withOpacity(opaMD),
+                              ),
+                              backgroundColor: MaterialStateProperty.all(
+                                state.index == i
+                                    ? Theme.of(context)
+                                        .primaryColor
+                                        .withOpacity(opaSM)
+                                    : Colors.white,
+                              ),
+                              shape: MaterialStateProperty.all(
+                                RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(spaceLG),
+                                ),
                               ),
                             ),
-                            overlayColor: MaterialStateProperty.all(
-                              Theme.of(context).primaryColor.withOpacity(opaMD),
-                            ),
-                            backgroundColor: MaterialStateProperty.all(
-                              state.index == i
-                                  ? Theme.of(context)
-                                      .primaryColor
-                                      .withOpacity(opaSM)
-                                  : Colors.white,
-                            ),
-                            shape: MaterialStateProperty.all(
-                              RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(spaceLG),
+                            onPressed: () {
+                              context.read<NewsCubit>().setIndex(i);
+                            },
+                            child: Text(
+                              state.listNews[i].title,
+                              style: const TextStyle(
+                                color: Colors.black54,
+                                fontWeight: FontWeight.w600,
                               ),
-                            ),
-                          ),
-                          onPressed: () {
-                            context.read<NewsCubit>().setIndex(i);
-                          },
-                          child: Text(
-                            state.listNews[i].title,
-                            style: const TextStyle(
-                              color: Colors.black54,
-                              fontWeight: FontWeight.w600,
                             ),
                           ),
                         )

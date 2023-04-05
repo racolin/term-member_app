@@ -12,7 +12,7 @@ import '../res/strings/values.dart';
 class CardWidget extends StatelessWidget {
   final bool isDetail;
   final double height = 200;
-  final double barHeight = 60;
+  final double barHeight = 76;
   final double barCoverHeight = 96;
   final double barWidth = 300;
 
@@ -38,6 +38,7 @@ class CardWidget extends StatelessWidget {
                 SizedBox(
                   height: height,
                   child: Card(
+                    margin: EdgeInsets.zero,
                     elevation: 4,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(spaceXS),
@@ -124,8 +125,6 @@ class CardWidget extends StatelessWidget {
     return Card(
       margin: const EdgeInsets.only(
         top: 172,
-        left: 2,
-        right: 2,
       ),
       elevation: 4,
       shape: RoundedRectangleBorder(

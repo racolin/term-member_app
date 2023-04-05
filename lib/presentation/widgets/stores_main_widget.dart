@@ -6,11 +6,11 @@ import 'package:member_app/presentation/pages/loading_page.dart';
 import '../res/dimen/dimens.dart';
 import 'store_item_widget.dart';
 
-class StoresWidget extends StatelessWidget {
+class StoresMainWidget extends StatelessWidget {
   final String searchKey;
   final Function(String) onClickItem;
 
-  const StoresWidget({
+  const StoresMainWidget({
     Key? key,
     required this.searchKey,
     required this.onClickItem,
@@ -27,26 +27,13 @@ class StoresWidget extends StatelessWidget {
             return const SizedBox();
           case StoreLoaded:
             state as StoreLoaded;
-            if (state.isReload) {
-              return const Center(child: LoadingWidget());
-            }
-            if (state.searchStores == null) {
-              return ListView.builder(
-                itemBuilder: (context, index) => StoreItemWidget(
-                  store: state.stores[index],
-                  onClick: onClickItem,
-                ),
-                padding: const EdgeInsets.only(bottom: dimLG),
-                itemCount: state.stores.length,
-              );
-            }
             return ListView.builder(
               itemBuilder: (context, index) => StoreItemWidget(
-                store: state.searchStores![index],
+                store: state.stores[index],
                 onClick: onClickItem,
               ),
               padding: const EdgeInsets.only(bottom: dimLG),
-              itemCount: state.searchStores!.length,
+              itemCount: state.stores.length,
             );
         }
         return const SizedBox();

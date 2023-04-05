@@ -10,23 +10,24 @@ part 'store_state.dart';
 
 class StoreBloc extends Bloc<StoreEvent, StoreState> {
   StoreBloc() : super(StoreInitial()) {
-    on<StoreSearch>((event, emit) {
+    on<StoreSearch>((event, emit) async {
       if (state is StoreLoaded) {
-        emit(StoreLoading());
+        emit((state as StoreLoaded).copyWith(isReload: true));
         emit(
           (state as StoreLoaded).copyWith(
+            isReload: false,
             searchStores: (state as StoreLoaded)
                 .stores
                 .where(
                   (e) =>
-                      e.name.contains(event.key) ||
-                      e.fullAddress.contains(event.key),
+                      e.name.toLowerCase().contains(event.key.toLowerCase()) ||
+                      e.fullAddress.toLowerCase().contains(event.key.toLowerCase()),
                 )
                 .toList(),
           ),
         );
       }
-    }, transformer: debounceRestartable(const Duration(seconds: 1)));
+    }, transformer: debounce(duration: const Duration(seconds: 1)));
     on<StoreLoad>((event, emit) {
       emit(StoreLoading());
       emit(
@@ -104,5 +105,10 @@ class StoreBloc extends Bloc<StoreEvent, StoreState> {
     // This feeds the debounced event stream to restartable() and returns that
     // as a transformer.
     return (events, mapper) => events.debounceTime(duration);
+  }
+  EventTransformer<StoreEvent> debounce<StoreEvent>({
+    Duration duration = const Duration(milliseconds: 300),
+  }) {
+    return (events, mapper) => events.debounce((event) => TimerStream(true, duration),).switchMap(mapper);
   }
 }

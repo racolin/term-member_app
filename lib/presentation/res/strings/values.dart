@@ -26,6 +26,33 @@ const txtNews = "Khám phá thêm";
 const txtAccumulate = "Tích điểm";
 const txtScoreName = "BEAN";
 const txtCancel = "Huỷ";
+const txtStoreNear = "Các cửa hàng gần đây";
+const txtOtherStore = "Các cửa hàng khác";
+const txtMap = "Bản đồ";
+const txtContactTile = "Liên hệ và góp ý";
+const txtReviewOrder = "Đánh giá đơn hàng";
+const txtSupport = "Hỗ trợ";
+const txtAccount = "Tài khoản";
+const txtPersonalInfo = "Thông tin cá nhân";
+const txtSavedAddress = "Địa chỉ đã lưu";
+const txtSetting = "Cài đặt";
+const txtLogOut = "Đăng xuất";
+const txtLogIn = "Đăng nhập";
+const txtMedia = "Tiện ích";
+const txtHistoryOrder = "Lịch sử đơn hàng";
+const txtCartTemplate = "Đơn hàng mẫu";
+const txtRules = "Điều khoản";
+const txtOutStanding = "Nổi bật";
+const txtPromotionSwap = "Đổi ưu đãi";
+const txtYourVoucher = "Voucher của bạn";
+const txtFromMe = "Từ chúng tôi";
+const txtFromPartner = "Từ đối tác";
+const txtTypePromotion = "Các loại ưu đãi";
+const txtYourTicket = "Phiếu ưu đãi của bạn";
+const txtSeeAll = "Xem tất cả";
+const txtHistory = "Lịch sử";
+const txtYourRight = "Quyền lợi của bạn";
+const txtPromotionPoint = "Tích điểm";
 
 
 

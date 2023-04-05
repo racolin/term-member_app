@@ -1,6 +1,5 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:member_app/business_logic/cubits/category_product_state.dart';
-import 'package:member_app/data/models/card_model.dart';
 import 'package:member_app/data/models/category_model.dart';
 
 class CategoryProductCubit extends Cubit<CategoryProductState> {

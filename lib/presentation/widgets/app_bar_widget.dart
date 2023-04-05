@@ -24,40 +24,65 @@ class AppBarWidget extends AppBar {
 class _AppBarWidgetState extends State<AppBarWidget> {
   @override
   Widget build(BuildContext context) {
-    return AppBar(
-      backgroundColor: Theme.of(context).primaryColor,
-      title: BlocBuilder<AppBarCubit, AppBarState>(
+    return BlocBuilder<AppBarCubit, AppBarState>(
         builder: (context, state) {
           switch (state.runtimeType) {
             case AppBarInitial:
               break;
             case AppBarLoaded:
               state as AppBarLoaded;
-              return Row(
-                children: [
-                  if (HomeBodyType.home == state.type)
-                    ..._getInfoTitle(
-                      state.appBar.label,
-                      state.appBar.icon,
-                    )
-                  else
-                    _getTitle(state.label, state.type),
-                  const Spacer(),
-                  if (HomeBodyType.order == state.type)
-                    ..._getProductAction()
-                  else
-                    ..._getBaseAction(
-                      state.appBar.cartTemplateAmount,
-                      state.appBar.ticketAmount,
-                      state.appBar.notifyAmount,
-                    ),
-                ],
+              return AppBar(
+                elevation: _getElevation(state.type),
+                backgroundColor: _getBackgroundColor(state.type),
+                title:  Row(
+                  children: [
+                    if (HomeBodyType.home == state.type)
+                      ..._getInfoTitle(
+                        state.appBar.label,
+                        state.appBar.icon,
+                      )
+                    else
+                      _getTitle(state.label, state.type),
+                    const Spacer(),
+                    if (HomeBodyType.order == state.type)
+                      ..._getProductAction()
+                    else
+                      ..._getBaseAction(
+                        state.appBar.cartTemplateAmount,
+                        state.appBar.ticketAmount,
+                        state.appBar.notifyAmount,
+                      ),
+                  ],
+                ),
               );
           }
           return const SizedBox();
         },
-      ),
-    );
+      );
+  }
+
+  Color _getBackgroundColor(HomeBodyType type) {
+    switch (type) {
+      case HomeBodyType.home:
+        return Theme.of(context).primaryColor;
+      case HomeBodyType.order:
+      case HomeBodyType.store:
+      case HomeBodyType.promotion:
+      case HomeBodyType.other:
+        return Colors.white;
+    }
+  }
+
+  double _getElevation(HomeBodyType type) {
+    switch (type) {
+      case HomeBodyType.order:
+      case HomeBodyType.home:
+      case HomeBodyType.other:
+        return 1;
+      case HomeBodyType.store:
+      case HomeBodyType.promotion:
+        return 0;
+    }
   }
 
   List<Widget> _getProductAction() {

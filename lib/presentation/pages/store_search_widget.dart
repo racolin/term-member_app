@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:member_app/business_logic/blocs/store_bloc.dart';
 import 'package:member_app/presentation/res/dimen/dimens.dart';
 
 import '../res/strings/values.dart';
@@ -29,7 +31,7 @@ class _StoreSearchPageState extends State<StoreSearchPage> {
           Expanded(
             child: Container(
               color: Colors.grey.withAlpha(50),
-              padding: const EdgeInsets.all(8),
+              padding: const EdgeInsets.all(spaceXS),
               child: StoresWidget(
                 searchKey: '',
                 onClickItem: (id) {},
@@ -64,6 +66,7 @@ class _StoreSearchPageState extends State<StoreSearchPage> {
                   ),
                   onChanged: (value) {
                     setState(() {
+                      context.read<StoreBloc>().add(StoreSearch(key: value));
                       searchKey = value;
                     });
                   },
@@ -74,6 +77,7 @@ class _StoreSearchPageState extends State<StoreSearchPage> {
               ),
               InkWell(
                 onTap: () {
+                  context.read<StoreBloc>().add(StoreSearch(key: ''));
                   Navigator.pop(context);
                 },
                 borderRadius: BorderRadius.circular(spaceXS),

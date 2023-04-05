@@ -9,6 +9,5 @@ class AuthState extends Equatable {
   const AuthState({required this.loginType});
 
   @override
-  // TODO: implement props
   List<Object?> get props => [loginType];
 }

@@ -13,6 +13,7 @@ class DeliveryOptionsWidget extends StatelessWidget {
       return Container(
         margin: const EdgeInsets.all(spaceXS),
         decoration: BoxDecoration(
+          color: Colors.white,
           border: Border.all(color: Colors.grey.withOpacity(0.6)),
           borderRadius: BorderRadius.circular(spaceSM),
         ),

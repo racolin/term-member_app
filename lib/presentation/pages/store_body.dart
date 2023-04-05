@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:member_app/presentation/widgets/stores_widget.dart';
 import 'package:member_app/presentation/res/dimen/dimens.dart';
+import 'package:member_app/presentation/res/strings/values.dart';
 
 import '../../business_logic/blocs/store_bloc.dart';
+import '../widgets/stores_main_widget.dart';
 import 'store_search_widget.dart';
 
 class StoreBody extends StatelessWidget {
@@ -20,15 +21,15 @@ class StoreBody extends StatelessWidget {
         const Padding(
           padding: EdgeInsets.all(spaceSM),
           child: Text(
-            'Các cửa hàng khác',
+            txtOtherStore,
             style: TextStyle(
               fontWeight: FontWeight.w700,
-              fontSize: 16,
+              fontSize: fontLG,
             ),
           ),
         ),
         Expanded(
-          child: StoresWidget(
+          child: StoresMainWidget(
             searchKey: '',
             onClickItem: (id) {
 
@@ -43,8 +44,9 @@ class StoreBody extends StatelessWidget {
     return Hero(
       tag: searchTag,
       child: Material(
-        child: Padding(
-          padding: const EdgeInsets.all(8.0),
+        child: Container(
+          color: Colors.white,
+          padding: const EdgeInsets.all(spaceXS),
           child: Row(
             children: [
               Expanded(
@@ -64,31 +66,31 @@ class StoreBody extends StatelessWidget {
                     contentPadding: const EdgeInsets.all(0),
                     isDense: true,
                     border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(8),
+                      borderRadius: BorderRadius.circular(spaceXS),
                     ),
                     prefixIcon: const Icon(Icons.search),
                   ),
                 ),
               ),
               const SizedBox(
-                width: 4,
+                width: spaceXXS,
               ),
               InkWell(
                 onTap: () {},
-                borderRadius: BorderRadius.circular(12),
+                borderRadius: BorderRadius.circular(spaceSM),
                 child: Container(
-                  padding: const EdgeInsets.all(6),
+                  padding: const EdgeInsets.all(spaceXXS),
                   decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(8),
+                    borderRadius: BorderRadius.circular(spaceXS),
                   ),
                   child: Row(
                     children: const [
-                      Icon(Icons.map_outlined, size: 20),
+                      Icon(Icons.map_outlined, size: fontLG),
                       SizedBox(
-                        width: 4,
+                        width: spaceXXS,
                       ),
                       Text(
-                        'Bản đồ',
+                        txtMap,
                         style: TextStyle(
                           color: Colors.black,
                           fontWeight: FontWeight.w600,

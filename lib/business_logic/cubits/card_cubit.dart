@@ -11,26 +11,32 @@ class CardCubit extends Cubit<CardState> {
   CardCubit({
     required MemberRepository repository,
   })  : _repository = repository,
-        super(CardInitial());
+        super(CardInitial()) {
+    try {
+      _repository.getCard().then((card) {
+        if (card == null) {
+          emit(CardFailure());
+          return;
+        }
+        emit(CardLoaded(card: card));
+      });
+    } on AppException catch (ex) {
+      emit(CardFailure());
+    }
+  }
 
   // Action data
-
-  Future<AppMessage?> loadCard() async {
-    emit(CardLoading());
-
+  Future<AppMessage?> reloadCard() async {
     try {
       var card = await _repository.getCard();
-
       if (card == null) {
-        emit(CardEmpty());
+        emit(CardFailure());
       } else {
         emit(CardLoaded(card: card));
       }
-
     } on AppException catch (ex) {
       return ex.message;
     }
-
     return null;
   }
 }

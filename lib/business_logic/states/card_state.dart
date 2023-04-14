@@ -2,16 +2,26 @@ import '../../data/models/card_model.dart';
 
 abstract class CardState {}
 
-class CardInitial extends CardState {}
+class CardInitial extends CardState {
+  CardInitial() {
+    print(runtimeType);
+  }
+}
 
-class CardLoading extends CardState {}
+class CardLoading extends CardState {
+  CardLoading() {
+    print(runtimeType);
+  }
+}
 
 class CardLoaded extends CardState {
   final CardModel card;
 
   CardLoaded({
     required this.card,
-  });
+  }) {
+    print(runtimeType);
+  }
 
   CardLoaded copyWith({
     CardModel? card,
@@ -22,6 +32,8 @@ class CardLoaded extends CardState {
   }
 }
 
-class CardEmpty extends CardState {
-  CardEmpty();
+class CardFailure extends CardState {
+  CardFailure() {
+    print(runtimeType);
+  }
 }

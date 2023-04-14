@@ -1,4 +1,3 @@
-import 'package:flutter/services.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:member_app/data/models/token_model.dart';
 
@@ -14,36 +13,37 @@ class SecureStorage {
   final FlutterSecureStorage _storage;
   static const _accessTokenKey = 'ACCESS_TOKEN';
   static const _refreshTokenKey = 'REFRESH_TOKEN';
-  static const _expiredTimeKey = 'EXPIRED_TIME';
 
-  static const _emailKey = 'EMAIL';
-
+  ///
+  /// Can throw PlatformException
+  ///
   Future<void> persistToken(TokenModel token) async {
-    try {
-      await _storage.write(
-        key: _accessTokenKey,
-        value: token.accessToken,
-      );
-      await _storage.write(
-        key: _refreshTokenKey,
-        value: token.refreshToken,
-      );
-    } on PlatformException catch(ex) {
-
-    }
+    await _storage.write(
+      key: _accessTokenKey,
+      value: token.accessToken,
+    );
+    await _storage.write(
+      key: _refreshTokenKey,
+      value: token.refreshToken,
+    );
   }
 
-  Future<bool> hasToken() async {
-    var value = await _storage.read(key: _accessTokenKey);
-    return value != null;
+  ///
+  /// Can throw PlatformException
+  ///
+  Future<void> deleteToken() async {
+    await _storage.delete(key: _accessTokenKey);
+    await _storage.delete(key: _refreshTokenKey);
   }
 
-  Future<TokenModel?> getToken() async {
+  ///
+  /// Can throw PlatformException
+  ///
+  Future<TokenModel?> getAccessToken() async {
     String? access = await _storage.read(key: _accessTokenKey);
     String? refresh = await _storage.read(key: _refreshTokenKey);
-    String? time = await _storage.read(key: _expiredTimeKey);
 
-    if (access != null && refresh != null && time != null) {
+    if (access != null && refresh != null) {
       return TokenModel(
         accessToken: access,
         refreshToken: refresh,
@@ -52,16 +52,24 @@ class SecureStorage {
     return null;
   }
 
+  ///
+  /// Can throw PlatformException
+  ///
+  Future<String?> geAccessToken() async {
+    return _storage.read(key: _accessTokenKey);
+  }
+  
+  ///
+  /// Can throw PlatformException
+  ///
+  Future<String?> getRefreshToken() async {
+    return _storage.read(key: _refreshTokenKey);
+  }
+  
+  ///
+  /// Can throw PlatformException
+  ///
   Future<void> deleteAll() async {
     return _storage.deleteAll();
-  }
-
-  Future<String?> getEmail() async {
-    return await _storage.read(key: _emailKey);
-  }
-
-  Future<bool> hasEmail() async {
-    var value = await _storage.read(key: _emailKey);
-    return value != null;
   }
 }

@@ -2,8 +2,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:member_app/business_logic/cubits/category_product_state.dart';
 import 'package:member_app/data/models/product_category_model.dart';
 
-import 'category_product_state.dart';
-
 class CategoryProductCubit extends Cubit<CategoryProductState> {
   CategoryProductCubit() : super(CategoryProductInitial());
 

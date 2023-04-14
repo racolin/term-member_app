@@ -1,30 +1,36 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:member_app/business_logic/cubits/card_state.dart';
-import 'package:member_app/data/models/card_model.dart';
 
-import 'card_state.dart';
+import '../../business_logic/repositories/member_repository.dart';
+import '../../exception/app_message.dart';
+import '../states/card_state.dart';
+import '../../exception/app_exception.dart';
 
 class CardCubit extends Cubit<CardState> {
-  CardCubit() : super(CardInitial());
+  final MemberRepository _repository;
 
-  void loadCard() {
+  CardCubit({
+    required MemberRepository repository,
+  })  : _repository = repository,
+        super(CardInitial());
+
+  // Action data
+
+  Future<AppMessage?> loadCard() async {
     emit(CardLoading());
-    // emit(CardWithoutData());
-    emit(
-      CardLoaded(
-        card: CardModel.fromMap(
-          {
-            "id": "097595726",
-            "name": "Phan Trung Tín",
-            "scores": 500,
-            "rankName": "Gold",
-            "nextRankName": "Diamond",
-            "nextRank": 1000,
-            "description": 'Đổi quà không ảnh hưởng đến việc thăng hạng của bạn',
-            "status": 'Chưa tích điểm',
-          },
-        ),
-      ),
-    );
+
+    try {
+      var card = await _repository.getCard();
+
+      if (card == null) {
+        emit(CardEmpty());
+      } else {
+        emit(CardLoaded(card: card));
+      }
+
+    } on AppException catch (ex) {
+      return ex.message;
+    }
+
+    return null;
   }
 }

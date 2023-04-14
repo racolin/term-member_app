@@ -15,8 +15,8 @@ class AddressModel {
     required this.name,
     required this.address,
     required this.note,
-    required this.lat,
-    required this.lng,
+    this.lat,
+    this.lng,
     required this.receiver,
     required this.phone,
   });

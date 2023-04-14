@@ -20,7 +20,7 @@ import 'package:member_app/presentation/widgets/app_bar_widget.dart';
 import 'package:member_app/presentation/widgets/floating_action_widget.dart';
 
 import '../../business_logic/cubits/home_cubit.dart';
-import '../../business_logic/cubits/home_state.dart';
+import '../../business_logic/states/home_state.dart';
 import '../widgets/navigation_widget.dart';
 
 class HomeScreen extends StatefulWidget {

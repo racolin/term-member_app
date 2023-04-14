@@ -6,8 +6,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 part 'internet_state.dart';
 
 class InternetCubit extends Cubit<InternetState> {
+
   final Connectivity connectivity = Connectivity();
   late StreamSubscription<ConnectivityResult> subscription;
+
   InternetCubit()
       : super(
           InternetState(
@@ -24,22 +26,4 @@ class InternetCubit extends Cubit<InternetState> {
     });
 
   }
-
-  void connected() => emit(
-        InternetState(
-          internetType: InternetType.connected,
-        ),
-      );
-
-  void disconnected() => emit(
-        InternetState(
-          internetType: InternetType.disconnected,
-        ),
-      );
-
-  void loading() => emit(
-        InternetState(
-          internetType: InternetType.loading,
-        ),
-      );
 }

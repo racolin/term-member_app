@@ -31,15 +31,36 @@ class ProductApiRepository extends ProductRepository {
 
   var _categories = <ProductCategoryModel>[];
 
-  var _options = [
-    ProductOptionModel(
-      id: id,
-      name: name,
-      isForce: isForce,
-      maxChoose: maxChoose,
-      items: items,
+  var _options = List.generate(
+    4,
+    (index) => ProductOptionModel(
+      id: 'OPTION-$index',
+      name: 'Size',
+      minSelected: 1,
+      maxSelected: 1,
+      defs: ["OPTION-$index-1"],
+      items: [
+        ProductOptionItemModel(
+          id: 'OPTION-$index-1',
+          name: 'Nhỏ',
+          cost: 35000,
+          disable: true,
+        ),
+        ProductOptionItemModel(
+          id: 'OPTION-$index-2',
+          name: 'Vừa',
+          cost: 39000,
+          disable: false,
+        ),
+        ProductOptionItemModel(
+          id: 'OPTION-$index-3',
+          name: 'Lớn',
+          cost: 45000,
+          disable: false,
+        ),
+      ],
     ),
-  ];
+  );
 
   var _favorites = <String>[];
 
@@ -94,10 +115,21 @@ class ProductApiRepository extends ProductRepository {
   }
 
   @override
-  Future<List<ProductOptionModel>> getOptionsByStoreId(
-      {required String storeId}) {
-    // TODO: implement getOptionsByStoreId
-    throw UnimplementedError();
+  Future<List<ProductOptionModel>> getOptionsByStoreId({
+    required String storeId,
+  }) async {
+    try {
+      return _options;
+    } on DioError catch (ex) {
+      throw AppException(
+        message: AppMessage(
+          messageType: AppMessageType.error,
+          title: 'Lỗi mạng!',
+          content: 'Gặp sự cố khi lấy danh sách lựa chọn',
+        ),
+      );
+    }
+    return [];
   }
 
   @override

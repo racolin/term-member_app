@@ -1,5 +1,3 @@
-import 'dart:ui';
-
 import 'package:dio/dio.dart';
 
 import '../../data/models/app_bar_model.dart';

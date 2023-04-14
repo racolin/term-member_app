@@ -1,4 +1,4 @@
-import 'package:member_app/data/models/card_model.dart';
+import '../../data/models/card_model.dart';
 
 abstract class CardState {}
 
@@ -12,8 +12,16 @@ class CardLoaded extends CardState {
   CardLoaded({
     required this.card,
   });
+
+  CardLoaded copyWith({
+    CardModel? card,
+  }) {
+    return CardLoaded(
+      card: card ?? this.card,
+    );
+  }
 }
 
-class CardWithoutData extends CardState {
-  CardWithoutData();
+class CardEmpty extends CardState {
+  CardEmpty();
 }

@@ -1,5 +1,5 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:member_app/business_logic/cubits/home_state.dart';
+import 'package:member_app/business_logic/states/home_state.dart';
 import 'package:member_app/business_logic/cubits/suggest_product_state.dart';
 import 'package:member_app/presentation/res/strings/values.dart';
 

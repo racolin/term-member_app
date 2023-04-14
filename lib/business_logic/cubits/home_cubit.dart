@@ -1,32 +1,35 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../data/models/store_model.dart';
-import 'home_state.dart';
+import '../../exception/app_exception.dart';
+import '../../data/repositories/logout_storage_repository.dart';
+import '../../exception/app_message.dart';
+import '../states/home_state.dart';
 
 class HomeCubit extends Cubit<HomeState> {
-  HomeCubit()
+  final _repository = LogoutStorageRepository();
+
+  HomeCubit({required bool login})
       : super(
           HomeState(
             homeBodyType: HomeBodyType.home,
-            deliveryType: DeliveryType.takeOut,
-            deliveryDescription: '175B Cao Thắng',
+            login: login,
           ),
         );
 
-  void setBody(HomeBodyType type) => emit(state.copyWith(homeBodyType: type));
+  // Action data
+  Future<AppMessage?> logout() async {
+    try {
+      await _repository.logout();
+    } on AppException catch (ex) {
+      return ex.message;
+    }
+    return null;
+  }
 
-  void setExpand(bool isExpandFloating) => emit(state.copyWith(
-        isExpandFloating: isExpandFloating,
-      ));
-
-  void setShowExpand(bool isShowFloatButton) => emit(state.copyWith(
-        isShowFloatButton: isShowFloatButton,
-      ));
-
-  void setStore(StoreShortModel store) {
+  // Action UI
+  void setBody(HomeBodyType type) {
     emit(state.copyWith(
-      deliveryType: DeliveryType.takeOut,
-      deliveryDescription: store.name,
+      homeBodyType: type,
     ));
   }
 }

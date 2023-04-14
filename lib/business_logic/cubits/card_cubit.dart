@@ -15,13 +15,21 @@ class CardCubit extends Cubit<CardState> {
     try {
       _repository.getCard().then((card) {
         if (card == null) {
-          emit(CardFailure());
+          emit(
+            CardFailure(
+              message: AppMessage(
+                messageType: AppMessageType.failure,
+                title: 'Cảnh báo',
+                content: 'Thẻ khách hàng trống',
+              ),
+            ),
+          );
           return;
         }
         emit(CardLoaded(card: card));
       });
     } on AppException catch (ex) {
-      emit(CardFailure());
+      emit(CardFailure(message: ex.message));
     }
   }
 
@@ -30,7 +38,15 @@ class CardCubit extends Cubit<CardState> {
     try {
       var card = await _repository.getCard();
       if (card == null) {
-        emit(CardFailure());
+        emit(
+          CardFailure(
+            message: AppMessage(
+              messageType: AppMessageType.failure,
+              title: 'Cảnh báo',
+              content: 'Thẻ khách hàng trống',
+            ),
+          ),
+        );
       } else {
         emit(CardLoaded(card: card));
       }

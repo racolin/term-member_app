@@ -1,4 +1,5 @@
 import 'package:flutter/foundation.dart';
+import 'package:member_app/exception/app_message.dart';
 
 import '../../data/models/news_model.dart';
 
@@ -26,5 +27,12 @@ class NewsLoaded extends NewsState {
       listNews: listNews ?? this.listNews,
       index: index ?? this.index,
     );
+  }
+}
+
+class NewsFailure extends NewsState {
+  final AppMessage message;
+  NewsFailure({required this.message}) {
+    print(runtimeType);
   }
 }

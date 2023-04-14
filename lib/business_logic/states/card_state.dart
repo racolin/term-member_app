@@ -1,4 +1,5 @@
 import '../../data/models/card_model.dart';
+import '../../exception/app_message.dart';
 
 abstract class CardState {}
 
@@ -33,7 +34,8 @@ class CardLoaded extends CardState {
 }
 
 class CardFailure extends CardState {
-  CardFailure() {
+  final AppMessage message;
+  CardFailure({required this.message}) {
     print(runtimeType);
   }
 }

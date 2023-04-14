@@ -1,36 +1,37 @@
-import 'package:member_app/data/models/store_short_model.dart';
+import 'package:member_app/presentation/res/strings/values.dart';
 
-class StoreModel extends StoreShortModel {
-  final List<String> images;
-  final String dailyTime;
-  final AddressModel address;
-  final String contact;
+class StoreModel {
+  final String id;
+  final String? image;
+  final String name;
+  final int distance;
+  final bool isFavorite;
 
-  StoreModel({
-    required super.id,
-    required super.mainImage,
-    required this.images,
-    required this.dailyTime,
-    required this.address,
-    required super.fullAddress,
-    required this.contact,
-    required super.name,
-    required super.distance,
+  const StoreModel({
+    required this.id,
+    this.image,
+    required this.name,
+    required this.distance,
+    required this.isFavorite,
   });
-}
 
-class AddressModel {
-  final String street;
-  final String ward;
-  final String district;
-  final String city;
-  final String country;
+  Map<String, dynamic> toMap() {
+    return {
+      'id': id,
+      'image': image,
+      'name': name,
+      'distance': distance,
+      'isFavorite': isFavorite,
+    };
+  }
 
-  AddressModel({
-    required this.street,
-    required this.ward,
-    required this.district,
-    required this.city,
-    required this.country,
-  });
+  factory StoreModel.fromMap(Map<String, dynamic> map) {
+    return StoreModel(
+      id: map['id']!,
+      image: map['image'],
+      name: map['name'] ?? txtUnknown,
+      distance: map['distance'] ?? 0,
+      isFavorite: map['isFavorite'] ?? false,
+    );
+  }
 }

@@ -1,5 +1,7 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:member_app/business_logic/cubits/home_state.dart';
+
+import '../../../data/models/store_model.dart';
+import 'home_state.dart';
 
 class HomeCubit extends Cubit<HomeState> {
   HomeCubit()
@@ -20,4 +22,11 @@ class HomeCubit extends Cubit<HomeState> {
   void setShowExpand(bool isShowFloatButton) => emit(state.copyWith(
         isShowFloatButton: isShowFloatButton,
       ));
+
+  void setStore(StoreShortModel store) {
+    emit(state.copyWith(
+      deliveryType: DeliveryType.takeOut,
+      deliveryDescription: store.name,
+    ));
+  }
 }

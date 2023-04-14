@@ -1,6 +1,8 @@
 import 'package:flutter/foundation.dart';
 
-import '../../data/models/product_short_model.dart';
+import '../../data/models/product_option_model.dart';
+import '../../data/models/product_model.dart';
+import '../../data/models/product_model.dart';
 
 @immutable
 abstract class ProductState {}
@@ -10,13 +12,29 @@ class ProductInitial extends ProductState {}
 class ProductLoading extends ProductState {}
 
 class ProductLoaded extends ProductState {
-  final List<ProductShortModel> products;
+  final List<ProductModel> list;
+
+  final ProductModel? selectedItem;
 
   ProductLoaded({
-    required this.products,
+    required this.list,
+    required this.optionList,
+    this.selectedItem,
   });
 
-  List<ProductShortModel> getProductsByID(List<String> ids) {
-    return products.where((e) => ids.contains(e.id)).toList();
+  List<ProductModel> getProductsByID(List<String> ids) {
+    return list.where((e) => ids.contains(e.id)).toList();
+  }
+
+  ProductLoaded copyWith({
+    List<ProductModel>? list,
+    List<ProductOptionModel>? optionList,
+    ProductModel? selectedItem,
+  }) {
+    return ProductLoaded(
+      list: list ?? this.list,
+      selectedItem: selectedItem ?? this.selectedItem,
+      optionList: optionList ?? this.optionList,
+    );
   }
 }

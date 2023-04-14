@@ -2,11 +2,11 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:member_app/business_logic/cubits/news_cubit.dart';
-import 'package:member_app/business_logic/cubits/news_state.dart';
-import 'package:member_app/data/models/news_model.dart';
-import 'package:member_app/presentation/res/dimen/dimens.dart';
-import 'package:member_app/presentation/res/strings/values.dart';
+import '../business_logic/cubits/news_cubit.dart';
+import '../business_logic/cubits/news_state.dart';
+import '../../data/models/news_model.dart';
+import '../../presentation/res/dimen/dimens.dart';
+import '../../presentation/res/strings/values.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
 class NewsItemWidget extends StatelessWidget {
@@ -24,7 +24,7 @@ class NewsItemWidget extends StatelessWidget {
     return GestureDetector(
       onTap: () {
         var state = context.read<NewsCubit>().state;
-        var title = txtUnknown;
+        var title = txtDefault;
         if (state is NewsLoaded) {
           title = state.listNews[state.index].title;
         }
@@ -73,7 +73,7 @@ class NewsItemWidget extends StatelessWidget {
               body: WebViewWidget(
                 controller: WebViewController()
                   ..loadRequest(
-                    Uri.parse(newsItem.link),
+                    Uri.parse(newsItem.url),
                   ),
               ),
             ),
@@ -111,7 +111,7 @@ class NewsItemWidget extends StatelessWidget {
               ),
               const SizedBox(width: spaceXS),
               Text(
-                newsItem.dateTime,
+                newsItem.time,
                 style: const TextStyle(fontSize: fontSM),
               )
             ],

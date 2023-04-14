@@ -1,38 +1,38 @@
 import 'package:flutter/material.dart';
 
-class DeliveryOptionWidget extends StatefulWidget {
+class DeliveryOptionWidget extends StatelessWidget {
   final double height;
   final String name;
   final String image;
+  final VoidCallback onClick;
 
   const DeliveryOptionWidget({
     Key? key,
     required this.height,
     required this.name,
     required this.image,
+    required this.onClick,
   }) : super(key: key);
 
   @override
-  State<DeliveryOptionWidget> createState() => _DeliveryOptionWidgetState();
-}
-
-class _DeliveryOptionWidgetState extends State<DeliveryOptionWidget> {
-  @override
   Widget build(BuildContext context) {
-    return Container(
-      alignment: Alignment.center,
-      height: widget.height,
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Image.network(
-            widget.image,
-            width: widget.height * 0.5,
-            height: widget.height * 0.5,
-            fit: BoxFit.cover,
-          ),
-          Text(widget.name),
-        ],
+    return GestureDetector(
+      onTap: onClick,
+      child: Container(
+        alignment: Alignment.center,
+        height: height,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Image.network(
+              image,
+              width: height * 0.5,
+              height: height * 0.5,
+              fit: BoxFit.cover,
+            ),
+            Text(name),
+          ],
+        ),
       ),
     );
   }

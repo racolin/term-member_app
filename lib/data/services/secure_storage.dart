@@ -1,3 +1,4 @@
+import 'package:flutter/services.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:member_app/data/models/token_model.dart';
 
@@ -18,18 +19,18 @@ class SecureStorage {
   static const _emailKey = 'EMAIL';
 
   Future<void> persistToken(TokenModel token) async {
-    await _storage.write(
-      key: _accessTokenKey,
-      value: token.accessToken,
-    );
-    await _storage.write(
-      key: _refreshTokenKey,
-      value: token.refreshToken,
-    );
-    await _storage.write(
-      key: _expiredTimeKey,
-      value: token.expiredTime.toString(),
-    );
+    try {
+      await _storage.write(
+        key: _accessTokenKey,
+        value: token.accessToken,
+      );
+      await _storage.write(
+        key: _refreshTokenKey,
+        value: token.refreshToken,
+      );
+    } on PlatformException catch(ex) {
+
+    }
   }
 
   Future<bool> hasToken() async {
@@ -46,7 +47,6 @@ class SecureStorage {
       return TokenModel(
         accessToken: access,
         refreshToken: refresh,
-        expiredTime: int.parse(time),
       );
     }
     return null;

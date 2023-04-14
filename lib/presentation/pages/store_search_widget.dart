@@ -3,12 +3,13 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:member_app/business_logic/blocs/store_bloc.dart';
 import 'package:member_app/presentation/res/dimen/dimens.dart';
 
+import '../../data/models/store_model.dart';
 import '../res/strings/values.dart';
 import 'store_body.dart';
 import '../widgets/stores_widget.dart';
 
 class StoreSearchPage extends StatefulWidget {
-  final Function(String) onCLick;
+  final Function(StoreShortModel) onCLick;
 
   const StoreSearchPage({
     Key? key,
@@ -34,7 +35,7 @@ class _StoreSearchPageState extends State<StoreSearchPage> {
               padding: const EdgeInsets.all(spaceXS),
               child: StoresWidget(
                 searchKey: '',
-                onClickItem: (id) {},
+                onClickItem: widget.onCLick,
               ),
             ),
           ),

@@ -1,76 +1,66 @@
+import 'package:member_app/presentation/res/colors/colors.dart';
 import 'package:member_app/presentation/res/strings/values.dart';
 
 class CardModel {
   final String id;
+  final String code;
   final String name;
-  final int scores;
-  final String rankName;
+  final int point;
+  final int currentPoint;
+  final String currentRankName;
+  final int currentRankPoint;
   final String nextRankName;
-  final String background;
+  final int nextRankPoint;
+  final String? backgroundImage;
   final String description;
-  final int nextRank;
-  final String status;
+  final int color;
 
-  CardModel({
+  const CardModel({
     required this.id,
+    required this.code,
     required this.name,
-    required this.scores,
-    required this.rankName,
+    required this.point,
+    required this.currentPoint,
+    required this.currentRankName,
+    required this.currentRankPoint,
     required this.nextRankName,
-    required this.background,
+    required this.nextRankPoint,
+    this.backgroundImage,
     required this.description,
-    required this.nextRank,
-    required this.status,
+    required this.color,
   });
 
   Map<String, dynamic> toMap() {
     return {
       'id': id,
+      'code': code,
       'name': name,
-      'scores': scores,
-      'rankName': rankName,
+      'point': point,
+      'currentPoint': currentPoint,
+      'currentRankName': currentRankName,
+      'currentRankPoint': currentRankPoint,
       'nextRankName': nextRankName,
-      'background': background,
-      'nextRank': nextRank,
-      'status': status,
+      'nextRankPoint': nextRankPoint,
+      'backgroundImage': backgroundImage,
+      'description': description,
+      'color': color,
     };
   }
 
   factory CardModel.fromMap(Map<String, dynamic> map) {
     return CardModel(
-      id: map['id'] ?? txtUnknown,
+      id: map['id']!,
+      code: map['code'] ?? txtUnknownCode,
       name: map['name'] ?? txtUnknown,
-      scores: map['scores'] ?? 0,
-      rankName: map['rankName'] ?? txtUnknown,
+      point: map['point'] ?? 0,
+      currentPoint: map['currentPoint'] ?? 0,
+      currentRankName: map['currentRankName'] ?? txtUnknown,
+      currentRankPoint: map['currentRankPoint'] ?? 0,
       nextRankName: map['nextRankName'] ?? txtUnknown,
-      background: map['background'] ?? linkUnknownIcon,
-      description: map['description'] ?? txtUnknown,
-      nextRank: map['nextRank'] ?? 0,
-      status: map['status'] ?? txtUnknown,
-    );
-  }
-
-  CardModel copyWith({
-    String? id,
-    String? name,
-    int? scores,
-    String? rankName,
-    String? nextRankName,
-    String? background,
-    String? description,
-    int? nextRank,
-    String? status,
-  }) {
-    return CardModel(
-      id: id ?? this.id,
-      name: name ?? this.name,
-      scores: scores ?? this.scores,
-      rankName: rankName ?? this.rankName,
-      nextRankName: nextRankName ?? this.nextRankName,
-      background: background ?? this.background,
-      description: description ?? this.description,
-      nextRank: nextRank ?? this.nextRank,
-      status: status ?? this.status,
+      nextRankPoint: map['nextRankPoint'] ?? 10000,
+      backgroundImage: map['backgroundImage'],
+      description: map['description'] ?? txtDefault,
+      color: map['color'] ?? colorDefault,
     );
   }
 }

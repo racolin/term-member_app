@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:member_app/presentation/res/dimen/dimens.dart';
 
-import '../../business_logic/cubits/reorder_cubit.dart';
-import '../../business_logic/cubits/reorder_state.dart';
+import '../business_logic/cubits/reorder_cubit.dart';
+import '../business_logic/cubits/reorder_state.dart';
 import '../res/strings/values.dart';
 import '../../supports/convert.dart';
 import '../../data/models/order_model.dart';

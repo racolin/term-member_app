@@ -1,44 +1,45 @@
-import 'package:member_app/data/models/product_short_model.dart';
+import 'package:member_app/presentation/res/strings/values.dart';
 
-import '../../presentation/res/strings/values.dart';
-
-class ProductModel extends ProductShortModel {
+class ProductModel {
+  final String id;
+  final String name;
+  final int cost;
+  final String image;
   final List<String> images;
+  final List<String> optionIds;
   final String description;
-  final bool isFavorite;
 
-  ProductModel({
-    required super.id,
+  const ProductModel({
+    required this.id,
+    required this.name,
+    required this.cost,
+    required this.image,
     required this.images,
-    required super.mainImage,
-    required super.name,
-    required super.price,
+    required this.optionIds,
     required this.description,
-    required this.isFavorite,
   });
 
-  @override
   Map<String, dynamic> toMap() {
     return {
-      'images': images,
-      'description': description,
-      'isFavorite': isFavorite,
       'id': id,
       'name': name,
-      'mainImage': mainImage,
-      'price': price,
+      'cost': cost,
+      'image': image,
+      'images': images,
+      'optionIds': optionIds,
+      'description': description,
     };
   }
 
   factory ProductModel.fromMap(Map<String, dynamic> map) {
     return ProductModel(
-      id: map['id'] ?? txtUnknown,
+      id: map['id']!,
       name: map['name'] ?? txtUnknown,
-      mainImage: map['mainImage'] ?? linkUnknownIcon,
-      price: map['price'] ?? 0,
+      cost: map['cost'] ?? 0,
+      image: map['image'],
       images: map['images'] ?? [],
-      description: map['description'] ?? txtUnknown,
-      isFavorite: map['isFavorite'] ?? false,
+      optionIds: map['optionIds'] ?? [],
+      description: map['description'] ?? txtDefault,
     );
   }
 }

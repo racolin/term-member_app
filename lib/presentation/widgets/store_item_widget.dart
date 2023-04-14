@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 
-import '../../data/models/store_short_model.dart';
+import '../../data/models/store_model.dart';
 import '../res/dimen/dimens.dart';
 
 class StoreItemWidget extends StatelessWidget {
-  final Function(String) onClick;
+  final Function(StoreShortModel) onClick;
   final StoreShortModel store;
 
   const StoreItemWidget({
@@ -28,7 +28,7 @@ class StoreItemWidget extends StatelessWidget {
       child: InkWell(
         borderRadius: BorderRadius.circular(spaceXS),
         onTap: () {
-          onClick(store.id);
+          onClick(store);
         },
         child: Container(
           height: 80,
@@ -46,7 +46,7 @@ class StoreItemWidget extends StatelessWidget {
               ClipRRect(
                 borderRadius: BorderRadius.circular(spaceXS),
                 child: Image.network(
-                  store.mainImage,
+                  store.image,
                   height: 72,
                   width: 80,
                   fit: BoxFit.cover,

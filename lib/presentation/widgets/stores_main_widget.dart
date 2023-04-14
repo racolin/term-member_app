@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:member_app/business_logic/blocs/store_bloc.dart';
-import 'package:member_app/presentation/pages/loading_page.dart';
 
+import '../../data/models/store_model.dart';
+import '../business_logic/blocs/store_bloc.dart';
 import '../res/dimen/dimens.dart';
 import 'store_item_widget.dart';
 
 class StoresMainWidget extends StatelessWidget {
   final String searchKey;
-  final Function(String) onClickItem;
+  final Function(StoreShortModel) onClickItem;
 
   const StoresMainWidget({
     Key? key,

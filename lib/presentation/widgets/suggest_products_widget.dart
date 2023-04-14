@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:member_app/business_logic/cubits/card_cubit.dart';
-import 'package:member_app/business_logic/cubits/card_state.dart';
-import 'package:member_app/presentation/widgets/product_suggest_widget.dart';
-import 'package:member_app/business_logic/cubits/suggest_product_cubit.dart';
 import 'package:member_app/presentation/res/dimen/dimens.dart';
 import 'package:member_app/presentation/res/strings/values.dart';
 
-import '../../business_logic/cubits/suggest_product_state.dart';
+import '../business_logic/cubits/card_cubit.dart';
+import '../business_logic/cubits/card_state.dart';
+import '../business_logic/cubits/suggest_product_cubit.dart';
+import '../business_logic/cubits/suggest_product_state.dart';
+import 'product_suggest_widget.dart';
 
 class SuggestProductsWidget extends StatefulWidget {
   const SuggestProductsWidget({Key? key}) : super(key: key);

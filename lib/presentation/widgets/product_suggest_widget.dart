@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:member_app/presentation/res/dimen/dimens.dart';
 import 'package:member_app/presentation/res/strings/values.dart';
 
-import '../../data/models/product_short_model.dart';
+import '../../data/models/product_model.dart';
 import '../../supports/convert.dart';
 
 class ProductSuggestWidget extends StatelessWidget {
-  final ProductShortModel product;
+  final ProductModel product;
 
   const ProductSuggestWidget({
     Key? key,
@@ -28,7 +28,7 @@ class ProductSuggestWidget extends StatelessWidget {
             ClipRRect(
               borderRadius: BorderRadius.circular(spaceXS),
               child: Image.network(
-                product.mainImage,
+                product.image,
                 fit: BoxFit.cover,
                 width: 150,
                 height: 150,

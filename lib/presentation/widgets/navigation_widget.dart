@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../business_logic/cubits/app_bar_cubit.dart';
-import '../../business_logic/cubits/home_cubit.dart';
-import '../../business_logic/cubits/home_state.dart';
+import '../business_logic/cubits/app_bar_cubit.dart';
+import '../business_logic/cubits/home_cubit.dart';
+import '../business_logic/cubits/home_state.dart';
 import '../res/dimen/dimens.dart';
 import '../res/strings/values.dart';
 

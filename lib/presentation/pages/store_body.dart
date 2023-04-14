@@ -4,6 +4,7 @@ import 'package:member_app/presentation/res/dimen/dimens.dart';
 import 'package:member_app/presentation/res/strings/values.dart';
 
 import '../../business_logic/blocs/store_bloc.dart';
+import '../../data/models/store_model.dart';
 import '../widgets/stores_main_widget.dart';
 import 'store_search_widget.dart';
 
@@ -31,9 +32,7 @@ class StoreBody extends StatelessWidget {
         Expanded(
           child: StoresMainWidget(
             searchKey: '',
-            onClickItem: (id) {
-
-            },
+            onClickItem: (id) {},
           ),
         ),
       ],
@@ -56,8 +55,10 @@ class StoreBody extends StatelessWidget {
                       context,
                       MaterialPageRoute(
                         builder: (ctx) => BlocProvider.value(
-                          value: context.read<StoreBloc>(),
-                          child: StoreSearchPage(onCLick: (String s) {  },),
+                          value: BlocProvider.of<StoreBloc>(context),
+                          child: StoreSearchPage(
+                            onCLick: (StoreShortModel store) {},
+                          ),
                         ),
                       ),
                     );

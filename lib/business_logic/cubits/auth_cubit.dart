@@ -4,7 +4,12 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 part 'auth_state.dart';
 
 class AuthCubit extends Cubit<AuthState> {
-  AuthCubit() : super(AuthState(loginType: LoginType.init));
+  AuthCubit()
+      : super(
+          const AuthState(
+            loginType: LoginType.init,
+          ),
+        );
 
   void tryLogin() async {
     await Future.delayed(

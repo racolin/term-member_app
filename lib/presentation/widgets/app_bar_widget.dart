@@ -1,15 +1,13 @@
 import 'package:badges/badges.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:member_app/business_logic/cubits/app_bar_cubit.dart';
-import 'package:member_app/business_logic/cubits/app_bar_state.dart';
-import 'package:member_app/business_logic/cubits/category_product_cubit.dart';
-import 'package:member_app/business_logic/cubits/home_state.dart';
 import 'package:member_app/presentation/res/dimen/dimens.dart';
 
-import '../../business_logic/cubits/category_scroll_cubit.dart';
+import '../business_logic/cubits/app_bar_cubit.dart';
+import '../business_logic/cubits/app_bar_state.dart';
+import '../business_logic/cubits/home_state.dart';
 import '../res/strings/values.dart';
-import 'categories_widget.dart';
+import 'product_categories_widget.dart';
 import 'drag_bar_widget.dart';
 
 class AppBarWidget extends AppBar {
@@ -49,7 +47,7 @@ class _AppBarWidgetState extends State<AppBarWidget> {
                     else
                       ..._getBaseAction(
                         state.appBar.cartTemplateAmount,
-                        state.appBar.ticketAmount,
+                        state.appBar.voucherAmount,
                         state.appBar.notifyAmount,
                       ),
                   ],
@@ -171,7 +169,7 @@ class _AppBarWidgetState extends State<AppBarWidget> {
 
   List<Widget> _getBaseAction(
     int cartTemplateAmount,
-    int ticketAmount,
+    int voucherAmount,
     int notifyAmount,
   ) {
     return [
@@ -245,7 +243,7 @@ class _AppBarWidgetState extends State<AppBarWidget> {
           color: Colors.orange,
         ),
         label: Text(
-          ticketAmount.toString(),
+          voucherAmount.toString(),
           style: TextStyle(
             fontSize: fontLG,
             color: Colors.black.withAlpha(150),
@@ -363,7 +361,7 @@ class _AppBarWidgetState extends State<AppBarWidget> {
                         ),
                       ),
                       const Divider(),
-                      CategoriesWidget(
+                      ProductCategoriesWidget(
                         scrollTo: (index) {
                           context.read<CategoryScrollCubit>().setIndex(index);
                           Navigator.pop(context);

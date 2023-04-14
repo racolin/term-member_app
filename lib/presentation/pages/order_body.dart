@@ -9,8 +9,8 @@ import 'package:member_app/presentation/widgets/suggest_products_widget.dart';
 
 import '../../business_logic/cubits/category_scroll_cubit.dart';
 import '../../business_logic/cubits/category_scroll_state.dart';
-import '../../data/models/product_short_model.dart';
-import '../widgets/categories_widget.dart';
+import '../../data/models/product_model.dart';
+import '../widgets/product_categories_widget.dart';
 import '../widgets/product_widget.dart';
 
 class OrderBody extends StatefulWidget {
@@ -82,7 +82,7 @@ class _OrderBodyState extends State<OrderBody> {
                         itemBuilder: (context, index) {
                           if (index == 0) {
                             // height: 90
-                            return CategoriesWidget(
+                            return ProductCategoriesWidget(
                               scrollTo: (index) {
                                 context
                                     .read<CategoryScrollCubit>()
@@ -123,7 +123,7 @@ class _OrderBodyState extends State<OrderBody> {
 
   Widget _getListProduct(
     String title,
-    List<ProductShortModel> shortProducts,
+    List<ProductModel> shortProducts,
   ) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,

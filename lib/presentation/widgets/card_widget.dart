@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:member_app/business_logic/cubits/card_cubit.dart';
-import 'package:member_app/data/models/card_model.dart';
-import 'package:member_app/presentation/res/dimen/dimens.dart';
-import 'package:member_app/supports/extension.dart';
+import '../../supports/extension.dart';
+import '../business_logic/cubits/card_cubit.dart';
+import '../../data/models/card_model.dart';
+import '../../presentation/res/dimen/dimens.dart';
 
-import '../../business_logic/cubits/card_state.dart';
+import '../business_logic/cubits/card_state.dart';
 import '../res/strings/values.dart';
 
 class CardWidget extends StatelessWidget {
@@ -49,7 +49,7 @@ class CardWidget extends StatelessWidget {
                         borderRadius: BorderRadius.circular(spaceXS),
                         image: DecorationImage(
                             image: NetworkImage(
-                              state.card.background,
+                              state.card.backgroundImage,
                             ),
                             fit: BoxFit.cover),
                       ),
@@ -144,12 +144,12 @@ class CardWidget extends StatelessWidget {
                 preRankName: card.rankName,
                 nextRankName: card.nextRankName,
                 maxProgress: card.nextRank,
-                progress: card.scores,
+                progress: card.point,
               ),
             ),
             const SizedBox(height: 2),
             Text(
-              'Còn ${card.nextRank - card.scores} BEAN nữa bạn sẽ thăng hạng.',
+              'Còn ${card.nextRank - card.point} BEAN nữa bạn sẽ thăng hạng.',
               style: const TextStyle(fontSize: fontSM),
             ),
             Text(
@@ -192,7 +192,7 @@ class CardWidget extends StatelessWidget {
             height: spaceXS,
           ),
           Text(
-            '${card != null ? card.scores : '0'} $txtScoreName '
+            '${card != null ? card.point : '0'} $txtScoreName '
                 '- ${card != null ? card.rankName : ''}',
             style: const TextStyle(
               color: Colors.white,

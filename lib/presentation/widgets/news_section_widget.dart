@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:member_app/business_logic/cubits/news_cubit.dart';
-import 'package:member_app/business_logic/cubits/news_state.dart';
-import 'package:member_app/presentation/widgets/news_widget.dart';
+import '../business_logic/cubits/news_cubit.dart';
+import '../business_logic/cubits/news_state.dart';
+import '../../presentation/widgets/news_widget.dart';
 
 import '../res/dimen/dimens.dart';
 import '../res/strings/values.dart';

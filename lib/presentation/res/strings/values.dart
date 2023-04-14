@@ -48,15 +48,16 @@ const txtYourVoucher = "Voucher của bạn";
 const txtFromMe = "Từ chúng tôi";
 const txtFromPartner = "Từ đối tác";
 const txtTypePromotion = "Các loại ưu đãi";
-const txtYourTicket = "Phiếu ưu đãi của bạn";
 const txtSeeAll = "Xem tất cả";
 const txtHistory = "Lịch sử";
 const txtYourRight = "Quyền lợi của bạn";
 const txtPromotionPoint = "Tích điểm";
-
-
-
-
-const txtUnknown = 'Unknown';
-
-const linkUnknownIcon = 'https://1.bp.blogspot.com/-1c4feMWtBew/YVEl9kpt6XI/AAAAAAAAEuM/6owYtkcDNxY9JH3Wco8SBqSNDM-ek9UYwCLcBGAsYHQ/s16000/icon-app-soft-blue-enhypen%2B%25281%2529.jpg';
+const txtExpired = "Ngày hết hạn";
+const txtCopy = "Sao chép";
+const txtOrderStarted = "Bắt đầu đặt hàng";
+const txtDefault = '...';
+const txtUnknown = 'Không tìm thấy';
+const txtNone = '';
+const txtUnknownCode = 'UNKNOWN';
+const txtAppName = 'The Coffee House';
+const txtLoading = 'Đang tải...';

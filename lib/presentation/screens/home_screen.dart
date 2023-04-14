@@ -6,9 +6,10 @@ import 'package:member_app/business_logic/cubits/card_cubit.dart';
 import 'package:member_app/business_logic/cubits/category_product_cubit.dart';
 import 'package:member_app/business_logic/cubits/news_cubit.dart';
 import 'package:member_app/business_logic/cubits/product_cubit.dart';
+import 'package:member_app/business_logic/cubits/promotion_cubit.dart';
 import 'package:member_app/business_logic/cubits/reorder_cubit.dart';
-import 'package:member_app/business_logic/cubits/slider_cubit.dart';
 import 'package:member_app/business_logic/cubits/suggest_product_cubit.dart';
+import 'package:member_app/business_logic/cubits/voucher_cubit.dart';
 import 'package:member_app/presentation/pages/promotion_body.dart';
 import 'package:member_app/presentation/pages/home_body.dart';
 import 'package:member_app/presentation/pages/order_body.dart';
@@ -33,7 +34,6 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   void initState() {
     context.read<AppBarCubit>().loadAppBar();
-    context.read<SliderCubit>().loadSlider();
     context.read<CardCubit>().loadCard();
     context.read<ReOrderCubit>().loadReOrder();
     context.read<SuggestProductCubit>().loadSuggestProduct();
@@ -41,6 +41,8 @@ class _HomeScreenState extends State<HomeScreen> {
     context.read<ProductCubit>().loadProducts();
     context.read<CategoryProductCubit>().loadCategories();
     context.read<StoreBloc>().add(StoreLoad());
+    context.read<PromotionCubit>().loadPromotion();
+    context.read<VoucherCubit>().loadVoucher();
     super.initState();
   }
 

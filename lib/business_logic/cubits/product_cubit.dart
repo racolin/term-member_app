@@ -2,7 +2,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:member_app/business_logic/cubits/home_state.dart';
 import 'package:member_app/business_logic/cubits/product_state.dart';
 
-import '../../data/models/product_short_model.dart';
+import '../../data/models/product_model.dart';
 
 class ProductCubit extends Cubit<ProductState> {
   ProductCubit()
@@ -14,44 +14,44 @@ class ProductCubit extends Cubit<ProductState> {
     emit(ProductLoading());
     emit(
       ProductLoaded(
-        products: [
-          ProductShortModel(
-            mainImage:
+        list: [
+          ProductModel(
+            image:
                 'https://product.hstatic.net/1000075078/product/1669736835_ca-phe-sua-da_15ae84580c4141fc809ac8fffd72b194.png',
             name: 'Cà Phê Sữa Đá',
             price: 25000,
             id: 'P-1',
           ),
-          ProductShortModel(
-            mainImage:
+          ProductModel(
+            image:
                 'https://product.hstatic.net/1000075078/product/1669736835_ca-phe-sua-da_15ae84580c4141fc809ac8fffd72b194.png',
             name: 'Cà Phê Sữa Đá',
             price: 25000,
             id: 'P-2',
           ),
-          ProductShortModel(
-            mainImage:
+          ProductModel(
+            image:
                 'https://product.hstatic.net/1000075078/product/1669736835_ca-phe-sua-da_15ae84580c4141fc809ac8fffd72b194.png',
             name: 'Cà Phê Sữa Đá',
             price: 25000,
             id: 'P-3',
           ),
-          ProductShortModel(
-            mainImage:
+          ProductModel(
+            image:
                 'https://product.hstatic.net/1000075078/product/1669736835_ca-phe-sua-da_15ae84580c4141fc809ac8fffd72b194.png',
             name: 'Cà Phê Sữa Đá',
             price: 25000,
             id: 'P-4',
           ),
-          ProductShortModel(
-            mainImage:
+          ProductModel(
+            image:
                 'https://product.hstatic.net/1000075078/product/1669736835_ca-phe-sua-da_15ae84580c4141fc809ac8fffd72b194.png',
             name: 'Cà Phê Sữa Đá',
             price: 25000,
             id: 'P-5',
           ),
-          ProductShortModel(
-            mainImage:
+          ProductModel(
+            image:
                 'https://product.hstatic.net/1000075078/product/1669736835_ca-phe-sua-da_15ae84580c4141fc809ac8fffd72b194.png',
             name: 'Cà Phê Sữa Đá',
             price: 25000,

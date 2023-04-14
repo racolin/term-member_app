@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 
-import '../../data/models/product_short_model.dart';
+import '../../data/models/product_model.dart';
 import '../../supports/convert.dart';
 import '../res/dimen/dimens.dart';
 
 class ProductWidget extends StatelessWidget {
-  final ProductShortModel shortProduct;
+  final ProductModel shortProduct;
 
   const ProductWidget({
     Key? key,
@@ -34,7 +34,7 @@ class ProductWidget extends StatelessWidget {
             ClipRRect(
               borderRadius: BorderRadius.circular(spaceXS),
               child: Image.network(
-                shortProduct.mainImage,
+                shortProduct.image,
                 height: height,
                 width: width,
                 fit: BoxFit.cover,

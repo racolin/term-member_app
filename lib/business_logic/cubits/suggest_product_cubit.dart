@@ -3,7 +3,9 @@ import 'package:member_app/business_logic/cubits/home_state.dart';
 import 'package:member_app/business_logic/cubits/suggest_product_state.dart';
 import 'package:member_app/presentation/res/strings/values.dart';
 
-import '../../data/models/product_short_model.dart';
+import '../../../data/models/product_model.dart';
+import '../../data/models/product_model.dart';
+import 'suggest_product_state.dart';
 
 class SuggestProductCubit extends Cubit<SuggestProductState> {
   SuggestProductCubit()
@@ -16,40 +18,40 @@ class SuggestProductCubit extends Cubit<SuggestProductState> {
     emit(
       SuggestProductLoaded(
         suggests: [
-          ProductShortModel(
-            mainImage:
+          ProductModel(
+            image:
             'https://product.hstatic.net/1000075078/product/1669736835_ca-phe-sua-da_15ae84580c4141fc809ac8fffd72b194.png',
             name: 'Cà Phê Sữa Đá',
             price: 25000,
-            id: txtUnknown,
+            id: txtDefault,
           ),
-          ProductShortModel(
-            mainImage:
+          ProductModel(
+            image:
                 'https://product.hstatic.net/1000075078/product/1669736835_ca-phe-sua-da_15ae84580c4141fc809ac8fffd72b194.png',
             name: 'Cà Phê Sữa Đá',
             price: 25000,
-            id: txtUnknown,
+            id: txtDefault,
           ),
-          ProductShortModel(
-            mainImage:
+          ProductModel(
+            image:
             'https://product.hstatic.net/1000075078/product/1669736835_ca-phe-sua-da_15ae84580c4141fc809ac8fffd72b194.png',
             name: 'Cà Phê Sữa Đá',
             price: 25000,
-            id: txtUnknown,
+            id: txtDefault,
           ),
-          ProductShortModel(
-            mainImage:
+          ProductModel(
+            image:
                 'https://product.hstatic.net/1000075078/product/1669736835_ca-phe-sua-da_15ae84580c4141fc809ac8fffd72b194.png',
             name: 'Cà Phê Sữa Đá',
             price: 25000,
-            id: txtUnknown,
+            id: txtDefault,
           ),
-          ProductShortModel(
-            mainImage:
+          ProductModel(
+            image:
             'https://product.hstatic.net/1000075078/product/1669736835_ca-phe-sua-da_15ae84580c4141fc809ac8fffd72b194.png',
             name: 'Cà Phê Sữa Đá',
             price: 25000,
-            id: txtUnknown,
+            id: txtDefault,
           ),
         ],
       ),

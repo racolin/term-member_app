@@ -2,6 +2,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:member_app/business_logic/cubits/card_state.dart';
 import 'package:member_app/data/models/card_model.dart';
 
+import 'card_state.dart';
+
 class CardCubit extends Cubit<CardState> {
   CardCubit() : super(CardInitial());
 

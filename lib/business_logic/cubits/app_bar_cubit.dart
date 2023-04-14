@@ -4,6 +4,9 @@ import 'package:member_app/business_logic/cubits/app_bar_state.dart';
 import 'package:member_app/business_logic/cubits/home_state.dart';
 import 'package:member_app/presentation/res/strings/values.dart';
 
+import 'app_bar_state.dart';
+import 'home_state.dart';
+
 class AppBarCubit extends Cubit<AppBarState> {
   AppBarCubit()
       : super(
@@ -14,9 +17,9 @@ class AppBarCubit extends Cubit<AppBarState> {
     emit(AppBarLoading());
     emit(
       AppBarLoaded(
-        appBar: AppBarModel.fromMap({'label': 'Chúc ngủ ngon!'}),
+        appBar: AppBarModel.fromJson({'label': 'Chúc ngủ ngon!'}),
         type: HomeBodyType.home,
-        label: txtUnknown,
+        label: txtDefault,
       ),
     );
   }

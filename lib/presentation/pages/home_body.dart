@@ -38,9 +38,9 @@ class _HomeBodyState extends State<HomeBody> {
               background: Container(
                 height: collapseHeight,
                 padding: const EdgeInsets.only(
-                  top: 24,
-                  left: 8,
-                  right: 8,
+                  top: spaceLG,
+                  left: spaceXS,
+                  right: spaceXS,
                   bottom: 76,
                 ),
                 decoration: const BoxDecoration(

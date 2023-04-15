@@ -11,20 +11,20 @@ class NewsInitial extends NewsState {}
 class NewsLoading extends NewsState {}
 
 class NewsLoaded extends NewsState {
-  final List<NewsModel> listNews;
+  final List<NewsModel> list;
   final int index;
 
   NewsLoaded({
-    required this.listNews,
+    required this.list,
     required this.index,
   });
 
   NewsLoaded copyWith({
-    List<NewsModel>? listNews,
+    List<NewsModel>? list,
     int? index,
   }) {
     return NewsLoaded(
-      listNews: listNews ?? this.listNews,
+      list: list ?? this.list,
       index: index ?? this.index,
     );
   }

@@ -6,17 +6,13 @@ import '../../data/models/product_category_model.dart';
 abstract class ProductRepository {
   Future<List<ProductModel>> gets();
 
-  Future<List<ProductCategoryModel>> getCategoriesByStoreId({
-    required String storeId,
-  });
+  Future<List<ProductCategoryModel>> getCategories();
 
-  Future<List<ProductOptionModel>> getOptionsByStoreId({
-    required String storeId,
-  });
+  Future<List<ProductOptionModel>> getOptions();
 
   Future<List<String>> getFavorites();
 
   Future<bool?> changeFavorite({
-    required String idProduct,
+    required String id,
   });
 }

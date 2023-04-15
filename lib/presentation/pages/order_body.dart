@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:member_app/business_logic/cubits/category_product_cubit.dart';
 import 'package:member_app/business_logic/cubits/category_product_state.dart';
 import 'package:member_app/business_logic/cubits/product_cubit.dart';
-import 'package:member_app/business_logic/cubits/product_state.dart';
+import 'package:member_app/business_logic/states/product_state.dart';
 import 'package:member_app/presentation/res/dimen/dimens.dart';
 import 'package:member_app/presentation/widgets/suggest_products_widget.dart';
 

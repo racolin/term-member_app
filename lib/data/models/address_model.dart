@@ -5,6 +5,7 @@ class AddressModel {
   final String name;
   final String address;
   final String note;
+  final int? icon;
   final double? lat;
   final double? lng;
   final String receiver;
@@ -15,6 +16,7 @@ class AddressModel {
     required this.name,
     required this.address,
     required this.note,
+    this.icon,
     this.lat,
     this.lng,
     required this.receiver,
@@ -27,6 +29,7 @@ class AddressModel {
       'name': name,
       'address': address,
       'note': note,
+      'icon': icon,
       'lat': lat,
       'lng': lng,
       'receiver': receiver,
@@ -40,6 +43,7 @@ class AddressModel {
       name: map['name'] ?? txtNone,
       address: map['address'] ?? txtNone,
       note: map['note'] ?? txtNone,
+      icon: map['icon'],
       lat: map['lat'] ?? 0,
       lng: map['lng'] ?? 0,
       receiver: map['receiver'] ?? txtNone,

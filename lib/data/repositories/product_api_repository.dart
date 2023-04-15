@@ -65,9 +65,9 @@ class ProductApiRepository extends ProductRepository {
   var _favorites = <String>[];
 
   @override
-  Future<bool?> changeFavorite({required String idProduct}) async {
+  Future<bool?> changeFavorite({required String id}) async {
     try {
-      return _favorites.remove(idProduct);
+      return _favorites.remove(id);
     } on DioError catch (ex) {
       throw AppException(
         message: AppMessage(
@@ -81,9 +81,7 @@ class ProductApiRepository extends ProductRepository {
   }
 
   @override
-  Future<List<ProductCategoryModel>> getCategoriesByStoreId({
-    required String storeId,
-  }) async {
+  Future<List<ProductCategoryModel>> getCategories() async {
     try {
       return _categories;
     } on DioError catch (ex) {
@@ -115,9 +113,7 @@ class ProductApiRepository extends ProductRepository {
   }
 
   @override
-  Future<List<ProductOptionModel>> getOptionsByStoreId({
-    required String storeId,
-  }) async {
+  Future<List<ProductOptionModel>> getOptions() async {
     try {
       return _options;
     } on DioError catch (ex) {

@@ -2,7 +2,7 @@ import 'package:dio/dio.dart';
 
 import '../../data/models/app_bar_model.dart';
 import '../../data/models/card_model.dart';
-import '../../data/models/point_history_model.dart';
+import '../../data/models/history_point_model.dart';
 import '../../business_logic/repositories/member_repository.dart';
 import '../../exception/app_exception.dart';
 import '../../exception/app_message.dart';
@@ -57,21 +57,21 @@ class MemberApiRepository extends MemberRepository {
   }
 
   @override
-  Future<List<HistoryPointModel>> getHistoryPoint({
+  Future<MapEntry<int, List<HistoryPointModel>>> getHistoryPoint({
     int? page,
     int? limit,
   }) async {
     try {
-      return List.generate(
+      return MapEntry(65, List.generate(
         20,
-        (index) => HistoryPointModel(
+            (index) => HistoryPointModel(
           id: 'HISTORY-$index',
           point: 96,
           name:
-              'Đường Đen Marble Latte, Hi-Tea Yuzu Trần Châu +2 sản phẩm khác',
+          'Đường Đen Marble Latte, Hi-Tea Yuzu Trần Châu +2 sản phẩm khác',
           time: '15/04/2023',
         ),
-      );
+      ));
     } on DioError catch (ex) {
       throw AppException(
         message: AppMessage(

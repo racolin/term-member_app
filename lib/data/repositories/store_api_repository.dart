@@ -11,6 +11,7 @@ class StoreApiRepository extends StoreRepository {
     10,
     (index) => StoreModel(
       id: 'STORE$index',
+      address: 'Võ Thị Sáu, Quận 3, Thành phố Hồ Chí Minh',
       name: '175A Lý Chính Thắng',
       image: 'https://file.hstatic.net/1000075078/file/grandview5_35ccc48004574095b53e1de3b86a9eb5_master.jpg',
       distance: 100 * index * index,
@@ -40,7 +41,6 @@ class StoreApiRepository extends StoreRepository {
       return StoreDetailModel(
         id: id,
         openTime: '07:00-21:00',
-        address: 'Võ Thị Sáu, Quận 3, Thành phố Hồ Chí Minh',
         phone: '0868754872',
         images: [
           'https://file.hstatic.net/1000075078/file/sig-04_45f046ffbfa94c069b4d9697e8444baa_master.png',

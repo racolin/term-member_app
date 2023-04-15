@@ -4,6 +4,7 @@ class StoreModel {
   final String id;
   final String? image;
   final String name;
+  final String address;
   final int distance;
   final bool isFavorite;
 
@@ -11,6 +12,7 @@ class StoreModel {
     required this.id,
     this.image,
     required this.name,
+    required this.address,
     required this.distance,
     required this.isFavorite,
   });
@@ -20,6 +22,7 @@ class StoreModel {
       'id': id,
       'image': image,
       'name': name,
+      'address': address,
       'distance': distance,
       'isFavorite': isFavorite,
     };
@@ -30,6 +33,7 @@ class StoreModel {
       id: map['id']!,
       image: map['image'],
       name: map['name'] ?? txtUnknown,
+      address: map['address'] ?? txtUnknown,
       distance: map['distance'] ?? 0,
       isFavorite: map['isFavorite'] ?? false,
     );

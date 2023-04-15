@@ -3,7 +3,7 @@ import '../../data/models/promotion_model.dart';
 
 abstract class PromotionRepository {
 
-  Future<List<PromotionModel>> gets();
+  Future<MapEntry<int, List<PromotionModel>>> gets();
 
   Future<List<PromotionCategoryModel>> getCategories();
 }

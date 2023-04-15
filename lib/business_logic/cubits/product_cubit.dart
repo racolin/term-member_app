@@ -1,120 +1,86 @@
 import 'dart:async';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:member_app/business_logic/cubits/store_cubit.dart';
-import 'package:member_app/business_logic/repositories/product_repository.dart';
-import 'package:member_app/business_logic/states/product_state.dart';
-import 'package:member_app/exception/app_exception.dart';
-import 'package:member_app/exception/app_message.dart';
 
-import '../../data/models/product_model.dart';
+import '../../business_logic/repositories/product_repository.dart';
+import '../../business_logic/states/product_state.dart';
+import '../../exception/app_exception.dart';
+import '../../exception/app_message.dart';
 
 class ProductCubit extends Cubit<ProductState> {
   final ProductRepository _repository;
-  final StoreCubit _storeCubit;
-  late StreamSubscription subscription;
 
-  ProductCubit(
-      {required ProductRepository repository, required StoreCubit storeCubit,})
-      : _repository = repository,
-        _storeCubit = storeCubit,
+  ProductCubit({
+    required ProductRepository repository,
+  })  : _repository = repository,
         super(ProductInitial()) {
-    subscription = _storeCubit.onChange ((stateB) {
-      //here logic based on different children of StateB
-    });
-
-    Cubit
     emit(ProductLoading());
     try {
       _repository.gets().then((list) {
         if (state is ProductLoaded) {
           emit((state as ProductLoaded).copyWith(list: list));
         } else {
-          emit(ProductLoaded(list: list,));
+          emit(ProductLoaded(
+            list: list,
+          ));
         }
       });
       _repository.getCategories().then((listType) {
         if (state is ProductLoaded) {
           emit((state as ProductLoaded).copyWith(listType: listType));
         } else {
-          emit(ProductLoaded(listType: listType,));
+          emit(ProductLoaded(
+            listType: listType,
+          ));
         }
       });
       _repository.getOptions().then((listOption) {
         if (state is ProductLoaded) {
           emit((state as ProductLoaded).copyWith(listOption: listOption));
         } else {
-          emit(ProductLoaded(listOption: listOption,));
+          emit(ProductLoaded(
+            listOption: listOption,
+          ));
         }
       });
+    } on AppException catch (ex) {}
+  }
+
+  Future<AppMessage?> reloadData() async {
+    try {
+      var list = await _repository.gets();
+      var listOption = await _repository.getOptions();
+      var listType = await _repository.getCategories();
+      emit(ProductLoaded(
+        list: list,
+        listOption: listOption,
+        listType: listType,
+      ));
     } on AppException catch (ex) {
-      emit(ProductState)
+      return ex.message;
     }
+    return null;
   }
 
-  ///
-  /// Không cần reload lại mỗi khi vào app nếu đã có
-  ///
-  void reloadProducts({String? storeID}) {
-    _repository.
-    emit(ProductLoading());
-    emit(
-      ProductLoaded(
-        list: [
-          ProductModel(
-            image:
-            'https://product.hstatic.net/1000075078/product/1669736835_ca-phe-sua-da_15ae84580c4141fc809ac8fffd72b194.png',
-            name: 'Cà Phê Sữa Đá',
-            price: 25000,
-            id: 'P-1',
-          ),
-          ProductModel(
-            image:
-            'https://product.hstatic.net/1000075078/product/1669736835_ca-phe-sua-da_15ae84580c4141fc809ac8fffd72b194.png',
-            name: 'Cà Phê Sữa Đá',
-            price: 25000,
-            id: 'P-2',
-          ),
-          ProductModel(
-            image:
-            'https://product.hstatic.net/1000075078/product/1669736835_ca-phe-sua-da_15ae84580c4141fc809ac8fffd72b194.png',
-            name: 'Cà Phê Sữa Đá',
-            price: 25000,
-            id: 'P-3',
-          ),
-          ProductModel(
-            image:
-            'https://product.hstatic.net/1000075078/product/1669736835_ca-phe-sua-da_15ae84580c4141fc809ac8fffd72b194.png',
-            name: 'Cà Phê Sữa Đá',
-            price: 25000,
-            id: 'P-4',
-          ),
-          ProductModel(
-            image:
-            'https://product.hstatic.net/1000075078/product/1669736835_ca-phe-sua-da_15ae84580c4141fc809ac8fffd72b194.png',
-            name: 'Cà Phê Sữa Đá',
-            price: 25000,
-            id: 'P-5',
-          ),
-          ProductModel(
-            image:
-            'https://product.hstatic.net/1000075078/product/1669736835_ca-phe-sua-da_15ae84580c4141fc809ac8fffd72b194.png',
-            name: 'Cà Phê Sữa Đá',
-            price: 25000,
-            id: 'P-6',
-          ),
-        ],
-      ),
-    );
-  }
-
-  AppMessage? setUnavailable({required List<String> products, required List<
-      String> categories, required List<String> options,}) {
+  AppMessage? setUnavailable({
+    required List<String> products,
+    required List<String> categories,
+    required List<String> options,
+  }) {
     if (state is ProductLoaded) {
-      emit((state as ProductLoaded).copyWith(unavailableList: products,
-        unavailableListOption: options,
-        unavailableListType: categories,),);
+      emit(
+        (state as ProductLoaded).copyWith(
+          unavailableList: products,
+          unavailableListOption: options,
+          unavailableListType: categories,
+        ),
+      );
       return null;
     }
+    return AppMessage(
+      messageType: AppMessageType.failure,
+      title: 'Xảy ra lỗi',
+      content: 'Không thể lọc sản sẩm theo cửa hàng.',
+    );
   }
 }

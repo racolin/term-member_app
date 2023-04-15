@@ -75,14 +75,14 @@ class PromotionApiRepository extends PromotionRepository {
   }
 
   @override
-  Future<List<PromotionModel>> gets() async {
+  Future<MapEntry<int, List<PromotionModel>>> gets() async {
     try {
-      return List.generate(
+      return MapEntry(800, List.generate(
         15,
-        (index) => PromotionModel(
+            (index) => PromotionModel(
           id: 'PM-$index',
           partnerImage:
-              'https://apprecs.org/gp/images/app-icons/300/d1/com.thecoffeehouse.guestapp.jpg',
+          'https://apprecs.org/gp/images/app-icons/300/d1/com.thecoffeehouse.guestapp.jpg',
           partner: 'Beauty Garden',
           name: 'Giảm 50.000đ cho đơn 199.000đ',
           description: 'Miễn phí giao hàng cho đơn hàng bất kì: '
@@ -94,9 +94,9 @@ class PromotionApiRepository extends PromotionRepository {
           to: DateTime(2023, 5, 17),
           mark: (Random().nextDouble() * 400).toInt() + 600,
           backgroundImage:
-              'https://www.tiendauroi.com/wp-content/uploads/2019/05/2409aa3f79aad8d71acdf0bf233353bbded1a009.jpeg',
+          'https://www.tiendauroi.com/wp-content/uploads/2019/05/2409aa3f79aad8d71acdf0bf233353bbded1a009.jpeg',
         ),
-      );
+      ));
     } on DioError catch (ex) {
       throw AppException(
         message: AppMessage(
@@ -106,6 +106,6 @@ class PromotionApiRepository extends PromotionRepository {
         ),
       );
     }
-    return [];
+    return MapEntry(0, []);
   }
 }

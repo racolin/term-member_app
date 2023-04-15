@@ -29,13 +29,12 @@ class HistoryPointCubit extends Cubit<HistoryPointState> {
   // Action data
   Future<AppMessage?> reloadHistoryPoint() async {
     try {
-      _repository.getHistoryPoint(page: 1, limit: 20).then((mapEntry) {
-        emit(HistoryPointLoaded(
-          list: mapEntry.value,
-          maxCount: mapEntry.key,
-          page: 1,
-        ));
-      });
+      var mapEntry = await _repository.getHistoryPoint(page: 1, limit: 20);
+      emit(HistoryPointLoaded(
+        list: mapEntry.value,
+        maxCount: mapEntry.key,
+        page: 1,
+      ));
     } on AppException catch (ex) {
       return ex.message;
     }

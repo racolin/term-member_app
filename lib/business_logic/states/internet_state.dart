@@ -1,4 +1,4 @@
-part of 'internet_cubit.dart';
+part of '../cubits/internet_cubit.dart';
 
 enum InternetType {
   connected, disconnected, loading

@@ -9,26 +9,26 @@ import '../../exception/app_exception.dart';
 import '../../exception/app_message.dart';
 
 class SettingApiRepository extends SettingRepository {
-  var _notifies = List.generate(
-    20,
-    (index) => NotifyModel(
-      id: 'NOTIFY-$index',
-      type: 2,
-      targetId: 'VOUCHER-1',
-      name: 'Một bước lên "mây" khum khó!',
-      description: [
-        'Nhà mới Cà phê 19k/The Coffee House sữa đá 29k/Trà trái cây, CloudFee 39K khi mua cùng bánh bất kỳ (trừ bánh mì que)',
-        '- Áp dụng cho size M',
-        '- Nhập mã: TUYETVOI'
-            '',
-        '=> Chọn món bạn thích, Nhà giao ngay!'
-      ].join('|'),
-      image:
-          'https://img.freepik.com/free-vector/brown-sugar-bubble-milk-tea-set-promotion-free-flyer-template-watercolor-illustration_83728-563.jpg',
-      time: DateTime.now(),
-      checked: false,
-    ),
-  );
+  // var _notifies = List.generate(
+  //   20,
+  //   (index) => NotifyModel(
+  //     id: 'NOTIFY-$index',
+  //     type: 2,
+  //     targetId: 'VOUCHER-1',
+  //     name: 'Một bước lên "mây" khum khó!',
+  //     description: [
+  //       'Nhà mới Cà phê 19k/The Coffee House sữa đá 29k/Trà trái cây, CloudFee 39K khi mua cùng bánh bất kỳ (trừ bánh mì que)',
+  //       '- Áp dụng cho size M',
+  //       '- Nhập mã: TUYETVOI'
+  //           '',
+  //       '=> Chọn món bạn thích, Nhà giao ngay!'
+  //     ].join('|'),
+  //     image:
+  //         'https://img.freepik.com/free-vector/brown-sugar-bubble-milk-tea-set-promotion-free-flyer-template-watercolor-illustration_83728-563.jpg',
+  //     time: DateTime.now(),
+  //     checked: false,
+  //   ),
+  // );
 
   var _defaults = [
     AddressModel(
@@ -71,18 +71,8 @@ class SettingApiRepository extends SettingRepository {
   );
 
   @override
-  Future<bool?> changeNotify({required String id}) async {
+  Future<bool?> changeNotify() async {
     try {
-      int index = _notifies.indexWhere((e) => e.id == id);
-      if (index == -1) {
-        throw AppException(
-          message: AppMessage(
-            messageType: AppMessageType.error,
-            title: 'Lỗi!',
-            content: 'Không tìm thấy thông báo trên server!',
-          ),
-        );
-      }
       return true;
     } on DioError catch (ex) {
       throw AppException(
@@ -97,7 +87,7 @@ class SettingApiRepository extends SettingRepository {
   }
 
   @override
-  Future<bool?> createAddress({
+  Future<String?> createAddress({
     required String name,
     required String address,
     required String note,
@@ -120,7 +110,7 @@ class SettingApiRepository extends SettingRepository {
         ),
       );
       othersCount++;
-      return true;
+      return 'ADDRESS-NEW';
     } on DioError catch (ex) {
       throw AppException(
         message: AppMessage(
@@ -130,7 +120,7 @@ class SettingApiRepository extends SettingRepository {
         ),
       );
     }
-    return false;
+    return null;
   }
 
   @override
@@ -153,7 +143,7 @@ class SettingApiRepository extends SettingRepository {
   }
 
   @override
-  Future<AddressesListModel?> getAddresses() async {
+  Future<AddressesListModel> getAddresses() async {
     try {
       return AddressesListModel(defaults: _defaults, others: _others);
     } on DioError catch (ex) {
@@ -165,7 +155,7 @@ class SettingApiRepository extends SettingRepository {
         ),
       );
     }
-    return null;
+    return AddressesListModel(defaults: [], others: []);
   }
 
   @override

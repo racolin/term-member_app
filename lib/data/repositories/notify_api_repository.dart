@@ -10,7 +10,7 @@ class NotifyApiRepository extends NotifyRepository {
     ...List.generate(
       8,
       (index) => NotifyModel(
-        id: 'NOTIFY$index',
+        id: 'NOTIFY-$index',
         name: 'Trải nghiệm đặt món hôm nay thế nào?',
         description: 'Mời bạn đánh giá đơn hàng vừa rồi để Nhà tiếp tục cải thiện. Xin cảm ơn bạn.',
         image: 'https://file.hstatic.net/1000075078/file/grandview3_badde8d8296d4474b7ecb2ae67fb2dd8_master.jpg',
@@ -21,7 +21,7 @@ class NotifyApiRepository extends NotifyRepository {
     ...List.generate(
       6,
       (index) => NotifyModel(
-        id: 'NOTIFY${index + 8}',
+        id: 'NOTIFY-${index + 8}',
         name: 'Đổi thành công Voucher',
         description: 'Đặt hàng ngay bạn ơi, bạn đã đổi thành công voucher từ Nhà. Hãy vào xem ngay nào!',
         image: 'https://scontent.fsgn5-8.fna.fbcdn.net/v/t39.30808-6/277569606_3220892998184704_7534103870995634759_n.jpg?_nc_cat=109&ccb=1-7&_nc_sid=730e14&_nc_ohc=viDyVLFA7pUAX83Gf1J&_nc_ht=scontent.fsgn5-8.fna&oh=00_AfCONh9FbP0sxdwC8q1o5COI47GdopEyvouMfqRlNLoZrg&oe=643D1A66',

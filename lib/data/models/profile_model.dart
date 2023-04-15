@@ -36,4 +36,20 @@ class ProfileModel {
       phone: map['phone'] ?? txtNone,
     );
   }
+
+  ProfileModel copyWith({
+    String? firstName,
+    String? lastName,
+    DateTime? dob,
+    int? gender,
+    String? phone,
+  }) {
+    return ProfileModel(
+      firstName: firstName ?? this.firstName,
+      lastName: lastName ?? this.lastName,
+      dob: dob ?? this.dob,
+      gender: gender ?? this.gender,
+      phone: phone ?? this.phone,
+    );
+  }
 }

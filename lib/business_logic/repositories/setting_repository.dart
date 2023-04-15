@@ -10,9 +10,9 @@ abstract class SettingRepository {
     required String firstName,
   });
 
-  Future<AddressesListModel?> getAddresses();
+  Future<AddressesListModel> getAddresses();
 
-  Future<bool?> createAddress({
+  Future<String?> createAddress({
     required String name,
     required String address,
     required String note,
@@ -30,7 +30,5 @@ abstract class SettingRepository {
     required String id,
   });
 
-  Future<bool?> changeNotify({
-    required String id,
-  });
+  Future<bool?> changeNotify();
 }

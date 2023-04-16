@@ -13,12 +13,8 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MultiBlocProvider(
-      providers: [
-        BlocProvider<InternetCubit>(
-          create: (context) => InternetCubit(),
-        ),
-      ],
+    return BlocProvider<InternetCubit>(
+      create: (context) => InternetCubit(),
       child: MaterialApp(
         title: 'Member App',
         theme: ThemeData(
@@ -38,9 +34,8 @@ class MyApp extends StatelessWidget {
               900: Color(0xFFE45C16),
             },
           ),
-
         ),
-        initialRoute: '/',
+        initialRoute: AppRouter.home,
         onGenerateRoute: AppRouter.onGenerateAppRoute,
       ),
     );

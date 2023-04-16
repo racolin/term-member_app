@@ -24,4 +24,16 @@ class LogoutStorageRepository extends LogoutRepository {
       );
     }
   }
+
+  ///
+  /// Without Exception
+  ///
+  Future<bool> isLogin() async {
+    try {
+      String? accessToken = await _storage.getAccessToken();
+      return accessToken != null;
+    } on PlatformException catch (ex) {
+      return false;
+    }
+  }
 }

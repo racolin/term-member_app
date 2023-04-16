@@ -12,20 +12,26 @@ enum HomeBodyType {
   const HomeBodyType(this.label);
 }
 
-class HomeState {
+abstract class HomeState {}
+
+class HomeInitial extends HomeState {}
+
+class HomeLoading extends HomeState {}
+
+class HomeLoaded extends HomeState {
   final HomeBodyType homeBodyType;
   final bool login;
 
-  HomeState({
+  HomeLoaded({
     required this.homeBodyType,
     this.login = false,
   });
 
-  HomeState copyWith({
+  HomeLoaded copyWith({
     HomeBodyType? homeBodyType,
     bool? login,
   }) {
-    return HomeState(
+    return HomeLoaded(
       homeBodyType: homeBodyType ?? this.homeBodyType,
       login: login ?? this.login,
     );

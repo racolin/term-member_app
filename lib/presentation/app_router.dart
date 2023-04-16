@@ -20,9 +20,19 @@ import '../presentation/screens/auth_screen.dart';
 import '../presentation/screens/home_screen.dart';
 
 class AppRouter {
+
+  static const String home = '/home';
+  static const String auth = '/auth';
+  static const String address = '/address';
+  static const String cartDetail = '/cart-detail';
+  static const String carts = '/carts';
+  static const String profile = '/profile';
+  static const String historyPoint = '/history-point';
+  static const String notify = '/notify';
+
   static Route<dynamic>? onGenerateAppRoute(RouteSettings settings) {
     switch (settings.name) {
-      case '/':
+      case home:
         return MaterialPageRoute(
           builder: (context) {
             return MultiRepositoryProvider(
@@ -86,7 +96,43 @@ class AppRouter {
             );
           },
         );
-      case '/auth':
+      case auth:
+        return MaterialPageRoute(
+          builder: (context) {
+            return const AuthScreen();
+          },
+        );
+      case address:
+        return MaterialPageRoute(
+          builder: (context) {
+            return const AuthScreen();
+          },
+        );
+      case cartDetail:
+        return MaterialPageRoute(
+          builder: (context) {
+            return const AuthScreen();
+          },
+        );
+      case carts:
+        return MaterialPageRoute(
+          builder: (context) {
+            return const AuthScreen();
+          },
+        );
+      case profile:
+        return MaterialPageRoute(
+          builder: (context) {
+            return const AuthScreen();
+          },
+        );
+      case historyPoint:
+        return MaterialPageRoute(
+          builder: (context) {
+            return const AuthScreen();
+          },
+        );
+      case notify:
         return MaterialPageRoute(
           builder: (context) {
             return const AuthScreen();

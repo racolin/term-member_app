@@ -8,13 +8,15 @@ import '../states/home_state.dart';
 class HomeCubit extends Cubit<HomeState> {
   final _repository = LogoutStorageRepository();
 
-  HomeCubit({required bool login})
-      : super(
-          HomeState(
-            homeBodyType: HomeBodyType.home,
-            login: login,
-          ),
-        );
+  HomeCubit() : super(HomeInitial()) {
+    emit(HomeLoading());
+    _repository.isLogin().then((login) {
+      emit(HomeLoaded(
+        homeBodyType: HomeBodyType.home,
+        login: login,
+      ));
+    });
+  }
 
   // Action data
   Future<AppMessage?> logout() async {
@@ -27,9 +29,21 @@ class HomeCubit extends Cubit<HomeState> {
   }
 
   // Action UI
-  void setBody(HomeBodyType type) {
-    emit(state.copyWith(
+  AppException? setBody(HomeBodyType type) {
+    if (state is! HomeLoaded) {
+      return AppException(
+        message: AppMessage(
+          messageType: AppMessageType.failure,
+          title: 'Đợi',
+          content: 'Thao tác chưa được xửt lý vì quá nhanh.',
+        ),
+      );
+    }
+
+    emit((state as HomeLoaded).copyWith(
       homeBodyType: type,
     ));
+
+    return null;
   }
 }

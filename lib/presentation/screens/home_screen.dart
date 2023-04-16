@@ -73,7 +73,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<HomeCubit, HomeState>(
+    return BlocBuilder<HomeCubit, HomeLoaded>(
       builder: (_, state) => Scaffold(
         appBar: AppBarWidget(),
         body: _getBody(state.homeBodyType),

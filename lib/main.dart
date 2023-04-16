@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../business_logic/cubits/auth_cubit.dart';
 import '../business_logic/cubits/internet_cubit.dart';
 import 'presentation/app_router.dart';
 
@@ -16,9 +15,6 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
-        BlocProvider<AuthCubit>(
-          create: (context) => AuthCubit(),
-        ),
         BlocProvider<InternetCubit>(
           create: (context) => InternetCubit(),
         ),
@@ -42,7 +38,7 @@ class MyApp extends StatelessWidget {
               900: Color(0xFFE45C16),
             },
           ),
-          
+
         ),
         initialRoute: '/',
         onGenerateRoute: AppRouter.onGenerateAppRoute,

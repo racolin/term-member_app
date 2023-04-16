@@ -1,14 +1,16 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../data/repositories/notify_api_repository.dart';
 import '../../exception/app_exception.dart';
 import '../../exception/app_message.dart';
+import '../repositories/notify_repository.dart';
 import '../states/notify_state.dart';
 
 class NotifyCubit extends Cubit<NotifyState> {
-  final _repository = NotifyApiRepository();
+  final NotifyRepository _repository;
 
-  NotifyCubit() : super(NotifyInitial()) {
+  NotifyCubit({required NotifyRepository repository})
+      : _repository = repository,
+        super(NotifyInitial()) {
     emit(NotifyLoading());
     try {
       _repository.gets().then((list) {

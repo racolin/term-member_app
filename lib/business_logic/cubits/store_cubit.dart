@@ -1,16 +1,18 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../data/models/store_detail_model.dart';
-import '../../data/repositories/store_api_repository.dart';
 import '../../exception/app_exception.dart';
 import '../../exception/app_message.dart';
+import '../repositories/store_repository.dart';
 import '../states/store_state.dart';
 
 class StoreCubit extends Cubit<StoreState> {
-  final _repository = StoreApiRepository();
+  final StoreRepository _repository;
 
   /// Nếu offline thì cần phải xử lý logic chỗ selectedId
-  StoreCubit() : super(StoreInitial()) {
+  StoreCubit({required StoreRepository repository})
+      : _repository = repository,
+        super(StoreInitial()) {
     emit(StoreLoading());
     try {
       _repository.gets().then((list) {

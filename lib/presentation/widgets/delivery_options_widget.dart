@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import '../business_logic/blocs/store_bloc.dart';
+import '../business_logic/blocs/interval_bloc.dart';
 import '../business_logic/cubits/cart_cubit.dart';
 import '../../presentation/pages/store_search_widget.dart';
 import '../../presentation/widgets/delivery_option_widget.dart';

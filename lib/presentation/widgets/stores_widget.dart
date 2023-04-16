@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:member_app/presentation/pages/loading_page.dart';
 
 import '../../data/models/store_model.dart';
-import '../business_logic/blocs/store_bloc.dart';
+import '../business_logic/blocs/interval_bloc.dart';
 import '../res/dimen/dimens.dart';
 import 'store_item_widget.dart';
 

@@ -80,7 +80,7 @@ class CartTemplateApiRepository extends CartTemplateRepository {
   }
 
   @override
-  Future<bool?> create({
+  Future<String?> create({
     required String name,
     required List<CartTemplateProductModel> products,
   }) async {
@@ -95,7 +95,7 @@ class CartTemplateApiRepository extends CartTemplateRepository {
           ),
         );
         _count++;
-        return true;
+        return 'TEMPLATE-${_count - 1}';
       } on DioError catch (ex) {
         throw AppException(
           message: AppMessage(
@@ -106,7 +106,7 @@ class CartTemplateApiRepository extends CartTemplateRepository {
         );
       }
     }
-    return false;
+    return null;
   }
 
   @override

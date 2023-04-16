@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:member_app/business_logic/repositories/member_repository.dart';
 import 'package:member_app/data/repositories/member_api_repository.dart';
 
-import '../business_logic/blocs/store_bloc.dart';
+import '../business_logic/blocs/interval/interval_bloc.dart';
 import '../business_logic/cubits/app_bar_cubit.dart';
 import '../business_logic/cubits/card_cubit.dart';
 import '../business_logic/cubits/cart_cubit.dart';

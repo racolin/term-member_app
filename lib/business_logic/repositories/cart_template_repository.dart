@@ -3,7 +3,7 @@ import '../../data/models/cart_template_model.dart';
 abstract class CartTemplateRepository {
   Future<MapEntry<int, List<CartTemplateModel>>> gets();
 
-  Future<bool?> create({
+  Future<String?> create({
     required String name,
     required List<CartTemplateProductModel> products,
   });

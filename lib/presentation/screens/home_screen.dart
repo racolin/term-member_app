@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:member_app/business_logic/blocs/store_bloc.dart';
+import 'package:member_app/business_logic/blocs/interval/interval_bloc.dart';
 import 'package:member_app/business_logic/cubits/app_bar_cubit.dart';
 import 'package:member_app/business_logic/cubits/card_cubit.dart';
 import 'package:member_app/business_logic/cubits/category_product_cubit.dart';

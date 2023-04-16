@@ -33,7 +33,7 @@ abstract class CartRepository {
     required String phone,
     required String receiver,
     String? voucherId,
-    String? addressName,
+    required String addressName,
     required List<CartProductCheckModel> products,
   });
 }

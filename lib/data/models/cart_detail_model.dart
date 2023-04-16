@@ -102,6 +102,7 @@ class CartProductModel {
   final String id;
   final String name;
   final int cost;
+  final List<String> options;
   final int amount;
   final String note;
 
@@ -109,6 +110,7 @@ class CartProductModel {
     required this.id,
     required this.name,
     required this.cost,
+    required this.options,
     required this.amount,
     required this.note,
   });
@@ -118,8 +120,18 @@ class CartProductModel {
       'id': id,
       'name': name,
       'cost': cost,
+      'options': options,
       'amount': amount,
       'note': note,
+    };
+  }
+
+  Map<String, dynamic> toMapCheck() {
+    return {
+      'id': id,
+      'options': options,
+      'amount': amount,
+      // 'cost': cost,
     };
   }
 
@@ -128,8 +140,27 @@ class CartProductModel {
       id: map['id']!,
       name: map['name'] ?? txtUnknown,
       cost: map['cost'] ?? 0,
+      options: map['options'] ?? [],
       amount: map['amount'] ?? 0,
       note: map['note'] ?? txtNone,
+    );
+  }
+
+  CartProductModel copyWith({
+    String? id,
+    String? name,
+    int? cost,
+    List<String>? options,
+    int? amount,
+    String? note,
+  }) {
+    return CartProductModel(
+      id: id ?? this.id,
+      name: name ?? this.name,
+      cost: cost ?? this.cost,
+      options: options ?? this.options,
+      amount: amount ?? this.amount,
+      note: note ?? this.note,
     );
   }
 }
@@ -154,30 +185,6 @@ class CartReviewModel {
     return CartReviewModel(
       rate: map['rate'] ?? 0,
       review: map['review'] ?? txtNone,
-    );
-  }
-}
-
-class CartStatusModel {
-  final String id;
-  final String name;
-
-  const CartStatusModel({
-    required this.id,
-    required this.name,
-  });
-
-  Map<String, dynamic> toMap() {
-    return {
-      'id': id,
-      'name': name,
-    };
-  }
-
-  factory CartStatusModel.fromMap(Map<String, dynamic> map) {
-    return CartStatusModel(
-      id: map['id']!,
-      name: map['name'] ?? txtUnknown,
     );
   }
 }

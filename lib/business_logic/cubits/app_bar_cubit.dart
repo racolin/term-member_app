@@ -15,7 +15,7 @@ class AppBarCubit extends Cubit<AppBarState> {
     emit(AppBarLoading());
     var model = const AppBarModel(
       greeting: 'Xin chào!',
-      templateCartAmount: 0,
+      cartTemplateAmount: 0,
       voucherAmount: 0,
       notifyAmount: 0,
     );
@@ -35,7 +35,7 @@ class AppBarCubit extends Cubit<AppBarState> {
 
       appBar ??= const AppBarModel(
         greeting: 'Xin chào!',
-        templateCartAmount: 0,
+        cartTemplateAmount: 0,
         voucherAmount: 0,
         notifyAmount: 0,
       );

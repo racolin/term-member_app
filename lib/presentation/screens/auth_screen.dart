@@ -20,7 +20,7 @@ class AuthScreen extends StatelessWidget {
             ),
             ElevatedButton(
               onPressed: () async {
-                context.read<AuthCubit>().register('phantrungtin01@gmail.com');
+                // context.read<AuthCubit>().register('phantrungtin01@gmail.com');
               },
               child: const Text('Register'),
             ),

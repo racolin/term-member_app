@@ -1,8 +1,7 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:member_app/data/models/cart_check_model.dart';
-import 'package:member_app/data/models/cart_checked_model.dart';
-import 'package:member_app/exception/app_exception.dart';
 
+import '../../exception/app_exception.dart';
+import '../../data/models/cart_detail_model.dart';
 import '../../data/models/store_detail_model.dart';
 import '../../data/models/store_model.dart';
 import '../../data/models/voucher_model.dart';
@@ -40,7 +39,7 @@ class CartCubit extends Cubit<CartState> {
     }
 
     try {
-      CartCheckedModel checked = await _checkVoucher(
+      CartDetailModel checked = await _checkVoucher(
         voucher.id,
         state.categoryId!,
         state.products,
@@ -67,12 +66,12 @@ class CartCubit extends Cubit<CartState> {
     return null;
   }
 
-  Future<CartCheckedModel> _checkVoucher(
+  Future<CartDetailModel> _checkVoucher(
     String voucherId,
     int categoryId,
-    List<CartProductCheckModel> products,
+    List<CartProductModel> products,
   ) async {
-    CartCheckedModel? checked = await _repository.checkVoucher(
+    CartDetailModel? checked = await _repository.checkVoucher(
       voucherId: voucherId,
       categoryId: categoryId,
       products: products,
@@ -286,7 +285,7 @@ class CartCubit extends Cubit<CartState> {
 
     if (state.voucher != null) {
       try {
-        CartCheckedModel checked = await _checkVoucher(
+        CartDetailModel checked = await _checkVoucher(
           state.voucher!.id,
           categoryId,
           state.products,

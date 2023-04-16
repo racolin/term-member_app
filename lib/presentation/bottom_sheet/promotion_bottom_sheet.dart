@@ -1,7 +1,6 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:member_app/presentation/res/strings/values.dart';
 
+import '../../presentation/res/strings/values.dart';
 import '../../data/models/promotion_model.dart';
 import '../../supports/convert.dart';
 import '../clippers/ticket_clipper.dart';
@@ -44,12 +43,16 @@ class PromotionBottomSheet extends StatelessWidget {
                               borderRadius: const BorderRadius.vertical(
                                 top: Radius.circular(16),
                               ),
-                              child: Image.network(
-                                promotion.image,
-                                height: 400,
-                                width: double.maxFinite,
-                                fit: BoxFit.cover,
-                              ),
+                              child: promotion.backgroundImage == null
+                                  ? Image.asset(
+                                      'assets/images/image_default.png',
+                                    )
+                                  : Image.network(
+                                      promotion.backgroundImage!,
+                                      height: 400,
+                                      width: double.maxFinite,
+                                      fit: BoxFit.cover,
+                                    ),
                             ),
                             const SizedBox(height: 56),
                             Card(
@@ -78,14 +81,14 @@ class PromotionBottomSheet extends StatelessWidget {
                                         ),
                                         Text.rich(
                                           TextSpan(
-                                            text: promotion.score.toString(),
+                                            text: promotion.point.toString(),
                                             style: const TextStyle(
                                               fontWeight: FontWeight.w700,
                                               fontSize: 16,
                                             ),
                                             children: const [
                                               TextSpan(
-                                                text: txtScoreName,
+                                                text: txtPointName,
                                                 style: TextStyle(
                                                   fontWeight: FontWeight.w400,
                                                   fontSize: 16,
@@ -108,7 +111,7 @@ class PromotionBottomSheet extends StatelessWidget {
                                         ),
                                         Text(
                                           dateToString(
-                                            promotion.expire,
+                                            promotion.to,
                                             'dd/MM/yyyy',
                                           ),
                                           style: const TextStyle(
@@ -180,7 +183,7 @@ class PromotionBottomSheet extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text(
-                          'Đổi ${promotion.score} BEAN lấy promotion này',
+                          'Đổi ${promotion.point} $txtPointName lấy promotion này',
                           maxLines: 2,
                           style: const TextStyle(
                             color: Colors.white,
@@ -264,10 +267,14 @@ class PromotionBottomSheet extends StatelessWidget {
                 padding: const EdgeInsets.all(12),
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(8),
-                  child: Image.network(
-                    promotion.image,
-                    fit: BoxFit.cover,
-                  ),
+                  child: promotion.partnerImage == null
+                      ? Image.asset(
+                          'assets/image_default.png',
+                        )
+                      : Image.network(
+                          promotion.partnerImage!,
+                          fit: BoxFit.cover,
+                        ),
                 ),
               ),
             ),
@@ -280,7 +287,7 @@ class PromotionBottomSheet extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text(
-                      promotion.title,
+                      promotion.name,
                       style: const TextStyle(fontWeight: FontWeight.w700),
                       maxLines: 1,
                       overflow: TextOverflow.fade,

@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:member_app/presentation/res/dimen/dimens.dart';
 
-import '../business_logic/cubits/reorder_cubit.dart';
-import '../business_logic/cubits/reorder_state.dart';
 import '../res/strings/values.dart';
 import '../../supports/convert.dart';
 import '../../data/models/order_model.dart';
@@ -18,44 +16,46 @@ class ReOrdersWidget extends StatefulWidget {
 class _ReOrdersWidgetState extends State<ReOrdersWidget> {
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<ReOrderCubit, ReOrderState>(
-      builder: (context, state) {
-        switch (state.runtimeType) {
-          case ReOrderInitial:
-            return const SizedBox();
-          case ReOrderLoading:
-            return const SizedBox();
-          case ReOrderLoaded:
-            state as ReOrderLoaded;
-            if (state.orders.isEmpty) {
-              return const SizedBox();
-            }
-            return Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const SizedBox(
-                  height: spaceXS,
-                ),
-                const Padding(
-                  padding: EdgeInsets.symmetric(
-                    horizontal: spaceXS,
-                    vertical: spaceXXS,
-                  ),
-                  child: Text(
-                    txtReOrderTitle,
-                    style: TextStyle(
-                      fontWeight: FontWeight.w700,
-                      fontSize: fontLG,
-                    ),
-                  ),
-                ),
-                for (var order in state.orders) ReorderWidget(order: order),
-              ],
-            );
-        }
-        return const SizedBox();
-      },
-    );
+    return Center(child: const Text('Reorder'),);
+
+    // return BlocBuilder<ReOrderCubit, ReOrderState>(
+    //   builder: (context, state) {
+    //     switch (state.runtimeType) {
+    //       case ReOrderInitial:
+    //         return const SizedBox();
+    //       case ReOrderLoading:
+    //         return const SizedBox();
+    //       case ReOrderLoaded:
+    //         state as ReOrderLoaded;
+    //         if (state.orders.isEmpty) {
+    //           return const SizedBox();
+    //         }
+    //         return Column(
+    //           crossAxisAlignment: CrossAxisAlignment.start,
+    //           children: [
+    //             const SizedBox(
+    //               height: spaceXS,
+    //             ),
+    //             const Padding(
+    //               padding: EdgeInsets.symmetric(
+    //                 horizontal: spaceXS,
+    //                 vertical: spaceXXS,
+    //               ),
+    //               child: Text(
+    //                 txtReOrderTitle,
+    //                 style: TextStyle(
+    //                   fontWeight: FontWeight.w700,
+    //                   fontSize: fontLG,
+    //                 ),
+    //               ),
+    //             ),
+    //             for (var order in state.orders) ReorderWidget(order: order),
+    //           ],
+    //         );
+    //     }
+    //     return const SizedBox();
+    //   },
+    // );
   }
 }
 

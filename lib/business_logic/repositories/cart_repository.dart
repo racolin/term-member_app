@@ -1,7 +1,6 @@
-import '../../data/models/cart_checked_model.dart';
 import '../../data/models/cart_detail_model.dart';
 import '../../data/models/cart_model.dart';
-import '../../data/models/cart_check_model.dart';
+import '../../data/models/cart_status_model.dart';
 
 abstract class CartRepository {
   Future<MapEntry<int, List<CartModel>>> getsByStatusId({
@@ -21,10 +20,10 @@ abstract class CartRepository {
     String? review,
   });
 
-  Future<CartCheckedModel?> checkVoucher({
+  Future<CartDetailModel?> checkVoucher({
     required String voucherId,
     required int categoryId,
-    required List<CartProductCheckModel> products,
+    required List<CartProductModel> products,
   });
 
   Future<String?> create({
@@ -34,6 +33,6 @@ abstract class CartRepository {
     required String receiver,
     String? voucherId,
     required String addressName,
-    required List<CartProductCheckModel> products,
+    required List<CartProductModel> products,
   });
 }

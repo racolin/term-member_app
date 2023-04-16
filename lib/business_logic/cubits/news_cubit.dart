@@ -9,7 +9,7 @@ import '../states/news_state.dart';
 class NewsCubit extends Cubit<NewsState> {
   final NewsRepository _repository;
 
-  NewsCubit({required NewsApiRepository repository})
+  NewsCubit({required NewsRepository repository})
       : _repository = repository,
         super(NewsInitial()) {
     emit(NewsLoading());

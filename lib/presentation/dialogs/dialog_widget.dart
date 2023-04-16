@@ -1,11 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import '../../business_logic/app_message.dart';
-import '../../presentation/dialogs/message_notify_type.dart';
+
+import '../../exception/app_message.dart';
 import '../../presentation/res/dimen/dimens.dart';
 
 class DialogWidget extends StatelessWidget {
-  final MessageNotify messageNotify;
+  final AppMessage messageNotify;
   final List<CupertinoDialogAction> actions;
 
   const DialogWidget({
@@ -38,17 +38,17 @@ class DialogWidget extends StatelessWidget {
     );
   }
 
-  Color _getColor(MessageType type) {
+  Color _getColor(AppMessageType type) {
     switch (type) {
-      case MessageType.error:
+      case AppMessageType.error:
         return Colors.red;
-      case MessageType.failure:
+      case AppMessageType.failure:
         return Colors.orange;
-      case MessageType.success:
+      case AppMessageType.success:
         return Colors.green;
-      case MessageType.info:
+      case AppMessageType.info:
         return Colors.blue;
-      case MessageType.none:
+      case AppMessageType.none:
         return Colors.grey;
     }
     return Colors.grey;

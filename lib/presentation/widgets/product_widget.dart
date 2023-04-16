@@ -66,7 +66,7 @@ class ProductWidget extends StatelessWidget {
                           height: spaceXXS,
                         ),
                         Text(
-                          numberToCurrency(shortProduct.price, 'đ'),
+                          numberToCurrency(shortProduct.cost, 'đ'),
                           style: const TextStyle(fontSize: fontMD),
                         ),
                       ],

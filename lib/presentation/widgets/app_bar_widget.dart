@@ -1,11 +1,16 @@
 import 'package:badges/badges.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:member_app/presentation/res/dimen/dimens.dart';
 
-import '../business_logic/cubits/app_bar_cubit.dart';
-import '../business_logic/cubits/app_bar_state.dart';
-import '../business_logic/cubits/home_state.dart';
+import '../../business_logic/cubits/home_cubit.dart';
+import '../../data/models/app_bar_model.dart';
+import '../../presentation/widgets/app_image_widget.dart';
+import '../../business_logic/cubits/product_cubit.dart';
+import '../../business_logic/cubits/product_scroll_cubit.dart';
+import '../../business_logic/states/home_state.dart';
+import '../../presentation/res/dimen/dimens.dart';
+import '../../business_logic/cubits/app_bar_cubit.dart';
+import '../../business_logic/states/app_bar_state.dart';
 import '../res/strings/values.dart';
 import 'product_categories_widget.dart';
 import 'drag_bar_widget.dart';
@@ -23,381 +28,458 @@ class _AppBarWidgetState extends State<AppBarWidget> {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<AppBarCubit, AppBarState>(
-        builder: (context, state) {
-          switch (state.runtimeType) {
-            case AppBarInitial:
-              break;
-            case AppBarLoaded:
-              state as AppBarLoaded;
-              return AppBar(
-                elevation: _getElevation(state.type),
-                backgroundColor: _getBackgroundColor(state.type),
-                title:  Row(
-                  children: [
-                    if (HomeBodyType.home == state.type)
-                      ..._getInfoTitle(
-                        state.appBar.label,
-                        state.appBar.icon,
-                      )
-                    else
-                      _getTitle(state.label, state.type),
-                    const Spacer(),
-                    if (HomeBodyType.order == state.type)
-                      ..._getProductAction()
-                    else
-                      ..._getBaseAction(
-                        state.appBar.cartTemplateAmount,
-                        state.appBar.voucherAmount,
-                        state.appBar.notifyAmount,
-                      ),
-                  ],
-                ),
-              );
-          }
-          return const SizedBox();
-        },
-      );
+      builder: (context, state) {
+        switch (state.runtimeType) {
+          case AppBarInitial:
+          case AppBarLoading:
+            return AppBar();
+          case AppBarLoaded:
+            state as AppBarLoaded;
+            return _AppBarWidget(
+              appBar: state.appBar,
+            );
+        }
+        return AppBar(
+          backgroundColor: Colors.black87,
+        );
+      },
+    );
   }
+}
 
-  Color _getBackgroundColor(HomeBodyType type) {
-    switch (type) {
-      case HomeBodyType.home:
-        return Theme.of(context).primaryColor;
-      case HomeBodyType.order:
-      case HomeBodyType.store:
-      case HomeBodyType.promotion:
-      case HomeBodyType.other:
-        return Colors.white;
-    }
-  }
+class _AppBarWidget extends StatelessWidget {
+  final AppBarModel appBar;
 
-  double _getElevation(HomeBodyType type) {
-    switch (type) {
-      case HomeBodyType.order:
-      case HomeBodyType.home:
-      case HomeBodyType.other:
-        return 1;
-      case HomeBodyType.store:
-      case HomeBodyType.promotion:
-        return 0;
-    }
-  }
+  const _AppBarWidget({
+    Key? key,
+    required this.appBar,
+  }) : super(key: key);
 
-  List<Widget> _getProductAction() {
-    return [
-      Container(
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(
-            spaceLG,
-          ),
-        ),
-        child: InkWell(
-          overlayColor: MaterialStateProperty.all(
-            Theme.of(context).primaryColor.withOpacity(
-              opaSM,
-            ),
-          ),
-          borderRadius: BorderRadius.circular(spaceLG),
-          radius: 40,
-          onTap: () {},
-          child: Ink(
-            width: 40,
-            height: 40,
-            decoration: BoxDecoration(
-              boxShadow: const [
-                BoxShadow(
-                  color: Colors.grey,
-                  offset: Offset(0, 1),
-                  blurRadius: 1.0,
-                ),
-              ],
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(
-                spaceLG
-              ),
-            ),
-            child: const Icon(
-              Icons.search,
-              size: fontLG,
-              color: Colors.orange,
-            ),
-          ),
-        ),
-      ),
-      const SizedBox(width: spaceXXS),
-      Container(
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(
-            spaceLG
-          ),
-        ),
-        child: InkWell(
-          overlayColor: MaterialStateProperty.all(
-            Theme.of(context).primaryColor.withOpacity(
-              opaSM,
-            ),
-          ),
-          borderRadius: BorderRadius.circular(spaceLG),
-          radius: 40,
-          onTap: () {},
-          child: Ink(
-            width: 40,
-            height: 40,
-            decoration: BoxDecoration(
-              boxShadow: const [
-                BoxShadow(
-                  color: Colors.grey,
-                  offset: Offset(0, 1),
-                  blurRadius: 1.0,
-                ),
-              ],
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(
-                spaceLG,
-              ),
-            ),
-            child: const Icon(
-              Icons.favorite_border,
-              size: fontLG,
-              color: Colors.orange,
-            ),
-          ),
-        ),
-      )
-    ];
-  }
-
-  List<Widget> _getBaseAction(
-    int cartTemplateAmount,
-    int voucherAmount,
-    int notifyAmount,
-  ) {
-    return [
-      Container(
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(spaceLG),
-        ),
-        child: InkWell(
-          overlayColor: MaterialStateProperty.all(
-            Theme.of(context).primaryColor.withOpacity(
-              opaSM,
-            ),
-          ),
-          borderRadius: BorderRadius.circular(spaceLG),
-          radius: 40,
-          onTap: () {},
-          child: Ink(
-            width: 40,
-            height: 40,
-            decoration: BoxDecoration(
-              boxShadow: const [
-                BoxShadow(
-                  color: Colors.grey,
-                  offset: Offset(0, 1),
-                  blurRadius: 1.0,
-                ),
-              ],
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(spaceLG),
-            ),
-            child: Badge(
-              position: const BadgePosition(top: -4, end: -4),
-              badgeContent: Text(
-                cartTemplateAmount.toString(),
-                style: const TextStyle(
-                  color: Colors.white,
-                  fontSize: fontXS,
-                  fontWeight: FontWeight.w700,
-                ),
-              ),
-              badgeColor: Colors.red,
-              child: Icon(
-                Icons.shopping_cart_checkout_outlined,
-                size: fontXL,
-                color: Colors.black.withAlpha(200),
-              ),
-            ),
-          ),
-        ),
-      ),
-      const SizedBox(width: spaceXS),
-      TextButton.icon(
-        style: ButtonStyle(
-          overlayColor: MaterialStateProperty.all(
-            Theme.of(context).primaryColor.withOpacity(
-              opaSM,
-            ),
-          ),
-          elevation: MaterialStateProperty.all(2),
-          backgroundColor: MaterialStateProperty.all(Colors.white),
-          shape: MaterialStateProperty.all(
-            RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(spaceLG),
-            ),
-          ),
-        ),
-        onPressed: () {},
-        icon: const Icon(
-          Icons.confirmation_number_outlined,
-          size: fontXL,
-          color: Colors.orange,
-        ),
-        label: Text(
-          voucherAmount.toString(),
-          style: TextStyle(
-            fontSize: fontLG,
-            color: Colors.black.withAlpha(150),
-          ),
-        ),
-      ),
-      const SizedBox(width: spaceXS),
-      Container(
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(spaceLG),
-        ),
-        child: InkWell(
-          borderRadius: BorderRadius.circular(spaceLG),
-          overlayColor: MaterialStateProperty.all(
-            Theme.of(context).primaryColor.withOpacity(
-                  opaSM,
-                ),
-          ),
-          radius: 40,
-          onTap: () {},
-          child: Ink(
-            width: 40,
-            height: 40,
-            decoration: BoxDecoration(
-              boxShadow: const [
-                BoxShadow(
-                  color: Colors.grey,
-                  offset: Offset(0, 1),
-                  blurRadius: 1.0,
-                ),
-              ],
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(spaceLG),
-            ),
-            child: Badge(
-              position: const BadgePosition(top: -4, end: -4),
-              badgeContent: Text(
-                notifyAmount.toString(),
-                style: const TextStyle(
-                  color: Colors.white,
-                  fontSize: fontXS,
-                  fontWeight: FontWeight.w700,
-                ),
-              ),
-              badgeColor: Colors.red,
-              child: Icon(
-                Icons.notifications_outlined,
-                size: fontXL,
-                color: Colors.black.withAlpha(200),
-              ),
-            ),
-          ),
-        ),
-      ),
-    ];
-  }
-
-  List<Widget> _getInfoTitle(String label, String icon) {
-    return [
-      CircleAvatar(
-        radius: dimXS / 2,
-        backgroundImage: NetworkImage(
-          icon,
-        ),
-      ),
-      const SizedBox(
-        width: spaceXS,
-      ),
-      Text(
-        label,
-        style: TextStyle(
-          fontSize: fontMD,
-          color: Colors.black.withAlpha(200),
-        ),
-      )
-    ];
-  }
-
-  Widget _getTitle(
-    String label,
-    HomeBodyType type,
-  ) {
-    if (type == HomeBodyType.order) {
-      return GestureDetector(
-        onTap: () {
-          showModalBottomSheet(
-            isScrollControlled: true,
-            backgroundColor: Colors.transparent,
-            context: context,
-            builder: (ctx) {
-              return BlocProvider<CategoryProductCubit>.value(
-                value: context.read<CategoryProductCubit>(),
-                child: Container(
-                  padding: const EdgeInsets.only(bottom: spaceXXL),
-                  decoration: const BoxDecoration(
-                    borderRadius: BorderRadius.vertical(
-                      top: Radius.circular(spaceMD),
-                    ),
-                    color: Colors.white,
-                  ),
-                  child: Wrap(
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<HomeCubit, HomeState>(
+      builder: (context, state) {
+        switch (state.runtimeType) {
+          case HomeInitial:
+            return AppBar();
+          case HomeLoading:
+            return AppBar();
+          case HomeLoaded:
+            state as HomeLoaded;
+            switch (state.type) {
+              case HomeBodyType.home:
+                return AppBar(
+                  elevation: 1,
+                  backgroundColor: Theme.of(context).primaryColor,
+                  title: Row(
                     children: [
-                      const DragBarWidget(margin: spaceXS),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: spaceMD,
-                        ),
-                        child: Text(
-                          txtCategory,
-                          style: TextStyle(
-                            fontWeight: FontWeight.w600,
-                            fontSize: fontLG,
-                            color: Colors.black.withAlpha(180),
-                          ),
-                        ),
+                      GreetingWidget(
+                        image: appBar.image,
+                        label: appBar.greeting,
                       ),
-                      const Divider(),
-                      ProductCategoriesWidget(
-                        scrollTo: (index) {
-                          context.read<CategoryScrollCubit>().setIndex(index);
-                          Navigator.pop(context);
-                        },
+                      const Spacer(),
+                      BaseActionWidget(
+                        cartTemplateAmount: appBar.cartTemplateAmount,
+                        notifyAmount: appBar.notifyAmount,
+                        voucherAmount: appBar.voucherAmount,
                       ),
                     ],
                   ),
+                );
+              case HomeBodyType.order:
+                return AppBar(
+                  elevation: 1,
+                  backgroundColor: Colors.white,
+                  title: Row(
+                    children: [
+                      GestureDetector(
+                        onTap: () {
+                          showModalBottomSheet(
+                            isScrollControlled: true,
+                            backgroundColor: Colors.transparent,
+                            context: context,
+                            builder: (ctx) {
+                              return BlocProvider<ProductCubit>.value(
+                                value: context.read<ProductCubit>(),
+                                child: Container(
+                                  padding:
+                                      const EdgeInsets.only(bottom: spaceXXL),
+                                  decoration: const BoxDecoration(
+                                    borderRadius: BorderRadius.vertical(
+                                      top: Radius.circular(spaceMD),
+                                    ),
+                                    color: Colors.white,
+                                  ),
+                                  child: Wrap(
+                                    children: [
+                                      const DragBarWidget(margin: spaceXS),
+                                      Padding(
+                                        padding: const EdgeInsets.symmetric(
+                                          horizontal: spaceMD,
+                                        ),
+                                        child: Text(
+                                          txtCategory,
+                                          style: TextStyle(
+                                            fontWeight: FontWeight.w600,
+                                            fontSize: fontLG,
+                                            color: Colors.black.withAlpha(180),
+                                          ),
+                                        ),
+                                      ),
+                                      const Divider(),
+                                      ProductCategoriesWidget(
+                                        scrollTo: (index) {
+                                          context
+                                              .read<ProductScrollCubit>()
+                                              .setIndex(index);
+                                          Navigator.pop(context);
+                                        },
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              );
+                            },
+                          );
+                        },
+                        child: Row(
+                          children: [
+                            Text(
+                              txtOrder,
+                              style: TextStyle(
+                                fontSize: fontLG,
+                                color: Colors.black.withAlpha(200),
+                              ),
+                            ),
+                            Icon(
+                              Icons.keyboard_arrow_down_outlined,
+                              color: Colors.black.withAlpha(200),
+                              size: fontLG,
+                            ),
+                          ],
+                        ),
+                      ),
+                      const Spacer(),
+                      Container(
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(
+                            spaceLG,
+                          ),
+                        ),
+                        child: InkWell(
+                          overlayColor: MaterialStateProperty.all(
+                            Theme.of(context).primaryColor.withOpacity(opaSM),
+                          ),
+                          borderRadius: BorderRadius.circular(spaceLG),
+                          radius: 40,
+                          onTap: () {},
+                          child: Ink(
+                            width: 40,
+                            height: 40,
+                            decoration: BoxDecoration(
+                              boxShadow: const [
+                                BoxShadow(
+                                  color: Colors.grey,
+                                  offset: Offset(0, 1),
+                                  blurRadius: 1.0,
+                                ),
+                              ],
+                              color: Colors.white,
+                              borderRadius: BorderRadius.circular(spaceLG),
+                            ),
+                            child: const Icon(
+                              Icons.search,
+                              size: fontLG,
+                              color: Colors.orange,
+                            ),
+                          ),
+                        ),
+                      ),
+                      const SizedBox(width: spaceXXS),
+                      Container(
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(spaceLG),
+                        ),
+                        child: InkWell(
+                          overlayColor: MaterialStateProperty.all(
+                            Theme.of(context).primaryColor.withOpacity(opaSM),
+                          ),
+                          borderRadius: BorderRadius.circular(spaceLG),
+                          radius: 40,
+                          onTap: () {},
+                          child: Ink(
+                            width: 40,
+                            height: 40,
+                            decoration: BoxDecoration(
+                              boxShadow: const [
+                                BoxShadow(
+                                  color: Colors.grey,
+                                  offset: Offset(0, 1),
+                                  blurRadius: 1.0,
+                                ),
+                              ],
+                              color: Colors.white,
+                              borderRadius: BorderRadius.circular(
+                                spaceLG,
+                              ),
+                            ),
+                            child: const Icon(
+                              Icons.favorite_border,
+                              size: fontLG,
+                              color: Colors.orange,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                );
+              case HomeBodyType.store:
+                return AppBar(
+                  elevation: 0,
+                  backgroundColor: Colors.white,
+                  title: Row(
+                    children: [
+                      Text(
+                        txtHome,
+                        style: TextStyle(
+                          fontSize: fontLG,
+                          color: Colors.black.withAlpha(200),
+                        ),
+                      ),
+                      const Spacer(),
+                      BaseActionWidget(
+                        cartTemplateAmount: appBar.cartTemplateAmount,
+                        notifyAmount: appBar.notifyAmount,
+                        voucherAmount: appBar.voucherAmount,
+                      ),
+                    ],
+                  ),
+                );
+              case HomeBodyType.promotion:
+                return AppBar(
+                  elevation: 0,
+                  backgroundColor: Colors.white,
+                  title: Row(
+                    children: [
+                      Text(
+                        txtHome,
+                        style: TextStyle(
+                          fontSize: fontLG,
+                          color: Colors.black.withAlpha(200),
+                        ),
+                      ),
+                      const Spacer(),
+                      BaseActionWidget(
+                        cartTemplateAmount: appBar.cartTemplateAmount,
+                        notifyAmount: appBar.notifyAmount,
+                        voucherAmount: appBar.voucherAmount,
+                      ),
+                    ],
+                  ),
+                );
+              case HomeBodyType.other:
+                return AppBar(
+                  elevation: 1,
+                  backgroundColor: Colors.white,
+                  title: Row(
+                    children: [
+                      Text(
+                        txtOther,
+                        style: TextStyle(
+                          fontSize: fontLG,
+                          color: Colors.black.withAlpha(200),
+                        ),
+                      ),
+                      const Spacer(),
+                      BaseActionWidget(
+                        cartTemplateAmount: appBar.cartTemplateAmount,
+                        notifyAmount: appBar.notifyAmount,
+                        voucherAmount: appBar.voucherAmount,
+                      ),
+                    ],
+                  ),
+                );
+            }
+        }
+        return AppBar();
+      },
+    );
+  }
+}
+
+class BaseActionWidget extends StatelessWidget {
+  final int cartTemplateAmount;
+  final int voucherAmount;
+  final int notifyAmount;
+
+  const BaseActionWidget({
+    Key? key,
+    required this.cartTemplateAmount,
+    required this.notifyAmount,
+    required this.voucherAmount,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      children: [
+        Container(
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(spaceLG),
+          ),
+          child: InkWell(
+            overlayColor: MaterialStateProperty.all(
+              Theme.of(context).primaryColor.withOpacity(opaSM),
+            ),
+            borderRadius: BorderRadius.circular(spaceLG),
+            radius: 40,
+            onTap: () {},
+            child: Ink(
+              width: 40,
+              height: 40,
+              decoration: BoxDecoration(
+                boxShadow: const [
+                  BoxShadow(
+                    color: Colors.grey,
+                    offset: Offset(0, 1),
+                    blurRadius: 1.0,
+                  ),
+                ],
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(spaceLG),
+              ),
+              child: Badge(
+                position: const BadgePosition(top: -4, end: -4),
+                badgeContent: Text(
+                  cartTemplateAmount.toString(),
+                  style: const TextStyle(
+                    color: Colors.white,
+                    fontSize: fontXS,
+                    fontWeight: FontWeight.w700,
+                  ),
                 ),
-              );
-            },
-          );
-        },
-        child: Row(
-          children: [
-            Text(
-              label,
-              style: TextStyle(
-                fontSize: fontLG,
-                color: Colors.black.withAlpha(200),
+                badgeColor: Colors.red,
+                child: Icon(
+                  Icons.shopping_cart_checkout_outlined,
+                  size: fontXL,
+                  color: Colors.black.withAlpha(200),
+                ),
               ),
             ),
-            Icon(
-              Icons.keyboard_arrow_down_outlined,
-              color: Colors.black.withAlpha(200),
-              size: fontLG,
-            ),
-          ],
+          ),
         ),
-      );
-    }
-    return Text(
-      label,
-      style: TextStyle(
-        fontSize: fontLG,
-        color: Colors.black.withAlpha(200),
-      ),
+        const SizedBox(width: spaceXS),
+        TextButton.icon(
+          style: ButtonStyle(
+            overlayColor: MaterialStateProperty.all(
+              Theme.of(context).primaryColor.withOpacity(opaSM),
+            ),
+            elevation: MaterialStateProperty.all(2),
+            backgroundColor: MaterialStateProperty.all(Colors.white),
+            shape: MaterialStateProperty.all(
+              RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(spaceLG),
+              ),
+            ),
+          ),
+          onPressed: () {},
+          icon: const Icon(
+            Icons.confirmation_number_outlined,
+            size: fontXL,
+            color: Colors.orange,
+          ),
+          label: Text(
+            voucherAmount.toString(),
+            style: TextStyle(
+              fontSize: 16,
+              color: Colors.black.withAlpha(150),
+            ),
+          ),
+        ),
+        const SizedBox(width: spaceXS),
+        Container(
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(spaceLG),
+          ),
+          child: InkWell(
+            borderRadius: BorderRadius.circular(spaceLG),
+            overlayColor: MaterialStateProperty.all(
+              Theme.of(context).primaryColor.withOpacity(opaSM),
+            ),
+            radius: 40,
+            onTap: () {},
+            child: Ink(
+              width: 40,
+              height: 40,
+              decoration: BoxDecoration(
+                boxShadow: const [
+                  BoxShadow(
+                    color: Colors.grey,
+                    offset: Offset(0, 1),
+                    blurRadius: 1.0,
+                  ),
+                ],
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(spaceLG),
+              ),
+              child: Badge(
+                position: const BadgePosition(top: -4, end: -4),
+                badgeContent: Text(
+                  notifyAmount.toString(),
+                  style: const TextStyle(
+                    color: Colors.white,
+                    fontSize: fontXS,
+                    fontWeight: FontWeight.w700,
+                  ),
+                ),
+                badgeColor: Colors.red,
+                child: Icon(
+                  Icons.notifications_outlined,
+                  size: fontXL,
+                  color: Colors.black.withAlpha(200),
+                ),
+              ),
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+class GreetingWidget extends StatelessWidget {
+  final String? image;
+  final String label;
+
+  const GreetingWidget({
+    Key? key,
+    required this.image,
+    required this.label,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        AppImageWidget(
+          image: image,
+          height: dimXS,
+          width: dimXS,
+          borderRadius: BorderRadius.circular(dimXS / 2),
+        ),
+        const SizedBox(
+          width: spaceXS,
+        ),
+        Text(
+          label,
+          style: TextStyle(
+            fontSize: fontMD,
+            color: Colors.black.withAlpha(200),
+          ),
+        )
+      ],
     );
   }
 }

@@ -7,10 +7,10 @@ import '../../exception/app_exception.dart';
 import '../repositories/cart_repository.dart';
 import '../states/carts_state.dart';
 
-class CartCubit extends Cubit<CartsState> {
+class CartsCubit extends Cubit<CartsState> {
   final CartRepository _repository;
 
-  CartCubit({required CartRepository repository})
+  CartsCubit({required CartRepository repository})
       : _repository = repository,
         super(CartsInitial()) {
     try {

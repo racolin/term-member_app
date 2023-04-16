@@ -51,17 +51,17 @@ class StoreBody extends StatelessWidget {
               Expanded(
                 child: TextField(
                   onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (ctx) => BlocProvider.value(
-                          value: BlocProvider.of<StoreBloc>(context),
-                          child: StoreSearchPage(
-                            onCLick: (StoreShortModel store) {},
-                          ),
-                        ),
-                      ),
-                    );
+                    // Navigator.push(
+                    //   context,
+                    //   MaterialPageRoute(
+                    //     builder: (ctx) => BlocProvider.value(
+                    //       value: BlocProvider.of<StoreBloc>(context),
+                    //       child: StoreSearchPage(
+                    //         onCLick: (StoreModel store) {},
+                    //       ),
+                    //     ),
+                    //   ),
+                    // );
                   },
                   decoration: InputDecoration(
                     contentPadding: const EdgeInsets.all(0),

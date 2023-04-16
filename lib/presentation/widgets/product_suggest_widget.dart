@@ -48,7 +48,7 @@ class ProductSuggestWidget extends StatelessWidget {
             const SizedBox(
               height: fontSM,
             ),
-            Text(numberToCurrency(product.price, 'đ')),
+            Text(numberToCurrency(product.cost, 'đ')),
             SizedBox(
               width: double.maxFinite,
               child: TextButton(

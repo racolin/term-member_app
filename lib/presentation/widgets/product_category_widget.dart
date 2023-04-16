@@ -18,7 +18,7 @@ class ProductCategoryWidget extends StatelessWidget {
       children: [
         CircleAvatar(
           radius: spaceXL,
-          backgroundImage: NetworkImage(category.image),
+          backgroundImage: NetworkImage(category.image ?? ''),
         ),
         const SizedBox(
           height: spaceXXS,

@@ -1,24 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:member_app/business_logic/blocs/interval/interval_bloc.dart';
-import 'package:member_app/business_logic/cubits/app_bar_cubit.dart';
-import 'package:member_app/business_logic/cubits/card_cubit.dart';
-import 'package:member_app/business_logic/cubits/category_product_cubit.dart';
-import 'package:member_app/business_logic/cubits/news_cubit.dart';
-import 'package:member_app/business_logic/cubits/product_cubit.dart';
-import 'package:member_app/business_logic/cubits/promotion_cubit.dart';
-import 'package:member_app/business_logic/cubits/reorder_cubit.dart';
-import 'package:member_app/business_logic/cubits/suggest_product_cubit.dart';
-import 'package:member_app/business_logic/cubits/voucher_cubit.dart';
-import 'package:member_app/presentation/pages/promotion_body.dart';
-import 'package:member_app/presentation/pages/home_body.dart';
-import 'package:member_app/presentation/pages/order_body.dart';
-import 'package:member_app/presentation/pages/other_body.dart';
-import 'package:member_app/presentation/pages/store_body.dart';
-import 'package:member_app/presentation/pages/loading_page.dart';
-import 'package:member_app/presentation/widgets/app_bar_widget.dart';
-import 'package:member_app/presentation/widgets/floating_action_widget.dart';
+import 'package:member_app/presentation/pages/initial_page.dart';
+import 'package:member_app/presentation/screens/splash_screen.dart';
 
+import '../../presentation/pages/promotion_body.dart';
+import '../../presentation/pages/home_body.dart';
+import '../../presentation/pages/order_body.dart';
+import '../../presentation/pages/other_body.dart';
+import '../../presentation/pages/store_body.dart';
+import '../../presentation/pages/loading_page.dart';
+import '../../presentation/widgets/app_bar_widget.dart';
+import '../../presentation/widgets/floating_action_widget.dart';
 import '../../business_logic/cubits/home_cubit.dart';
 import '../../business_logic/states/home_state.dart';
 import '../widgets/navigation_widget.dart';
@@ -33,16 +25,6 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   @override
   void initState() {
-    context.read<AppBarCubit>().loadAppBar();
-    context.read<CardCubit>().loadCard();
-    context.read<ReOrderCubit>().loadReOrder();
-    context.read<SuggestProductCubit>().loadSuggestProduct();
-    context.read<NewsCubit>().loadNews();
-    context.read<ProductCubit>().loadProducts();
-    context.read<CategoryProductCubit>().loadCategories();
-    context.read<StoreBloc>().add(StoreLoad());
-    context.read<PromotionCubit>().loadPromotion();
-    context.read<VoucherCubit>().loadVoucher();
     super.initState();
   }
 
@@ -73,16 +55,26 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<HomeCubit, HomeLoaded>(
-      builder: (_, state) => Scaffold(
-        appBar: AppBarWidget(),
-        body: _getBody(state.homeBodyType),
-        bottomNavigationBar: const NavigationWidget(),
-        floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
-        floatingActionButton: FloatingActionWidget(
-          onClick: () {},
-        ),
+    return Scaffold(
+      appBar: AppBarWidget(),
+      body: BlocBuilder<HomeCubit, HomeState>(
+        builder: (context, state) {
+          switch (state.runtimeType) {
+            case HomeInitial:
+              return const InitialPage();
+            case HomeLoading:
+              return const LoadingPage();
+            case HomeLoaded:
+              return _getBody((state as HomeLoaded).type);
+          }
+          return const LoadingPage();
+        },
       ),
+      bottomNavigationBar: const NavigationWidget(),
+      // floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+      // floatingActionButton: FloatingActionWidget(
+      //   onClick: () {},
+      // ),
     );
   }
 }

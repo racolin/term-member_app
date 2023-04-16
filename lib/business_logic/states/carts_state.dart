@@ -1,7 +1,7 @@
 import 'package:member_app/data/models/paging_model.dart';
 
 import '../../data/models/cart_model.dart';
-import '../../data/models/cart_detail_model.dart';
+import '../../data/models/cart_status_model.dart';
 
 abstract class CartsState {}
 

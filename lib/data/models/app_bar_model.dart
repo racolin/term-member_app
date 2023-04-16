@@ -3,14 +3,14 @@ import 'package:member_app/presentation/res/strings/values.dart';
 class AppBarModel {
   final String? image;
   final String greeting;
-  final int templateCartAmount;
+  final int cartTemplateAmount;
   final int voucherAmount;
   final int notifyAmount;
 
   const AppBarModel({
     this.image,
     required this.greeting,
-    required this.templateCartAmount,
+    required this.cartTemplateAmount,
     required this.voucherAmount,
     required this.notifyAmount,
   });
@@ -19,7 +19,7 @@ class AppBarModel {
     return {
       'image': image,
       'greeting': greeting,
-      'templateCartAmount': templateCartAmount,
+      'templateCartAmount': cartTemplateAmount,
       'voucherAmount': voucherAmount,
       'notifyAmount': notifyAmount,
     };
@@ -29,7 +29,7 @@ class AppBarModel {
     return AppBarModel(
       image: map['image'],
       greeting: map['greeting'] ?? txtDefault,
-      templateCartAmount: map['templateCartAmount'] ?? 0,
+      cartTemplateAmount: map['templateCartAmount'] ?? 0,
       voucherAmount: map['voucherAmount'] ?? 0,
       notifyAmount: map['notifyAmount'] ?? 0,
     );

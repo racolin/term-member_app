@@ -1,8 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import '../business_logic/cubits/home_state.dart';
-
-import '../business_logic/cubits/home_cubit.dart';
 import '../res/dimen/dimens.dart';
 
 class FloatingActionWidget extends StatefulWidget {
@@ -47,139 +44,140 @@ class _FloatingActionWidgetState extends State<FloatingActionWidget>
 
   @override
   Widget build(BuildContext context) {
-    return BlocConsumer<HomeCubit, HomeState>(
-      listenWhen: (previous, current) =>
-          previous.isExpandFloating != current.isExpandFloating,
-      listener: (context, state) {
-        if (state.isExpandFloating) {
-          _controller.forward(from: 0);
-        } else {
-          _controller.reverse(from: 1);
-        }
-      },
-      builder: (context, state) {
-        return AnimatedBuilder(
-          animation: animation,
-          builder: (context, child) => Padding(
-            padding: EdgeInsets.symmetric(
-              horizontal: _getValue(
-                spaceSM,
-                spaceLG,
-                animation.value,
-              ),
-            ),
-            child: GestureDetector(
-              onTap: () {},
-              child: Container(
-                padding: const EdgeInsets.all(spaceSM),
-                decoration: BoxDecoration(
-                  boxShadow: const [
-                    BoxShadow(
-                      color: Colors.grey,
-                      blurRadius: 4,
-                      offset: Offset(
-                        1,
-                        3,
-                      ),
-                    ),
-                  ],
-                  borderRadius: BorderRadius.circular(
-                    _getValue(
-                      spaceXS,
-                      spaceMD,
-                      animation.value,
-                    ),
-                  ),
-                  color: Colors.white,
-                ),
-                width: double.maxFinite,
-                height: _getValue(
-                  widget.maxHeight,
-                  widget.minHeight,
-                  animation.value,
-                ),
-                child: Stack(
-                  fit: StackFit.expand,
-                  children: [
-                    Positioned(
-                      top: _getValue(
-                          0,
-                          (widget.minHeight - spaceLG - 2 * spaceSM) / 2,
-                          animation.value),
-                      child: Row(
-                        children: [
-                          _getIcon(
-                            state.deliveryType,
-                            _getValue(
-                              spaceMD,
-                              spaceLG,
-                              animation.value,
-                            ),
-                          ),
-                          const SizedBox(
-                            width: spaceXS,
-                          ),
-                          Opacity(
-                            opacity: 1 -
-                                (animation.value > 1
-                                    ? 1
-                                    : animation.value < 0
-                                    ? 0
-                                    : animation.value),
-                            child: _getTypeTitle(state.deliveryType),
-                          ),
-                        ],
-                      ),
-                    ),
-                    Positioned(
-                      bottom: _getValue(
-                          0,
-                          (widget.minHeight - fontMD - 2 - 2 * spaceSM) / 2,
-                          animation.value),
-                      left: _getValue(0, spaceXS + spaceLG, animation.value),
-                      child: _getDescription(state.deliveryDescription),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-          ),
-        );
-      },
-    );
+    return Center(child: const Text('Stores main'),);
+    // return BlocConsumer<HomeCubit, HomeState>(
+    //   listenWhen: (previous, current) =>
+    //       previous.isExpandFloating != current.isExpandFloating,
+    //   listener: (context, state) {
+    //     if (state.isExpandFloating) {
+    //       _controller.forward(from: 0);
+    //     } else {
+    //       _controller.reverse(from: 1);
+    //     }
+    //   },
+    //   builder: (context, state) {
+    //     return AnimatedBuilder(
+    //       animation: animation,
+    //       builder: (context, child) => Padding(
+    //         padding: EdgeInsets.symmetric(
+    //           horizontal: _getValue(
+    //             spaceSM,
+    //             spaceLG,
+    //             animation.value,
+    //           ),
+    //         ),
+    //         child: GestureDetector(
+    //           onTap: () {},
+    //           child: Container(
+    //             padding: const EdgeInsets.all(spaceSM),
+    //             decoration: BoxDecoration(
+    //               boxShadow: const [
+    //                 BoxShadow(
+    //                   color: Colors.grey,
+    //                   blurRadius: 4,
+    //                   offset: Offset(
+    //                     1,
+    //                     3,
+    //                   ),
+    //                 ),
+    //               ],
+    //               borderRadius: BorderRadius.circular(
+    //                 _getValue(
+    //                   spaceXS,
+    //                   spaceMD,
+    //                   animation.value,
+    //                 ),
+    //               ),
+    //               color: Colors.white,
+    //             ),
+    //             width: double.maxFinite,
+    //             height: _getValue(
+    //               widget.maxHeight,
+    //               widget.minHeight,
+    //               animation.value,
+    //             ),
+    //             child: Stack(
+    //               fit: StackFit.expand,
+    //               children: [
+    //                 Positioned(
+    //                   top: _getValue(
+    //                       0,
+    //                       (widget.minHeight - spaceLG - 2 * spaceSM) / 2,
+    //                       animation.value),
+    //                   child: Row(
+    //                     children: [
+    //                       _getIcon(
+    //                         state.deliveryType,
+    //                         _getValue(
+    //                           spaceMD,
+    //                           spaceLG,
+    //                           animation.value,
+    //                         ),
+    //                       ),
+    //                       const SizedBox(
+    //                         width: spaceXS,
+    //                       ),
+    //                       Opacity(
+    //                         opacity: 1 -
+    //                             (animation.value > 1
+    //                                 ? 1
+    //                                 : animation.value < 0
+    //                                 ? 0
+    //                                 : animation.value),
+    //                         child: _getTypeTitle(state.deliveryType),
+    //                       ),
+    //                     ],
+    //                   ),
+    //                 ),
+    //                 Positioned(
+    //                   bottom: _getValue(
+    //                       0,
+    //                       (widget.minHeight - fontMD - 2 - 2 * spaceSM) / 2,
+    //                       animation.value),
+    //                   left: _getValue(0, spaceXS + spaceLG, animation.value),
+    //                   child: _getDescription(state.deliveryDescription),
+    //                 ),
+    //               ],
+    //             ),
+    //           ),
+    //         ),
+    //       ),
+    //     );
+    //   },
+    // );
   }
 
-  double _getValue(double from, double to, double rate) {
-    return from + (to - from) * rate;
-  }
-
-  Widget _getIcon(DeliveryType type, double size,) {
-    return Icon(
-      IconData(type.icon, fontFamily: 'MaterialIcons'),
-      size: size,
-    );
-  }
-
-  Widget _getTypeTitle(DeliveryType type) {
-    return Text(
-      type.label,
-      style: const TextStyle(
-        fontSize: fontSM,
-        color: Colors.black54,
-        fontWeight: FontWeight.w500,
-      ),
-    );
-  }
-
-  Widget _getDescription(String deliveryDescription) {
-    return Text(
-      deliveryDescription,
-      maxLines: 1,
-      overflow: TextOverflow.ellipsis,
-      style: const TextStyle(
-        fontSize: fontMD,
-        fontWeight: FontWeight.w700,
-      ),
-    );
-  }
+  // double _getValue(double from, double to, double rate) {
+  //   return from + (to - from) * rate;
+  // }
+  //
+  // Widget _getIcon(DeliveryType type, double size,) {
+  //   return Icon(
+  //     IconData(type.icon, fontFamily: 'MaterialIcons'),
+  //     size: size,
+  //   );
+  // }
+  //
+  // Widget _getTypeTitle(DeliveryType type) {
+  //   return Text(
+  //     type.label,
+  //     style: const TextStyle(
+  //       fontSize: fontSM,
+  //       color: Colors.black54,
+  //       fontWeight: FontWeight.w500,
+  //     ),
+  //   );
+  // }
+  //
+  // Widget _getDescription(String deliveryDescription) {
+  //   return Text(
+  //     deliveryDescription,
+  //     maxLines: 1,
+  //     overflow: TextOverflow.ellipsis,
+  //     style: const TextStyle(
+  //       fontSize: fontMD,
+  //       fontWeight: FontWeight.w700,
+  //     ),
+  //   );
+  // }
 }

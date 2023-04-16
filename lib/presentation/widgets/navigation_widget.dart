@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../business_logic/cubits/app_bar_cubit.dart';
-import '../business_logic/cubits/home_cubit.dart';
-import '../business_logic/cubits/home_state.dart';
+import '../../business_logic/cubits/home_cubit.dart';
+import '../../business_logic/states/home_state.dart';
 import '../res/dimen/dimens.dart';
 import '../res/strings/values.dart';
 
@@ -22,7 +21,7 @@ class _NavigationWidgetState extends State<NavigationWidget> {
         return BottomNavigationBar(
           onTap: (index) {
             context.read<HomeCubit>().setBody(HomeBodyType.values[index]);
-            context.read<AppBarCubit>().setAppBar(HomeBodyType.values[index]);
+            // context.read<AppBarCubit>().setAppBar(HomeBodyType.values[index]);
           },
           currentIndex: state,
           unselectedItemColor: Colors.grey,
@@ -60,7 +59,17 @@ class _NavigationWidgetState extends State<NavigationWidget> {
           ],
         );
       },
-      selector: (state) => state.homeBodyType.index,
+      selector: (state) {
+        switch (state.runtimeType) {
+          case HomeInitial:
+            return 0;
+          case HomeLoading:
+            return 0;
+          case HomeLoaded:
+            return (state as HomeLoaded).type.index;
+        }
+        return 0;
+      }
     );
   }
 }

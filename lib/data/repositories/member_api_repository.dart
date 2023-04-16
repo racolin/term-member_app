@@ -13,8 +13,8 @@ class MemberApiRepository extends MemberRepository {
     try {
       return const AppBarModel(
         greeting: 'Chúc ngủ ngon',
-        templateCartAmount: 8,
-        voucherAmount: 3,
+        cartTemplateAmount: 8,
+        voucherAmount: 4,
         notifyAmount: 7,
       );
     } on DioError catch (ex) {

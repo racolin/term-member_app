@@ -19,20 +19,20 @@ class HomeInitial extends HomeState {}
 class HomeLoading extends HomeState {}
 
 class HomeLoaded extends HomeState {
-  final HomeBodyType homeBodyType;
+  final HomeBodyType type;
   final bool login;
 
   HomeLoaded({
-    required this.homeBodyType,
+    required this.type,
     this.login = false,
   });
 
   HomeLoaded copyWith({
-    HomeBodyType? homeBodyType,
+    HomeBodyType? type,
     bool? login,
   }) {
     return HomeLoaded(
-      homeBodyType: homeBodyType ?? this.homeBodyType,
+      type: type ?? this.type,
       login: login ?? this.login,
     );
   }

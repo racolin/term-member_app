@@ -12,7 +12,7 @@ class HomeCubit extends Cubit<HomeState> {
     emit(HomeLoading());
     _repository.isLogin().then((login) {
       emit(HomeLoaded(
-        homeBodyType: HomeBodyType.home,
+        type: HomeBodyType.home,
         login: login,
       ));
     });
@@ -41,7 +41,7 @@ class HomeCubit extends Cubit<HomeState> {
     }
 
     emit((state as HomeLoaded).copyWith(
-      homeBodyType: type,
+      type: type,
     ));
 
     return null;

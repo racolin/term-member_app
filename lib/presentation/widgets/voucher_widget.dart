@@ -54,11 +54,11 @@ class VoucherWidget extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
-                        voucher.title,
+                        voucher.name,
                         style: const TextStyle(fontWeight: FontWeight.w500),
                       ),
                       Text(
-                        dateToString(voucher.expire, 'dd/MM/yyyy'),
+                        dateToString(voucher.to, 'dd/MM/yyyy'),
                         style: const TextStyle(color: Colors.red),
                       ),
                     ],

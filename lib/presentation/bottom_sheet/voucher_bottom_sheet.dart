@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:member_app/business_logic/cubits/home_cubit.dart';
-import 'package:member_app/business_logic/states/home_state.dart';
-import 'package:member_app/presentation/res/dimen/dimens.dart';
-import 'package:member_app/presentation/res/strings/values.dart';
-import 'package:member_app/supports/convert.dart';
 
+import '../../business_logic/states/home_state.dart';
+import '../../presentation/res/dimen/dimens.dart';
+import '../../presentation/res/strings/values.dart';
+import '../../supports/convert.dart';
 import '../../data/models/voucher_model.dart';
 import '../clippers/vertical_ticket_clipper.dart';
 
@@ -59,7 +57,7 @@ class VoucherBottomSheet extends StatelessWidget {
                           height: spaceXS,
                         ),
                         Text(
-                          voucher.title,
+                          voucher.name,
                           style: const TextStyle(
                             fontWeight: FontWeight.w700,
                             fontSize: fontLG,
@@ -218,7 +216,7 @@ class VoucherBottomSheet extends StatelessWidget {
                 ),
               ),
               Text(
-                dateToString(voucher.expire, 'dd/MM/yyyy'),
+                dateToString(voucher.to, 'dd/MM/yyyy'),
                 style: const TextStyle(
                   color: Colors.red,
                   fontSize: fontMD,

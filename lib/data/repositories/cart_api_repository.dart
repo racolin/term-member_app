@@ -3,34 +3,33 @@ import 'dart:math';
 import 'package:dio/dio.dart';
 
 import '../../business_logic/repositories/cart_repository.dart';
-import '../../data/models/cart_check_model.dart';
-import '../../data/models/cart_checked_model.dart';
 import '../../data/models/cart_detail_model.dart';
 import '../../data/models/cart_model.dart';
 import '../../exception/app_exception.dart';
 import '../../exception/app_message.dart';
+import '../models/cart_status_model.dart';
 
 class CartApiRepository extends CartRepository {
   @override
-  Future<CartCheckedModel?> checkVoucher({
+  Future<CartDetailModel?> checkVoucher({
     required String voucherId,
     required int categoryId,
-    required List<CartProductCheckModel> products,
+    required List<CartProductModel> products,
   }) async {
     try {
-      return CartCheckedModel(
-        fee: 18000,
-        cost: 100000,
-        voucherDiscount: 25000,
-        products: products
+      return CartDetailModel.fromMap({
+        "fee": 18000,
+        "cost": 100000,
+        "voucherDiscount": 25000,
+        "products": products
             .map(
-              (e) => CartProductCheckedModel(
-                id: e.id,
-                cost: 35000,
-              ),
+              (e) => CartProductModel.fromMap({
+                "id": e.id,
+                "cost": 35000,
+              }),
             )
             .toList(),
-      );
+      });
     } on DioError catch (ex) {
       throw AppException(
         message: AppMessage(
@@ -50,7 +49,7 @@ class CartApiRepository extends CartRepository {
     required String receiver,
     String? voucherId,
     String? addressName,
-    required List<CartProductCheckModel> products,
+    required List<CartProductModel> products,
   }) async {
     try {
       return 'CART-11';
@@ -87,34 +86,34 @@ class CartApiRepository extends CartRepository {
         voucherName: 'Giảm 50% + FREESHIP đơn 4 ly',
         addressName: '125/42/14 Bùi Đình Tuý, Bình Thạnh, TP.HCM',
         products: [
-          const CartProductModel(
-            id: 'PD-01',
-            name: 'Đường Đen Marble Latte',
-            cost: 55000,
-            amount: 1,
-            note: 'Nhỏ',
-          ),
-          const CartProductModel(
-            id: 'PD-02',
-            name: 'Hi-Tea Yuzu Trân Châu',
-            cost: 59000,
-            amount: 1,
-            note: 'Vừa',
-          ),
-          const CartProductModel(
-            id: 'PD-03',
-            name: 'Hi-Tea Đào',
-            cost: 59000,
-            amount: 1,
-            note: 'Vừa',
-          ),
-          const CartProductModel(
-            id: 'PD-04',
-            name: 'Trà Đen Macchiato',
-            cost: 55000,
-            amount: 1,
-            note: 'Vừa',
-          ),
+          CartProductModel.fromMap({
+            "id": 'PD-01',
+            "name": 'Đường Đen Marble Latte',
+            "cost": 55000,
+            "amount": 1,
+            "note": 'Nhỏ',
+          }),
+          CartProductModel.fromMap({
+            "id": 'PD-02',
+            "name": 'Hi-Tea Yuzu Trân Châu',
+            "cost": 59000,
+            "amount": 1,
+            "note": 'Vừa',
+          }),
+          CartProductModel.fromMap({
+            "id": 'PD-03',
+            "name": 'Hi-Tea Đào',
+            "cost": 59000,
+            "amount": 1,
+            "note": 'Vừa',
+          }),
+          CartProductModel.fromMap({
+            "id": 'PD-04',
+            "name": 'Trà Đen Macchiato',
+            "cost": 55000,
+            "amount": 1,
+            "note": 'Vừa',
+          }),
         ],
         point: 56,
       );

@@ -9,7 +9,7 @@ import 'store_body.dart';
 import '../widgets/stores_widget.dart';
 
 class StoreSearchPage extends StatefulWidget {
-  final Function(StoreShortModel) onCLick;
+  final Function(StoreModel) onCLick;
 
   const StoreSearchPage({
     Key? key,
@@ -66,10 +66,10 @@ class _StoreSearchPageState extends State<StoreSearchPage> {
                     prefixIcon: const Icon(Icons.search),
                   ),
                   onChanged: (value) {
-                    setState(() {
-                      context.read<StoreBloc>().add(StoreSearch(key: value));
-                      searchKey = value;
-                    });
+                    // setState(() {
+                    //   context.read<StoreBloc>().add(StoreSearch(key: value));
+                    //   searchKey = value;
+                    // });
                   },
                 ),
               ),
@@ -78,8 +78,8 @@ class _StoreSearchPageState extends State<StoreSearchPage> {
               ),
               InkWell(
                 onTap: () {
-                  context.read<StoreBloc>().add(StoreSearch(key: ''));
-                  Navigator.pop(context);
+                  // context.read<StoreBloc>().add(StoreSearch(key: ''));
+                  // Navigator.pop(context);
                 },
                 borderRadius: BorderRadius.circular(spaceXS),
                 child: Container(

@@ -1,9 +1,20 @@
 import 'package:member_app/presentation/res/strings/values.dart';
 
+enum DeliveryType {
+  inStore(txtInStore, 'assets/images/image_in_store.png'),
+  takeOut(txtTake, 'assets/images/image_take_away.png'),
+  delivery(txtDelivery, 'assets/images/image_delivery.jpeg');
+
+  final String name;
+  final String image;
+
+  const DeliveryType(this.name, this.image);
+}
+
 class CartModel {
   final String id;
   final String name;
-  final int categoryId;
+  final DeliveryType categoryId;
   final int cost;
   final DateTime time;
   final int? rate;
@@ -21,7 +32,7 @@ class CartModel {
     return {
       'id': id,
       'name': name,
-      'categoryId': categoryId,
+      'categoryId': categoryId.index,
       'cost': cost,
       'time': time.millisecondsSinceEpoch,
       'rate': rate,
@@ -32,7 +43,7 @@ class CartModel {
     return CartModel(
       id: map['id']!,
       name: map['name'] ?? txtUnknown,
-      categoryId: map['categoryId']!,
+      categoryId: DeliveryType.values[map['categoryId']!],
       cost: map['cost'] ?? 0,
       time: map['time'] != null
           ? DateTime.fromMillisecondsSinceEpoch(map['time'])

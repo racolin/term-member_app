@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:member_app/presentation/res/strings/values.dart';
+import 'package:member_app/presentation/widgets/app_image_widget.dart';
 import 'package:member_app/presentation/widgets/re_order_widget.dart';
 import 'package:member_app/presentation/res/dimen/dimens.dart';
 import 'package:member_app/presentation/widgets/news_section_widget.dart';
@@ -10,7 +12,12 @@ import '../widgets/delivery_options_widget.dart';
 import '../widgets/drag_bar_widget.dart';
 
 class HomeBody extends StatefulWidget {
-  const HomeBody({Key? key}) : super(key: key);
+  final VoidCallback onScroll;
+
+  const HomeBody({
+    Key? key,
+    required this.onScroll,
+  }) : super(key: key);
 
   @override
   State<HomeBody> createState() => _HomeBodyState();
@@ -18,6 +25,14 @@ class HomeBody extends StatefulWidget {
 
 class _HomeBodyState extends State<HomeBody> {
   double collapseHeight = 336;
+  double oldPixel = 0;
+  double gap = 2;
+  double direction = -1;
+
+  @override
+  void initState() {
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -35,42 +50,78 @@ class _HomeBodyState extends State<HomeBody> {
             flexibleSpace: FlexibleSpaceBar(
               collapseMode: CollapseMode.none,
               centerTitle: true,
-              background: Container(
+              background: AppImageWidget(
                 height: collapseHeight,
-                padding: const EdgeInsets.only(
-                  top: spaceLG,
-                  left: spaceXS,
-                  right: spaceXS,
-                  bottom: 76,
-                ),
-                decoration: const BoxDecoration(
-                  image: DecorationImage(
-                    fit: BoxFit.cover,
-                    image: NetworkImage(
-                      "https://images.pexels.com/photos/4148020/pexels-photo-4148020.jpeg",
+                image: "https://png.pngtree.com/background/20210709/original/pngtree-simple-style-coffee-bean-food-and-drinks-poster-background-picture-image_905716.jpg",
+                errorWidget: (ctx, url, error) {
+                  return Container(
+                    height: collapseHeight,
+                    padding: const EdgeInsets.only(
+                      top: spaceLG,
+                      left: spaceXS,
+                      right: spaceXS,
+                      bottom: 76,
                     ),
-                  ),
-                ),
-                child: const CardWidget(isDetail: false),
+                    decoration: const BoxDecoration(
+                      image: DecorationImage(
+                        fit: BoxFit.cover,
+                        image: AssetImage(assetDefaultImage),
+                      ),
+                    ),
+                    child:const CardWidget(isDetail: false),
+                  );
+                },
+                imageBuilder: (ctx, provider) {
+                  return Container(
+                    height: collapseHeight,
+                    padding: const EdgeInsets.only(
+                      top: spaceLG,
+                      left: spaceXS,
+                      right: spaceXS,
+                      bottom: 76,
+                    ),
+                    decoration: BoxDecoration(
+                      image: DecorationImage(
+                        fit: BoxFit.cover,
+                        image: provider,
+                      ),
+                    ),
+                    child:const CardWidget(isDetail: false),
+                  );
+                },
               ),
+
             ),
           ),
         ];
       },
-      body: SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: const [
-            DragBarWidget(margin: spaceXS),
-            DeliveryOptionsWidget(),
-            SliderWidget(),
-            ReOrdersWidget(),
-            SuggestProductsWidget(),
-            NewsSectionWidget(),
-            SizedBox(
-              height: dimMD,
-            ),
-          ],
+      body: NotificationListener<ScrollNotification>(
+        onNotification: (notification) {
+          if (!notification.metrics.outOfRange) {
+            if ((notification.metrics.pixels - oldPixel).abs() > gap &&
+                notification.metrics.axis == Axis.vertical) {
+              double sub = notification.metrics.pixels - oldPixel;
+              if (direction * sub > 0) {
+                direction = -direction;
+                widget.onScroll();
+              }
+            }
+            oldPixel = notification.metrics.pixels;
+          }
+          return true;
+        },
+        child: SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: const [
+              DragBarWidget(margin: spaceXS),
+              DeliveryOptionsWidget(),
+              SliderWidget(),
+              SuggestProductsWidget(),
+              ReOrdersWidget(),
+              NewsSectionWidget(),
+            ],
+          ),
         ),
       ),
     );

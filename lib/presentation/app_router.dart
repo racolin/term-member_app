@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:member_app/business_logic/cubits/product_scroll_cubit.dart';
 
 import '../business_logic/cubits/address_cubit.dart';
 import '../business_logic/cubits/auth_cubit.dart';
@@ -127,6 +128,9 @@ class AppRouter {
                         context,
                       ),
                     ),
+                  ),
+                  BlocProvider(
+                    create: (context) => ProductScrollCubit(),
                   ),
                   BlocProvider(
                     create: (context) => VoucherCubit(

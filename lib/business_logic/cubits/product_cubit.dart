@@ -25,7 +25,17 @@ class ProductCubit extends Cubit<ProductState> {
           ));
         }
       });
+      _repository.getsSuggestion().then((list) {
+        if (state is ProductLoaded) {
+          emit((state as ProductLoaded).copyWith(suggestion: list));
+        } else {
+          emit(ProductLoaded(
+            suggestion: list,
+          ));
+        }
+      });
       _repository.getCategories().then((listType) {
+        print('listType ${listType.length}');
         if (state is ProductLoaded) {
           emit((state as ProductLoaded).copyWith(listType: listType));
         } else {

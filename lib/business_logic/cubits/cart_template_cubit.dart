@@ -14,6 +14,16 @@ class CartTemplateCubit extends Cubit<CartTemplateState> {
   })  : _repository = repository,
         super(CartTemplateInitial()) {
     emit(CartTemplateLoading());
+
+    try {
+      _repository.gets().then((map) {
+        emit(CartTemplateLoaded(
+          list: map.value,
+          limit: map.key,
+        ));
+      });
+    } on AppException catch (ex) {
+    }
   }
 
   Future<AppMessage?> reloadCartTemplates() async {

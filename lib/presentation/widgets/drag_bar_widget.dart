@@ -12,10 +12,10 @@ class DragBarWidget extends StatelessWidget {
       child: Container(
         margin: EdgeInsets.all(margin),
         width: dimSM,
-        height: 4,
+        height: spaceXXS,
         decoration: BoxDecoration(
             color: Colors.grey,
-            borderRadius: BorderRadius.circular(2)
+            borderRadius: BorderRadius.circular(spaceXXS / 2)
         ),
       ),
     );

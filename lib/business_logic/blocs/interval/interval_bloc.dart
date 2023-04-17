@@ -12,7 +12,7 @@ class IntervalBloc<T> extends Bloc<IntervalEvent, IntervalState<T>> {
 
   IntervalBloc({required IntervalSubmit<T> submit})
       : _submit = submit,
-        super(IntervalInitial()) {
+        super(IntervalLoaded(list: const [], reload: true)) {
     on<IntervalSearch>((event, emit) async {
       if (state is IntervalLoaded<T>) {
         var state = this.state as IntervalLoaded<T>;

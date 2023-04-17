@@ -1,5 +1,5 @@
-import 'package:member_app/presentation/res/colors/colors.dart';
-import 'package:member_app/presentation/res/strings/values.dart';
+import '../../presentation/res/colors/colors.dart';
+import '../../presentation/res/strings/values.dart';
 
 class CardModel {
   final String id;

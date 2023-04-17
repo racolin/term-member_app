@@ -6,6 +6,8 @@ import '../../data/models/product_category_model.dart';
 abstract class ProductRepository {
   Future<List<ProductModel>> gets();
 
+  Future<List<ProductModel>> getsSuggestion({int limit});
+
   Future<List<ProductCategoryModel>> getCategories();
 
   Future<List<ProductOptionModel>> getOptions();

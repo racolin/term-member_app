@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:member_app/business_logic/blocs/interval/interval_bloc.dart';
-import 'package:member_app/presentation/res/dimen/dimens.dart';
 
+import '../../business_logic/blocs/interval/interval_bloc.dart';
+import '../../presentation/res/dimen/dimens.dart';
 import '../../data/models/store_model.dart';
 import '../res/strings/values.dart';
 import 'store_body.dart';
@@ -21,7 +21,13 @@ class StoreSearchPage extends StatefulWidget {
 }
 
 class _StoreSearchPageState extends State<StoreSearchPage> {
-  var searchKey = '';
+  // var searchKey = '';
+
+  @override
+  void initState() {
+    context.read<IntervalBloc<StoreModel>>().add(IntervalSearch(key: ''));
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -33,9 +39,19 @@ class _StoreSearchPageState extends State<StoreSearchPage> {
             child: Container(
               color: Colors.grey.withAlpha(50),
               padding: const EdgeInsets.all(spaceXS),
-              child: StoresWidget(
-                searchKey: '',
-                onClickItem: widget.onCLick,
+              child: BlocBuilder<IntervalBloc<StoreModel>, IntervalState>(
+                builder: (context, state) {
+                  var list = <StoreModel>[];
+                  if (state is IntervalLoaded<StoreModel>) {
+                    list = state.list;
+                  }
+                  print(list.length);
+                  print(state.runtimeType);
+                  return StoresWidget(
+                    list: list,
+                    onClickItem: widget.onCLick,
+                  );
+                },
               ),
             ),
           ),
@@ -48,7 +64,9 @@ class _StoreSearchPageState extends State<StoreSearchPage> {
     return Hero(
       tag: StoreBody.searchTag,
       child: Material(
-        color: Theme.of(context).primaryColor,
+        color: Theme
+            .of(context)
+            .primaryColor,
         child: Container(
           color: Colors.white,
           margin: const EdgeInsets.only(top: dimMD),
@@ -66,10 +84,7 @@ class _StoreSearchPageState extends State<StoreSearchPage> {
                     prefixIcon: const Icon(Icons.search),
                   ),
                   onChanged: (value) {
-                    // setState(() {
-                    //   context.read<StoreBloc>().add(StoreSearch(key: value));
-                    //   searchKey = value;
-                    // });
+                      context.read<IntervalBloc<StoreModel>>().add(IntervalSearch(key: value));
                   },
                 ),
               ),
@@ -78,8 +93,7 @@ class _StoreSearchPageState extends State<StoreSearchPage> {
               ),
               InkWell(
                 onTap: () {
-                  // context.read<StoreBloc>().add(StoreSearch(key: ''));
-                  // Navigator.pop(context);
+                  Navigator.pop(context);
                 },
                 borderRadius: BorderRadius.circular(spaceXS),
                 child: Container(

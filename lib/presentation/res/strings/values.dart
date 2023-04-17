@@ -10,16 +10,19 @@ const txtEPromotion = "Promotion";
 const txtOther = "Khác";
 const txtEOther = "Other";
 
+const txtSelectDelivery = "Hãy chọn phương thức giao hàng phù hợp";
+
 const txtTake = "Đến lấy tại";
+const txtInStore = "Tại quầy";
 const txtDelivery = "Giao đến";
 
 const txtOptionDelivery = "Giao hàng";
 const txtOptionTake = "Mang đi";
 const txtCategory = "Danh mục";
 
-const txtReOrderTitle = "Đặt lại đơn hàng nhanh";
+const txtReOrderTitle = "Đặt từ đơn mẫu";
 const txtReOrder = "Đặt lại";
-const txtSuggestProduct = "Gợi ý riêng cho";
+const txtSuggestProduct = "Gợi ý riêng cho bạn";
 const txtETC = "...";
 const txtSelect = "Chọn";
 const txtNews = "Khám phá thêm";
@@ -61,3 +64,8 @@ const txtNone = '';
 const txtUnknownCode = 'UNKNOWN';
 const txtAppName = 'The Coffee House';
 const txtLoading = 'Đang tải...';
+
+const assetDefaultIcon = 'assets/images/icon_default.png';
+const assetDefaultImage = 'assets/images/image_default.png';
+const assetDeliveryImage = 'assets/images/image_delivery.jpeg';
+const assetTakeAwayImage = 'assets/images/image_take_away.png';

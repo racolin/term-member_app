@@ -1,7 +1,10 @@
+import 'package:member_app/data/models/cart_model.dart';
+
 import '../../data/models/cart_detail_model.dart';
 import '../../data/models/store_detail_model.dart';
 import '../../data/models/voucher_model.dart';
 import '../../data/models/store_model.dart';
+import '../../presentation/res/strings/values.dart';
 
 abstract class CartState {}
 
@@ -16,7 +19,7 @@ class CartLoaded extends CartState {
   final String? addressDescription;
   final String? phone;
   final String? receiver;
-  final int? categoryId;
+  final DeliveryType? categoryId;
   final int? payType;
   final VoucherModel? voucher;
   final List<CartProductModel> products;
@@ -59,7 +62,7 @@ class CartLoaded extends CartState {
     StoreDetailModel? storeDetail,
     String? addressName,
     String? addressDescription,
-    int? categoryId,
+    DeliveryType? categoryId,
     int? payType,
     String? phone,
     String? receiver,

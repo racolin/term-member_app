@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:member_app/presentation/res/dimen/dimens.dart';
 import 'package:member_app/presentation/res/strings/values.dart';
 
-import '../widgets/promotion_point_widget.dart';
-import '../widgets/promotion_swap_widget.dart';
+import 'promotion_point_page.dart';
+import 'promotion_swap_page.dart';
 
 class PromotionBody extends StatefulWidget {
   const PromotionBody({Key? key}) : super(key: key);
@@ -31,8 +31,8 @@ class _PromotionBodyState extends State<PromotionBody> {
 
   @override
   void initState() {
-    _point = const PromotionPointWidget();
-    _swap = PromotionSwapWidget(
+    _point = const PromotionPointPage();
+    _swap = PromotionSwapPage(
       toRedeemVoucherPage: () {
         selectOptionItem(1);
       },

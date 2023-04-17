@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:member_app/business_logic/blocs/interval/interval_submit.dart';
+import 'package:member_app/business_logic/cubits/store_cubit.dart';
 import 'package:member_app/presentation/res/dimen/dimens.dart';
 import 'package:member_app/presentation/res/strings/values.dart';
 
 import '../../business_logic/blocs/interval/interval_bloc.dart';
 import '../../data/models/store_model.dart';
 import '../widgets/stores_main_widget.dart';
-import 'store_search_widget.dart';
+import 'store_search_page.dart';
 
 class StoreBody extends StatelessWidget {
   static const String searchTag = 'Search';
@@ -51,17 +53,19 @@ class StoreBody extends StatelessWidget {
               Expanded(
                 child: TextField(
                   onTap: () {
-                    // Navigator.push(
-                    //   context,
-                    //   MaterialPageRoute(
-                    //     builder: (ctx) => BlocProvider.value(
-                    //       value: BlocProvider.of<StoreBloc>(context),
-                    //       child: StoreSearchPage(
-                    //         onCLick: (StoreModel store) {},
-                    //       ),
-                    //     ),
-                    //   ),
-                    // );
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (ctx) => BlocProvider<IntervalBloc<StoreModel>>(
+                          create: (ctx) => IntervalBloc<StoreModel>(
+                            submit: BlocProvider.of<StoreCubit>(context),
+                          ),
+                          child:  StoreSearchPage(
+                            onCLick: (StoreModel store) {},
+                          ),
+                        ),
+                      ),
+                    );
                   },
                   decoration: InputDecoration(
                     contentPadding: const EdgeInsets.all(0),

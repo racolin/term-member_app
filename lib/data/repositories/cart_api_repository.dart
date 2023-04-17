@@ -72,7 +72,7 @@ class CartApiRepository extends CartRepository {
       return CartDetailModel(
         id: id,
         name: 'Đường Đen Marble Latte, Hi-Tea Yuzu Trần Châu +2 sản phẩm khác',
-        categoryId: 0,
+        categoryId: DeliveryType.delivery,
         cost: 114000,
         time: DateTime(2023, 4, 11, 14, 14, 56),
         code: 'TCHL5KHF6GF',
@@ -163,7 +163,7 @@ class CartApiRepository extends CartRepository {
             id: 'CART-01',
             name:
                 'Đường Đen Marble Latte, Hi-Tea Yuzu Trần Châu +2 sản phẩm khác',
-            categoryId: 0,
+            categoryId: DeliveryType.takeOut,
             cost: 114000,
             time: DateTime(2023, 4, 11, 14, 14, 56),
           ),

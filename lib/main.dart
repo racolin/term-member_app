@@ -19,6 +19,44 @@ class MyApp extends StatelessWidget {
         title: 'Member App',
         theme: ThemeData(
           scaffoldBackgroundColor: const Color.fromRGBO(244, 244, 244, 1),
+          textTheme: const TextTheme(
+            titleLarge: TextStyle(
+              fontSize: 28.0,
+              fontWeight: FontWeight.w600,
+              color: Colors.black87,
+              height: 1.1,
+            ),
+            titleMedium: TextStyle(
+              fontSize: 24.0,
+              fontWeight: FontWeight.w500,
+              color: Colors.black87,
+              height: 1.25,
+            ),
+            titleSmall: TextStyle(
+              fontSize: 20.0,
+              fontWeight: FontWeight.w400,
+              color: Colors.black87,
+              height: 1.25,
+            ),
+            bodyLarge: TextStyle(
+              fontSize: 16,
+              color: Colors.black87,
+              fontWeight: FontWeight.w400,
+              height: 1.25,
+            ),
+            bodyMedium: TextStyle(
+              fontSize: 14,
+              color: Colors.black87,
+              fontWeight: FontWeight.w300,
+              height: 1.25,
+            ),
+            bodySmall: TextStyle(
+              fontSize: 12,
+              color: Colors.black87,
+              fontWeight: FontWeight.w300,
+              height: 1.25,
+            ),
+          ),
           primarySwatch: const MaterialColor(
             0xFFFFC375,
             {

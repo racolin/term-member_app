@@ -78,12 +78,31 @@ class PromotionApiRepository extends PromotionRepository {
   Future<MapEntry<int, List<PromotionModel>>> gets() async {
     try {
       return MapEntry(800, List.generate(
-        15,
+        7,
             (index) => PromotionModel(
           id: 'PM-$index',
           partnerImage:
           'https://apprecs.org/gp/images/app-icons/300/d1/com.thecoffeehouse.guestapp.jpg',
           partner: 'Beauty Garden',
+          name: 'Giảm 50.000đ cho đơn 199.000đ',
+          description: 'Miễn phí giao hàng cho đơn hàng bất kì: '
+              '\n- Áp dụng cho toàn bộ menu The Coffee House'
+              '\n- Không áp dụng cho các chường trình khuyến mãi song song.',
+          expire: 30,
+          point: 99,
+          from: DateTime(2023, 3, 17),
+          to: DateTime(2023, 5, 17),
+          mark: (Random().nextDouble() * 400).toInt() + 600,
+          backgroundImage:
+          'https://www.tiendauroi.com/wp-content/uploads/2019/05/2409aa3f79aad8d71acdf0bf233353bbded1a009.jpeg',
+        ),
+      ) + List.generate(
+        7,
+            (index) => PromotionModel(
+          id: 'PM-$index',
+          partnerImage:
+          'https://apprecs.org/gp/images/app-icons/300/d1/com.thecoffeehouse.guestapp.jpg',
+          partner: 'The Coffee House',
           name: 'Giảm 50.000đ cho đơn 199.000đ',
           description: 'Miễn phí giao hàng cho đơn hàng bất kì: '
               '\n- Áp dụng cho toàn bộ menu The Coffee House'

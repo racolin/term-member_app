@@ -24,11 +24,14 @@ class DeliveryOptionWidget extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Image.network(
-              image,
-              width: height * 0.5,
-              height: height * 0.5,
-              fit: BoxFit.cover,
+            ClipRRect(
+              borderRadius: BorderRadius.circular(height * 0.25),
+              child: Image.asset(
+                image,
+                width: height * 0.5,
+                height: height * 0.5,
+                fit: BoxFit.cover,
+              ),
             ),
             Text(name),
           ],

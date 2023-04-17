@@ -1,5 +1,6 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../data/models/cart_model.dart';
 import '../../exception/app_exception.dart';
 import '../../data/models/cart_detail_model.dart';
 import '../../data/models/store_detail_model.dart';
@@ -41,7 +42,7 @@ class CartCubit extends Cubit<CartState> {
     try {
       CartDetailModel checked = await _checkVoucher(
         voucher.id,
-        state.categoryId!,
+        state.categoryId!.index,
         state.products,
       );
 
@@ -114,7 +115,7 @@ class CartCubit extends Cubit<CartState> {
     }
     try {
       String? id = await _repository.create(
-        categoryId: state.categoryId!,
+        categoryId: state.categoryId!.index,
         payType: state.payType!,
         phone: state.phone!,
         receiver: state.receiver!,
@@ -266,7 +267,7 @@ class CartCubit extends Cubit<CartState> {
     var state = this.state as CartLoaded;
 
     emit(state.copyWith(
-      categoryId: payType,
+      payType: payType,
     ));
 
     return null;
@@ -292,7 +293,7 @@ class CartCubit extends Cubit<CartState> {
         );
 
         emit(state.copyWith(
-          categoryId: categoryId,
+          categoryId: DeliveryType.values[categoryId],
           fee: fee,
         ));
       } on AppException catch(ex) {

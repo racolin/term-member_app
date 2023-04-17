@@ -6,7 +6,7 @@ class VoucherModel {
   final String name;
   final String image;
   final String partner;
-  final String sliderImage;
+  final String? sliderImage;
   final DateTime from;
   final DateTime to;
   final String description;

@@ -23,6 +23,7 @@ class ProductLoading extends ProductState {
 
 class ProductLoaded extends ProductState {
   final List<ProductModel> _list;
+  final List<ProductModel> _suggestion;
   final List<ProductCategoryModel> _listType;
   final List<ProductOptionModel> _listOption;
   final List<String> _unavailable;
@@ -31,12 +32,14 @@ class ProductLoaded extends ProductState {
 
   ProductLoaded({
     List<ProductModel>? list,
+    List<ProductModel>? suggestion = const [],
     List<ProductCategoryModel>? listType,
     List<ProductOptionModel>? listOption,
     List<String>? unavailable,
     List<String>? unavailableOptions,
     List<String>? unavailableTypes,
   })  : _list = list ?? [],
+        _suggestion = suggestion ?? [],
         _listType = listType ?? [],
         _listOption = listOption ?? [],
         _unavailable = unavailable ?? [],
@@ -51,6 +54,8 @@ class ProductLoaded extends ProductState {
         (e) => !_unavailable.contains(e.id),
       )
       .toList();
+
+  List<ProductModel> get suggestion => _suggestion;
 
   List<ProductOptionModel> get listOption => _listOption
       .where(
@@ -86,6 +91,7 @@ class ProductLoaded extends ProductState {
 
   ProductLoaded copyWith({
     List<ProductModel>? list,
+    List<ProductModel>? suggestion,
     List<ProductCategoryModel>? listType,
     List<ProductOptionModel>? listOption,
     List<String>? unavailableList,
@@ -94,8 +100,12 @@ class ProductLoaded extends ProductState {
   }) {
     return ProductLoaded(
       list: list ?? _list,
+      suggestion: suggestion ?? _suggestion,
       listType: listType ?? _listType,
       listOption: listOption ?? _listOption,
+      unavailable: unavailableList ?? _unavailable,
+      unavailableTypes: unavailableListType ?? _unavailableTypes,
+      unavailableOptions: unavailableListOption ?? _unavailableOptions,
     );
   }
 }

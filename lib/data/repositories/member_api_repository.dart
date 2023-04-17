@@ -37,9 +37,10 @@ class MemberApiRepository extends MemberRepository {
         name: 'Tín Phan',
         point: 700,
         currentPoint: 430,
-        currentRankName: 'Bạch Kim',
+        currentRankName: 'Vàng',
         currentRankPoint: 500,
-        nextRankName: 'Kim Cương',
+        backgroundImage: 'https://static.vecteezy.com/system/resources/thumbnails/009/262/854/small/bright-decorative-background-with-mandala-pattern-blank-for-postcard-invitation-banner-with-place-for-text-illustration-vector.jpg',
+        nextRankName: 'Bạch Kim',
         nextRankPoint: 1000,
         description: 'Còn 300 BEAN nữa để thăng hạng|Đổi điểm không ảnh hưởng '
             'đến cấp bậc. Cùng đổi điểm nào!|Sắp đạt mức cuối rồi!',

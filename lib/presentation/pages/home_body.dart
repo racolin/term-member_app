@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:member_app/presentation/res/strings/values.dart';
-import 'package:member_app/presentation/widgets/app_image_widget.dart';
-import 'package:member_app/presentation/widgets/re_order_widget.dart';
-import 'package:member_app/presentation/res/dimen/dimens.dart';
-import 'package:member_app/presentation/widgets/news_section_widget.dart';
-import 'package:member_app/presentation/widgets/slider_widget.dart';
-import 'package:member_app/presentation/widgets/suggest_products_widget.dart';
 
+import '../../presentation/res/strings/values.dart';
+import '../../presentation/widgets/app_image_widget.dart';
+import '../../presentation/res/dimen/dimens.dart';
+import '../widgets/news/news_section_widget.dart';
+import '../../presentation/widgets/product/products_suggest_widget.dart';
 import '../widgets/card_widget.dart';
-import '../widgets/delivery_options_widget.dart';
+import '../widgets/delivery/delivery_options_widget.dart';
 import '../widgets/drag_bar_widget.dart';
+import '../widgets/re_order/re_orders_widget.dart';
+import '../widgets/slide/slider_widget.dart';
 
 class HomeBody extends StatefulWidget {
   final VoidCallback onScroll;
@@ -117,7 +117,7 @@ class _HomeBodyState extends State<HomeBody> {
               DragBarWidget(margin: spaceXS),
               DeliveryOptionsWidget(),
               SliderWidget(),
-              SuggestProductsWidget(),
+              SuggestProductsWidget(height: 307),
               ReOrdersWidget(),
               NewsSectionWidget(),
             ],

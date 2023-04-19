@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../presentation/widgets/app_image_widget.dart';
+import '../app_image_widget.dart';
 
 class SlideImagesWidget extends StatelessWidget {
   final double separator;

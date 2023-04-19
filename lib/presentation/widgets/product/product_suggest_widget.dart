@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:member_app/presentation/res/dimen/dimens.dart';
 import 'package:member_app/presentation/res/strings/values.dart';
 
-import '../../data/models/product_model.dart';
-import '../../supports/convert.dart';
+import '../../../data/models/product_model.dart';
+import '../../../supports/convert.dart';
 
 class ProductSuggestWidget extends StatelessWidget {
   final ProductModel product;

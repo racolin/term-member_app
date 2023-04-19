@@ -4,7 +4,6 @@ import 'package:member_app/presentation/pages/loading_page.dart';
 import 'package:member_app/presentation/res/dimen/dimens.dart';
 import 'package:member_app/presentation/res/strings/values.dart';
 import 'package:member_app/presentation/widgets/card_widget.dart';
-import 'package:member_app/presentation/widgets/promotion_small_widget.dart';
 import 'package:member_app/presentation/widgets/voucher_widget.dart';
 
 import '../../business_logic/cubits/promotion_cubit.dart';
@@ -12,6 +11,7 @@ import '../../business_logic/cubits/voucher_cubit.dart';
 import '../../business_logic/states/promotion_state.dart';
 import '../../business_logic/states/voucher_state.dart';
 import '../widgets/feature_card_widget.dart';
+import '../widgets/promotion/promotion_small_widget.dart';
 
 class PromotionPointPage extends StatelessWidget {
   const PromotionPointPage({Key? key}) : super(key: key);

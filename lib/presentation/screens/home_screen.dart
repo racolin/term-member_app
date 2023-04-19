@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:member_app/business_logic/cubits/cart_cubit.dart';
+import 'package:member_app/business_logic/states/cart_state.dart';
 
 import '../../presentation/pages/initial_page.dart';
 import '../../presentation/pages/promotion_body.dart';
@@ -12,6 +14,7 @@ import '../../presentation/widgets/app_bar_widget.dart';
 import '../../presentation/widgets/floating_action_widget.dart';
 import '../../business_logic/cubits/home_cubit.dart';
 import '../../business_logic/states/home_state.dart';
+import '../bottom_sheet/method_order_bottom_sheet.dart';
 import '../widgets/navigation_widget.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -40,7 +43,13 @@ class _HomeScreenState extends State<HomeScreen> {
         );
         break;
       case HomeBodyType.order:
-        body = const OrderBody();
+        body = OrderBody(
+          onScroll: () {
+            setState(() {
+              expanded = !expanded;
+            });
+          },
+        );
         break;
       case HomeBodyType.store:
         body = const StoreBody();
@@ -81,15 +90,46 @@ class _HomeScreenState extends State<HomeScreen> {
               return const LoadingPage();
             },
           ),
-          bottomNavigationBar: const NavigationWidget(),
+          bottomNavigationBar: (state is! HomeLoaded)
+              ? null
+              : NavigationWidget(
+                  type: state.type,
+                  onClick: (type) {
+                    context.read<HomeCubit>().setBody(type);
+                  },
+                ),
           floatingActionButtonLocation:
               FloatingActionButtonLocation.centerFloat,
           floatingActionButton: (state is HomeLoaded &&
                   (state.type == HomeBodyType.home ||
                       state.type == HomeBodyType.order))
-              ? FloatingActionWidget(
-                  expanded: expanded,
-                  onClick: () {},
+              ? BlocBuilder<CartCubit, CartState>(
+                  builder: (context, cartState) {
+                    if (cartState is CartLoaded) {
+                      return FloatingActionWidget(
+                        addressName: cartState.addressName,
+                        type: cartState.categoryId,
+                        amount: cartState.payType,
+                        cost: cartState.calculateCost,
+                        expanded: expanded,
+                        onClick: () {
+                          showModalBottomSheet(
+                            context: context,
+                            shape: const RoundedRectangleBorder(
+                              borderRadius: BorderRadius.vertical(
+                                top: Radius.circular(16),
+                              ),
+                            ),
+                            builder: (context) => MethodOrderBottomSheet(
+                              type: cartState.categoryId,
+                              addressName: cartState.addressName,
+                            ),
+                          );
+                        },
+                      );
+                    }
+                    return const SizedBox();
+                  },
                 )
               : null,
         );

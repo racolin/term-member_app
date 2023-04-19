@@ -6,7 +6,7 @@ import '../../presentation/res/dimen/dimens.dart';
 import '../../data/models/store_model.dart';
 import '../res/strings/values.dart';
 import 'store_body.dart';
-import '../widgets/stores_widget.dart';
+import '../widgets/store/stores_widget.dart';
 
 class StoreSearchPage extends StatefulWidget {
   final Function(StoreModel) onCLick;

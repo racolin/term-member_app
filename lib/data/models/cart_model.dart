@@ -1,14 +1,15 @@
 import 'package:member_app/presentation/res/strings/values.dart';
 
 enum DeliveryType {
-  inStore(txtInStore, 'assets/images/image_in_store.png'),
-  takeOut(txtTake, 'assets/images/image_take_away.png'),
-  delivery(txtDelivery, 'assets/images/image_delivery.jpeg');
+  inStore(txtInStore, txtInStoreDetail, 'assets/images/image_in_store.png'),
+  takeOut(txtTake, txtTakeDetail, 'assets/images/image_take_away.png'),
+  delivery(txtDelivery, txtDeliveryDetail, 'assets/images/image_delivery.jpeg');
 
   final String name;
+  final String description;
   final String image;
 
-  const DeliveryType(this.name, this.image);
+  const DeliveryType(this.name, this.description, this.image);
 }
 
 class CartModel {

@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import '../../business_logic/cubits/news_cubit.dart';
-import '../../business_logic/states/news_state.dart';
-import '../../presentation/widgets/news_widget.dart';
+import '../../../business_logic/cubits/news_cubit.dart';
+import '../../../business_logic/states/news_state.dart';
 
-import '../res/dimen/dimens.dart';
-import '../res/strings/values.dart';
+import '../../res/dimen/dimens.dart';
+import '../../res/strings/values.dart';
+import 'news_widget.dart';
 
 class NewsSectionWidget extends StatefulWidget {
   const NewsSectionWidget({Key? key}) : super(key: key);

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:member_app/presentation/app_router.dart';
 import 'package:member_app/presentation/res/strings/values.dart';
 import 'package:member_app/presentation/widgets/feature_card_widget.dart';
 import 'package:member_app/presentation/widgets/group_item_widget.dart';
@@ -15,7 +16,7 @@ class OtherBody extends StatelessWidget {
         children: [
           _getMedias(),
           _getSupports(),
-          _getAccounts(),
+          _getAccounts(context),
           const SizedBox(height: dimLG),
         ],
       ),
@@ -80,7 +81,7 @@ class OtherBody extends StatelessWidget {
     );
   }
 
-  Widget _getAccounts() {
+  Widget _getAccounts(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.all(spaceXS),
       child: Column(
@@ -126,7 +127,9 @@ class OtherBody extends StatelessWidget {
                     color: Colors.black,
                   ),
                   title: txtSavedAddress,
-                  onClick: () {},
+                  onClick: () {
+                    Navigator.pushNamed(context, AppRouter.address);
+                  },
                 ),
                 const Padding(
                   padding: EdgeInsets.only(left: spaceMD),

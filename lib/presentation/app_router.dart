@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:member_app/business_logic/cubits/product_scroll_cubit.dart';
+import 'package:member_app/presentation/screens/address_screen.dart';
 
-import '../business_logic/cubits/address_cubit.dart';
+import '../../business_logic/cubits/product_scroll_cubit.dart';
 import '../business_logic/cubits/auth_cubit.dart';
 import '../business_logic/cubits/cart_detail_cubit.dart';
 import '../business_logic/cubits/notify_cubit.dart';
@@ -44,11 +44,13 @@ import '../business_logic/cubits/voucher_cubit.dart';
 import '../data/repositories/cart_api_repository.dart';
 import '../presentation/screens/auth_screen.dart';
 import '../presentation/screens/home_screen.dart';
+import 'screens/address_select_screen.dart';
 
 class AppRouter {
   static const String home = '/home';
   static const String auth = '/auth';
   static const String address = '/address';
+  static const String selectAddress = '/select-address';
   static const String cartDetail = '/cart-detail';
   static const String carts = '/carts';
   static const String profile = '/profile';
@@ -192,16 +194,13 @@ class AppRouter {
       case address:
         return MaterialPageRoute(
           builder: (context) {
-            return RepositoryProvider<SettingRepository>(
-              create: (context) => SettingApiRepository(),
-              child: BlocProvider<AddressCubit>(
-                  create: (context) => AddressCubit(
-                        repository: RepositoryProvider.of<SettingRepository>(
-                          context,
-                        ),
-                      ),
-                  child: const AuthScreen()),
-            );
+            return const AddressScreen();
+          },
+        );
+      case selectAddress:
+        return MaterialPageRoute(
+          builder: (context) {
+            return const AddressSelectScreen();
           },
         );
       case cartDetail:

@@ -4,12 +4,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:member_app/presentation/widgets/app_image_widget.dart';
 
-import '../../supports/convert.dart';
-import '../../business_logic/cubits/news_cubit.dart';
-import '../../business_logic/states/news_state.dart';
-import '../../data/models/news_model.dart';
-import '../../presentation/res/dimen/dimens.dart';
-import '../../presentation/res/strings/values.dart';
+import '../../../supports/convert.dart';
+import '../../../business_logic/cubits/news_cubit.dart';
+import '../../../business_logic/states/news_state.dart';
+import '../../../data/models/news_model.dart';
+import '../../res/dimen/dimens.dart';
+import '../../res/strings/values.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
 class NewsItemWidget extends StatelessWidget {

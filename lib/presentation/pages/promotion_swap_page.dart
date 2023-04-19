@@ -4,13 +4,13 @@ import 'package:member_app/data/models/promotion_model.dart';
 import 'package:member_app/presentation/pages/loading_page.dart';
 import 'package:member_app/presentation/res/dimen/dimens.dart';
 import 'package:member_app/presentation/res/strings/values.dart';
-import 'package:member_app/presentation/widgets/promotion_large_widget.dart';
-import 'package:member_app/presentation/widgets/promotion_me_widget.dart';
-import 'package:member_app/presentation/widgets/promotion_small_widget.dart';
+import 'package:member_app/presentation/widgets/promotion/promotion_large_widget.dart';
+import 'package:member_app/presentation/widgets/promotion/promotion_me_widget.dart';
 
 import '../../business_logic/cubits/promotion_cubit.dart';
 import '../../business_logic/states/promotion_state.dart';
 import '../widgets/group_item_widget.dart';
+import '../widgets/promotion/promotion_small_widget.dart';
 
 class PromotionSwapPage extends StatelessWidget {
   final VoidCallback toRedeemVoucherPage;

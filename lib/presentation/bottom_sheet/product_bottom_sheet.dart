@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:member_app/presentation/widgets/slide_images_widget.dart';
+import 'package:member_app/presentation/widgets/slide/slide_images_widget.dart';
 
 import '../../data/models/product_option_model.dart';
 import '../../data/models/product_model.dart';

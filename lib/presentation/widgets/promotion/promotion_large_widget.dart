@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:member_app/data/models/promotion_model.dart';
 import 'package:member_app/presentation/res/strings/values.dart';
 
-import '../res/dimen/dimens.dart';
+import '../../res/dimen/dimens.dart';
 
 class PromotionLargeWidget extends StatelessWidget {
   final PromotionModel promotion;

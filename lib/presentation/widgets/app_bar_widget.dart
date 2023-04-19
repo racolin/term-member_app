@@ -1,4 +1,4 @@
-import 'package:badges/badges.dart';
+import 'package:badges/badges.dart' as badges;
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -12,7 +12,7 @@ import '../../presentation/res/dimen/dimens.dart';
 import '../../business_logic/cubits/app_bar_cubit.dart';
 import '../../business_logic/states/app_bar_state.dart';
 import '../res/strings/values.dart';
-import 'product_categories_widget.dart';
+import 'product/product_categories_widget.dart';
 import 'drag_bar_widget.dart';
 
 class AppBarWidget extends AppBar {
@@ -349,8 +349,8 @@ class BaseActionWidget extends StatelessWidget {
                 color: Colors.white,
                 borderRadius: BorderRadius.circular(spaceLG),
               ),
-              child: Badge(
-                position: const BadgePosition(top: -4, end: -4),
+              child: badges.Badge(
+                position: badges.BadgePosition.topEnd(top: -4, end: -4),
                 badgeContent: Text(
                   cartTemplateAmount.toString(),
                   style: const TextStyle(
@@ -359,7 +359,10 @@ class BaseActionWidget extends StatelessWidget {
                     fontWeight: FontWeight.w700,
                   ),
                 ),
-                badgeColor: Colors.red,
+                badgeStyle: const badges.BadgeStyle(
+                  badgeColor: Colors.red,
+                ),
+                stackFit: StackFit.expand,
                 child: Icon(
                   Icons.shopping_cart_checkout_outlined,
                   size: fontXL,
@@ -423,8 +426,8 @@ class BaseActionWidget extends StatelessWidget {
                 color: Colors.white,
                 borderRadius: BorderRadius.circular(spaceLG),
               ),
-              child: Badge(
-                position: const BadgePosition(top: -4, end: -4),
+              child: badges.Badge(
+                position: badges.BadgePosition.topEnd(top: -4, end: -4),
                 badgeContent: Text(
                   notifyAmount.toString(),
                   style: const TextStyle(
@@ -433,7 +436,10 @@ class BaseActionWidget extends StatelessWidget {
                     fontWeight: FontWeight.w700,
                   ),
                 ),
-                badgeColor: Colors.red,
+                badgeStyle: const badges.BadgeStyle(
+                  badgeColor: Colors.red,
+                ),
+                stackFit: StackFit.expand,
                 child: Icon(
                   Icons.notifications_outlined,
                   size: fontXL,

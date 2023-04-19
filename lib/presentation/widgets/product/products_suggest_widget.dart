@@ -1,21 +1,27 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:member_app/presentation/res/dimen/dimens.dart';
-import 'package:member_app/presentation/res/strings/values.dart';
 
-import '../../business_logic/cubits/product_cubit.dart';
-import '../../business_logic/states/product_state.dart';
+import '../../../presentation/res/dimen/dimens.dart';
+import '../../../../presentation/res/strings/values.dart';
+import '../../../business_logic/cubits/product_cubit.dart';
+import '../../../business_logic/states/product_state.dart';
 import 'product_suggest_widget.dart';
 
 class SuggestProductsWidget extends StatefulWidget {
-  const SuggestProductsWidget({Key? key}) : super(key: key);
+  final double height;
+  const SuggestProductsWidget({Key? key, required this.height,}) : super(key: key);
 
   @override
   State<SuggestProductsWidget> createState() => _SuggestProductsWidgetState();
 }
 
 class _SuggestProductsWidgetState extends State<SuggestProductsWidget> {
-  final double height = 268;
+
+ final double top = spaceXS;
+ final double textHeight = 1.25;
+ final double textFont = fontLG;
+ final double textSpaceVertical = spaceXXS;
+
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<ProductCubit, ProductState>(
@@ -28,28 +34,28 @@ class _SuggestProductsWidgetState extends State<SuggestProductsWidget> {
           case ProductLoaded:
             state as ProductLoaded;
             return IntrinsicHeight(
-              // height: 301
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const SizedBox(
-                    height: spaceXS,
+                  SizedBox(
+                    height: top,
                   ),
-                  const Padding(
+                  Padding(
                     padding: EdgeInsets.symmetric(
                       horizontal: spaceXS,
-                      vertical: spaceXXS,
+                      vertical: textSpaceVertical,
                     ),
                     child: Text(
                       txtSuggestProduct,
                       style: TextStyle(
+                        height: textHeight,
                         fontWeight: FontWeight.w700,
-                        fontSize: fontLG,
+                        fontSize: textFont,
                       ),
                     ),
                   ),
                   SizedBox(
-                    height: height,
+                    height: widget.height - top - textHeight * textFont - textSpaceVertical * 2,
                     child: ListView.builder(
                       itemCount: state.suggestion.length,
                       itemBuilder: (context, index) {

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-import '../../data/models/store_model.dart';
-import '../res/dimen/dimens.dart';
+import '../../../data/models/store_model.dart';
+import '../../res/dimen/dimens.dart';
 
 class StoreItemWidget extends StatelessWidget {
   final Function(StoreModel) onClick;

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../data/models/product_option_model.dart';
+import '../../../data/models/product_option_model.dart';
 
 class ProductOptionWidget extends StatelessWidget {
   final ProductOptionModel model;

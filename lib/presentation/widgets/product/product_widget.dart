@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
-import '../../data/models/product_model.dart';
-import '../../supports/convert.dart';
-import '../res/dimen/dimens.dart';
+import '../../../data/models/product_model.dart';
+import '../../../supports/convert.dart';
+import '../../res/dimen/dimens.dart';
 
 class ProductWidget extends StatelessWidget {
   final ProductModel shortProduct;

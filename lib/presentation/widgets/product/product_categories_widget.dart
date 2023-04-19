@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../business_logic/cubits/product_cubit.dart';
-import '../../business_logic/states/product_state.dart';
-import '../res/dimen/dimens.dart';
+import '../../../business_logic/cubits/product_cubit.dart';
+import '../../../business_logic/states/product_state.dart';
+import '../../res/dimen/dimens.dart';
 import 'product_category_widget.dart';
 
 class ProductCategoriesWidget extends StatelessWidget {
@@ -30,8 +30,8 @@ class ProductCategoriesWidget extends StatelessWidget {
               shrinkWrap: true,
               physics: const NeverScrollableScrollPhysics(),
               gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
-                maxCrossAxisExtent: 90,
-                mainAxisExtent: 90,
+                maxCrossAxisExtent: dimXL,
+                mainAxisExtent: dimXL,
                 crossAxisSpacing: spaceXL,
               ),
               itemCount: state.listType.length,

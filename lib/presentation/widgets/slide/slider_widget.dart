@@ -3,10 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:member_app/presentation/bottom_sheet/voucher_bottom_sheet.dart';
 import 'package:member_app/presentation/pages/loading_page.dart';
-import '../../business_logic/cubits/voucher_cubit.dart';
-import '../../business_logic/states/voucher_state.dart';
-import '../res/dimen/dimens.dart';
-import 'app_image_widget.dart';
+import '../../../business_logic/cubits/voucher_cubit.dart';
+import '../../../business_logic/states/voucher_state.dart';
+import '../../res/dimen/dimens.dart';
+import '../app_image_widget.dart';
 
 class SliderWidget extends StatefulWidget {
   const SliderWidget({Key? key}) : super(key: key);

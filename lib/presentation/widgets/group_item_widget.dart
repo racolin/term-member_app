@@ -22,9 +22,7 @@ class GroupItemWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return InkWell(
       overlayColor: MaterialStateProperty.all(
-        Theme.of(context).primaryColor.withOpacity(
-              opaSM,
-            ),
+        Theme.of(context).primaryColor.withOpacity(opaSM),
       ),
       borderRadius: BorderRadius.vertical(
         bottom: isBottom ? const Radius.circular(spaceXS) : Radius.zero,

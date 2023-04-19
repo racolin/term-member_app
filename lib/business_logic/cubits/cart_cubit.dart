@@ -17,7 +17,7 @@ class CartCubit extends Cubit<CartState> {
       : _repository = repository,
         super(CartInitial()) {
     /// Thiếu bước lưu cart local khi login thì nạp lại
-    emit(CartLoaded(products: []));
+    emit(CartLoaded(products: [], categoryId: DeliveryType.takeOut));
   }
 
   Future<AppMessage?> checkAndSetVoucher(VoucherModel voucher) async {

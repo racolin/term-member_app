@@ -7,33 +7,34 @@ import '../res/dimen/dimens.dart';
 
 class VoucherWidget extends StatelessWidget {
   final VoucherModel voucher;
-  final bool? back;
+  final VoidCallback? onClick;
+  final double height = 100;
+  final int numberOfSmall = 8;
+  final int rateLeft = 2;
+  final int rateRight = 5;
 
   const VoucherWidget({
     Key? key,
     required this.voucher,
-    this.back = false,
+    this.onClick,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () {
-        if (back ?? true) {
-          Navigator.pop(context, voucher);
-        } else {
-
-        }
-      },
+      onTap: onClick,
       child: ClipPath(
-        clipper: TicketClipper(numberOfSmall: 8, ticketRate: 2 / 7),
+        clipper: TicketClipper(
+          numberOfSmall: numberOfSmall,
+          ticketRate: rateLeft / (rateLeft + rateRight),
+        ),
         child: Container(
-          height: 100,
+          height: height,
           color: Colors.white70,
           child: Row(
             children: [
               Expanded(
-                flex: 2,
+                flex: rateLeft,
                 child: Padding(
                   padding: const EdgeInsets.all(spaceSM),
                   child: ClipRRect(
@@ -46,7 +47,7 @@ class VoucherWidget extends StatelessWidget {
                 ),
               ),
               Expanded(
-                flex: 5,
+                flex: rateRight,
                 child: Padding(
                   padding: const EdgeInsets.all(spaceMD),
                   child: Column(

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:member_app/presentation/res/dimen/dimens.dart';
 
-import '../../data/models/product_category_model.dart';
+import '../../../data/models/product_category_model.dart';
 
 class ProductCategoryWidget extends StatelessWidget {
   final ProductCategoryModel category;

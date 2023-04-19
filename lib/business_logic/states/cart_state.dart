@@ -57,6 +57,8 @@ class CartLoaded extends CartState {
     return value < 0 ? 0 : value;
   }
 
+  int get amount => products.fold(0, (pre, e) => pre + e.amount);
+
   CartLoaded copyWith({
     StoreModel? store,
     StoreDetailModel? storeDetail,

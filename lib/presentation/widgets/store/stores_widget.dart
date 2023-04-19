@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:member_app/presentation/pages/loading_page.dart';
 
-import '../../data/models/store_model.dart';
-import '../res/dimen/dimens.dart';
+import '../../../data/models/store_model.dart';
+import '../../res/dimen/dimens.dart';
 import 'store_item_widget.dart';
 
 class StoresWidget extends StatelessWidget {

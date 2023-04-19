@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:member_app/presentation/res/strings/values.dart';
 
-import '../../data/models/promotion_model.dart';
-import '../res/dimen/dimens.dart';
+import '../../../data/models/promotion_model.dart';
+import '../../res/dimen/dimens.dart';
 
 class PromotionMeWidget extends StatelessWidget {
   final PromotionModel promotion;

@@ -16,6 +16,8 @@ class CardWidget extends StatelessWidget {
   final double barHeight = 76;
   final double barCoverHeight = 96;
   final double barWidth = 300;
+  final double cardHeight = 160;
+  final double top = 172;
 
   const CardWidget({
     Key? key,
@@ -36,157 +38,7 @@ class CardWidget extends StatelessWidget {
             return Stack(
               children: [
                 if (isDetail) _getDetail(state.card),
-                SizedBox(
-                  height: height,
-                  child: Card(
-                    margin: EdgeInsets.zero,
-                    elevation: 4,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(spaceXS),
-                    ),
-                    color: Colors.orange,
-                    child: AppImageWidget(
-                      image: state.card.backgroundImage,
-                      errorWidget: (ctx, url, error) {
-                        return Container(
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(spaceXS),
-                            image: const DecorationImage(
-                              fit: BoxFit.cover,
-                              image: AssetImage(assetDefaultImage),
-                            ),
-                          ),
-                          child: Column(
-                            mainAxisSize: MainAxisSize.min,
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Row(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  _getInfo(state.card),
-                                  const Spacer(),
-                                  Container(
-                                    margin:
-                                        const EdgeInsets.only(right: spaceMD),
-                                    padding: const EdgeInsets.symmetric(
-                                      vertical: spaceXS,
-                                      horizontal: spaceSM,
-                                    ),
-                                    decoration: const BoxDecoration(
-                                      color: Colors.brown,
-                                      borderRadius: BorderRadius.vertical(
-                                        bottom: Radius.circular(spaceXS),
-                                      ),
-                                    ),
-                                    child: Row(
-                                      children: [
-                                        Icon(
-                                          Icons
-                                              .keyboard_double_arrow_down_outlined,
-                                          color: Colors.white.withAlpha(200),
-                                          size: fontLG,
-                                        ),
-                                        const SizedBox(
-                                          width: spaceXXS,
-                                        ),
-                                        const Text(
-                                          txtAccumulate,
-                                          style: TextStyle(
-                                            color: Colors.white,
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                ],
-                              ),
-                              Container(
-                                height: barCoverHeight,
-                                padding: const EdgeInsets.all(spaceMD),
-                                decoration: BoxDecoration(
-                                  color: Colors.white,
-                                  borderRadius: BorderRadius.circular(spaceXS),
-                                ),
-                                margin: const EdgeInsets.all(spaceMD),
-                                child: SvgPicture.string(
-                                  state.card.id.barcode(barWidth, barHeight),
-                                ),
-                              ),
-                            ],
-                          ),
-                        );
-                      },
-                      imageBuilder: (ctx, provider) {
-                        return Container(
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(spaceXS),
-                            image: DecorationImage(
-                              fit: BoxFit.cover,
-                              image: provider,
-                            ),
-                          ),
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Row(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  _getInfo(state.card),
-                                  const Spacer(),
-                                  Container(
-                                    margin:
-                                        const EdgeInsets.only(right: spaceMD),
-                                    padding: const EdgeInsets.symmetric(
-                                      vertical: spaceXS,
-                                      horizontal: spaceSM,
-                                    ),
-                                    decoration: const BoxDecoration(
-                                      color: Colors.brown,
-                                      borderRadius: BorderRadius.vertical(
-                                        bottom: Radius.circular(spaceXS),
-                                      ),
-                                    ),
-                                    child: Row(
-                                      children: [
-                                        Icon(
-                                          Icons
-                                              .keyboard_double_arrow_down_outlined,
-                                          color: Colors.white.withAlpha(200),
-                                          size: fontLG,
-                                        ),
-                                        const SizedBox(
-                                          width: spaceXXS,
-                                        ),
-                                        const Text(
-                                          txtAccumulate,
-                                          style: TextStyle(
-                                            color: Colors.white,
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                ],
-                              ),
-                              Container(
-                                height: barCoverHeight,
-                                padding: const EdgeInsets.all(spaceMD),
-                                decoration: BoxDecoration(
-                                  color: Colors.white,
-                                  borderRadius: BorderRadius.circular(spaceXS),
-                                ),
-                                margin: const EdgeInsets.all(spaceMD),
-                                child: SvgPicture.string(
-                                  state.card.id.barcode(barWidth, barHeight),
-                                ),
-                              ),
-                            ],
-                          ),
-                        );
-                      },
-                    ),
-                  ),
-                ),
+                _getCard(state.card),
               ],
             );
         }
@@ -195,11 +47,159 @@ class CardWidget extends StatelessWidget {
     );
   }
 
+  Widget _getCard(CardModel card) {
+    return SizedBox(
+      height: height,
+      child: Card(
+        margin: EdgeInsets.zero,
+        elevation: 4,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(spaceXS),
+        ),
+        color: Colors.orange,
+        child: AppImageWidget(
+          image: card.backgroundImage,
+          errorWidget: (ctx, url, error) {
+            return Container(
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(spaceXS),
+                image: const DecorationImage(
+                  fit: BoxFit.cover,
+                  image: AssetImage(assetDefaultImage),
+                ),
+              ),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      _getInfo(card),
+                      const Spacer(),
+                      Container(
+                        margin: const EdgeInsets.only(right: spaceMD),
+                        padding: const EdgeInsets.symmetric(
+                          vertical: spaceXS,
+                          horizontal: spaceSM,
+                        ),
+                        decoration: const BoxDecoration(
+                          color: Colors.brown,
+                          borderRadius: BorderRadius.vertical(
+                            bottom: Radius.circular(spaceXS),
+                          ),
+                        ),
+                        child: Row(
+                          children: [
+                            Icon(
+                              Icons.keyboard_double_arrow_down_outlined,
+                              color: Colors.white.withAlpha(200),
+                              size: fontLG,
+                            ),
+                            const SizedBox(
+                              width: spaceXXS,
+                            ),
+                            const Text(
+                              txtAccumulate,
+                              style: TextStyle(
+                                color: Colors.white,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                  Container(
+                    height: barCoverHeight,
+                    padding: const EdgeInsets.all(spaceMD),
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(spaceXS),
+                    ),
+                    margin: const EdgeInsets.all(spaceMD),
+                    child: SvgPicture.string(
+                      card.id.barcode(barWidth, barHeight),
+                    ),
+                  ),
+                ],
+              ),
+            );
+          },
+          imageBuilder: (ctx, provider) {
+            return Container(
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(spaceXS),
+                image: DecorationImage(
+                  fit: BoxFit.cover,
+                  image: provider,
+                ),
+              ),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      _getInfo(card),
+                      const Spacer(),
+                      Container(
+                        margin: const EdgeInsets.only(right: spaceMD),
+                        padding: const EdgeInsets.symmetric(
+                          vertical: spaceXS,
+                          horizontal: spaceSM,
+                        ),
+                        decoration: const BoxDecoration(
+                          color: Colors.brown,
+                          borderRadius: BorderRadius.vertical(
+                            bottom: Radius.circular(spaceXS),
+                          ),
+                        ),
+                        child: Row(
+                          children: [
+                            Icon(
+                              Icons.keyboard_double_arrow_down_outlined,
+                              color: Colors.white.withAlpha(200),
+                              size: fontLG,
+                            ),
+                            const SizedBox(
+                              width: spaceXXS,
+                            ),
+                            const Text(
+                              txtAccumulate,
+                              style: TextStyle(
+                                color: Colors.white,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                  Container(
+                    height: barCoverHeight,
+                    padding: const EdgeInsets.all(spaceMD),
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(spaceXS),
+                    ),
+                    margin: const EdgeInsets.all(spaceMD),
+                    child: SvgPicture.string(
+                      card.id.barcode(barWidth, barHeight),
+                    ),
+                  ),
+                ],
+              ),
+            );
+          },
+        ),
+      ),
+    );
+  }
+
   Widget _getDetail(CardModel card) {
     return Card(
-      margin: const EdgeInsets.only(
-        top: 172,
-      ),
+      margin: EdgeInsets.only(top: top),
       elevation: 4,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(
@@ -208,7 +208,7 @@ class CardWidget extends StatelessWidget {
       ),
       color: Colors.white,
       child: SizedBox(
-        height: 160,
+        height: cardHeight,
         child: Column(
           mainAxisAlignment: MainAxisAlignment.end,
           children: [
@@ -333,7 +333,7 @@ class SliderRank extends StatelessWidget {
               ),
             ),
             Container(
-              margin: EdgeInsets.only(left: width - 8),
+              margin: EdgeInsets.only(left: width - spaceXS),
               child: Container(
                 height: spaceXXS,
                 width: spaceXXS,

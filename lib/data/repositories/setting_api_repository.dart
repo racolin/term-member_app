@@ -1,4 +1,6 @@
 import 'package:dio/dio.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 
 import '../../data/models/notify_model.dart';
 import '../../data/models/address_model.dart';
@@ -33,6 +35,7 @@ class SettingApiRepository extends SettingRepository {
   var _defaults = [
     AddressModel(
       id: 'ADDRESS-HOME',
+      icon: Icons.home_outlined.codePoint,
       name: 'Địa chỉ phòng trọ',
       address: '125/42/14 Bùi Đình Tuý, Bình Thạnh, TP.Hồ Chí Minh',
       note: 'Cái nhà có cổng màu đen',
@@ -42,6 +45,7 @@ class SettingApiRepository extends SettingRepository {
     AddressModel(
       id: 'ADDRESS-WORK',
       name: 'Địa chỉ nơi làm việc',
+      icon: Icons.domain_outlined.codePoint,
       address: '419 Ngô Gia Tự, Quận 10, TP.Hồ Chí Minh',
       note: 'Toà nhà kế bên tiệm kính chứ không ohair tiệm kính',
       receiver: 'Phan Trung Tín',

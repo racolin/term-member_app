@@ -11,10 +11,14 @@ const txtOther = "Khác";
 const txtEOther = "Other";
 
 const txtSelectDelivery = "Hãy chọn phương thức giao hàng phù hợp";
+const txtSelectDeliveryTitle = "Chọn phương thức giao hàng";
 
 const txtTake = "Đến lấy tại";
+const txtTakeDetail = "Bạn sẽ đến cửa hàng bạn chọn và lấy đơn hàng bạn đã đặt";
 const txtInStore = "Tại quầy";
-const txtDelivery = "Giao đến";
+const txtInStoreDetail = "Đặt trước và đến tại quầy để nhận đơn hàng và thưởng thức tại quán";
+const txtDelivery = "Giao hàng";
+const txtDeliveryDetail = "Đơn hàng sẽ được giao đến địa chỉ mà bạn đã cung cấp";
 
 const txtOptionDelivery = "Giao hàng";
 const txtOptionTake = "Mang đi";
@@ -25,6 +29,7 @@ const txtReOrder = "Đặt lại";
 const txtSuggestProduct = "Gợi ý riêng cho bạn";
 const txtETC = "...";
 const txtSelect = "Chọn";
+const txtSelectAddress = "Chọn địa chỉ";
 const txtNews = "Khám phá thêm";
 const txtAccumulate = "Tích điểm";
 const txtPointName = "BEAN";
@@ -38,6 +43,7 @@ const txtSupport = "Hỗ trợ";
 const txtAccount = "Tài khoản";
 const txtPersonalInfo = "Thông tin cá nhân";
 const txtSavedAddress = "Địa chỉ đã lưu";
+const txtSave = "Lưu";
 const txtSetting = "Cài đặt";
 const txtLogOut = "Đăng xuất";
 const txtLogIn = "Đăng nhập";
@@ -64,6 +70,7 @@ const txtNone = '';
 const txtUnknownCode = 'UNKNOWN';
 const txtAppName = 'The Coffee House';
 const txtLoading = 'Đang tải...';
+const txtEdit = 'Sửa';
 
 const assetDefaultIcon = 'assets/images/icon_default.png';
 const assetDefaultImage = 'assets/images/image_default.png';

@@ -5,11 +5,11 @@ import '../../../supports/convert.dart';
 import '../../res/dimen/dimens.dart';
 
 class ProductWidget extends StatelessWidget {
-  final ProductModel shortProduct;
+  final ProductModel model;
 
   const ProductWidget({
     Key? key,
-    required this.shortProduct,
+    required this.model,
   }) : super(key: key);
 
   final double height = 100;
@@ -34,7 +34,7 @@ class ProductWidget extends StatelessWidget {
             ClipRRect(
               borderRadius: BorderRadius.circular(spaceXS),
               child: Image.network(
-                shortProduct.image,
+                model.image,
                 height: height,
                 width: width,
                 fit: BoxFit.cover,
@@ -54,7 +54,7 @@ class ProductWidget extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          shortProduct.name,
+                          model.name,
                           style: const TextStyle(
                             fontWeight: FontWeight.w600,
                             fontSize: fontMD,
@@ -66,7 +66,7 @@ class ProductWidget extends StatelessWidget {
                           height: spaceXXS,
                         ),
                         Text(
-                          numberToCurrency(shortProduct.cost, 'đ'),
+                          numberToCurrency(model.cost, 'đ'),
                           style: const TextStyle(fontSize: fontMD),
                         ),
                       ],

@@ -38,6 +38,7 @@ class ProductApiRepository extends ProductRepository {
     ProductCategoryModel(id: '6', image: 'https://product.hstatic.net/1000075078/product/1669736835_ca-phe-sua-da_15ae84580c4141fc809ac8fffd72b194.png', name: 'Hi-Tea Healthy', productIDs: ['PRODUCT-0','PRODUCT-1','PRODUCT-7','PRODUCT-13','PRODUCT-12','PRODUCT-32',] ),
     ProductCategoryModel(id: '7', image: 'https://product.hstatic.net/1000075078/product/1669736835_ca-phe-sua-da_15ae84580c4141fc809ac8fffd72b194.png', name: 'Trà trái cây - Trà sữa', productIDs: ['PRODUCT-0','PRODUCT-1','PRODUCT-7','PRODUCT-13','PRODUCT-12','PRODUCT-32',] ),
     ProductCategoryModel(id: '8', image: 'https://product.hstatic.net/1000075078/product/1669736835_ca-phe-sua-da_15ae84580c4141fc809ac8fffd72b194.png', name: 'Bánh Snack', productIDs: ['PRODUCT-0','PRODUCT-1','PRODUCT-7','PRODUCT-13','PRODUCT-12','PRODUCT-32',] ),
+    ProductCategoryModel(id: '9', image: 'https://product.hstatic.net/1000075078/product/1669736835_ca-phe-sua-da_15ae84580c4141fc809ac8fffd72b194.png', name: 'Bánh Snack', productIDs: ['PRODUCT-0','PRODUCT-1','PRODUCT-7','PRODUCT-13','PRODUCT-12','PRODUCT-32',] ),
   ];
 
   var _options = List.generate(
@@ -71,7 +72,7 @@ class ProductApiRepository extends ProductRepository {
     ),
   );
 
-  var _favorites = <String>[];
+  var _favorites = <String>['PRODUCT-1','PRODUCT-4','PRODUCT-30','PRODUCT-12','PRODUCT-19','PRODUCT-15','PRODUCT-32','PRODUCT-17',];
 
   @override
   Future<bool?> changeFavorite({required String id}) async {
@@ -153,7 +154,6 @@ class ProductApiRepository extends ProductRepository {
     return [];
   }
 
-  // /member/product/suggestion
   @override
   Future<List<ProductModel>> getsSuggestion({int limit = 4}) async {
     try {

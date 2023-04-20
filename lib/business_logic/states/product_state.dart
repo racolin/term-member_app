@@ -29,6 +29,7 @@ class ProductLoaded extends ProductState {
   final List<String> _unavailable;
   final List<String> _unavailableOptions;
   final List<String> _unavailableTypes;
+  final List<String> _favorites;
 
   ProductLoaded({
     List<ProductModel>? list,
@@ -38,14 +39,15 @@ class ProductLoaded extends ProductState {
     List<String>? unavailable,
     List<String>? unavailableOptions,
     List<String>? unavailableTypes,
+    List<String>? favorites,
   })  : _list = list ?? [],
         _suggestion = suggestion ?? [],
         _listType = listType ?? [],
         _listOption = listOption ?? [],
         _unavailable = unavailable ?? [],
         _unavailableOptions = unavailableOptions ?? [],
-        _unavailableTypes = unavailableTypes ?? []
-  {
+        _unavailableTypes = unavailableTypes ?? [],
+        _favorites = favorites ?? [] {
     print(runtimeType);
   }
 
@@ -69,6 +71,10 @@ class ProductLoaded extends ProductState {
       )
       .toList();
 
+  List<ProductModel> getSearch(String? key) {
+    return list.where((e) => e.name.contains(key ?? '')).toList();
+  }
+
   List<ProductModel> getProductsByCategoryId(String categoryId) {
     if (_unavailableTypes.contains(categoryId)) {
       return [];
@@ -89,6 +95,10 @@ class ProductLoaded extends ProductState {
         .toList();
   }
 
+  List<ProductModel> getFavorites() {
+    return _list.where((e) => _favorites.contains(e.id)).toList();
+  }
+
   ProductLoaded copyWith({
     List<ProductModel>? list,
     List<ProductModel>? suggestion,
@@ -97,9 +107,11 @@ class ProductLoaded extends ProductState {
     List<String>? unavailableList,
     List<String>? unavailableListType,
     List<String>? unavailableListOption,
+    List<String>? favorites,
   }) {
     return ProductLoaded(
       list: list ?? _list,
+      favorites: favorites ?? _favorites,
       suggestion: suggestion ?? _suggestion,
       listType: listType ?? _listType,
       listOption: listOption ?? _listOption,

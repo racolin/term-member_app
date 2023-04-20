@@ -29,6 +29,7 @@ const txtReOrder = "Đặt lại";
 const txtSuggestProduct = "Gợi ý riêng cho bạn";
 const txtETC = "...";
 const txtSelect = "Chọn";
+const txtFavoriteProducts = "Sản phẩm yêu thích";
 const txtSelectAddress = "Chọn địa chỉ";
 const txtNews = "Khám phá thêm";
 const txtAccumulate = "Tích điểm";

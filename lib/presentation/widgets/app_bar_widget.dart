@@ -1,9 +1,15 @@
 import 'package:badges/badges.dart' as badges;
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:member_app/business_logic/cubits/cart_cubit.dart';
+import 'package:member_app/presentation/pages/product_search_page.dart';
+import 'package:member_app/presentation/screens/product_favorite_screen.dart';
 
+import '../../business_logic/blocs/interval/interval_bloc.dart';
 import '../../business_logic/cubits/home_cubit.dart';
 import '../../data/models/app_bar_model.dart';
+import '../../data/models/product_model.dart';
+import '../../data/models/store_model.dart';
 import '../../presentation/widgets/app_image_widget.dart';
 import '../../business_logic/cubits/product_cubit.dart';
 import '../../business_logic/cubits/product_scroll_cubit.dart';
@@ -128,6 +134,7 @@ class _AppBarWidget extends StatelessWidget {
                                       ),
                                       const Divider(),
                                       ProductCategoriesWidget(
+                                        maxItem: 100,
                                         scrollTo: (index) {
                                           context
                                               .read<ProductScrollCubit>()
@@ -172,7 +179,43 @@ class _AppBarWidget extends StatelessWidget {
                           ),
                           borderRadius: BorderRadius.circular(spaceLG),
                           radius: 40,
-                          onTap: () {},
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (ctx) {
+                                  return MultiRepositoryProvider(
+                                    providers: [
+                                      BlocProvider<ProductCubit>.value(
+                                        value: BlocProvider.of<ProductCubit>(
+                                          context,
+                                        ),
+                                      ),
+                                      BlocProvider<HomeCubit>.value(
+                                        value: BlocProvider.of<HomeCubit>(
+                                          context,
+                                        ),
+                                      ),
+                                      BlocProvider<CartCubit>.value(
+                                        value: BlocProvider.of<CartCubit>(
+                                          context,
+                                        ),
+                                      ),
+                                      BlocProvider<IntervalBloc<ProductModel>>(
+                                        create: (ctx) => IntervalBloc<ProductModel>(
+                                          submit:
+                                          BlocProvider.of<ProductCubit>(ctx),
+                                        ),
+                                      ),
+                                    ],
+                                    child: ProductSearchPage(onClick: (model) {
+                                      Navigator.pop(context);
+                                    }),
+                                  );
+                                },
+                              ),
+                            );
+                          },
                           child: Ink(
                             width: 40,
                             height: 40,
@@ -206,7 +249,35 @@ class _AppBarWidget extends StatelessWidget {
                           ),
                           borderRadius: BorderRadius.circular(spaceLG),
                           radius: 40,
-                          onTap: () {},
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (ctx) {
+                                  return MultiRepositoryProvider(
+                                    providers: [
+                                      BlocProvider<ProductCubit>.value(
+                                        value: BlocProvider.of<ProductCubit>(
+                                          context,
+                                        ),
+                                      ),
+                                      BlocProvider<HomeCubit>.value(
+                                        value: BlocProvider.of<HomeCubit>(
+                                          context,
+                                        ),
+                                      ),
+                                      BlocProvider<CartCubit>.value(
+                                        value: BlocProvider.of<CartCubit>(
+                                          context,
+                                        ),
+                                      ),
+                                    ],
+                                    child: const ProductFavoriteScreen(),
+                                  );
+                                },
+                              ),
+                            );
+                          },
                           child: Ink(
                             width: 40,
                             height: 40,

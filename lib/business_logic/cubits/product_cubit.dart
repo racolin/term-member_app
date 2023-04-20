@@ -1,13 +1,16 @@
 import 'dart:async';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:member_app/data/models/product_model.dart';
 
 import '../../business_logic/repositories/product_repository.dart';
 import '../../business_logic/states/product_state.dart';
 import '../../exception/app_exception.dart';
 import '../../exception/app_message.dart';
+import '../blocs/interval/interval_submit.dart';
 
-class ProductCubit extends Cubit<ProductState> {
+class ProductCubit extends Cubit<ProductState>
+    implements IntervalSubmit<ProductModel> {
   final ProductRepository _repository;
 
   ProductCubit({
@@ -35,7 +38,6 @@ class ProductCubit extends Cubit<ProductState> {
         }
       });
       _repository.getCategories().then((listType) {
-        print('listType ${listType.length}');
         if (state is ProductLoaded) {
           emit((state as ProductLoaded).copyWith(listType: listType));
         } else {
@@ -72,6 +74,24 @@ class ProductCubit extends Cubit<ProductState> {
     return null;
   }
 
+  Future<AppMessage?> loadFavorites() async {
+    if (state is ProductLoaded) {
+      try {
+        var list = await _repository.getFavorites();
+        emit((state as ProductLoaded).copyWith(favorites: list));
+      } on AppException catch (ex) {
+        return ex.message;
+      }
+    } else {
+      return AppMessage(
+        messageType: AppMessageType.failure,
+        title: 'Hãy đợi',
+        content: 'Thao tác của bạn quá nhanh. Hãy thử lại!',
+      );
+    }
+    return null;
+  }
+
   AppMessage? setUnavailable({
     required List<String> products,
     required List<String> categories,
@@ -92,5 +112,13 @@ class ProductCubit extends Cubit<ProductState> {
       title: 'Xảy ra lỗi',
       content: 'Không thể lọc sản sẩm theo cửa hàng.',
     );
+  }
+
+  @override
+  Future<List<ProductModel>> submit([String? key]) async {
+    if (state is ProductLoaded) {
+      return (state as ProductLoaded).getSearch(key);
+    }
+    return <ProductModel>[];
   }
 }

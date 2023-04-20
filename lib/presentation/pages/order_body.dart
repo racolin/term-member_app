@@ -96,6 +96,7 @@ class _OrderBodyState extends State<OrderBody> {
                     if (index == 0) {
                       // height: 90 + 2 * spaceSM
                       return ProductCategoriesWidget(
+                        maxItem: 8,
                         scrollTo: (index) {
                           context.read<ProductScrollCubit>().setIndex(index);
                         },
@@ -163,7 +164,7 @@ class _OrderBodyState extends State<OrderBody> {
             padding: const EdgeInsets.all(spaceXS),
             child: ProductWidget(
               // height: 100
-              shortProduct: shortProducts[index],
+              model: shortProducts[index],
             ),
           ),
           itemCount: shortProducts.length,

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:member_app/business_logic/cubits/home_cubit.dart';
+import 'package:member_app/presentation/pages/loading_page.dart';
 import 'package:member_app/presentation/res/dimen/dimens.dart';
 import 'package:member_app/presentation/res/strings/values.dart';
 
@@ -47,9 +48,9 @@ class _ProductFavoriteScreenState extends State<ProductFavoriteScreen> {
       builder: (context, state) {
         switch (state.runtimeType) {
           case ProductInitial:
-            return const SizedBox();
+            return const Scaffold();
           case ProductLoading:
-            return const SizedBox();
+            return const Scaffold(body: LoadingPage(),);
           case ProductLoaded:
             state as ProductLoaded;
             var list = state.getFavorites();

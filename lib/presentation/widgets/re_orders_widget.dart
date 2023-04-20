@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../business_logic/cubits/cart_template_cubit.dart';
-import '../../../business_logic/states/cart_template_state.dart';
-import '../../pages/loading_page.dart';
-import '../../res/dimen/dimens.dart';
-import '../../res/strings/values.dart';
-import 're_order_widget.dart';
+import '../../business_logic/cubits/cart_template_cubit.dart';
+import '../../business_logic/states/cart_template_state.dart';
+import '../pages/loading_page.dart';
+import '../res/dimen/dimens.dart';
+import '../res/strings/values.dart';
+import 'cart_template_widget.dart';
 
 
 class _ReOrdersWidgetState extends State<ReOrdersWidget> {
@@ -44,7 +44,7 @@ class _ReOrdersWidgetState extends State<ReOrdersWidget> {
                   ),
                 ),
                 for (var cart in state.list.sublist(0, 3))
-                  ReorderWidget(cart: cart),
+                  CartTemplateWidget(cart: cart),
               ],
             );
         }

@@ -14,4 +14,17 @@ extension StringExtension on String {
       textPadding: 16
     );
   }
+  String qrCode(
+      [double? width,
+        double? height,
+        double? fontHeight,]
+      ) {
+    return Barcode.qrCode().toSvg(
+      this,
+      width: width ?? 300,
+      height: height ?? 76,
+      fontHeight: fontHeight,
+      textPadding: 16
+    );
+  }
 }

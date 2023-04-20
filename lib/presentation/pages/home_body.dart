@@ -8,7 +8,7 @@ import '../../presentation/widgets/product/products_suggest_widget.dart';
 import '../widgets/card_widget.dart';
 import '../widgets/delivery/delivery_options_widget.dart';
 import '../widgets/drag_bar_widget.dart';
-import '../widgets/re_order/re_orders_widget.dart';
+import '../widgets/re_orders_widget.dart';
 import '../widgets/slide/slider_widget.dart';
 
 class HomeBody extends StatefulWidget {

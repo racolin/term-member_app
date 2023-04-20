@@ -29,7 +29,8 @@ class VoucherLoaded extends VoucherState {
     );
   }
 
-  List<VoucherModel> get listSlider => list.where((e) => e.sliderImage != null).toList();
+  List<VoucherModel> get listSlider =>
+      list.where((e) => e.sliderImage != null).toList();
 
   List<VoucherModel> getsAboutToExpire() {
     return list
@@ -52,9 +53,7 @@ class VoucherLoaded extends VoucherState {
   List<VoucherModel> getsFromPartner() {
     return list
         .where(
-          (e) =>
-              e.partner.toUpperCase() != txtAppName.toUpperCase() &&
-              DateTime.now().add(const Duration(days: 7)).isBefore(e.to),
+          (e) => e.partner.toUpperCase() != txtAppName.toUpperCase(),
         )
         .toList();
   }

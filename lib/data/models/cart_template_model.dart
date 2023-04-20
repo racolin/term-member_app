@@ -33,6 +33,12 @@ class CartTemplateModel {
     );
   }
 
+  String getCode() {
+    return products
+        .map((e) => '${e.id}|${e.amount}|${e.options.join(',')}')
+        .join(' ');
+  }
+
   CartTemplateModel copyWith({
     String? id,
     String? name,

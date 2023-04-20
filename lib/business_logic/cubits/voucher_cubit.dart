@@ -13,12 +13,23 @@ class VoucherCubit extends Cubit<VoucherState> {
         super(VoucherInitial()) {
     emit(VoucherLoading());
     try {
+      print('1213131313');
       _repository.getsAvailable().then((list) {
         if (state is VoucherLoaded) {
           emit((state as VoucherLoaded).copyWith(list: list));
         } else {
           emit(VoucherLoaded(
             list: list,
+          ));
+        }
+      });
+      _repository.getsUsed().then((list) {
+        if (state is VoucherLoaded) {
+          emit((state as VoucherLoaded).copyWith(used: list));
+        } else {
+          emit(VoucherLoaded(
+            used: list,
+            list: const [],
           ));
         }
       });
@@ -43,8 +54,15 @@ class VoucherCubit extends Cubit<VoucherState> {
 
   Future<AppMessage?> getUsedVouchers() async {
     try {
-      _repository.getsUsed().then((list) {
-      });
+      var list = await _repository.getsUsed();
+      if (state is VoucherLoaded) {
+        emit((state as VoucherLoaded).copyWith(used: list));
+      } else {
+        emit(VoucherLoaded(
+          used: list,
+          list: const [],
+        ));
+      }
     } on AppException catch (ex) {
       return ex.message;
     }

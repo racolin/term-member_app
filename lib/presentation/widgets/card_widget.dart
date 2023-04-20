@@ -118,9 +118,9 @@ class CardWidget extends StatelessWidget {
                       borderRadius: BorderRadius.circular(spaceXS),
                     ),
                     margin: const EdgeInsets.all(spaceMD),
-                    child: SvgPicture.string(
-                      card.id.barcode(barWidth, barHeight),
-                    ),
+                    // child: SvgPicture.string(
+                    //   card.id.qrCode(barWidth, barHeight),
+                    // ),
                   ),
                 ],
               ),

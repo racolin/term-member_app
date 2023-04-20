@@ -45,6 +45,7 @@ import '../data/repositories/cart_api_repository.dart';
 import '../presentation/screens/auth_screen.dart';
 import '../presentation/screens/home_screen.dart';
 import 'screens/address_select_screen.dart';
+import 'screens/notify_screen.dart';
 
 class AppRouter {
   static const String home = '/home';
@@ -261,7 +262,7 @@ class AppRouter {
                     context,
                   ),
                 ),
-                child: const AuthScreen(),
+                child: const NotifyScreen(),
               ),
             );
           },

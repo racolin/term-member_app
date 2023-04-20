@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
+import 'package:member_app/supports/extension.dart';
 
 import '../../business_logic/states/home_state.dart';
 import '../../presentation/res/dimen/dimens.dart';
@@ -103,7 +105,7 @@ class VoucherBottomSheet extends StatelessWidget {
                         _getExpire(),
                         Padding(
                           padding:
-                              const EdgeInsets.symmetric(horizontal: spaceMD),
+                          const EdgeInsets.symmetric(horizontal: spaceMD),
                           child: Text(
                             voucher.description,
                             textAlign: TextAlign.justify,
@@ -148,11 +150,8 @@ class VoucherBottomSheet extends StatelessWidget {
   Widget _getQRCode(String code) {
     return Column(
       children: [
-        Image.network(
-          'https://vinasupport.com/uploads/2022/05/vinasupport.png',
-          height: 200,
-          width: 200,
-          fit: BoxFit.cover,
+        SvgPicture.string(
+          code.qrCode(200, 200),
         ),
         const SizedBox(
           height: spaceMD,

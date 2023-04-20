@@ -2,8 +2,12 @@ import 'package:badges/badges.dart' as badges;
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:member_app/business_logic/cubits/cart_cubit.dart';
+import 'package:member_app/business_logic/cubits/cart_template_cubit.dart';
+import 'package:member_app/business_logic/cubits/voucher_cubit.dart';
+import 'package:member_app/presentation/app_router.dart';
 import 'package:member_app/presentation/pages/product_search_page.dart';
 import 'package:member_app/presentation/screens/product_favorite_screen.dart';
+import 'package:member_app/presentation/screens/voucher_screen.dart';
 
 import '../../business_logic/blocs/interval/interval_bloc.dart';
 import '../../business_logic/cubits/home_cubit.dart';
@@ -18,6 +22,7 @@ import '../../presentation/res/dimen/dimens.dart';
 import '../../business_logic/cubits/app_bar_cubit.dart';
 import '../../business_logic/states/app_bar_state.dart';
 import '../res/strings/values.dart';
+import '../screens/cart_template_screen.dart';
 import 'product/product_categories_widget.dart';
 import 'drag_bar_widget.dart';
 
@@ -202,9 +207,10 @@ class _AppBarWidget extends StatelessWidget {
                                         ),
                                       ),
                                       BlocProvider<IntervalBloc<ProductModel>>(
-                                        create: (ctx) => IntervalBloc<ProductModel>(
-                                          submit:
-                                          BlocProvider.of<ProductCubit>(ctx),
+                                        create: (ctx) =>
+                                            IntervalBloc<ProductModel>(
+                                          submit: BlocProvider.of<ProductCubit>(
+                                              ctx),
                                         ),
                                       ),
                                     ],
@@ -405,7 +411,31 @@ class BaseActionWidget extends StatelessWidget {
             ),
             borderRadius: BorderRadius.circular(spaceLG),
             radius: 40,
-            onTap: () {},
+            onTap: () {
+
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (ctx) {
+                    return MultiRepositoryProvider(
+                      providers: [
+                        BlocProvider<ProductCubit>.value(
+                          value: BlocProvider.of<ProductCubit>(
+                            context,
+                          ),
+                        ),
+                        BlocProvider<CartTemplateCubit>.value(
+                          value: BlocProvider.of<CartTemplateCubit>(
+                            context,
+                          ),
+                        ),
+                      ],
+                      child: const CartTemplateScreen(),
+                    );
+                  },
+                ),
+              );
+            },
             child: Ink(
               width: 40,
               height: 40,
@@ -457,7 +487,19 @@ class BaseActionWidget extends StatelessWidget {
               ),
             ),
           ),
-          onPressed: () {},
+          onPressed: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (ctx) {
+                  return BlocProvider<VoucherCubit>.value(
+                    value: BlocProvider.of<VoucherCubit>(context),
+                    child: const VoucherScreen(),
+                  );
+                },
+              ),
+            );
+          },
           icon: const Icon(
             Icons.confirmation_number_outlined,
             size: fontXL,
@@ -482,7 +524,9 @@ class BaseActionWidget extends StatelessWidget {
               Theme.of(context).primaryColor.withOpacity(opaSM),
             ),
             radius: 40,
-            onTap: () {},
+            onTap: () {
+              Navigator.pushNamed(context, AppRouter.notify);
+            },
             child: Ink(
               width: 40,
               height: 40,

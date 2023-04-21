@@ -13,7 +13,7 @@ class ProductApiRepository extends ProductRepository {
     (index) => ProductModel(
       id: 'PRODUCT-$index',
       name: 'Cà Phê Sữa Đá',
-      cost: 20000 + index * 1000,
+      // cost: 20000 + index * 1000,
       image:
           'https://product.hstatic.net/1000075078/product/1669736835_ca-phe-sua-da_15ae84580c4141fc809ac8fffd72b194.png',
       images: [
@@ -30,49 +30,246 @@ class ProductApiRepository extends ProductRepository {
   );
 
   var _categories = <ProductCategoryModel>[
-    ProductCategoryModel(id: '1', image: 'https://product.hstatic.net/1000075078/product/1669736835_ca-phe-sua-da_15ae84580c4141fc809ac8fffd72b194.png', name: 'Món mới phải thử', productIDs: ['PRODUCT-0','PRODUCT-1','PRODUCT-7','PRODUCT-13','PRODUCT-12','PRODUCT-32',] ),
-    ProductCategoryModel(id: '2', image: 'https://product.hstatic.net/1000075078/product/1669736835_ca-phe-sua-da_15ae84580c4141fc809ac8fffd72b194.png', name: 'Cà phê', productIDs: ['PRODUCT-0','PRODUCT-1','PRODUCT-7','PRODUCT-13','PRODUCT-12','PRODUCT-32',] ),
-    ProductCategoryModel(id: '3', image: 'https://product.hstatic.net/1000075078/product/1669736835_ca-phe-sua-da_15ae84580c4141fc809ac8fffd72b194.png', name: 'CloudFee', productIDs: ['PRODUCT-0','PRODUCT-1','PRODUCT-7','PRODUCT-13','PRODUCT-12','PRODUCT-32',] ),
-    ProductCategoryModel(id: '4', image: 'https://product.hstatic.net/1000075078/product/1669736835_ca-phe-sua-da_15ae84580c4141fc809ac8fffd72b194.png', name: 'CloudTea', productIDs: ['PRODUCT-0','PRODUCT-1','PRODUCT-7','PRODUCT-13','PRODUCT-12','PRODUCT-32',] ),
-    ProductCategoryModel(id: '5', image: 'https://product.hstatic.net/1000075078/product/1669736835_ca-phe-sua-da_15ae84580c4141fc809ac8fffd72b194.png', name: 'Thưởng thức tại nhà', productIDs: ['PRODUCT-0','PRODUCT-1','PRODUCT-7','PRODUCT-13','PRODUCT-12','PRODUCT-32',] ),
-    ProductCategoryModel(id: '6', image: 'https://product.hstatic.net/1000075078/product/1669736835_ca-phe-sua-da_15ae84580c4141fc809ac8fffd72b194.png', name: 'Hi-Tea Healthy', productIDs: ['PRODUCT-0','PRODUCT-1','PRODUCT-7','PRODUCT-13','PRODUCT-12','PRODUCT-32',] ),
-    ProductCategoryModel(id: '7', image: 'https://product.hstatic.net/1000075078/product/1669736835_ca-phe-sua-da_15ae84580c4141fc809ac8fffd72b194.png', name: 'Trà trái cây - Trà sữa', productIDs: ['PRODUCT-0','PRODUCT-1','PRODUCT-7','PRODUCT-13','PRODUCT-12','PRODUCT-32',] ),
-    ProductCategoryModel(id: '8', image: 'https://product.hstatic.net/1000075078/product/1669736835_ca-phe-sua-da_15ae84580c4141fc809ac8fffd72b194.png', name: 'Bánh Snack', productIDs: ['PRODUCT-0','PRODUCT-1','PRODUCT-7','PRODUCT-13','PRODUCT-12','PRODUCT-32',] ),
-    ProductCategoryModel(id: '9', image: 'https://product.hstatic.net/1000075078/product/1669736835_ca-phe-sua-da_15ae84580c4141fc809ac8fffd72b194.png', name: 'Bánh Snack', productIDs: ['PRODUCT-0','PRODUCT-1','PRODUCT-7','PRODUCT-13','PRODUCT-12','PRODUCT-32',] ),
+    ProductCategoryModel(
+        id: '1',
+        image:
+            'https://product.hstatic.net/1000075078/product/1669736835_ca-phe-sua-da_15ae84580c4141fc809ac8fffd72b194.png',
+        name: 'Món mới phải thử',
+        productIDs: [
+          'PRODUCT-0',
+          'PRODUCT-1',
+          'PRODUCT-7',
+          'PRODUCT-13',
+          'PRODUCT-12',
+          'PRODUCT-32',
+        ]),
+    ProductCategoryModel(
+        id: '2',
+        image:
+            'https://product.hstatic.net/1000075078/product/1669736835_ca-phe-sua-da_15ae84580c4141fc809ac8fffd72b194.png',
+        name: 'Cà phê',
+        productIDs: [
+          'PRODUCT-0',
+          'PRODUCT-1',
+          'PRODUCT-7',
+          'PRODUCT-13',
+          'PRODUCT-12',
+          'PRODUCT-32',
+        ]),
+    ProductCategoryModel(
+        id: '3',
+        image:
+            'https://product.hstatic.net/1000075078/product/1669736835_ca-phe-sua-da_15ae84580c4141fc809ac8fffd72b194.png',
+        name: 'CloudFee',
+        productIDs: [
+          'PRODUCT-0',
+          'PRODUCT-1',
+          'PRODUCT-7',
+          'PRODUCT-13',
+          'PRODUCT-12',
+          'PRODUCT-32',
+        ]),
+    ProductCategoryModel(
+        id: '4',
+        image:
+            'https://product.hstatic.net/1000075078/product/1669736835_ca-phe-sua-da_15ae84580c4141fc809ac8fffd72b194.png',
+        name: 'CloudTea',
+        productIDs: [
+          'PRODUCT-0',
+          'PRODUCT-1',
+          'PRODUCT-7',
+          'PRODUCT-13',
+          'PRODUCT-12',
+          'PRODUCT-32',
+        ]),
+    ProductCategoryModel(
+        id: '5',
+        image:
+            'https://product.hstatic.net/1000075078/product/1669736835_ca-phe-sua-da_15ae84580c4141fc809ac8fffd72b194.png',
+        name: 'Thưởng thức tại nhà',
+        productIDs: [
+          'PRODUCT-0',
+          'PRODUCT-1',
+          'PRODUCT-7',
+          'PRODUCT-13',
+          'PRODUCT-12',
+          'PRODUCT-32',
+        ]),
+    ProductCategoryModel(
+        id: '6',
+        image:
+            'https://product.hstatic.net/1000075078/product/1669736835_ca-phe-sua-da_15ae84580c4141fc809ac8fffd72b194.png',
+        name: 'Hi-Tea Healthy',
+        productIDs: [
+          'PRODUCT-0',
+          'PRODUCT-1',
+          'PRODUCT-7',
+          'PRODUCT-13',
+          'PRODUCT-12',
+          'PRODUCT-32',
+        ]),
+    ProductCategoryModel(
+        id: '7',
+        image:
+            'https://product.hstatic.net/1000075078/product/1669736835_ca-phe-sua-da_15ae84580c4141fc809ac8fffd72b194.png',
+        name: 'Trà trái cây - Trà sữa',
+        productIDs: [
+          'PRODUCT-0',
+          'PRODUCT-1',
+          'PRODUCT-7',
+          'PRODUCT-13',
+          'PRODUCT-12',
+          'PRODUCT-32',
+        ]),
+    ProductCategoryModel(
+        id: '8',
+        image:
+            'https://product.hstatic.net/1000075078/product/1669736835_ca-phe-sua-da_15ae84580c4141fc809ac8fffd72b194.png',
+        name: 'Bánh Snack',
+        productIDs: [
+          'PRODUCT-0',
+          'PRODUCT-1',
+          'PRODUCT-7',
+          'PRODUCT-13',
+          'PRODUCT-12',
+          'PRODUCT-32',
+        ]),
+    ProductCategoryModel(
+        id: '9',
+        image:
+            'https://product.hstatic.net/1000075078/product/1669736835_ca-phe-sua-da_15ae84580c4141fc809ac8fffd72b194.png',
+        name: 'Bánh Snack',
+        productIDs: [
+          'PRODUCT-0',
+          'PRODUCT-1',
+          'PRODUCT-7',
+          'PRODUCT-13',
+          'PRODUCT-12',
+          'PRODUCT-32',
+        ]),
   ];
 
-  var _options = List.generate(
-    4,
-    (index) => ProductOptionModel(
-      id: 'OPTION-$index',
+  var _options = [
+    ProductOptionModel(
+      id: 'OPTION-1',
       name: 'Size',
       minSelected: 1,
       maxSelected: 1,
-      defs: ["OPTION-$index-1"],
+      defs: ["OPTION-1-1"],
       items: [
         ProductOptionItemModel(
-          id: 'OPTION-$index-1',
+          id: 'OPTION-1-1',
           name: 'Nhỏ',
           cost: 35000,
-          disable: true,
-        ),
-        ProductOptionItemModel(
-          id: 'OPTION-$index-2',
-          name: 'Vừa',
-          cost: 39000,
           disable: false,
         ),
         ProductOptionItemModel(
-          id: 'OPTION-$index-3',
+          id: 'OPTION-1-2',
+          name: 'Vừa',
+          cost: 39000,
+          disable: true,
+        ),
+        ProductOptionItemModel(
+          id: 'OPTION-1-3',
           name: 'Lớn',
           cost: 45000,
           disable: false,
         ),
       ],
     ),
-  );
+    ProductOptionModel(
+      id: 'OPTION-2',
+      name: 'Topping',
+      minSelected: 0,
+      maxSelected: 2,
+      defs: ["OPTION-2-1"],
+      items: [
+        ProductOptionItemModel(
+          id: 'OPTION-2-1',
+          name: 'Thạch phô mai',
+          cost: 5000,
+          disable: false,
+        ),
+        ProductOptionItemModel(
+          id: 'OPTION-2-2',
+          name: 'Thạch dừa',
+          cost: 7000,
+          disable: true,
+        ),
+        ProductOptionItemModel(
+          id: 'OPTION-2-3',
+          name: 'Trân châu truyền thống',
+          cost: 9000,
+          disable: true,
+        ),
+      ],
+    ),
+    ProductOptionModel(
+      id: 'OPTION-3',
+      name: 'Lượng đường',
+      minSelected: 0,
+      maxSelected: 1,
+      defs: ["OPTION-3-1"],
+      items: [
+        ProductOptionItemModel(
+          id: 'OPTION-3-1',
+          name: 'Ít đường',
+          cost: 1000,
+          disable: false,
+        ),
+        ProductOptionItemModel(
+          id: 'OPTION-3-2',
+          name: 'Đường vừa phải',
+          cost: 2000,
+          disable: true,
+        ),
+        ProductOptionItemModel(
+          id: 'OPTION-3-3',
+          name: 'Nhiều đường',
+          cost: 4000,
+          disable: false,
+        ),
+      ],
+    ),
+    ProductOptionModel(
+      id: 'OPTION-4',
+      name: 'Hộp đựng',
+      minSelected: 1,
+      maxSelected: 1,
+      defs: ["OPTION-4-1"],
+      items: [
+        ProductOptionItemModel(
+          id: 'OPTION-4-1',
+          name: 'Nhựa dùng 1 lần',
+          cost: 1000,
+          disable: false,
+        ),
+        ProductOptionItemModel(
+          id: 'OPTION-4-2',
+          name: 'Nhựa sử dụng nhiều lần',
+          cost: 5000,
+          disable: false,
+        ),
+        ProductOptionItemModel(
+          id: 'OPTION-4-3',
+          name: 'Chai thuỷ tinh',
+          cost: 10000,
+          disable: true,
+        ),
+      ],
+    ),
+  ];
 
-  var _favorites = <String>['PRODUCT-1','PRODUCT-4','PRODUCT-30','PRODUCT-12','PRODUCT-19','PRODUCT-15','PRODUCT-32','PRODUCT-17',];
+  var _favorites = <String>[
+    'PRODUCT-1',
+    'PRODUCT-4',
+    'PRODUCT-30',
+    'PRODUCT-12',
+    'PRODUCT-19',
+    'PRODUCT-15',
+    'PRODUCT-32',
+    'PRODUCT-17',
+  ];
 
   @override
   Future<bool?> changeFavorite({required String id}) async {

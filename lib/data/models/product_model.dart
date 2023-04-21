@@ -3,7 +3,7 @@ import 'package:member_app/presentation/res/strings/values.dart';
 class ProductModel {
   final String id;
   final String name;
-  final int cost;
+  // final int cost;
   final String image;
   final List<String> images;
   final List<String> optionIds;
@@ -12,7 +12,7 @@ class ProductModel {
   const ProductModel({
     required this.id,
     required this.name,
-    required this.cost,
+    // required this.cost,
     required this.image,
     required this.images,
     required this.optionIds,
@@ -23,7 +23,7 @@ class ProductModel {
     return {
       'id': id,
       'name': name,
-      'cost': cost,
+      // 'cost': cost,
       'image': image,
       'images': images,
       'optionIds': optionIds,
@@ -35,7 +35,7 @@ class ProductModel {
     return ProductModel(
       id: map['id']!,
       name: map['name'] ?? txtUnknown,
-      cost: map['cost'] ?? 0,
+      // cost: map['cost'] ?? 0,
       image: map['image'],
       images: map['images'] ?? [],
       optionIds: map['optionIds'] ?? [],

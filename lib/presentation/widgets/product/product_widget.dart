@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:member_app/presentation/bottom_sheet/product_bottom_sheet.dart';
 
+import '../../../business_logic/cubits/product_cubit.dart';
 import '../../../data/models/product_model.dart';
 import '../../../supports/convert.dart';
 import '../../res/dimen/dimens.dart';
@@ -24,7 +27,19 @@ class ProductWidget extends StatelessWidget {
               opaXS,
             ),
       ),
-      onTap: () {},
+      onTap: () {
+        showModalBottomSheet(
+          context: context,
+          isScrollControlled: true,
+          backgroundColor: Colors.transparent,
+          builder: (ctx) {
+            return BlocProvider<ProductCubit>.value(
+              value: BlocProvider.of<ProductCubit>(context),
+              child: ProductBottomSheet(product: model),
+            );
+          },
+        );
+      },
       child: SizedBox(
         height: height,
         child: Row(
@@ -66,7 +81,7 @@ class ProductWidget extends StatelessWidget {
                           height: spaceXXS,
                         ),
                         Text(
-                          numberToCurrency(model.cost, 'đ'),
+                          numberToCurrency(100000, 'đ'),
                           style: const TextStyle(fontSize: fontMD),
                         ),
                       ],

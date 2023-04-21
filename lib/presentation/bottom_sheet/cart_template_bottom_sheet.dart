@@ -1,10 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:member_app/presentation/widgets/cart_template_widget.dart';
 import 'package:member_app/supports/extension.dart';
 
+import '../../business_logic/blocs/interval/interval_bloc.dart';
+import '../../business_logic/cubits/product_cubit.dart';
 import '../../data/models/cart_template_model.dart';
+import '../../data/models/product_model.dart';
 import '../../supports/convert.dart';
+import '../pages/product_search_page.dart';
 import '../res/dimen/dimens.dart';
 import '../res/strings/values.dart';
 import '../widgets/app_image_widget.dart';
@@ -112,7 +117,39 @@ class CartTemplateBottomSheet extends StatelessWidget {
                                   ),
                                 ),
                                 TextButton(
-                                  onPressed: () {},
+                                  onPressed: () {
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (ctx) {
+                                          return MultiRepositoryProvider(
+                                            providers: [
+                                              BlocProvider<ProductCubit>.value(
+                                                value: BlocProvider.of<
+                                                    ProductCubit>(
+                                                  context,
+                                                ),
+                                              ),
+                                              BlocProvider<
+                                                  IntervalBloc<ProductModel>>(
+                                                create: (ctx) =>
+                                                    IntervalBloc<ProductModel>(
+                                                  submit: BlocProvider.of<
+                                                      ProductCubit>(ctx),
+                                                ),
+                                              ),
+                                            ],
+                                            child: ProductSearchPage(
+                                              onClick: (model) {
+                                                Navigator.pop(context);
+                                              },
+                                              withFloatingButton: false,
+                                            ),
+                                          );
+                                        },
+                                      ),
+                                    );
+                                  },
                                   style: ButtonStyle(
                                     backgroundColor: MaterialStateProperty.all(
                                       Colors.orange.withAlpha(20),

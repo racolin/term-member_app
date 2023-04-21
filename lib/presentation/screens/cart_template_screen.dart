@@ -5,6 +5,7 @@ import 'package:member_app/presentation/pages/loading_page.dart';
 import 'package:member_app/presentation/res/strings/values.dart';
 
 import '../../business_logic/cubits/cart_template_cubit.dart';
+import '../../business_logic/cubits/product_cubit.dart';
 import '../../business_logic/states/cart_template_state.dart';
 import '../../data/models/cart_template_model.dart';
 import '../bottom_sheet/cart_template_bottom_sheet.dart';
@@ -34,7 +35,8 @@ class _CartTemplateScreenState extends State<CartTemplateScreen> {
         ),
         title: Text(
           txtCartTemplate,
-          style: Theme.of(context)
+          style: Theme
+              .of(context)
               .textTheme
               .titleSmall
               ?.copyWith(fontWeight: FontWeight.w600),
@@ -61,9 +63,13 @@ class _CartTemplateScreenState extends State<CartTemplateScreen> {
                         backgroundColor: Colors.transparent,
                         context: context,
                         isScrollControlled: true,
-                        builder: (context) => CartTemplateBottomSheet(
-                          model: list[index],
-                        ),
+                        builder: (ctx) =>
+                            BlocProvider<ProductCubit>.value(
+                              value: BlocProvider.of<ProductCubit>(context),
+                              child: CartTemplateBottomSheet(
+                                model: list[index],
+                              ),
+                            ),
                       );
                     },
                     cart: list[index],

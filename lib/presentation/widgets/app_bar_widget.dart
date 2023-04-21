@@ -13,7 +13,6 @@ import '../../business_logic/blocs/interval/interval_bloc.dart';
 import '../../business_logic/cubits/home_cubit.dart';
 import '../../data/models/app_bar_model.dart';
 import '../../data/models/product_model.dart';
-import '../../data/models/store_model.dart';
 import '../../presentation/widgets/app_image_widget.dart';
 import '../../business_logic/cubits/product_cubit.dart';
 import '../../business_logic/cubits/product_scroll_cubit.dart';
@@ -412,7 +411,6 @@ class BaseActionWidget extends StatelessWidget {
             borderRadius: BorderRadius.circular(spaceLG),
             radius: 40,
             onTap: () {
-
               Navigator.push(
                 context,
                 MaterialPageRoute(
@@ -420,14 +418,10 @@ class BaseActionWidget extends StatelessWidget {
                     return MultiRepositoryProvider(
                       providers: [
                         BlocProvider<ProductCubit>.value(
-                          value: BlocProvider.of<ProductCubit>(
-                            context,
-                          ),
+                          value: BlocProvider.of<ProductCubit>(context),
                         ),
                         BlocProvider<CartTemplateCubit>.value(
-                          value: BlocProvider.of<CartTemplateCubit>(
-                            context,
-                          ),
+                          value: BlocProvider.of<CartTemplateCubit>(context),
                         ),
                       ],
                       child: const CartTemplateScreen(),

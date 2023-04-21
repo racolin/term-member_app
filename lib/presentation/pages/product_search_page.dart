@@ -15,10 +15,12 @@ import '../widgets/product/product_widget.dart';
 
 class ProductSearchPage extends StatefulWidget {
   final Function(ProductModel) onClick;
+  final bool withFloatingButton;
 
   const ProductSearchPage({
     Key? key,
     required this.onClick,
+    this.withFloatingButton = true,
   }) : super(key: key);
 
   @override
@@ -90,7 +92,7 @@ class _ProductSearchPageState extends State<ProductSearchPage> {
       ),
       floatingActionButtonLocation:
       FloatingActionButtonLocation.centerFloat,
-      floatingActionButton: BlocBuilder<HomeCubit, HomeState>(
+      floatingActionButton: !widget.withFloatingButton ? null : BlocBuilder<HomeCubit, HomeState>(
         builder: (context, homeState) {
           switch (homeState.runtimeType) {
             case HomeLoaded:

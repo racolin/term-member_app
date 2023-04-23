@@ -43,7 +43,7 @@ class NotifyCubit extends Cubit<NotifyState> {
       }
     }
     return AppMessage(
-      messageType: AppMessageType.error,
+      type: AppMessageType.error,
       title: 'Lỗi!',
       content: 'Không thể tích thông báo',
     );

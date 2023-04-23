@@ -26,7 +26,7 @@ class StoreApiRepository extends StoreRepository {
     } on DioError catch (ex) {
       throw AppException(
         message: AppMessage(
-          messageType: AppMessageType.error,
+          type: AppMessageType.error,
           title: 'Lỗi mạng!',
           content: 'Gặp sự cố khi thay đổi cửa hàng yêu thích!',
         ),
@@ -55,7 +55,7 @@ class StoreApiRepository extends StoreRepository {
     } on DioError catch (ex) {
       throw AppException(
         message: AppMessage(
-          messageType: AppMessageType.error,
+          type: AppMessageType.error,
           title: 'Lỗi mạng!',
           content: 'Gặp sự cố khi lấy danh sách cửa hàng',
         ),
@@ -70,7 +70,7 @@ class StoreApiRepository extends StoreRepository {
     } on DioError catch (ex) {
       throw AppException(
         message: AppMessage(
-          messageType: AppMessageType.error,
+          type: AppMessageType.error,
           title: 'Lỗi mạng!',
           content: 'Gặp sự cố khi lấy danh sách cửa hàng',
         ),

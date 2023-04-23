@@ -46,7 +46,7 @@ class AddressCubit extends Cubit<AddressState> {
   }) async {
     if (state is! AddressLoaded) {
       return AppMessage(
-        messageType: AppMessageType.failure,
+        type: AppMessageType.failure,
         title: 'Thất bại',
         content: 'Hãy thử lại trong giây lát!',
       );
@@ -65,7 +65,7 @@ class AddressCubit extends Cubit<AddressState> {
 
       if (id == null) {
         return AppMessage(
-          messageType: AppMessageType.failure,
+          type: AppMessageType.failure,
           title: 'Thất bại',
           content: 'Không thể tạo địa chỉ mới. Hãy thử lại!',
         );
@@ -93,7 +93,7 @@ class AddressCubit extends Cubit<AddressState> {
   Future<AppMessage?> deleteAddress(String id) async {
     if (state is! AddressLoaded) {
       return AppMessage(
-        messageType: AppMessageType.failure,
+        type: AppMessageType.failure,
         title: 'Thất bại',
         content: 'Hãy thử lại trong giây lát!',
       );
@@ -104,7 +104,7 @@ class AddressCubit extends Cubit<AddressState> {
 
       if (result == null || !result) {
         return AppMessage(
-          messageType: AppMessageType.failure,
+          type: AppMessageType.failure,
           title: 'Thất bại',
           content: 'Không thể xoá địa chỉ. Hãy thử lại!',
         );
@@ -131,7 +131,7 @@ class AddressCubit extends Cubit<AddressState> {
       var index = state.otherAddresses.indexWhere((e) => e.id == model.id);
       if (index == -1) {
         return AppMessage(
-          messageType: AppMessageType.error,
+          type: AppMessageType.error,
           title: 'Lỗi',
           content: 'Không tồn tại ID của đia chỉ này!',
         );
@@ -140,7 +140,7 @@ class AddressCubit extends Cubit<AddressState> {
 
       if (result == null || !result) {
         return AppMessage(
-          messageType: AppMessageType.failure,
+          type: AppMessageType.failure,
           title: 'Không thành công',
           content: 'Không cập nhật được địa chỉ!',
         );

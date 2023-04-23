@@ -15,10 +15,12 @@ class OrderBody extends StatefulWidget {
   final VoidCallback onScroll;
   final int perRow = 4;
   final int row = 2;
+  final bool login;
 
   const OrderBody({
     Key? key,
     required this.onScroll,
+    this.login = false,
   }) : super(key: key);
 
   @override

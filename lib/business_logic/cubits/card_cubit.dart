@@ -18,7 +18,7 @@ class CardCubit extends Cubit<CardState> {
           emit(
             CardFailure(
               message: AppMessage(
-                messageType: AppMessageType.failure,
+                type: AppMessageType.failure,
                 title: 'Cảnh báo',
                 content: 'Thẻ khách hàng trống',
               ),
@@ -41,7 +41,7 @@ class CardCubit extends Cubit<CardState> {
         emit(
           CardFailure(
             message: AppMessage(
-              messageType: AppMessageType.failure,
+              type: AppMessageType.failure,
               title: 'Cảnh báo',
               content: 'Thẻ khách hàng trống',
             ),

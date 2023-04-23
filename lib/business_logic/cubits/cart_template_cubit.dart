@@ -29,7 +29,7 @@ class CartTemplateCubit extends Cubit<CartTemplateState> {
   Future<AppMessage?> reloadCartTemplates() async {
     if (state is! CartTemplateLoaded) {
       return AppMessage(
-        messageType: AppMessageType.failure,
+        type: AppMessageType.failure,
         title: 'Cảnh báo',
         content: 'Thao tác của bạn quá nhanh. Hãy thử lại!',
       );
@@ -55,7 +55,7 @@ class CartTemplateCubit extends Cubit<CartTemplateState> {
   ) async {
     if (this.state is! CartTemplateLoaded) {
       return AppMessage(
-        messageType: AppMessageType.failure,
+        type: AppMessageType.failure,
         title: 'Cảnh báo',
         content: 'Thao tác của bạn quá nhanh. Hãy thử lại!',
       );
@@ -72,7 +72,7 @@ class CartTemplateCubit extends Cubit<CartTemplateState> {
 
       if (result == null || !result) {
         return AppMessage(
-          messageType: AppMessageType.error,
+          type: AppMessageType.error,
           title: 'Lỗi',
           content: 'Template chưa được sửa. Hãy thử lại!',
         );
@@ -81,7 +81,7 @@ class CartTemplateCubit extends Cubit<CartTemplateState> {
       int index = list.indexWhere((e) => e.id == id);
       if (index == -1) {
         return AppMessage(
-          messageType: AppMessageType.error,
+          type: AppMessageType.error,
           title: 'Lỗi',
           content: 'Không tìm thấy mã của template muốn chỉnh sửa.',
         );
@@ -101,7 +101,7 @@ class CartTemplateCubit extends Cubit<CartTemplateState> {
   Future<AppMessage?> deleteCart(String id) async {
     if (this.state is! CartTemplateLoaded) {
       return AppMessage(
-        messageType: AppMessageType.failure,
+        type: AppMessageType.failure,
         title: 'Cảnh báo',
         content: 'Thao tác của bạn quá nhanh. Hãy thử lại!',
       );
@@ -114,7 +114,7 @@ class CartTemplateCubit extends Cubit<CartTemplateState> {
 
       if (result == null || !result) {
         return AppMessage(
-          messageType: AppMessageType.error,
+          type: AppMessageType.error,
           title: 'Lỗi',
           content: 'Template chưa được xoá. Hãy thử lại!',
         );
@@ -124,7 +124,7 @@ class CartTemplateCubit extends Cubit<CartTemplateState> {
       int index = list.indexWhere((e) => e.id == id);
       if (index == -1) {
         return AppMessage(
-          messageType: AppMessageType.error,
+          type: AppMessageType.error,
           title: 'Lỗi',
           content: 'Không tìm thấy mã của template muốn xoá.',
         );
@@ -148,7 +148,7 @@ class CartTemplateCubit extends Cubit<CartTemplateState> {
   ) async {
     if (this.state is! CartTemplateLoaded) {
       return AppMessage(
-        messageType: AppMessageType.failure,
+        type: AppMessageType.failure,
         title: 'Cảnh báo',
         content: 'Thao tác của bạn quá nhanh. Hãy thử lại!',
       );
@@ -163,7 +163,7 @@ class CartTemplateCubit extends Cubit<CartTemplateState> {
       );
       if (id == null) {
         return AppMessage(
-          messageType: AppMessageType.failure,
+          type: AppMessageType.failure,
           title: 'Lỗi',
           content: 'Cart Template này chưa được tạo. Hãy thử lại!',
         );
@@ -189,7 +189,7 @@ class CartTemplateCubit extends Cubit<CartTemplateState> {
   Future<AppMessage?> arrangeCart(List<String> ids) async {
     if (this.state is! CartTemplateLoaded) {
       return AppMessage(
-        messageType: AppMessageType.failure,
+        type: AppMessageType.failure,
         title: 'Cảnh báo',
         content: 'Thao tác của bạn quá nhanh. Hãy thử lại!',
       );
@@ -201,7 +201,7 @@ class CartTemplateCubit extends Cubit<CartTemplateState> {
       bool? result = await _repository.arrange(ids: ids);
       if (result == null || !result) {
         return AppMessage(
-          messageType: AppMessageType.failure,
+          type: AppMessageType.failure,
           title: 'Lỗi',
           content: 'Cart Templates chưa được sắp xếp. Hãy thử lại!',
         );
@@ -212,7 +212,7 @@ class CartTemplateCubit extends Cubit<CartTemplateState> {
         int index = state.list.indexWhere((e) => ids[i] == e.id);
         if (index == -1) {
           return AppMessage(
-            messageType: AppMessageType.failure,
+            type: AppMessageType.failure,
             title: 'Lỗi',
             content: 'Dữ liệu trên giao diện không đúng. Hãy thoát ra và vào lại!',
           );

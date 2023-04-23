@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:member_app/presentation/app_router.dart';
 import 'package:member_app/presentation/res/dimen/dimens.dart';
 import 'package:member_app/presentation/res/strings/values.dart';
 
@@ -6,7 +7,9 @@ import 'promotion_point_page.dart';
 import 'promotion_swap_page.dart';
 
 class PromotionBody extends StatefulWidget {
-  const PromotionBody({Key? key}) : super(key: key);
+  final bool login;
+
+  const PromotionBody({Key? key, this.login = false}) : super(key: key);
 
   @override
   State<PromotionBody> createState() => _PromotionBodyState();
@@ -48,11 +51,6 @@ class _PromotionBodyState extends State<PromotionBody> {
         _getOptions(),
         Expanded(
           child: SingleChildScrollView(
-            padding: const EdgeInsets.only(
-              top: spaceSM,
-              left: spaceXS,
-              right: spaceXS,
-            ),
             child: _body,
           ),
         ),
@@ -75,7 +73,9 @@ class _PromotionBodyState extends State<PromotionBody> {
             InkWell(
               borderRadius: BorderRadius.circular(spaceMD),
               onTap: () {
-                if (optionIndex != i) {
+                if (!widget.login && i == 1) {
+                  Navigator.pushNamed(context, AppRouter.auth);
+                } else if (optionIndex != i) {
                   selectOptionItem(i);
                 }
               },

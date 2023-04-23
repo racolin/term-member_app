@@ -79,7 +79,7 @@ class CartsCubit extends Cubit<CartsState> {
       return null;
     }
     return AppMessage(
-      messageType: AppMessageType.failure,
+      type: AppMessageType.failure,
       title: 'Hãy đợi!',
       content: 'Trang đang được tải. Hãy đợi trong giây lát',
     );

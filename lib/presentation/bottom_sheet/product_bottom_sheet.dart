@@ -64,8 +64,6 @@ class _Selected {
   String? getRadioGroup(String parentId) {
     var map = selected[parentId]!.value;
     for (var key in map.keys) {
-      print(map[key]!.value);
-      print(key);
       if (map[key]!.value) {
         return key;
       }

@@ -27,7 +27,7 @@ class CartDetailCubit extends Cubit<CartDetailState> {
 
     if (result == null || !result) {
       return AppMessage(
-        messageType: AppMessageType.failure,
+        type: AppMessageType.failure,
         title: 'Có lỗi!',
         content: 'Có lỗi xảy ra khi đánh giá đơn hàng. Bạn có thể đánh giá lại!',
       );

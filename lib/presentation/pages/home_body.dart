@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 
-import '../../presentation/res/strings/values.dart';
-import '../../presentation/widgets/app_image_widget.dart';
-import '../../presentation/res/dimen/dimens.dart';
+import '../widgets/no_auth/card_home_widget.dart';
+import '../res/strings/values.dart';
+import '../widgets/app_image_widget.dart';
+import '../res/dimen/dimens.dart';
 import '../widgets/news/news_section_widget.dart';
-import '../../presentation/widgets/product/products_suggest_widget.dart';
+import '../widgets/product/products_suggest_widget.dart';
 import '../widgets/card_widget.dart';
 import '../widgets/delivery/delivery_options_widget.dart';
 import '../widgets/drag_bar_widget.dart';
@@ -13,10 +14,12 @@ import '../widgets/slide/slider_widget.dart';
 
 class HomeBody extends StatefulWidget {
   final VoidCallback onScroll;
+  final bool login;
 
   const HomeBody({
     Key? key,
     required this.onScroll,
+    required this.login,
   }) : super(key: key);
 
   @override
@@ -68,7 +71,7 @@ class _HomeBodyState extends State<HomeBody> {
                         image: AssetImage(assetDefaultImage),
                       ),
                     ),
-                    child:const CardWidget(isDetail: false),
+                    child: const CardWidget(isDetail: false),
                   );
                 },
                 imageBuilder: (ctx, provider) {
@@ -86,7 +89,7 @@ class _HomeBodyState extends State<HomeBody> {
                         image: provider,
                       ),
                     ),
-                    child:const CardWidget(isDetail: false),
+                    child: widget.login ? const CardWidget(isDetail: false) : const CardHomeWidget(),
                   );
                 },
               ),

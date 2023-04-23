@@ -43,7 +43,7 @@ class HistoryPointCubit extends Cubit<HistoryPointState> {
 
   Future<AppMessage?> loadMore() async {
     if (this.state is! HistoryPointLoaded) {
-      return AppMessage(messageType: AppMessageType.failure, title: 'Đợi', content: 'Hãy đợi load xong!');
+      return AppMessage(type: AppMessageType.failure, title: 'Đợi', content: 'Hãy đợi load xong!');
     }
     var state =  this.state as HistoryPointLoaded;
     if (state.limit * state.page >= state.maxCount) {

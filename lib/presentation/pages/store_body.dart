@@ -11,8 +11,12 @@ import 'store_search_page.dart';
 
 class StoreBody extends StatelessWidget {
   static const String searchTag = 'Search';
+  final bool login;
 
-  const StoreBody({Key? key}) : super(key: key);
+  const StoreBody({
+    Key? key,
+    this.login = false,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -55,11 +59,12 @@ class StoreBody extends StatelessWidget {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (ctx) => BlocProvider<IntervalBloc<StoreModel>>(
+                        builder: (ctx) =>
+                            BlocProvider<IntervalBloc<StoreModel>>(
                           create: (ctx) => IntervalBloc<StoreModel>(
                             submit: BlocProvider.of<StoreCubit>(context),
                           ),
-                          child:  StoreSearchPage(
+                          child: StoreSearchPage(
                             onCLick: (StoreModel store) {},
                           ),
                         ),

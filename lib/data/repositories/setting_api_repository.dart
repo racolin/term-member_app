@@ -81,7 +81,7 @@ class SettingApiRepository extends SettingRepository {
     } on DioError catch (ex) {
       throw AppException(
         message: AppMessage(
-          messageType: AppMessageType.error,
+          type: AppMessageType.error,
           title: 'Lỗi mạng!',
           content: 'Gặp sự cố khi chuyển sang đã đọc',
         ),
@@ -118,7 +118,7 @@ class SettingApiRepository extends SettingRepository {
     } on DioError catch (ex) {
       throw AppException(
         message: AppMessage(
-          messageType: AppMessageType.error,
+          type: AppMessageType.error,
           title: 'Lỗi mạng!',
           content: 'Gặp sự cố khi tạo địa chỉ',
         ),
@@ -137,7 +137,7 @@ class SettingApiRepository extends SettingRepository {
     } on DioError catch (ex) {
       throw AppException(
         message: AppMessage(
-          messageType: AppMessageType.error,
+          type: AppMessageType.error,
           title: 'Lỗi mạng!',
           content: 'Gặp sự cố khi xoá địa chỉ',
         ),
@@ -153,7 +153,7 @@ class SettingApiRepository extends SettingRepository {
     } on DioError catch (ex) {
       throw AppException(
         message: AppMessage(
-          messageType: AppMessageType.error,
+          type: AppMessageType.error,
           title: 'Lỗi mạng!',
           content: 'Gặp sự cố khi chuyển sang đã đọc',
         ),
@@ -169,7 +169,7 @@ class SettingApiRepository extends SettingRepository {
     } on DioError catch (ex) {
       throw AppException(
         message: AppMessage(
-          messageType: AppMessageType.error,
+          type: AppMessageType.error,
           title: 'Lỗi mạng!',
           content: 'Gặp sự cố khi lấy profile',
         ),
@@ -188,7 +188,7 @@ class SettingApiRepository extends SettingRepository {
       if (index == -1) {
         throw AppException(
           message: AppMessage(
-            messageType: AppMessageType.error,
+            type: AppMessageType.error,
             title: 'Lỗi mạng!',
             content: 'Không tìm thấy mã địa chỉ',
           ),
@@ -221,7 +221,7 @@ class SettingApiRepository extends SettingRepository {
     } on DioError catch (ex) {
       throw AppException(
         message: AppMessage(
-          messageType: AppMessageType.error,
+          type: AppMessageType.error,
           title: 'Lỗi mạng!',
           content: 'Gặp sự cố khi sửa địa chỉ',
         ),
@@ -246,7 +246,7 @@ class SettingApiRepository extends SettingRepository {
     } on DioError catch (ex) {
       throw AppException(
         message: AppMessage(
-          messageType: AppMessageType.error,
+          type: AppMessageType.error,
           title: 'Lỗi mạng!',
           content: 'Gặp sự cố khi sửa profile',
         ),

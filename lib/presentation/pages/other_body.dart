@@ -1,5 +1,8 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:member_app/exception/app_message.dart';
 import 'package:member_app/presentation/app_router.dart';
+import 'package:member_app/presentation/dialogs/dialog_widget.dart';
 import 'package:member_app/presentation/res/strings/values.dart';
 import 'package:member_app/presentation/widgets/feature_card_widget.dart';
 import 'package:member_app/presentation/widgets/group_item_widget.dart';
@@ -7,7 +10,12 @@ import 'package:member_app/presentation/widgets/group_item_widget.dart';
 import '../res/dimen/dimens.dart';
 
 class OtherBody extends StatelessWidget {
-  const OtherBody({Key? key}) : super(key: key);
+  final bool login;
+
+  const OtherBody({
+    Key? key,
+    this.login = false,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -154,8 +162,42 @@ class OtherBody extends StatelessWidget {
                     size: fontLG,
                     color: Colors.black,
                   ),
-                  title: txtLogOut,
-                  onClick: () {},
+                  title: login ? txtLogOut : txtLogIn,
+                  onClick: () {
+                    if (login) {
+                      showCupertinoDialog(
+                        context: context,
+                        builder: (context) => DialogWidget(
+                          message: AppMessage(
+                            type: AppMessageType.info,
+                            title: txtLogOut,
+                            content: txtConfirmLogOut,
+                          ),
+                          actions: [
+                            CupertinoDialogAction(
+                              child: const Text(txtNo),
+                              onPressed: () {
+                                Navigator.pop(context);
+                              },
+                            ),
+                            CupertinoDialogAction(
+                              child: const Text(txtYes),
+                              onPressed: () {
+                                // clear data here
+                                Navigator.pushNamedAndRemoveUntil(
+                                  context,
+                                  AppRouter.auth,
+                                  (route) => false,
+                                );
+                              },
+                            ),
+                          ],
+                        ),
+                      );
+                    } else {
+                      Navigator.pushNamed(context, AppRouter.auth);
+                    }
+                  },
                   isBottom: true,
                 ),
               ],

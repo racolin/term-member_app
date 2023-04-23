@@ -33,7 +33,7 @@ class CartApiRepository extends CartRepository {
     } on DioError catch (ex) {
       throw AppException(
         message: AppMessage(
-          messageType: AppMessageType.error,
+          type: AppMessageType.error,
           title: 'Lỗi mạng!',
           content: 'Gặp sự cố khi kiểm tra Voucher',
         ),
@@ -56,7 +56,7 @@ class CartApiRepository extends CartRepository {
     } on DioError catch (ex) {
       throw AppException(
         message: AppMessage(
-          messageType: AppMessageType.error,
+          type: AppMessageType.error,
           title: 'Lỗi mạng!',
           content: 'Gặp sự cố khi tạo Cart',
         ),
@@ -120,7 +120,7 @@ class CartApiRepository extends CartRepository {
     } on DioError catch (ex) {
       throw AppException(
         message: AppMessage(
-          messageType: AppMessageType.error,
+          type: AppMessageType.error,
           title: 'Lỗi mạng!',
           content: 'Gặp sự cố khi lấy chi tiết Cart',
         ),
@@ -139,7 +139,7 @@ class CartApiRepository extends CartRepository {
     } on DioError catch (ex) {
       throw AppException(
         message: AppMessage(
-          messageType: AppMessageType.error,
+          type: AppMessageType.error,
           title: 'Lỗi mạng!',
           content: 'Gặp sự cố khi lấy danh sách status',
         ),
@@ -172,7 +172,7 @@ class CartApiRepository extends CartRepository {
     } on DioError catch (ex) {
       throw AppException(
         message: AppMessage(
-          messageType: AppMessageType.error,
+          type: AppMessageType.error,
           title: 'Lỗi mạng!',
           content: 'Gặp sự cố khi lấy danh sách Cart bằng status',
         ),
@@ -190,7 +190,7 @@ class CartApiRepository extends CartRepository {
     } on DioError catch (ex) {
       throw AppException(
         message: AppMessage(
-          messageType: AppMessageType.error,
+          type: AppMessageType.error,
           title: 'Lỗi mạng!',
           content: 'Gặp sự cố khi review Cart',
         ),

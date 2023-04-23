@@ -18,9 +18,6 @@ class ProductApiRepository extends ProductRepository {
           'https://product.hstatic.net/1000075078/product/1669736835_ca-phe-sua-da_15ae84580c4141fc809ac8fffd72b194.png',
       images: [
         'https://product.hstatic.net/1000075078/product/1669736835_ca-phe-sua-da_15ae84580c4141fc809ac8fffd72b194.png',
-        'https://product.hstatic.net/1000075078/product/1669736835_ca-phe-sua-da_15ae84580c4141fc809ac8fffd72b194.png',
-        'https://product.hstatic.net/1000075078/product/1669736835_ca-phe-sua-da_15ae84580c4141fc809ac8fffd72b194.png',
-        'https://product.hstatic.net/1000075078/product/1669736835_ca-phe-sua-da_15ae84580c4141fc809ac8fffd72b194.png',
       ],
       optionIds: ['OPTION-1', 'OPTION-3', 'OPTION-4'],
       description:
@@ -278,7 +275,7 @@ class ProductApiRepository extends ProductRepository {
     } on DioError catch (ex) {
       throw AppException(
         message: AppMessage(
-          messageType: AppMessageType.error,
+          type: AppMessageType.error,
           title: 'Lỗi mạng!',
           content: 'Gặp sự cố khi thay đổi yêu thích',
         ),
@@ -294,7 +291,7 @@ class ProductApiRepository extends ProductRepository {
     } on DioError catch (ex) {
       throw AppException(
         message: AppMessage(
-          messageType: AppMessageType.error,
+          type: AppMessageType.error,
           title: 'Lỗi mạng!',
           content: 'Gặp sự cố khi lấy danh sách category',
         ),
@@ -310,7 +307,7 @@ class ProductApiRepository extends ProductRepository {
     } on DioError catch (ex) {
       throw AppException(
         message: AppMessage(
-          messageType: AppMessageType.error,
+          type: AppMessageType.error,
           title: 'Lỗi mạng!',
           content: 'Gặp sự cố khi lấy danh sách yêu thích',
         ),
@@ -326,7 +323,7 @@ class ProductApiRepository extends ProductRepository {
     } on DioError catch (ex) {
       throw AppException(
         message: AppMessage(
-          messageType: AppMessageType.error,
+          type: AppMessageType.error,
           title: 'Lỗi mạng!',
           content: 'Gặp sự cố khi lấy danh sách lựa chọn',
         ),
@@ -342,7 +339,7 @@ class ProductApiRepository extends ProductRepository {
     } on DioError catch (ex) {
       throw AppException(
         message: AppMessage(
-          messageType: AppMessageType.error,
+          type: AppMessageType.error,
           title: 'Lỗi mạng!',
           content: 'Gặp sự cố khi lấy danh sách sản phẩm',
         ),
@@ -358,7 +355,7 @@ class ProductApiRepository extends ProductRepository {
     } on DioError catch (ex) {
       throw AppException(
         message: AppMessage(
-          messageType: AppMessageType.error,
+          type: AppMessageType.error,
           title: 'Lỗi mạng!',
           content: 'Gặp sự cố khi lấy danh sách sản phẩm',
         ),

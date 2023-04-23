@@ -5,21 +5,21 @@ import '../../exception/app_message.dart';
 import '../../presentation/res/dimen/dimens.dart';
 
 class DialogWidget extends StatelessWidget {
-  final AppMessage messageNotify;
+  final AppMessage message;
   final List<CupertinoDialogAction> actions;
 
   const DialogWidget({
     Key? key,
-    required this.messageNotify,
+    required this.message,
     this.actions = const [],
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    Color color = _getColor(messageNotify.messageType);
+    Color color = _getColor(message.type);
     return CupertinoAlertDialog(
       title: Text(
-        messageNotify.title,
+        message.title,
         style: TextStyle(
           color: color,
           fontSize: fontLG,
@@ -27,7 +27,7 @@ class DialogWidget extends StatelessWidget {
         ),
       ),
       content: Text(
-        messageNotify.content,
+        message.content,
         style: const TextStyle(
           color: Colors.black87,
           fontSize: fontMD,

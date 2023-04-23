@@ -59,7 +59,7 @@ class NewsApiRepository extends NewsRepository {
     } on DioError catch (ex) {
       throw AppException(
         message: AppMessage(
-          messageType: AppMessageType.error,
+          type: AppMessageType.error,
           title: 'Lỗi mạng!',
           content: 'Gặp sự cố khi lấy App Bar',
         ),

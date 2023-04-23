@@ -84,7 +84,7 @@ class ProductCubit extends Cubit<ProductState>
       }
     } else {
       return AppMessage(
-        messageType: AppMessageType.failure,
+        type: AppMessageType.failure,
         title: 'Hãy đợi',
         content: 'Thao tác của bạn quá nhanh. Hãy thử lại!',
       );
@@ -108,7 +108,7 @@ class ProductCubit extends Cubit<ProductState>
       return null;
     }
     return AppMessage(
-      messageType: AppMessageType.failure,
+      type: AppMessageType.failure,
       title: 'Xảy ra lỗi',
       content: 'Không thể lọc sản sẩm theo cửa hàng.',
     );

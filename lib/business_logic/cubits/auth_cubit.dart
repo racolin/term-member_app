@@ -18,7 +18,7 @@ class AuthCubit extends Cubit<AuthState> {
       bool? result = await _repository.login(phone: phone);
       if (result == null) {
         return AppMessage(
-          messageType: AppMessageType.error,
+          type: AppMessageType.error,
           title: 'Lỗi',
           content: 'Không thể đăng nhâp. Hãy thử lại!',
         );
@@ -26,7 +26,7 @@ class AuthCubit extends Cubit<AuthState> {
         emit(AuthLogin(phone: phone));
       } else {
         return AppMessage(
-          messageType: AppMessageType.error,
+          type: AppMessageType.error,
           title: 'Lỗi',
           content: 'Số điện thoại không đúng!',
         );
@@ -54,7 +54,7 @@ class AuthCubit extends Cubit<AuthState> {
       );
       if (result == null) {
         return AppMessage(
-          messageType: AppMessageType.error,
+          type: AppMessageType.error,
           title: 'Trục trặc',
           content: 'Không thể đăng ký. Hãy thử lại!',
         );
@@ -62,7 +62,7 @@ class AuthCubit extends Cubit<AuthState> {
         emit(AuthLogin(phone: phone));
       } else {
         return AppMessage(
-          messageType: AppMessageType.error,
+          type: AppMessageType.error,
           title: 'Lỗi',
           content: 'Không thể đăng ký. Hãy thử lại!',
         );
@@ -76,7 +76,7 @@ class AuthCubit extends Cubit<AuthState> {
   Future<AppMessage?> otpCheck(String otp) async {
     if (state is! AuthLogin) {
       return AppMessage(
-        messageType: AppMessageType.info,
+        type: AppMessageType.info,
         title: 'Thông báo',
         content: 'Giao diện chưa tải xong!',
       );
@@ -87,7 +87,7 @@ class AuthCubit extends Cubit<AuthState> {
       );
       if (result == null) {
         return AppMessage(
-          messageType: AppMessageType.failure,
+          type: AppMessageType.failure,
           title: 'Trục trặc',
           content: 'Không thể kiểm tra OTP. Hãy thử lại!',
         );
@@ -95,7 +95,7 @@ class AuthCubit extends Cubit<AuthState> {
         return null;
       } else {
         return AppMessage(
-          messageType: AppMessageType.error,
+          type: AppMessageType.error,
           title: 'Lỗi',
           content: 'Không thể đăng ký. Hãy thử lại!',
         );

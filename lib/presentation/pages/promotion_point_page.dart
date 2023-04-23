@@ -4,6 +4,8 @@ import 'package:member_app/presentation/pages/loading_page.dart';
 import 'package:member_app/presentation/res/dimen/dimens.dart';
 import 'package:member_app/presentation/res/strings/values.dart';
 import 'package:member_app/presentation/widgets/card_widget.dart';
+import 'package:member_app/presentation/widgets/no_auth/card_home_widget.dart';
+import 'package:member_app/presentation/widgets/no_auth/card_type_widget.dart';
 import 'package:member_app/presentation/widgets/voucher_widget.dart';
 
 import '../../business_logic/cubits/promotion_cubit.dart';
@@ -14,150 +16,178 @@ import '../widgets/feature_card_widget.dart';
 import '../widgets/promotion/promotion_small_widget.dart';
 
 class PromotionPointPage extends StatelessWidget {
-  const PromotionPointPage({Key? key}) : super(key: key);
+  final bool login;
+
+  const PromotionPointPage({
+    Key? key,
+    this.login = false,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        const CardWidget(
-          isDetail: true,
-        ),
-        _getFeatures(),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            const Text(
-              txtYourVoucher,
-              style: TextStyle(
-                fontWeight: FontWeight.w700,
-                fontSize: fontLG,
+    return !login
+        ? Column(
+            children: [
+              Container(
+                padding: const EdgeInsets.only(
+                  top: spaceSM,
+                  left: spaceXS,
+                  right: spaceXS,
+                ),
+                height: 236,
+                child: const CardHomeWidget(),
               ),
+              const SizedBox(height: spaceSM),
+              const CardTypeWidget(),
+            ],
+          )
+        : Padding(
+            padding: const EdgeInsets.only(
+              top: spaceSM,
+              left: spaceXS,
+              right: spaceXS,
             ),
-            TextButton(
-              onPressed: () {},
-              style: ButtonStyle(
-                overlayColor: MaterialStateProperty.all(
-                  Colors.orange.withOpacity(opaXS),
+            child: Column(
+              children: [
+                const CardWidget(
+                  isDetail: true,
                 ),
-                backgroundColor: MaterialStateProperty.all(
-                  Colors.orange.withAlpha(20),
-                ),
-                shape: MaterialStateProperty.all(
-                  RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(spaceLG),
-                  ),
-                ),
-              ),
-              child: const Text(
-                txtSeeAll,
-                style: TextStyle(fontWeight: FontWeight.w700),
-              ),
-            ),
-          ],
-        ),
-        BlocBuilder<VoucherCubit, VoucherState>(
-          builder: (context, state) {
-            switch (state.runtimeType) {
-              case VoucherInitial:
-                return const SizedBox();
-              case VoucherLoading:
-                return const Center(
-                  child: LoadingWidget(),
-                );
-              case VoucherLoaded:
-                return Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: (state as VoucherLoaded)
-                      .list
-                      .map(
-                        (e) => Column(
-                          children: [
-                            VoucherWidget(
-                              voucher: e,
-                            ),
-                            const SizedBox(
-                              height: spaceXS,
-                            ),
-                          ],
+                _getFeatures(),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    const Text(
+                      txtYourVoucher,
+                      style: TextStyle(
+                        fontWeight: FontWeight.w700,
+                        fontSize: fontLG,
+                      ),
+                    ),
+                    TextButton(
+                      onPressed: () {},
+                      style: ButtonStyle(
+                        overlayColor: MaterialStateProperty.all(
+                          Colors.orange.withOpacity(opaXS),
                         ),
-                      )
-                      .toList(),
-                );
-            }
-            return const SizedBox();
-          },
-        ),
-        const SizedBox(
-          height: spaceMD,
-        ),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            const Text(
-              txtPromotionSwap,
-              style: TextStyle(
-                fontWeight: FontWeight.w700,
-                fontSize: fontLG,
-              ),
-            ),
-            TextButton(
-              onPressed: () {},
-              style: ButtonStyle(
-                backgroundColor: MaterialStateProperty.all(
-                  Colors.orange.withAlpha(20),
-                ),
-                shape: MaterialStateProperty.all(
-                  RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(spaceMD),
-                  ),
-                ),
-              ),
-              child: const Text(
-                txtSeeAll,
-                style: TextStyle(fontWeight: FontWeight.w700),
-              ),
-            ),
-          ],
-        ),
-        BlocBuilder<PromotionCubit, PromotionState>(
-          builder: (context, state) {
-            switch (state.runtimeType) {
-              case PromotionInitial:
-                return const SizedBox();
-              case PromotionLoading:
-                return const Center(
-                  child: LoadingWidget(),
-                );
-              case PromotionLoaded:
-                return Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: (state as PromotionLoaded)
-                      .promotions
-                      .map(
-                        (e) => Column(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            PromotionSmallWidget(
-                              promotion: e,
-                            ),
-                            const SizedBox(
-                              height: spaceXS,
-                            ),
-                          ],
+                        backgroundColor: MaterialStateProperty.all(
+                          Colors.orange.withAlpha(20),
                         ),
-                      )
-                      .toList(),
-                );
-            }
-            return const SizedBox();
-          },
-        ),
-        const SizedBox(
-          height: dimLG,
-        ),
-      ],
-    );
+                        shape: MaterialStateProperty.all(
+                          RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(spaceLG),
+                          ),
+                        ),
+                      ),
+                      child: const Text(
+                        txtSeeAll,
+                        style: TextStyle(fontWeight: FontWeight.w700),
+                      ),
+                    ),
+                  ],
+                ),
+                BlocBuilder<VoucherCubit, VoucherState>(
+                  builder: (context, state) {
+                    switch (state.runtimeType) {
+                      case VoucherInitial:
+                        return const SizedBox();
+                      case VoucherLoading:
+                        return const Center(
+                          child: LoadingWidget(),
+                        );
+                      case VoucherLoaded:
+                        return Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: (state as VoucherLoaded)
+                              .list
+                              .map(
+                                (e) => Column(
+                                  children: [
+                                    VoucherWidget(
+                                      voucher: e,
+                                    ),
+                                    const SizedBox(
+                                      height: spaceXS,
+                                    ),
+                                  ],
+                                ),
+                              )
+                              .toList(),
+                        );
+                    }
+                    return const SizedBox();
+                  },
+                ),
+                const SizedBox(
+                  height: spaceMD,
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    const Text(
+                      txtPromotionSwap,
+                      style: TextStyle(
+                        fontWeight: FontWeight.w700,
+                        fontSize: fontLG,
+                      ),
+                    ),
+                    TextButton(
+                      onPressed: () {},
+                      style: ButtonStyle(
+                        backgroundColor: MaterialStateProperty.all(
+                          Colors.orange.withAlpha(20),
+                        ),
+                        shape: MaterialStateProperty.all(
+                          RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(spaceMD),
+                          ),
+                        ),
+                      ),
+                      child: const Text(
+                        txtSeeAll,
+                        style: TextStyle(fontWeight: FontWeight.w700),
+                      ),
+                    ),
+                  ],
+                ),
+                BlocBuilder<PromotionCubit, PromotionState>(
+                  builder: (context, state) {
+                    switch (state.runtimeType) {
+                      case PromotionInitial:
+                        return const SizedBox();
+                      case PromotionLoading:
+                        return const Center(
+                          child: LoadingWidget(),
+                        );
+                      case PromotionLoaded:
+                        return Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: (state as PromotionLoaded)
+                              .promotions
+                              .map(
+                                (e) => Column(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    PromotionSmallWidget(
+                                      promotion: e,
+                                    ),
+                                    const SizedBox(
+                                      height: spaceXS,
+                                    ),
+                                  ],
+                                ),
+                              )
+                              .toList(),
+                        );
+                    }
+                    return const SizedBox();
+                  },
+                ),
+                const SizedBox(
+                  height: dimLG,
+                ),
+              ],
+            ),
+          );
   }
 
   Widget _getFeatures() {

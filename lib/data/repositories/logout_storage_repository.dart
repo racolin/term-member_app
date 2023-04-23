@@ -17,7 +17,7 @@ class LogoutStorageRepository extends LogoutRepository {
     } on PlatformException catch (ex) {
       throw AppException(
         message: AppMessage(
-          messageType: AppMessageType.failure,
+          type: AppMessageType.failure,
           title: 'Lỗi',
           content: 'Quá trình đăng xuất gặp vấn đề. Hãy thử lại!',
         ),

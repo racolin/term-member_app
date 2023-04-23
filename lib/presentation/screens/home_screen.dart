@@ -30,7 +30,7 @@ class _HomeScreenState extends State<HomeScreen> {
     super.initState();
   }
 
-  Widget _getBody(HomeBodyType type) {
+  Widget _getBody(HomeBodyType type, bool login) {
     Widget body;
     switch (type) {
       case HomeBodyType.home:
@@ -40,6 +40,7 @@ class _HomeScreenState extends State<HomeScreen> {
               expanded = !expanded;
             });
           },
+          login: login,
         );
         break;
       case HomeBodyType.order:
@@ -49,16 +50,23 @@ class _HomeScreenState extends State<HomeScreen> {
               expanded = !expanded;
             });
           },
+          login: login,
         );
         break;
       case HomeBodyType.store:
-        body = const StoreBody();
+        body = StoreBody(
+          login: login,
+        );
         break;
       case HomeBodyType.other:
-        body = const OtherBody();
+        body = OtherBody(
+          login: login,
+        );
         break;
       case HomeBodyType.promotion:
-        body = const PromotionBody();
+        body = PromotionBody(
+          login: login,
+        );
         break;
       default:
         body = const LoadingPage();
@@ -85,6 +93,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 case HomeLoaded:
                   return _getBody(
                     (state as HomeLoaded).type,
+                    state.login,
                   );
               }
               return const LoadingPage();

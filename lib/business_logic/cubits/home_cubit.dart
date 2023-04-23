@@ -8,7 +8,7 @@ import '../states/home_state.dart';
 class HomeCubit extends Cubit<HomeState> {
   final _repository = LogoutStorageRepository();
 
-  HomeCubit() : super(HomeInitial()) {
+  HomeCubit(bool login) : super(HomeInitial()) {
     emit(HomeLoading());
     _repository.isLogin().then((login) {
       emit(HomeLoaded(
@@ -33,7 +33,7 @@ class HomeCubit extends Cubit<HomeState> {
     if (state is! HomeLoaded) {
       return AppException(
         message: AppMessage(
-          messageType: AppMessageType.failure,
+          type: AppMessageType.failure,
           title: 'Đợi',
           content: 'Thao tác chưa được xửt lý vì quá nhanh.',
         ),

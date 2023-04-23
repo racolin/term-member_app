@@ -23,7 +23,7 @@ class CartCubit extends Cubit<CartState> {
   Future<AppMessage?> checkAndSetVoucher(VoucherModel voucher) async {
     if (this.state is! CartLoaded) {
       return AppMessage(
-        messageType: AppMessageType.failure,
+        type: AppMessageType.failure,
         title: 'Hãy đợi',
         content: 'Thao tác của bạn quá nhanh',
       );
@@ -33,7 +33,7 @@ class CartCubit extends Cubit<CartState> {
 
     if (state.categoryId == null) {
       return AppMessage(
-        messageType: AppMessageType.failure,
+        type: AppMessageType.failure,
         title: 'Thông báo',
         content: 'Bạn phải chọn hình thức giao hàng trước',
       );
@@ -81,7 +81,7 @@ class CartCubit extends Cubit<CartState> {
     if (checked == null) {
       throw AppException(
         message: AppMessage(
-          messageType: AppMessageType.error,
+          type: AppMessageType.error,
           title: 'Có lỗi!',
           content: 'Voucher của bạn chưa được kiểm tra. Hãy thử lại!',
         ),
@@ -93,7 +93,7 @@ class CartCubit extends Cubit<CartState> {
   Future<AppMessage?> create() async {
     if (this.state is! CartLoaded) {
       return AppMessage(
-        messageType: AppMessageType.failure,
+        type: AppMessageType.failure,
         title: 'Hãy đợi',
         content: 'Thao tác của bạn quá nhanh',
       );
@@ -108,7 +108,7 @@ class CartCubit extends Cubit<CartState> {
         state.receiver == null ||
         state.receiver == '') {
       return AppMessage(
-        messageType: AppMessageType.failure,
+        type: AppMessageType.failure,
         title: 'Chưa đủ thông tin',
         content: 'Bạn chưa điền đầy đủ thông tin đơn hàng!',
       );
@@ -126,14 +126,14 @@ class CartCubit extends Cubit<CartState> {
 
       if (id != null) {
         return AppMessage(
-          messageType: AppMessageType.success,
+          type: AppMessageType.success,
           title: 'Thành công',
           content: 'Bạn đã đặt hàng thành công!',
         );
       }
 
       return AppMessage(
-        messageType: AppMessageType.error,
+        type: AppMessageType.error,
         title: 'Lỗi!',
         content: 'Đơn hàng gặp trục trặc. Vui lòng thử lại!',
       );
@@ -147,7 +147,7 @@ class CartCubit extends Cubit<CartState> {
   AppMessage? setAddress(String addressName, String addressDescription) {
     if (this.state is! CartLoaded) {
       return AppMessage(
-        messageType: AppMessageType.failure,
+        type: AppMessageType.failure,
         title: 'Hãy đợi',
         content: 'Thao tác của bạn quá nhanh',
       );
@@ -166,7 +166,7 @@ class CartCubit extends Cubit<CartState> {
   AppMessage? setStore(StoreModel store, StoreDetailModel storeDetail) {
     if (this.state is! CartLoaded) {
       return AppMessage(
-        messageType: AppMessageType.failure,
+        type: AppMessageType.failure,
         title: 'Hãy đợi',
         content: 'Thao tác của bạn quá nhanh',
       );
@@ -185,7 +185,7 @@ class CartCubit extends Cubit<CartState> {
   AppMessage? setReceiver(String receiver, String phone) {
     if (this.state is! CartLoaded) {
       return AppMessage(
-        messageType: AppMessageType.failure,
+        type: AppMessageType.failure,
         title: 'Hãy đợi',
         content: 'Thao tác của bạn quá nhanh',
       );
@@ -204,7 +204,7 @@ class CartCubit extends Cubit<CartState> {
   AppMessage? setReceiverName(String receiver) {
     if (this.state is! CartLoaded) {
       return AppMessage(
-        messageType: AppMessageType.failure,
+        type: AppMessageType.failure,
         title: 'Hãy đợi',
         content: 'Thao tác của bạn quá nhanh',
       );
@@ -222,7 +222,7 @@ class CartCubit extends Cubit<CartState> {
   AppMessage? setPhone(String phone) {
     if (this.state is! CartLoaded) {
       return AppMessage(
-        messageType: AppMessageType.failure,
+        type: AppMessageType.failure,
         title: 'Hãy đợi',
         content: 'Thao tác của bạn quá nhanh',
       );
@@ -240,7 +240,7 @@ class CartCubit extends Cubit<CartState> {
   AppMessage? editDateTime(DateTime time) {
     if (this.state is! CartLoaded) {
       return AppMessage(
-        messageType: AppMessageType.failure,
+        type: AppMessageType.failure,
         title: 'Hãy đợi',
         content: 'Thao tác của bạn quá nhanh',
       );
@@ -258,7 +258,7 @@ class CartCubit extends Cubit<CartState> {
   AppMessage? setPayType(int payType) {
     if (this.state is! CartLoaded) {
       return AppMessage(
-        messageType: AppMessageType.failure,
+        type: AppMessageType.failure,
         title: 'Hãy đợi',
         content: 'Thao tác của bạn quá nhanh',
       );
@@ -276,7 +276,7 @@ class CartCubit extends Cubit<CartState> {
   Future<AppMessage?> setCategory(int categoryId, int fee) async {
     if (this.state is! CartLoaded) {
       return AppMessage(
-        messageType: AppMessageType.failure,
+        type: AppMessageType.failure,
         title: 'Hãy đợi',
         content: 'Thao tác của bạn quá nhanh',
       );

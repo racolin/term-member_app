@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:member_app/presentation/pages/reward_screen.dart';
 import 'package:member_app/presentation/screens/address_screen.dart';
 
 import '../../business_logic/cubits/product_scroll_cubit.dart';
@@ -42,7 +43,7 @@ import '../business_logic/cubits/product_cubit.dart';
 import '../business_logic/cubits/promotion_cubit.dart';
 import '../business_logic/cubits/voucher_cubit.dart';
 import '../data/repositories/cart_api_repository.dart';
-import '../presentation/screens/auth_screen.dart';
+import '../presentation/screens/login_screen.dart';
 import '../presentation/screens/home_screen.dart';
 import 'screens/address_select_screen.dart';
 import 'screens/notify_screen.dart';
@@ -50,6 +51,7 @@ import 'screens/notify_screen.dart';
 class AppRouter {
   static const String home = '/home';
   static const String auth = '/auth';
+  static const String reward = '/reward';
   static const String address = '/address';
   static const String selectAddress = '/select-address';
   static const String cartDetail = '/cart-detail';
@@ -66,6 +68,8 @@ class AppRouter {
             // Ví dụ: RepositoryProvider<MemberRepository>(
             //           create: (context) => internet ? MemberApiRepository() : MemberLocalRepository(),
             //        )
+            bool login = false;
+            login = settings.arguments == true ? true : false;
             return MultiRepositoryProvider(
               providers: [
                 RepositoryProvider<CartRepository>(
@@ -102,7 +106,7 @@ class AppRouter {
               child: MultiBlocProvider(
                 providers: [
                   BlocProvider(
-                    create: (context) => HomeCubit(),
+                    create: (context) => HomeCubit(login),
                   ),
                   BlocProvider(
                     create: (context) => CartCubit(
@@ -183,13 +187,19 @@ class AppRouter {
               create: (context) => AuthApiRepository(),
               child: BlocProvider<AuthCubit>(
                 create: (context) => AuthCubit(
-                  repository: RepositoryProvider.of<AuthApiRepository>(
+                  repository: RepositoryProvider.of<AuthRepository>(
                     context,
                   ),
                 ),
-                child: const AuthScreen(),
+                child: const LoginScreen(),
               ),
             );
+          },
+        );
+      case reward:
+        return MaterialPageRoute(
+          builder: (context) {
+            return const RewardScreen();
           },
         );
       case address:
@@ -216,7 +226,7 @@ class AppRouter {
                   ),
                   id: (settings.arguments as String),
                 ),
-                child: const AuthScreen(),
+                child: const LoginScreen(),
               ),
             );
           },
@@ -232,7 +242,7 @@ class AppRouter {
                     context,
                   ),
                 ),
-                child: const AuthScreen(),
+                child: const LoginScreen(),
               ),
             );
           },
@@ -246,7 +256,7 @@ class AppRouter {
                 create: (context) => ProfileCubit(
                   repository: SettingApiRepository(),
                 ),
-                child: const AuthScreen(),
+                child: const LoginScreen(),
               ),
             );
           },

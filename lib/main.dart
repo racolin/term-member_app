@@ -16,6 +16,7 @@ class MyApp extends StatelessWidget {
     return BlocProvider<InternetCubit>(
       create: (context) => InternetCubit(),
       child: MaterialApp(
+        // localizationsDelegates: [LocalizationsDelegate],
         title: 'Member App',
         theme: ThemeData(
           scaffoldBackgroundColor: const Color.fromRGBO(244, 244, 244, 1),

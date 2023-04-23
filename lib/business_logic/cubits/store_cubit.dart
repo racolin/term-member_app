@@ -55,7 +55,7 @@ class StoreCubit extends Cubit<StoreState>
       }
     }
     return AppMessage(
-      messageType: AppMessageType.failure,
+      type: AppMessageType.failure,
       title: 'Có lỗi',
       content: 'Thao tác của bạn không được thực hiện',
     );

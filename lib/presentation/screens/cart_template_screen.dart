@@ -33,10 +33,16 @@ class _CartTemplateScreenState extends State<CartTemplateScreen> {
           },
           icon: const Icon(Icons.arrow_back_outlined),
         ),
+        actions: [
+          IconButton(
+            splashRadius: spaceXL,
+            onPressed: () {},
+            icon: const Icon(Icons.checklist_outlined),
+          ),
+        ],
         title: Text(
           txtCartTemplate,
-          style: Theme
-              .of(context)
+          style: Theme.of(context)
               .textTheme
               .titleSmall
               ?.copyWith(fontWeight: FontWeight.w600),
@@ -63,13 +69,12 @@ class _CartTemplateScreenState extends State<CartTemplateScreen> {
                         backgroundColor: Colors.transparent,
                         context: context,
                         isScrollControlled: true,
-                        builder: (ctx) =>
-                            BlocProvider<ProductCubit>.value(
-                              value: BlocProvider.of<ProductCubit>(context),
-                              child: CartTemplateBottomSheet(
-                                model: list[index],
-                              ),
-                            ),
+                        builder: (ctx) => BlocProvider<ProductCubit>.value(
+                          value: BlocProvider.of<ProductCubit>(context),
+                          child: CartTemplateBottomSheet(
+                            model: list[index],
+                          ),
+                        ),
                       );
                     },
                     cart: list[index],

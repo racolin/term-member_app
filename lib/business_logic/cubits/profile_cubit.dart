@@ -27,7 +27,7 @@ class ProfileCubit extends Cubit<ProfileState> {
     emit(
       ProfileFailure(
         message: AppMessage(
-            messageType: AppMessageType.failure,
+            type: AppMessageType.failure,
             title: 'Thất bại',
             content: 'Tải Profile không thành công!'),
       ),
@@ -39,7 +39,7 @@ class ProfileCubit extends Cubit<ProfileState> {
       var profile = await _repository.getProfile();
       if (profile == null) {
         return AppMessage(
-          messageType: AppMessageType.failure,
+          type: AppMessageType.failure,
           title: 'Thất bại',
           content: 'Tải Profile không thành công!',
         );
@@ -64,7 +64,7 @@ class ProfileCubit extends Cubit<ProfileState> {
       );
       if (result == null || !result) {
         return AppMessage(
-          messageType: AppMessageType.failure,
+          type: AppMessageType.failure,
           title: 'Thất bại',
           content: 'Cập nhật Profile không thành công!',
         );

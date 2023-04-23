@@ -10,6 +10,9 @@ const txtEPromotion = "Promotion";
 const txtOther = "Khác";
 const txtEOther = "Other";
 
+const txtYes = 'Có';
+const txtNo = 'Không';
+
 const txtSelectDelivery = "Hãy chọn phương thức giao hàng phù hợp";
 const txtSelectDeliveryTitle = "Chọn phương thức giao hàng";
 
@@ -49,7 +52,9 @@ const txtSavedAddress = "Địa chỉ đã lưu";
 const txtSave = "Lưu";
 const txtSetting = "Cài đặt";
 const txtLogOut = "Đăng xuất";
+const txtConfirmLogOut = "'Bạn có thực sự muốn đăng xuất không?'";
 const txtLogIn = "Đăng nhập";
+const txtRegister = "Đăng ký";
 const txtMedia = "Tiện ích";
 const txtHistoryOrder = "Lịch sử đơn hàng";
 const txtCartTemplate = "Đơn hàng mẫu";
@@ -62,6 +67,10 @@ const txtFromPartner = "Từ đối tác";
 const txtTypePromotion = "Các loại ưu đãi";
 const txtSeeAll = "Xem tất cả";
 const txtAdd = "Thêm";
+const txtReward = "The Coffee House's Reward";
+const txtWelcome = "Chào mừng bạn đến với";
+const txtRequireLogin1 = "Sử dụng app để tích điểm và đổi những ưu đãi chỉ dành riêng cho thành viên";
+const txtRequireLogin2 = "Hãy đăng nhập để xem các ưu đãi dành riêng cho thành viên của Nhà né";
 const txtHistory = "Lịch sử";
 const txtYourRight = "Quyền lợi của bạn";
 const txtPromotionPoint = "Tích điểm";

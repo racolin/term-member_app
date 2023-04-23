@@ -89,6 +89,7 @@ class _AppBarWidget extends StatelessWidget {
                       ),
                       const Spacer(),
                       BaseActionWidget(
+                        login: state.login,
                         cartTemplateAmount: appBar.cartTemplateAmount,
                         notifyAmount: appBar.notifyAmount,
                         voucherAmount: appBar.voucherAmount,
@@ -325,6 +326,7 @@ class _AppBarWidget extends StatelessWidget {
                       ),
                       const Spacer(),
                       BaseActionWidget(
+                        login: state.login,
                         cartTemplateAmount: appBar.cartTemplateAmount,
                         notifyAmount: appBar.notifyAmount,
                         voucherAmount: appBar.voucherAmount,
@@ -347,6 +349,7 @@ class _AppBarWidget extends StatelessWidget {
                       ),
                       const Spacer(),
                       BaseActionWidget(
+                        login: state.login,
                         cartTemplateAmount: appBar.cartTemplateAmount,
                         notifyAmount: appBar.notifyAmount,
                         voucherAmount: appBar.voucherAmount,
@@ -369,6 +372,7 @@ class _AppBarWidget extends StatelessWidget {
                       ),
                       const Spacer(),
                       BaseActionWidget(
+                        login: state.login,
                         cartTemplateAmount: appBar.cartTemplateAmount,
                         notifyAmount: appBar.notifyAmount,
                         voucherAmount: appBar.voucherAmount,
@@ -385,12 +389,14 @@ class _AppBarWidget extends StatelessWidget {
 }
 
 class BaseActionWidget extends StatelessWidget {
+  final bool login;
   final int cartTemplateAmount;
   final int voucherAmount;
   final int notifyAmount;
 
   const BaseActionWidget({
     Key? key,
+    required this.login,
     required this.cartTemplateAmount,
     required this.notifyAmount,
     required this.voucherAmount,
@@ -411,24 +417,28 @@ class BaseActionWidget extends StatelessWidget {
             borderRadius: BorderRadius.circular(spaceLG),
             radius: 40,
             onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (ctx) {
-                    return MultiRepositoryProvider(
-                      providers: [
-                        BlocProvider<ProductCubit>.value(
-                          value: BlocProvider.of<ProductCubit>(context),
-                        ),
-                        BlocProvider<CartTemplateCubit>.value(
-                          value: BlocProvider.of<CartTemplateCubit>(context),
-                        ),
-                      ],
-                      child: const CartTemplateScreen(),
-                    );
-                  },
-                ),
-              );
+              if (login) {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (ctx) {
+                      return MultiRepositoryProvider(
+                        providers: [
+                          BlocProvider<ProductCubit>.value(
+                            value: BlocProvider.of<ProductCubit>(context),
+                          ),
+                          BlocProvider<CartTemplateCubit>.value(
+                            value: BlocProvider.of<CartTemplateCubit>(context),
+                          ),
+                        ],
+                        child: const CartTemplateScreen(),
+                      );
+                    },
+                  ),
+                );
+              } else {
+                Navigator.pushNamed(context, AppRouter.auth);
+              }
             },
             child: Ink(
               width: 40,
@@ -482,17 +492,22 @@ class BaseActionWidget extends StatelessWidget {
             ),
           ),
           onPressed: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (ctx) {
-                  return BlocProvider<VoucherCubit>.value(
-                    value: BlocProvider.of<VoucherCubit>(context),
-                    child: const VoucherScreen(),
-                  );
-                },
-              ),
-            );
+            if (login){
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (ctx) {
+                    return BlocProvider<VoucherCubit>.value(
+                      value: BlocProvider.of<VoucherCubit>(context),
+                      child: const VoucherScreen(),
+                    );
+                  },
+                ),
+              );
+            }else {
+
+            Navigator.pushNamed(context, AppRouter.auth);
+            }
           },
           icon: const Icon(
             Icons.confirmation_number_outlined,
@@ -519,7 +534,11 @@ class BaseActionWidget extends StatelessWidget {
             ),
             radius: 40,
             onTap: () {
-              Navigator.pushNamed(context, AppRouter.notify);
+              if (login) {
+                Navigator.pushNamed(context, AppRouter.notify);
+              } else {
+                Navigator.pushNamed(context, AppRouter.auth);
+              }
             },
             child: Ink(
               width: 40,

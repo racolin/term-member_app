@@ -9,6 +9,7 @@ import 'package:member_app/presentation/widgets/promotion/promotion_me_widget.da
 
 import '../../business_logic/cubits/promotion_cubit.dart';
 import '../../business_logic/states/promotion_state.dart';
+import '../screens/promotion_screen.dart';
 import '../widgets/group_item_widget.dart';
 import '../widgets/promotion/promotion_small_widget.dart';
 
@@ -53,7 +54,19 @@ class PromotionSwapPage extends StatelessWidget {
                         ),
                       ),
                       TextButton(
-                        onPressed: () {},
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) {
+                                return PromotionScreen(
+                                  promotions: state.promotions,
+                                  name: 'Tất cả',
+                                );
+                              },
+                            ),
+                          );
+                        },
                         style: ButtonStyle(
                           backgroundColor: MaterialStateProperty.all(
                             Colors.orange.withAlpha(20),
@@ -107,7 +120,19 @@ class PromotionSwapPage extends StatelessWidget {
                         ),
                       ),
                       TextButton(
-                        onPressed: () {},
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) {
+                                return PromotionScreen(
+                                  promotions: state.promotions,
+                                  name: 'Tất cả',
+                                );
+                              },
+                            ),
+                          );
+                        },
                         style: ButtonStyle(
                           backgroundColor: MaterialStateProperty.all(
                             Colors.orange.withAlpha(20),
@@ -161,7 +186,19 @@ class PromotionSwapPage extends StatelessWidget {
                         ),
                       ),
                       TextButton(
-                        onPressed: () {},
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) {
+                                return PromotionScreen(
+                                  promotions: state.promotions,
+                                  name: 'Tất cả',
+                                );
+                              },
+                            ),
+                          );
+                        },
                         style: ButtonStyle(
                           backgroundColor: MaterialStateProperty.all(
                             Colors.orange.withAlpha(20),
@@ -218,7 +255,21 @@ class PromotionSwapPage extends StatelessWidget {
                                   color: Colors.black,
                                 ),
                                 title: list[i].name,
-                                onClick: () {},
+                                onClick: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) {
+                                        return PromotionScreen(
+                                          promotions: state.getByCategoryId(
+                                            list[i].id,
+                                          ),
+                                          name: list[i].name,
+                                        );
+                                      },
+                                    ),
+                                  );
+                                },
                                 isTop: i == 0,
                                 isBottom: i == list.length - 1,
                               ),

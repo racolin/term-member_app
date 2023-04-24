@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:member_app/business_logic/cubits/store_cubit.dart';
+import 'package:member_app/presentation/bottom_sheet/store_bottom_sheet.dart';
 import 'package:member_app/presentation/res/dimen/dimens.dart';
 import 'package:member_app/presentation/res/strings/values.dart';
 
@@ -37,7 +38,23 @@ class StoreBody extends StatelessWidget {
         Expanded(
           child: StoresMainWidget(
             searchKey: '',
-            onClickItem: (id) {},
+            onClickItem: (model) {
+              context
+                  .read<StoreCubit>()
+                  .getDetailStore(model.id)
+                  .then((detail) {
+                if (detail != null) {
+                  showModalBottomSheet(
+                    context: context,
+                    backgroundColor: Colors.transparent,
+                    isScrollControlled: true,
+                    builder: (context) {
+                      return StoreBottomSheet(store: model, detail: detail);
+                    },
+                  );
+                } else {}
+              });
+            },
           ),
         ),
       ],
@@ -55,6 +72,7 @@ class StoreBody extends StatelessWidget {
             children: [
               Expanded(
                 child: TextField(
+                  style: Theme.of(context).textTheme.bodyLarge,
                   onTap: () {
                     Navigator.push(
                       context,
@@ -65,7 +83,23 @@ class StoreBody extends StatelessWidget {
                             submit: BlocProvider.of<StoreCubit>(context),
                           ),
                           child: StoreSearchPage(
-                            onCLick: (StoreModel store) {},
+                            onClick: (StoreModel model) {
+                              context
+                                  .read<StoreCubit>()
+                                  .getDetailStore(model.id)
+                                  .then((detail) {
+                                if (detail != null) {
+                                  showModalBottomSheet(
+                                    context: context,
+                                    backgroundColor: Colors.transparent,
+                                    isScrollControlled: true,
+                                    builder: (context) {
+                                      return StoreBottomSheet(store: model, detail: detail);
+                                    },
+                                  );
+                                } else {}
+                              });
+                            },
                           ),
                         ),
                       ),

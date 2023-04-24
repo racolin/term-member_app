@@ -63,7 +63,7 @@ class DeliveryOptionsWidget extends StatelessWidget {
                                 ),
                               ],
                               child: StoreSearchPage(
-                                onCLick: (StoreModel store) {
+                                onClick: (StoreModel store) {
                                   Navigator.pop(ctx);
                                 },
                               ),

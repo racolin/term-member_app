@@ -86,6 +86,8 @@ class MethodOrderBottomSheet extends StatelessWidget {
                   ),
                   onPressed: () {
                     if (method == DeliveryType.delivery) {
+                      Navigator.pushNamed(context, AppRouter.addressSelect);
+                    } else if (method == DeliveryType.takeOut) {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
@@ -106,7 +108,7 @@ class MethodOrderBottomSheet extends StatelessWidget {
                                 ),
                               ],
                               child: StoreSearchPage(
-                                onCLick: (StoreModel store) {
+                                onClick: (StoreModel store) {
                                   Navigator.pop(ctx);
                                 },
                               ),
@@ -114,8 +116,6 @@ class MethodOrderBottomSheet extends StatelessWidget {
                           ),
                         ),
                       );
-                    } else if (method == DeliveryType.takeOut) {
-                      Navigator.pushNamed(context, AppRouter.addressSelect);
                     }
                   },
                   child: Text(

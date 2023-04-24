@@ -9,11 +9,11 @@ import 'store_body.dart';
 import '../widgets/store/stores_widget.dart';
 
 class StoreSearchPage extends StatefulWidget {
-  final Function(StoreModel) onCLick;
+  final Function(StoreModel) onClick;
 
   const StoreSearchPage({
     Key? key,
-    required this.onCLick,
+    required this.onClick,
   }) : super(key: key);
 
   @override
@@ -45,11 +45,9 @@ class _StoreSearchPageState extends State<StoreSearchPage> {
                   if (state is IntervalLoaded<StoreModel>) {
                     list = state.list;
                   }
-                  print(list.length);
-                  print(state.runtimeType);
                   return StoresWidget(
                     list: list,
-                    onClickItem: widget.onCLick,
+                    onClickItem: widget.onClick,
                   );
                 },
               ),
@@ -83,6 +81,7 @@ class _StoreSearchPageState extends State<StoreSearchPage> {
                     ),
                     prefixIcon: const Icon(Icons.search),
                   ),
+                  style: Theme.of(context).textTheme.bodyLarge,
                   onChanged: (value) {
                       context.read<IntervalBloc<StoreModel>>().add(IntervalSearch(key: value));
                   },

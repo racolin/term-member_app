@@ -89,6 +89,7 @@ const txtTotalCost = 'Tổng đơn';
 const txtUpdate = 'Cập nhật';
 const txtDelete = 'Xoá';
 const txtTemplateProducts = 'Danh sách sản phẩm';
+const txtDisable = 'Hết hàng';
 
 const assetDefaultIcon = 'assets/images/icon_default.png';
 const assetDefaultImage = 'assets/images/image_default.png';

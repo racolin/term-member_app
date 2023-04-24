@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../widgets/no_auth/card_home_widget.dart';
+import '../widgets/card_home_widget.dart';
 import '../res/strings/values.dart';
 import '../widgets/app_image_widget.dart';
 import '../res/dimen/dimens.dart';
@@ -116,13 +116,13 @@ class _HomeBodyState extends State<HomeBody> {
         child: SingleChildScrollView(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
-            children: const [
-              DragBarWidget(margin: spaceXS),
-              DeliveryOptionsWidget(),
-              SliderWidget(),
-              SuggestProductsWidget(height: 307),
-              ReOrdersWidget(),
-              NewsSectionWidget(),
+            children: [
+              const DragBarWidget(margin: spaceXS),
+              const DeliveryOptionsWidget(),
+              if (widget.login) const SliderWidget(),
+              if (widget.login) const SuggestProductsWidget(height: 307),
+              if (widget.login) const ReOrdersWidget(),
+              const NewsSectionWidget(),
             ],
           ),
         ),

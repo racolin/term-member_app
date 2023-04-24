@@ -13,10 +13,13 @@ class HomeCubit extends Cubit<HomeState> {
     _repository.isLogin().then((login) {
       emit(HomeLoaded(
         type: HomeBodyType.home,
-        login: login,
+        login: false,
+        // login: login,
       ));
     });
   }
+
+  bool get login => (state is HomeLoaded && (state as HomeLoaded).login);
 
   // Action data
   Future<AppMessage?> logout() async {

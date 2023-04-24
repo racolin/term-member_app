@@ -26,9 +26,8 @@ class CartsCubit extends Cubit<CartsState> {
                 list: [],
               );
             }
-            listCarts[statuses[0].id]?.list = map.value;
-            listCarts[statuses[0].id]?.maxCount = map.key;
-            listCarts[statuses[0].id]?.page = 1;
+            listCarts[statuses[0].id]?.next(map.value, map.key);
+
             emit(
               CartsLoaded(
                 listCarts: listCarts,
@@ -51,22 +50,24 @@ class CartsCubit extends Cubit<CartsState> {
             page: state.listCarts[id]!.page,
             limit: state.listCarts[id]!.limit,
           );
-          var listCart = state.listCarts[id]!.copyWith(
-            list: state.listCarts[id]!.list + list.value,
-            maxCount: state.listCarts[id]!.maxCount + list.key,
-          );
-          var listCarts = state.listCarts;
-          listCarts[id] = listCart;
+          state.listCarts[id]!.next(list.value, list.key);
 
-          emit(state.copyWith(
-            listCarts: listCarts,
-          ));
+          emit(state.copyWith(listCarts: state.listCarts));
         } on AppException catch (ex) {
           return ex.message;
         }
       }
     }
     return null;
+  }
+
+  bool hasNext(String id) {
+    print(id);
+    if (state is CartsLoaded) {
+      var state = this.state as CartsLoaded;
+      return state.listCarts[id]?.hasNext() ?? false;
+    }
+    return false;
   }
 
   Future<AppMessage?> tap(String id) async {

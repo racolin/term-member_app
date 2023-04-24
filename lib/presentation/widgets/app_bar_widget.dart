@@ -256,33 +256,37 @@ class _AppBarWidget extends StatelessWidget {
                           borderRadius: BorderRadius.circular(spaceLG),
                           radius: 40,
                           onTap: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (ctx) {
-                                  return MultiRepositoryProvider(
-                                    providers: [
-                                      BlocProvider<ProductCubit>.value(
-                                        value: BlocProvider.of<ProductCubit>(
-                                          context,
+                            if (!state.login) {
+                              Navigator.pushNamed(context, AppRouter.auth);
+                            } else {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (ctx) {
+                                    return MultiRepositoryProvider(
+                                      providers: [
+                                        BlocProvider<ProductCubit>.value(
+                                          value: BlocProvider.of<ProductCubit>(
+                                            context,
+                                          ),
                                         ),
-                                      ),
-                                      BlocProvider<HomeCubit>.value(
-                                        value: BlocProvider.of<HomeCubit>(
-                                          context,
+                                        BlocProvider<HomeCubit>.value(
+                                          value: BlocProvider.of<HomeCubit>(
+                                            context,
+                                          ),
                                         ),
-                                      ),
-                                      BlocProvider<CartCubit>.value(
-                                        value: BlocProvider.of<CartCubit>(
-                                          context,
+                                        BlocProvider<CartCubit>.value(
+                                          value: BlocProvider.of<CartCubit>(
+                                            context,
+                                          ),
                                         ),
-                                      ),
-                                    ],
-                                    child: const ProductFavoriteScreen(),
-                                  );
-                                },
-                              ),
-                            );
+                                      ],
+                                      child: const ProductFavoriteScreen(),
+                                    );
+                                  },
+                                ),
+                              );
+                            }
                           },
                           child: Ink(
                             width: 40,
@@ -318,7 +322,7 @@ class _AppBarWidget extends StatelessWidget {
                   title: Row(
                     children: [
                       Text(
-                        txtHome,
+                        txtStore,
                         style: TextStyle(
                           fontSize: fontLG,
                           color: Colors.black.withAlpha(200),
@@ -341,7 +345,7 @@ class _AppBarWidget extends StatelessWidget {
                   title: Row(
                     children: [
                       Text(
-                        txtHome,
+                        txtPromotion,
                         style: TextStyle(
                           fontSize: fontLG,
                           color: Colors.black.withAlpha(200),
@@ -404,6 +408,9 @@ class BaseActionWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    if (!context.read<HomeCubit>().login) {
+      return const SizedBox();
+    }
     return Row(
       children: [
         Container(
@@ -505,7 +512,6 @@ class BaseActionWidget extends StatelessWidget {
                 ),
               );
             }else {
-
             Navigator.pushNamed(context, AppRouter.auth);
             }
           },

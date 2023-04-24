@@ -6,24 +6,25 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 part '../states/internet_state.dart';
 
 class InternetCubit extends Cubit<InternetState> {
+  final Connectivity _connectivity = Connectivity();
+  late StreamSubscription<ConnectivityResult> _subscription;
 
-  final Connectivity connectivity = Connectivity();
-  late StreamSubscription<ConnectivityResult> subscription;
-
-  InternetCubit()
-      : super(
-          InternetState(
-            internetType: InternetType.loading,
-          ),
-        ) {
-
-    subscription = connectivity.onConnectivityChanged.listen((event) {
+  InternetCubit() : super(InternetState(type: InternetType.loading)) {
+    _subscription = _connectivity.onConnectivityChanged.listen((event) async {
+      await Future.delayed(const Duration(seconds: 1));
       if (ConnectivityResult.none == event) {
-        emit(InternetState(internetType: InternetType.disconnected));
+        emit(InternetState(type: InternetType.disconnected));
       } else {
-        emit(InternetState(internetType: InternetType.connected));
+        emit(InternetState(type: InternetType.connected));
       }
     });
+  }
 
+  bool get hasInternet => InternetType.connected == state.type;
+
+  @override
+  Future<void> close() {
+    _subscription.cancel();
+    return super.close();
   }
 }

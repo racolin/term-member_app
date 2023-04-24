@@ -66,7 +66,7 @@ class _OrderBodyState extends State<OrderBody> {
                 heights.add(dimXL * widget.row + spaceSM * 2);
                 for (int index = 1; index < state.listType.length; index++) {
                   heights.add(heights[index - 1]);
-                  if (index == 1) {
+                  if (index == 1 && widget.login) {
                     heights[index] += 307;
                   }
                   heights[index] += 43 +
@@ -105,9 +105,12 @@ class _OrderBodyState extends State<OrderBody> {
                       );
                     }
                     if (index == 2) {
-                      // height: 300
-                      // 18 * 1.25 + 268 + 4 * 2 + 8 = 307
-                      return const SuggestProductsWidget(height: 307);
+                      if (widget.login) {
+                        // 18 * 1.25 + 268 + 4 * 2 + 8 = 307
+                        return const SuggestProductsWidget(height: 307);
+                      } else {
+                        return const SizedBox();
+                      }
                     }
                     if (index == state.listType.length + 2) {
                       return const SizedBox(

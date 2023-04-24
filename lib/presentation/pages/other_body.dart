@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:member_app/exception/app_message.dart';
 import 'package:member_app/presentation/app_router.dart';
 import 'package:member_app/presentation/dialogs/dialog_widget.dart';
@@ -7,7 +8,12 @@ import 'package:member_app/presentation/res/strings/values.dart';
 import 'package:member_app/presentation/widgets/feature_card_widget.dart';
 import 'package:member_app/presentation/widgets/group_item_widget.dart';
 
+import '../../business_logic/cubits/cart_template_cubit.dart';
+import '../../business_logic/cubits/product_cubit.dart';
+import '../../business_logic/cubits/voucher_cubit.dart';
 import '../res/dimen/dimens.dart';
+import '../screens/cart_template_screen.dart';
+import '../screens/voucher_screen.dart';
 
 class OtherBody extends StatelessWidget {
   final bool login;
@@ -22,8 +28,8 @@ class OtherBody extends StatelessWidget {
     return SingleChildScrollView(
       child: Column(
         children: [
-          _getMedias(),
-          _getSupports(),
+          _getMedias(context),
+          _getSupports(context),
           _getAccounts(context),
           const SizedBox(height: dimLG),
         ],
@@ -31,7 +37,7 @@ class OtherBody extends StatelessWidget {
     );
   }
 
-  Widget _getMedias() {
+  Widget _getMedias(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.all(spaceXS),
       child: Column(
@@ -56,8 +62,24 @@ class OtherBody extends StatelessWidget {
                 child: FeatureCardWidget(
                   icon: Icons.description_outlined,
                   iconColor: Colors.orange,
-                  title: txtHistoryOrder,
-                  onClick: () {},
+                  title: txtYourVoucher,
+                  onClick: () {
+                    if (login) {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (ctx) {
+                            return BlocProvider<VoucherCubit>.value(
+                              value: BlocProvider.of<VoucherCubit>(context),
+                              child: const VoucherScreen(),
+                            );
+                          },
+                        ),
+                      );
+                    } else {
+                      Navigator.pushNamed(context, AppRouter.auth);
+                    }
+                  },
                 ),
               ),
             ],
@@ -70,7 +92,29 @@ class OtherBody extends StatelessWidget {
                   icon: Icons.shopping_cart_checkout_outlined,
                   iconColor: Colors.green,
                   title: txtCartTemplate,
-                  onClick: () {},
+                  onClick: () {
+                    if (login) {Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (ctx) {
+                          return MultiRepositoryProvider(
+                            providers: [
+                              BlocProvider<ProductCubit>.value(
+                                value: BlocProvider.of<ProductCubit>(context),
+                              ),
+                              BlocProvider<CartTemplateCubit>.value(
+                                value: BlocProvider.of<CartTemplateCubit>(context),
+                              ),
+                            ],
+                            child: const CartTemplateScreen(),
+                          );
+                        },
+                      ),
+                    );
+                    } else {
+                      Navigator.pushNamed(context, AppRouter.auth);
+                    }
+                  },
                 ),
               ),
               const SizedBox(width: spaceXS),
@@ -121,7 +165,13 @@ class OtherBody extends StatelessWidget {
                     color: Colors.black,
                   ),
                   title: txtPersonalInfo,
-                  onClick: () {},
+                  onClick: () {
+                    if (login) {
+                      Navigator.pushNamed(context, AppRouter.profile);
+                    } else {
+                      Navigator.pushNamed(context, AppRouter.auth);
+                    }
+                  },
                   isTop: true,
                 ),
                 const Padding(
@@ -136,7 +186,11 @@ class OtherBody extends StatelessWidget {
                   ),
                   title: txtSavedAddress,
                   onClick: () {
-                    Navigator.pushNamed(context, AppRouter.address);
+                    if (login) {
+                      Navigator.pushNamed(context, AppRouter.address);
+                    } else {
+                      Navigator.pushNamed(context, AppRouter.auth);
+                    }
                   },
                 ),
                 const Padding(
@@ -150,7 +204,9 @@ class OtherBody extends StatelessWidget {
                     color: Colors.black,
                   ),
                   title: txtSetting,
-                  onClick: () {},
+                  onClick: () {
+                    Navigator.pushNamed(context, AppRouter.setting);
+                  },
                 ),
                 const Padding(
                   padding: EdgeInsets.only(left: spaceMD),
@@ -208,7 +264,7 @@ class OtherBody extends StatelessWidget {
     );
   }
 
-  Widget _getSupports() {
+  Widget _getSupports(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.all(spaceXS),
       child: Column(
@@ -239,8 +295,14 @@ class OtherBody extends StatelessWidget {
                     size: fontLG,
                     color: Colors.black,
                   ),
-                  title: txtReviewOrder,
-                  onClick: () {},
+                  title: txtHistoryOrder,
+                  onClick: () {
+                    if (login) {
+                      Navigator.pushNamed(context, AppRouter.carts);
+                    } else {
+                      Navigator.pushNamed(context, AppRouter.auth);
+                    }
+                  },
                   isTop: true,
                 ),
                 const Padding(

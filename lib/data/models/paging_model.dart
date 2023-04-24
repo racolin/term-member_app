@@ -12,13 +12,17 @@ class PagingModel<T> {
   }) : list = list ?? [];
 
   void next(List<T> appends, int maxCount) {
-    this.maxCount == maxCount;
+    this.maxCount = maxCount;
     page++;
     list.addAll(appends);
   }
 
   bool hasNext() {
-    return page * limit < maxCount;
+    print(list.length);
+    print(page);
+    print(limit);
+    print(maxCount);
+    return list.length < maxCount;
   }
 
   PagingModel<T> copyWith({

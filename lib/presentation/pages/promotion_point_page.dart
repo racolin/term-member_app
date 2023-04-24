@@ -4,8 +4,8 @@ import 'package:member_app/presentation/pages/loading_page.dart';
 import 'package:member_app/presentation/res/dimen/dimens.dart';
 import 'package:member_app/presentation/res/strings/values.dart';
 import 'package:member_app/presentation/widgets/card_widget.dart';
-import 'package:member_app/presentation/widgets/no_auth/card_home_widget.dart';
-import 'package:member_app/presentation/widgets/no_auth/card_type_widget.dart';
+import 'package:member_app/presentation/widgets/card_home_widget.dart';
+import 'package:member_app/presentation/widgets/card_type_widget.dart';
 import 'package:member_app/presentation/widgets/voucher_widget.dart';
 
 import '../../business_logic/cubits/promotion_cubit.dart';

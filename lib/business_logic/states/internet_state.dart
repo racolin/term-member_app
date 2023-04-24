@@ -5,7 +5,7 @@ enum InternetType {
 }
 
 class InternetState {
-  final InternetType internetType;
-  InternetState({required this.internetType});
+  final InternetType type;
+  InternetState({required this.type});
 }
 

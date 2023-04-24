@@ -28,3 +28,20 @@ class CartsLoaded extends CartsState {
     );
   }
 }
+
+
+// class CartsLoaded extends CartsState {
+//   final List<MapEntry<CartStatusModel, PagingModel<CartModel>>> listCarts;
+//
+//   CartsLoaded({
+//     required this.listCarts,
+//   });
+//
+//   CartsLoaded copyWith({
+//     List<MapEntry<CartStatusModel, PagingModel<CartModel>>>? listCarts,
+//   }) {
+//     return CartsLoaded(
+//       listCarts: listCarts ?? this.listCarts,
+//     );
+//   }
+// }

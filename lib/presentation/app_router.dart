@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:member_app/presentation/pages/reward_screen.dart';
 import 'package:member_app/presentation/screens/address_screen.dart';
+import 'package:member_app/presentation/screens/carts_screen.dart';
+import 'package:member_app/presentation/screens/setting_screen.dart';
+import 'package:member_app/presentation/screens/splash_screen.dart';
 
 import '../../business_logic/cubits/product_scroll_cubit.dart';
 import '../business_logic/cubits/auth_cubit.dart';
@@ -47,20 +50,32 @@ import '../presentation/screens/login_screen.dart';
 import '../presentation/screens/home_screen.dart';
 import 'screens/address_select_screen.dart';
 import 'screens/notify_screen.dart';
+import 'screens/profile_screen.dart';
 
 class AppRouter {
   static const String home = '/home';
+  static const String splash = '/splash';
   static const String auth = '/auth';
+  static const String setting = '/setting';
   static const String reward = '/reward';
   static const String address = '/address';
-  static const String selectAddress = '/select-address';
+  static const String addressSelect = '/select-address';
   static const String cartDetail = '/cart-detail';
   static const String carts = '/carts';
   static const String profile = '/profile';
   static const String notify = '/notify';
 
-  static Route<dynamic>? onGenerateAppRoute(RouteSettings settings) {
+  static Route<dynamic>? onGenerateAppRoute(
+    RouteSettings settings,
+    bool hasInternet,
+  ) {
     switch (settings.name) {
+      case splash:
+        return MaterialPageRoute(
+          builder: (context) {
+            return const SplashScreen();
+          },
+        );
       case home:
         return MaterialPageRoute(
           builder: (context) {
@@ -68,8 +83,7 @@ class AppRouter {
             // Ví dụ: RepositoryProvider<MemberRepository>(
             //           create: (context) => internet ? MemberApiRepository() : MemberLocalRepository(),
             //        )
-            bool login = false;
-            login = settings.arguments == true ? true : false;
+            bool login = settings.arguments == true ? true : false;
             return MultiRepositoryProvider(
               providers: [
                 RepositoryProvider<CartRepository>(
@@ -208,7 +222,7 @@ class AppRouter {
             return const AddressScreen();
           },
         );
-      case selectAddress:
+      case addressSelect:
         return MaterialPageRoute(
           builder: (context) {
             return const AddressSelectScreen();
@@ -242,7 +256,7 @@ class AppRouter {
                     context,
                   ),
                 ),
-                child: const LoginScreen(),
+                child: const CartsScreen(),
               ),
             );
           },
@@ -256,7 +270,21 @@ class AppRouter {
                 create: (context) => ProfileCubit(
                   repository: SettingApiRepository(),
                 ),
-                child: const LoginScreen(),
+                child: const ProfileScreen(),
+              ),
+            );
+          },
+        );
+      case setting:
+        return MaterialPageRoute(
+          builder: (context) {
+            return RepositoryProvider<SettingRepository>(
+              create: (context) => SettingApiRepository(),
+              child: BlocProvider<ProfileCubit>(
+                create: (context) => ProfileCubit(
+                  repository: SettingApiRepository(),
+                ),
+                child: const SettingScreen(),
               ),
             );
           },

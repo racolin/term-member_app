@@ -6,6 +6,7 @@ import 'package:member_app/business_logic/states/product_state.dart';
 import '../../data/models/product_option_model.dart';
 import '../../data/models/product_model.dart';
 import '../../supports/convert.dart';
+import '../res/strings/values.dart';
 import '../widgets/slide/slide_images_widget.dart';
 
 class ProductBottomSheet extends StatefulWidget {
@@ -107,7 +108,7 @@ class _Selected {
 
 class _ProductBottomSheetState extends State<ProductBottomSheet> {
   late _Selected selected;
-  int amount = 0;
+  int amount = 1;
   String? note;
 
   @override
@@ -443,7 +444,14 @@ class _ProductBottomSheetState extends State<ProductBottomSheet> {
                                     },
                             ),
                       Text(model.items[index].name),
-                      const Spacer(),
+                      Expanded(
+                        child: Align(
+                          alignment: Alignment.centerRight,
+                          child: Text(
+                            model.items[index].disable ? '$txtDisable | ' : '',
+                          ),
+                        ),
+                      ),
                       Text(numberToCurrency(model.items[index].cost, 'đ')),
                       const SizedBox(
                         width: 8,
@@ -491,6 +499,11 @@ class _ProductBottomSheetState extends State<ProductBottomSheet> {
         Padding(
           padding: const EdgeInsets.all(12.0),
           child: TextField(
+            style: const TextStyle(
+              fontSize: 18,
+              fontWeight: FontWeight.w400,
+            ),
+            maxLines: null,
             // controller: _moreRequireController,
             decoration: InputDecoration(
               border: OutlineInputBorder(

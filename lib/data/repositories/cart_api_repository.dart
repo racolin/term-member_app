@@ -155,6 +155,9 @@ class CartApiRepository extends CartRepository {
     int? limit,
   }) async {
     try {
+      if (statusId == 'STT-01') {
+        return MapEntry(0, []);
+      }
       return MapEntry(
         43,
         List.generate(
@@ -163,9 +166,10 @@ class CartApiRepository extends CartRepository {
             id: 'CART-01',
             name:
                 'Đường Đen Marble Latte, Hi-Tea Yuzu Trần Châu +2 sản phẩm khác',
-            categoryId: DeliveryType.takeOut,
+            categoryId: DeliveryType.values[Random().nextInt(3)],
             cost: 114000,
             time: DateTime(2023, 4, 11, 14, 14, 56),
+            rate: Random().nextInt(5),
           ),
         ),
       );

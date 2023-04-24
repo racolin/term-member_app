@@ -3,18 +3,17 @@ import 'package:flutter/material.dart';
 import '../res/dimen/dimens.dart';
 
 enum AlertType {
-  error(Colors.orange, Colors.red),
-  warning(Colors.orange, Colors.orange),
-  empty(Colors.blue, Colors.black54);
+  error(Colors.orange),
+  warning(Colors.orange),
+  empty(Colors.blue);
 
-  const AlertType(this.iconColor, this.textColor);
+  const AlertType(this.textColor);
 
-  final Color iconColor;
   final Color textColor;
 }
 
 class AlertPage extends StatelessWidget {
-  final IconData icon;
+  final Widget icon;
   final String description;
   final AlertType type;
 
@@ -32,11 +31,7 @@ class AlertPage extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.center,
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Icon(
-            icon,
-            size: icXXL,
-            color: type.iconColor,
-          ),
+          icon,
           const SizedBox(
             height: spaceLG,
           ),
@@ -45,6 +40,7 @@ class AlertPage extends StatelessWidget {
             style: TextStyle(
               color: type.textColor,
               fontSize: fontXL,
+              fontWeight: FontWeight.w600
             ),
           )
         ],

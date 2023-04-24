@@ -115,7 +115,7 @@ class MethodOrderBottomSheet extends StatelessWidget {
                         ),
                       );
                     } else if (method == DeliveryType.takeOut) {
-                      Navigator.pushNamed(context, AppRouter.selectAddress);
+                      Navigator.pushNamed(context, AppRouter.addressSelect);
                     }
                   },
                   child: Text(

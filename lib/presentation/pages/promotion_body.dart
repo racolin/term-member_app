@@ -34,7 +34,9 @@ class _PromotionBodyState extends State<PromotionBody> {
 
   @override
   void initState() {
-    _point = const PromotionPointPage();
+    _point = PromotionPointPage(
+      login: widget.login,
+    );
     _swap = PromotionSwapPage(
       toRedeemVoucherPage: () {
         selectOptionItem(1);

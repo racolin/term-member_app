@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:member_app/supports/extension.dart';
 
-import '../../business_logic/states/home_state.dart';
 import '../../presentation/res/dimen/dimens.dart';
 import '../../presentation/res/strings/values.dart';
 import '../../supports/convert.dart';
@@ -82,7 +81,7 @@ class VoucherBottomSheet extends StatelessWidget {
                         const SizedBox(height: spaceMD),
                         ElevatedButton(
                           onPressed: () {
-                            Navigator.pop(context, HomeBodyType.order);
+                            Navigator.pop(context, true);
                           },
                           style: ButtonStyle(
                             shape: MaterialStateProperty.all(

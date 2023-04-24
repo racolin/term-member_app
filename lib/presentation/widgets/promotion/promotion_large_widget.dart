@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:member_app/data/models/promotion_model.dart';
 import 'package:member_app/presentation/res/strings/values.dart';
 
+import '../../bottom_sheet/promotion_bottom_sheet.dart';
 import '../../res/dimen/dimens.dart';
 
 class PromotionLargeWidget extends StatelessWidget {
@@ -16,7 +17,18 @@ class PromotionLargeWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () {},
+      onTap: () {
+        showModalBottomSheet(
+          context: context,
+          isScrollControlled: true,
+          backgroundColor: Colors.transparent,
+          builder: (context) {
+            return PromotionBottomSheet(
+              promotion: promotion,
+            );
+          },
+        );
+      },
       child: SizedBox(
         width: size,
         child: Card(

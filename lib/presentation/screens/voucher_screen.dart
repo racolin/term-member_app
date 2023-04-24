@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:member_app/business_logic/cubits/voucher_cubit.dart';
+import 'package:member_app/presentation/bottom_sheet/voucher_bottom_sheet.dart';
 import 'package:member_app/presentation/pages/loading_page.dart';
 
 import '../../business_logic/states/voucher_state.dart';
@@ -10,7 +11,6 @@ import '../res/dimen/dimens.dart';
 import '../widgets/voucher_widget.dart';
 
 class VoucherScreen extends StatefulWidget {
-
   const VoucherScreen({
     Key? key,
   }) : super(key: key);
@@ -33,8 +33,7 @@ class _VoucherScreenState extends State<VoucherScreen> {
         ),
         title: Text(
           txtYourVoucher,
-          style: Theme
-              .of(context)
+          style: Theme.of(context)
               .textTheme
               .titleSmall
               ?.copyWith(fontWeight: FontWeight.w600),
@@ -46,7 +45,7 @@ class _VoucherScreenState extends State<VoucherScreen> {
             case VoucherInitial:
               return const SizedBox();
             case VoucherLoading:
-            return const LoadingPage();
+              return const LoadingPage();
             case VoucherLoaded:
               state as VoucherLoaded;
               return SingleChildScrollView(
@@ -92,6 +91,16 @@ class _VoucherScreenState extends State<VoucherScreen> {
                 ),
                 VoucherWidget(
                   voucher: voucher,
+                  onClick: () {
+                    showModalBottomSheet(
+                      context: context,
+                      isScrollControlled: true,
+                      backgroundColor: Colors.transparent,
+                      builder: (context) {
+                        return VoucherBottomSheet(voucher: voucher);
+                      },
+                    );
+                  },
                 ),
               ],
             ),

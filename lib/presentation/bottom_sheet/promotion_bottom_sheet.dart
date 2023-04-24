@@ -1,4 +1,7 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:member_app/exception/app_message.dart';
+import 'package:member_app/presentation/dialogs/dialog_widget.dart';
 
 import '../../presentation/res/strings/values.dart';
 import '../../data/models/promotion_model.dart';
@@ -21,6 +24,10 @@ class PromotionBottomSheet extends StatelessWidget {
       maxChildSize: 1,
       builder: (context, scrollController) {
         return Container(
+          decoration: BoxDecoration(
+            color: Theme.of(context).scaffoldBackgroundColor,
+            borderRadius: BorderRadius.circular(24),
+          ),
           margin: const EdgeInsets.only(top: 56),
           child: Stack(
             alignment: AlignmentDirectional.center,
@@ -31,7 +38,7 @@ class PromotionBottomSheet extends StatelessWidget {
                   child: Container(
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(24),
-                      color: Colors.grey.withAlpha(10),
+                      color: Theme.of(context).scaffoldBackgroundColor,
                     ),
                     child: Stack(
                       alignment: AlignmentDirectional.center,
@@ -49,7 +56,7 @@ class PromotionBottomSheet extends StatelessWidget {
                                     )
                                   : Image.network(
                                       promotion.backgroundImage!,
-                                      height: 400,
+                                      height: 450,
                                       width: double.maxFinite,
                                       fit: BoxFit.cover,
                                     ),
@@ -125,14 +132,17 @@ class PromotionBottomSheet extends StatelessWidget {
                                 ),
                               ),
                             ),
-                            Text(promotion.description),
+                            Padding(
+                              padding: const EdgeInsets.symmetric(vertical: 0, horizontal: 24),
+                              child: Text(promotion.description),
+                            ),
                             const SizedBox(
                               height: 128,
                             ),
                           ],
                         ),
                         Positioned(
-                          top: 360,
+                          top: 400,
                           left: 16,
                           right: 16,
                           child: Container(
@@ -150,9 +160,22 @@ class PromotionBottomSheet extends StatelessWidget {
                 ),
               ),
               Positioned(
+                top: 12,
+                right: 12,
+                child: Container(
+                  height: 24,
+                  width: 24,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(12),
+                    color: Colors.white,
+                  ),
+                ),
+              ),
+              Positioned(
                 top: 0,
                 right: 0,
                 child: IconButton(
+                  splashRadius: 1,
                   style: ButtonStyle(
                     backgroundColor: MaterialStateProperty.all(Colors.white),
                   ),
@@ -160,9 +183,9 @@ class PromotionBottomSheet extends StatelessWidget {
                     Navigator.pop(context);
                   },
                   icon: const Icon(
-                    Icons.close,
-                    color: Colors.black,
-                    size: 24,
+                    Icons.cancel,
+                    color: Colors.grey,
+                    size: 32,
                   ),
                 ),
               ),
@@ -193,35 +216,28 @@ class PromotionBottomSheet extends StatelessWidget {
                         ),
                         ElevatedButton(
                           onPressed: () {
-                            // Provider.of<HomeProvider>(context, listen: false)
-                            //     .applyCoupon(
-                            //   context,
-                            //   promotion.id,
-                            // )
-                            //     .then((value) {
-                            //   var title = value
-                            //       ? 'Bạn đã đổi khuyến mãi thành công!'
-                            //       : 'Bạn chưa đủ điều kiện để đổi khuyến mãi!';
-                            //   showCupertinoDialog(
-                            //     context: context,
-                            //     builder: (context) => CupertinoAlertDialog(
-                            //       actions: [
-                            //         TextButton(
-                            //           onPressed: () {
-                            //             Navigator.pop(context);
-                            //           },
-                            //           child: const Text('OK'),
-                            //         ),
-                            //       ],
-                            //       title: Text(
-                            //         title,
-                            //         style: TextStyle(
-                            //           color: value ? Colors.green : Colors.red,
-                            //         ),
-                            //       ),
-                            //     ),
-                            //   );
-                            // });
+                            var title =
+                            // value
+                            //     ? 'Bạn đã đổi khuyến mãi thành công!'
+                            //     :
+                            'Bạn chưa đủ điều kiện để đổi khuyến mãi!';
+                            showCupertinoDialog(
+                              context: context,
+                              builder: (context) => DialogWidget(
+                                message: AppMessage(
+                                  type: AppMessageType.info,
+                                  title: txtNotify,
+                                  content: title,
+                                ),
+                                actions: [
+                                  CupertinoDialogAction(
+                                      child: const Text(txtConfirm),
+                                      onPressed: () {
+                                        Navigator.pop(context);
+                                      }),
+                                ],
+                              ),
+                            );
                           },
                           style: ButtonStyle(
                             backgroundColor:
@@ -287,21 +303,15 @@ class PromotionBottomSheet extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text(
-                      promotion.name,
+                      promotion.partner,
                       style: const TextStyle(fontWeight: FontWeight.w700),
                       maxLines: 1,
                       overflow: TextOverflow.fade,
                     ),
                     Text(
-                      promotion.description,
+                      promotion.name,
                       style: const TextStyle(color: Colors.black),
                       maxLines: 2,
-                      overflow: TextOverflow.fade,
-                    ),
-                    Text(
-                      promotion.description,
-                      style: const TextStyle(color: Colors.black54),
-                      maxLines: 1,
                       overflow: TextOverflow.fade,
                     ),
                   ],

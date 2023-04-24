@@ -5,7 +5,7 @@ class HistoryPointModel {
   final int point;
   final String name;
   final String? targetId;
-  final String time;
+  final DateTime time;
 
   const HistoryPointModel({
     required this.id,
@@ -21,7 +21,7 @@ class HistoryPointModel {
       'point': point,
       'name': name,
       'targetId': targetId,
-      'time': time,
+      'time': time.toString(),
     };
   }
 

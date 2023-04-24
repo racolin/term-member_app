@@ -3,6 +3,7 @@ import 'package:member_app/presentation/res/dimen/dimens.dart';
 import 'package:member_app/presentation/res/strings/values.dart';
 
 import '../../../data/models/promotion_model.dart';
+import '../../bottom_sheet/promotion_bottom_sheet.dart';
 
 class PromotionSmallWidget extends StatelessWidget {
   final PromotionModel promotion;
@@ -19,7 +20,18 @@ class PromotionSmallWidget extends StatelessWidget {
       overlayColor: MaterialStateProperty.all(
         Theme.of(context).primaryColor.withOpacity(opaXS),
       ),
-      onTap: () {},
+      onTap: () {
+        showModalBottomSheet(
+          context: context,
+          isScrollControlled: true,
+          backgroundColor: Colors.transparent,
+          builder: (context) {
+            return PromotionBottomSheet(
+              promotion: promotion,
+            );
+          },
+        );
+        },
       child: Ink(
         padding: const EdgeInsets.symmetric(vertical: spaceXS),
         decoration: BoxDecoration(

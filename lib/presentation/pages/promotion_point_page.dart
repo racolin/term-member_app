@@ -1,5 +1,8 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:member_app/exception/app_message.dart';
+import 'package:member_app/presentation/dialogs/dialog_widget.dart';
 import 'package:member_app/presentation/pages/loading_page.dart';
 import 'package:member_app/presentation/res/dimen/dimens.dart';
 import 'package:member_app/presentation/res/strings/values.dart';
@@ -12,6 +15,8 @@ import '../../business_logic/cubits/promotion_cubit.dart';
 import '../../business_logic/cubits/voucher_cubit.dart';
 import '../../business_logic/states/promotion_state.dart';
 import '../../business_logic/states/voucher_state.dart';
+import '../bottom_sheet/voucher_bottom_sheet.dart';
+import '../screens/voucher_screen.dart';
 import '../widgets/feature_card_widget.dart';
 import '../widgets/promotion/promotion_small_widget.dart';
 
@@ -52,7 +57,7 @@ class PromotionPointPage extends StatelessWidget {
                 const CardWidget(
                   isDetail: true,
                 ),
-                _getFeatures(),
+                _getFeatures(context),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -64,7 +69,19 @@ class PromotionPointPage extends StatelessWidget {
                       ),
                     ),
                     TextButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (ctx) {
+                              return BlocProvider<VoucherCubit>.value(
+                                value: BlocProvider.of<VoucherCubit>(context),
+                                child: const VoucherScreen(),
+                              );
+                            },
+                          ),
+                        );
+                      },
                       style: ButtonStyle(
                         overlayColor: MaterialStateProperty.all(
                           Colors.orange.withOpacity(opaXS),
@@ -104,6 +121,18 @@ class PromotionPointPage extends StatelessWidget {
                                   children: [
                                     VoucherWidget(
                                       voucher: e,
+                                      onClick: () {
+                                        showModalBottomSheet(
+                                          context: context,
+                                          isScrollControlled: true,
+                                          backgroundColor: Colors.transparent,
+                                          builder: (context) {
+                                            return VoucherBottomSheet(
+                                              voucher: e,
+                                            );
+                                          },
+                                        );
+                                      },
                                     ),
                                     const SizedBox(
                                       height: spaceXS,
@@ -190,7 +219,7 @@ class PromotionPointPage extends StatelessWidget {
           );
   }
 
-  Widget _getFeatures() {
+  Widget _getFeatures(BuildContext context) {
     return Container(
       margin: const EdgeInsets.only(top: spaceXXS, bottom: spaceMD),
       child: Column(
@@ -204,8 +233,27 @@ class PromotionPointPage extends StatelessWidget {
                 child: FeatureCardWidget(
                   iconColor: Colors.green,
                   icon: Icons.energy_savings_leaf_outlined,
-                  title: txtPromotionSwap,
-                  onClick: () {},
+                  title: txtAchievement,
+                  onClick: () {
+                    showCupertinoDialog(
+                      context: context,
+                      builder: (context) => DialogWidget(
+                        message: AppMessage(
+                          type: AppMessageType.info,
+                          title: txtNotify,
+                          content: txtDeveloping,
+                        ),
+                        actions: [
+                          CupertinoDialogAction(
+                            child: const Text(txtConfirm),
+                            onPressed: () {
+                              Navigator.pop(context);
+                            },
+                          ),
+                        ],
+                      ),
+                    );
+                  },
                 ),
               ),
               const SizedBox(width: spaceXS),
@@ -214,7 +262,19 @@ class PromotionPointPage extends StatelessWidget {
                   iconColor: Colors.orange,
                   icon: Icons.confirmation_number_outlined,
                   title: txtYourVoucher,
-                  onClick: () {},
+                  onClick: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (ctx) {
+                          return BlocProvider<VoucherCubit>.value(
+                            value: BlocProvider.of<VoucherCubit>(context),
+                            child: const VoucherScreen(),
+                          );
+                        },
+                      ),
+                    );
+                  },
                 ),
               ),
             ],

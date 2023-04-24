@@ -61,6 +61,7 @@ const txtCartTemplate = "Đơn hàng mẫu";
 const txtRules = "Điều khoản";
 const txtOutStanding = "Nổi bật";
 const txtPromotionSwap = "Đổi ưu đãi";
+const txtAchievement = "Đua thành tích";
 const txtYourVoucher = "Voucher của bạn";
 const txtFromMe = "Từ chúng tôi";
 const txtFromPartner = "Từ đối tác";
@@ -90,6 +91,8 @@ const txtUpdate = 'Cập nhật';
 const txtDelete = 'Xoá';
 const txtTemplateProducts = 'Danh sách sản phẩm';
 const txtDisable = 'Hết hàng';
+const txtDeveloping = 'Tính năng hiện đang phát triển.\nBạn sẽ được thông báo khi tính năng phát hành.';
+const txtConfirm = 'Đồng ý';
 
 const assetDefaultIcon = 'assets/images/icon_default.png';
 const assetDefaultImage = 'assets/images/image_default.png';

@@ -13,7 +13,7 @@ class HomeCubit extends Cubit<HomeState> {
     _repository.isLogin().then((login) {
       emit(HomeLoaded(
         type: HomeBodyType.home,
-        login: false,
+        login: true,
         // login: login,
       ));
     });

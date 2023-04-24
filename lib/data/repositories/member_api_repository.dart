@@ -70,7 +70,7 @@ class MemberApiRepository extends MemberRepository {
           point: 96,
           name:
           'Đường Đen Marble Latte, Hi-Tea Yuzu Trần Châu +2 sản phẩm khác',
-          time: '15/04/2023',
+          time: DateTime.now(),
         ),
       ));
     } on DioError catch (ex) {

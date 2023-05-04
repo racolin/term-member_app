@@ -1,12 +1,12 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../data/repositories/storage/account_storage_repository.dart';
 import '../../exception/app_exception.dart';
-import '../../data/repositories/logout_storage_repository.dart';
 import '../../exception/app_message.dart';
 import '../states/home_state.dart';
 
 class HomeCubit extends Cubit<HomeState> {
-  final _repository = LogoutStorageRepository();
+  final _repository = AccountStorageRepository();
 
   HomeCubit(bool login) : super(HomeInitial()) {
     emit(HomeLoading());

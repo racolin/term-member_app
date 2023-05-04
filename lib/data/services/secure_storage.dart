@@ -36,21 +36,21 @@ class SecureStorage {
     await _storage.delete(key: _refreshTokenKey);
   }
 
-  // ///
-  // /// Can throw PlatformException
-  // ///
-  // Future<TokenModel?> getAccessToken() async {
-  //   String? access = await _storage.read(key: _accessTokenKey);
-  //   String? refresh = await _storage.read(key: _refreshTokenKey);
-  //
-  //   if (access != null && refresh != null) {
-  //     return TokenModel(
-  //       accessToken: access,
-  //       refreshToken: refresh,
-  //     );
-  //   }
-  //   return null;
-  // }
+  ///
+  /// Can throw PlatformException
+  ///
+  Future<TokenModel?> getToken() async {
+    String? access = await _storage.read(key: _accessTokenKey);
+    String? refresh = await _storage.read(key: _refreshTokenKey);
+
+    if (access != null && refresh != null) {
+      return TokenModel(
+        accessToken: access,
+        refreshToken: refresh,
+      );
+    }
+    return null;
+  }
 
   ///
   /// Can throw PlatformException

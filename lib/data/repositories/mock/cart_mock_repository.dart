@@ -2,14 +2,14 @@ import 'dart:math';
 
 import 'package:dio/dio.dart';
 
-import '../../business_logic/repositories/cart_repository.dart';
-import '../../data/models/cart_detail_model.dart';
-import '../../data/models/cart_model.dart';
-import '../../exception/app_exception.dart';
-import '../../exception/app_message.dart';
-import '../models/cart_status_model.dart';
+import '../../../business_logic/repositories/cart_repository.dart';
+import '../../models/cart_detail_model.dart';
+import '../../models/cart_model.dart';
+import '../../../exception/app_exception.dart';
+import '../../../exception/app_message.dart';
+import '../../models/cart_status_model.dart';
 
-class CartApiRepository extends CartRepository {
+class CartMockRepository extends CartRepository {
   @override
   Future<CartDetailModel?> checkVoucher({
     required String voucherId,
@@ -89,6 +89,7 @@ class CartApiRepository extends CartRepository {
           CartProductModel.fromMap({
             "id": 'PD-01',
             "name": 'Đường Đen Marble Latte',
+            "options": ['Vừa, Nhiều đường'],
             "cost": 55000,
             "amount": 1,
             "note": 'Nhỏ',
@@ -96,6 +97,7 @@ class CartApiRepository extends CartRepository {
           CartProductModel.fromMap({
             "id": 'PD-02',
             "name": 'Hi-Tea Yuzu Trân Châu',
+            "options": ['Vừa, Nhiều đường'],
             "cost": 59000,
             "amount": 1,
             "note": 'Vừa',
@@ -103,6 +105,7 @@ class CartApiRepository extends CartRepository {
           CartProductModel.fromMap({
             "id": 'PD-03',
             "name": 'Hi-Tea Đào',
+            "options": ['Vừa, Nhiều đường'],
             "cost": 59000,
             "amount": 1,
             "note": 'Vừa',
@@ -110,6 +113,7 @@ class CartApiRepository extends CartRepository {
           CartProductModel.fromMap({
             "id": 'PD-04',
             "name": 'Trà Đen Macchiato',
+            "options": ['Vừa, Nhiều đường'],
             "cost": 55000,
             "amount": 1,
             "note": 'Vừa',
@@ -132,9 +136,9 @@ class CartApiRepository extends CartRepository {
   Future<List<CartStatusModel>> getStatuses() async {
     try {
       return [
-        const CartStatusModel(id: 'STT-01', name: 'Tại quầy'),
-        const CartStatusModel(id: 'STT-02', name: 'Đến lấy'),
-        const CartStatusModel(id: 'STT-03', name: 'Giao hàng'),
+        const CartStatusModel(id: 'STT-01', name: 'Đang thực hiện'),
+        const CartStatusModel(id: 'STT-02', name: 'Đã hoàn tất'),
+        const CartStatusModel(id: 'STT-03', name: 'Đã huỷ'),
       ];
     } on DioError catch (ex) {
       throw AppException(

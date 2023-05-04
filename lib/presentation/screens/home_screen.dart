@@ -118,7 +118,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       return FloatingActionWidget(
                         addressName: cartState.addressName,
                         type: cartState.categoryId,
-                        amount: cartState.payType,
+                        amount: cartState.amount,
                         cost: cartState.calculateCost,
                         expanded: expanded,
                         onClick: () {

@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:member_app/data/models/cart_model.dart';
+import 'package:member_app/presentation/app_router.dart';
 import 'package:member_app/presentation/res/dimen/dimens.dart';
 
 import '../../business_logic/cubits/carts_cubit.dart';
 import '../../business_logic/states/carts_state.dart';
 import '../../supports/convert.dart';
+import 'cart_detail_screen.dart';
 import '../pages/alert_page.dart';
 
 class CartsScreen extends StatefulWidget {
@@ -53,7 +55,6 @@ class _CartsScreenState extends State<CartsScreen> {
           'Lịch sử đơn hàng',
           style: TextStyle(fontSize: 16),
         ),
-        backgroundColor: Colors.orange.withAlpha(50),
         elevation: 0,
         leading: IconButton(
           splashRadius: 28,
@@ -145,7 +146,14 @@ class _CartsScreenState extends State<CartsScreen> {
         description: 'Chưa có dữ liệu',
       );
     }
-    return ListView.builder(
+    return ListView.separated(
+      separatorBuilder: (context, index) =>
+      const Padding(
+        padding: EdgeInsets.only(left: 16),
+        child: Divider(
+          height: 1,
+        ),
+      ),
       controller: _controller,
       itemBuilder: (context, index) => _getCart(carts[index]),
       itemCount: carts.length,
@@ -153,62 +161,61 @@ class _CartsScreenState extends State<CartsScreen> {
   }
 
   Widget _getCart(CartModel cart) {
-    return Column(
-      children: [
-        ListTile(
-          leading: ClipRRect(
-            borderRadius: BorderRadius.circular(16),
-            child: Image.asset(
-              cart.categoryId.image,
-              height: 32,
-              width: 32,
-            ),
+    return ListTile(
+      contentPadding: const EdgeInsets.symmetric(
+        vertical: 4,
+        horizontal: 12,
+      ),
+      onTap: () {
+        Navigator.pushNamed(context, AppRouter.cartDetail,arguments: cart.id, );
+      },
+      leading: ClipRRect(
+        borderRadius: BorderRadius.circular(16),
+        child: Image.asset(
+          cart.categoryId.image,
+          height: 32,
+          width: 32,
+        ),
+      ),
+      title: Text(
+        cart.name,
+        style: const TextStyle(
+          fontWeight: FontWeight.w600,
+          fontSize: 14,
+        ),
+      ),
+      subtitle: Row(
+        children: [
+          Text(
+            dateToString(cart.time, 'HH:MM - dd/MM/yyyy'),
+            style: const TextStyle(fontSize: 12),
           ),
-          title: Text(
-            cart.name,
-            style: const TextStyle(
-              fontWeight: FontWeight.w600,
-              fontSize: 14,
-            ),
-          ),
-          subtitle: Row(
-            children: [
-              Text(
-                dateToString(cart.time, 'HH:MM - dd/MM/yyyy'),
-                style: const TextStyle(fontSize: 12),
+          const Spacer(),
+          if (cart.rate == null)
+            const Text(
+              'Chưa đánh giá',
+              style: TextStyle(fontSize: 12),
+            )
+          else ...[
+            Text(
+              cart.rate.toString(),
+              style: const TextStyle(
+                fontSize: 12,
+                color: Colors.orange,
               ),
-              const Spacer(),
-              if (cart.rate == null)
-                const Text(
-                  'Chưa đánh giá',
-                  style: TextStyle(fontSize: 12),
-                )
-              else ...[
-                Text(
-                  cart.rate.toString(),
-                  style: const TextStyle(
-                    fontSize: 12,
-                    color: Colors.orange,
-                  ),
-                ),
-                const Icon(
-                  Icons.star_rate_outlined,
-                  size: 16,
-                  color: Colors.orange,
-                ),
-              ],
-            ],
-          ),
-          trailing: Text(
-            numberToCurrency(cart.cost, 'đ'),
-            style: const TextStyle(fontSize: 14),
-          ),
-        ),
-        const Padding(
-          padding: EdgeInsets.only(left: 16),
-          child: Divider(),
-        ),
-      ],
+            ),
+            const Icon(
+              Icons.star_rate_outlined,
+              size: 16,
+              color: Colors.orange,
+            ),
+          ],
+        ],
+      ),
+      trailing: Text(
+        numberToCurrency(cart.cost, 'đ'),
+        style: const TextStyle(fontSize: 14),
+      ),
     );
   }
 }

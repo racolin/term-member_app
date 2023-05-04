@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:member_app/presentation/pages/reward_screen.dart';
 import 'package:member_app/presentation/screens/address_screen.dart';
+import 'package:member_app/presentation/screens/cart_detail_screen.dart';
 import 'package:member_app/presentation/screens/carts_screen.dart';
 import 'package:member_app/presentation/screens/setting_screen.dart';
 import 'package:member_app/presentation/screens/splash_screen.dart';
@@ -16,7 +17,7 @@ import '../business_logic/cubits/store_cubit.dart';
 import '../business_logic/repositories/auth_repository.dart';
 import '../business_logic/repositories/cart_repository.dart';
 import '../business_logic/repositories/cart_template_repository.dart';
-import '../business_logic/repositories/logout_repository.dart';
+import '../business_logic/repositories/account_repository.dart';
 import '../business_logic/repositories/member_repository.dart';
 import '../business_logic/repositories/news_repository.dart';
 import '../business_logic/repositories/notify_repository.dart';
@@ -25,17 +26,16 @@ import '../business_logic/repositories/promotion_repository.dart';
 import '../business_logic/repositories/setting_repository.dart';
 import '../business_logic/repositories/store_repository.dart';
 import '../business_logic/repositories/voucher_repository.dart';
-import '../data/repositories/auth_api_repository.dart';
-import '../data/repositories/cart_template_api_repository.dart';
-import '../data/repositories/logout_storage_repository.dart';
-import '../data/repositories/member_api_repository.dart';
-import '../data/repositories/news_api_repository.dart';
-import '../data/repositories/notify_api_repository.dart';
-import '../data/repositories/product_api_repository.dart';
-import '../data/repositories/promotion_api_repository.dart';
-import '../data/repositories/setting_api_repository.dart';
-import '../data/repositories/store_api_repository.dart';
-import '../data/repositories/voucher_api_repository.dart';
+import '../data/repositories/mock/auth_mock_repository.dart';
+import '../data/repositories/mock/cart_template_mock_repository.dart';
+import '../data/repositories/mock/member_mock_repository.dart';
+import '../data/repositories/mock/news_mock_repository.dart';
+import '../data/repositories/mock/notify_mock_repository.dart';
+import '../data/repositories/mock/product_mock_repository.dart';
+import '../data/repositories/mock/promotion_mock_repository.dart';
+import '../data/repositories/mock/setting_mock_repository.dart';
+import '../data/repositories/mock/store_mock_repository.dart';
+import '../data/repositories/mock/voucher_mock_repository.dart';
 import '../business_logic/cubits/app_bar_cubit.dart';
 import '../business_logic/cubits/card_cubit.dart';
 import '../business_logic/cubits/cart_cubit.dart';
@@ -45,7 +45,8 @@ import '../business_logic/cubits/news_cubit.dart';
 import '../business_logic/cubits/product_cubit.dart';
 import '../business_logic/cubits/promotion_cubit.dart';
 import '../business_logic/cubits/voucher_cubit.dart';
-import '../data/repositories/cart_api_repository.dart';
+import '../data/repositories/mock/cart_mock_repository.dart';
+import '../data/repositories/storage/account_storage_repository.dart';
 import '../presentation/screens/login_screen.dart';
 import '../presentation/screens/home_screen.dart';
 import 'screens/address_select_screen.dart';
@@ -81,40 +82,40 @@ class AppRouter {
           builder: (context) {
             // Sửa provider khi có hoặc ko có mạng ở ngay đây
             // Ví dụ: RepositoryProvider<MemberRepository>(
-            //           create: (context) => internet ? MemberApiRepository() : MemberLocalRepository(),
+            //           create: (context) => internet ? MemberMockRepository() : MemberLocalRepository(),
             //        )
             bool login = settings.arguments == true ? true : false;
             return MultiRepositoryProvider(
               providers: [
                 RepositoryProvider<CartRepository>(
-                  create: (context) => CartApiRepository(),
+                  create: (context) => CartMockRepository(),
                 ),
                 RepositoryProvider<CartTemplateRepository>(
-                  create: (context) => CartTemplateApiRepository(),
+                  create: (context) => CartTemplateMockRepository(),
                 ),
-                RepositoryProvider<LogoutRepository>(
-                  create: (context) => LogoutStorageRepository(),
+                RepositoryProvider<AccountRepository>(
+                  create: (context) => AccountStorageRepository(),
                 ),
                 RepositoryProvider<MemberRepository>(
-                  create: (context) => MemberApiRepository(),
+                  create: (context) => MemberMockRepository(),
                 ),
                 RepositoryProvider<NewsRepository>(
-                  create: (context) => NewsApiRepository(),
+                  create: (context) => NewsMockRepository(),
                 ),
                 RepositoryProvider<ProductRepository>(
-                  create: (context) => ProductApiRepository(),
+                  create: (context) => ProductMockRepository(),
                 ),
                 RepositoryProvider<PromotionRepository>(
-                  create: (context) => PromotionApiRepository(),
+                  create: (context) => PromotionMockRepository(),
                 ),
                 RepositoryProvider<SettingRepository>(
-                  create: (context) => SettingApiRepository(),
+                  create: (context) => SettingMockRepository(),
                 ),
                 RepositoryProvider<StoreRepository>(
-                  create: (context) => StoreApiRepository(),
+                  create: (context) => StoreMockRepository(),
                 ),
                 RepositoryProvider<VoucherRepository>(
-                  create: (context) => VoucherApiRepository(),
+                  create: (context) => VoucherMockRepository(),
                 ),
               ],
               child: MultiBlocProvider(
@@ -198,7 +199,7 @@ class AppRouter {
         return MaterialPageRoute(
           builder: (context) {
             return RepositoryProvider<AuthRepository>(
-              create: (context) => AuthApiRepository(),
+              create: (context) => AuthMockRepository(),
               child: BlocProvider<AuthCubit>(
                 create: (context) => AuthCubit(
                   repository: RepositoryProvider.of<AuthRepository>(
@@ -232,7 +233,7 @@ class AppRouter {
         return MaterialPageRoute(
           builder: (context) {
             return RepositoryProvider<CartRepository>(
-              create: (context) => CartApiRepository(),
+              create: (context) => CartMockRepository(),
               child: BlocProvider<CartDetailCubit>(
                 create: (context) => CartDetailCubit(
                   repository: RepositoryProvider.of<CartRepository>(
@@ -240,7 +241,7 @@ class AppRouter {
                   ),
                   id: (settings.arguments as String),
                 ),
-                child: const LoginScreen(),
+                child: const CartDetailScreen(),
               ),
             );
           },
@@ -249,7 +250,7 @@ class AppRouter {
         return MaterialPageRoute(
           builder: (context) {
             return RepositoryProvider<CartRepository>(
-              create: (context) => CartApiRepository(),
+              create: (context) => CartMockRepository(),
               child: BlocProvider<CartsCubit>(
                 create: (context) => CartsCubit(
                   repository: RepositoryProvider.of<CartRepository>(
@@ -265,10 +266,10 @@ class AppRouter {
         return MaterialPageRoute(
           builder: (context) {
             return RepositoryProvider<SettingRepository>(
-              create: (context) => SettingApiRepository(),
+              create: (context) => SettingMockRepository(),
               child: BlocProvider<ProfileCubit>(
                 create: (context) => ProfileCubit(
-                  repository: SettingApiRepository(),
+                  repository: SettingMockRepository(),
                 ),
                 child: const ProfileScreen(),
               ),
@@ -279,10 +280,10 @@ class AppRouter {
         return MaterialPageRoute(
           builder: (context) {
             return RepositoryProvider<SettingRepository>(
-              create: (context) => SettingApiRepository(),
+              create: (context) => SettingMockRepository(),
               child: BlocProvider<ProfileCubit>(
                 create: (context) => ProfileCubit(
-                  repository: SettingApiRepository(),
+                  repository: SettingMockRepository(),
                 ),
                 child: const SettingScreen(),
               ),
@@ -293,7 +294,7 @@ class AppRouter {
         return MaterialPageRoute(
           builder: (context) {
             return RepositoryProvider<NotifyRepository>(
-              create: (context) => NotifyApiRepository(),
+              create: (context) => NotifyMockRepository(),
               child: BlocProvider<NotifyCubit>(
                 create: (context) => NotifyCubit(
                   repository: RepositoryProvider.of<NotifyRepository>(

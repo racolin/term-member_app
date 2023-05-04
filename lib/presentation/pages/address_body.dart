@@ -6,7 +6,7 @@ import '../../presentation/res/dimen/dimens.dart';
 import '../../business_logic/repositories/setting_repository.dart';
 import '../../business_logic/cubits/address_cubit.dart';
 import '../../business_logic/states/address_state.dart';
-import '../../data/repositories/setting_api_repository.dart';
+import '../../data/repositories/mock/setting_mock_repository.dart';
 import '../../presentation/pages/loading_page.dart';
 import '../../data/models/address_model.dart';
 import '../widgets/app_icon_widget.dart';
@@ -22,7 +22,7 @@ class AddressBody extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return RepositoryProvider<SettingRepository>(
-      create: (context) => SettingApiRepository(),
+      create: (context) => SettingMockRepository(),
       child: BlocProvider<AddressCubit>(
         create: (context) => AddressCubit(
           repository: RepositoryProvider.of<SettingRepository>(context),

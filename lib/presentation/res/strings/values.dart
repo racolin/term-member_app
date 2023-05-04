@@ -93,6 +93,8 @@ const txtTemplateProducts = 'Danh sách sản phẩm';
 const txtDisable = 'Hết hàng';
 const txtDeveloping = 'Tính năng hiện đang phát triển.\nBạn sẽ được thông báo khi tính năng phát hành.';
 const txtConfirm = 'Đồng ý';
+const txtSendReview = 'Gửi đánh giá';
+const txtProduct = 'sản phẩm';
 
 const assetDefaultIcon = 'assets/images/icon_default.png';
 const assetDefaultImage = 'assets/images/image_default.png';

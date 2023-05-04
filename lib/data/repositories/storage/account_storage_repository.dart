@@ -1,10 +1,10 @@
 import 'package:flutter/services.dart';
 import 'package:member_app/exception/app_exception.dart';
-import '../../business_logic/repositories/logout_repository.dart';
-import '../../data/services/secure_storage.dart';
-import '../../exception/app_message.dart';
+import '../../../business_logic/repositories/account_repository.dart';
+import '../../services/secure_storage.dart';
+import '../../../exception/app_message.dart';
 
-class LogoutStorageRepository extends LogoutRepository {
+class AccountStorageRepository extends AccountRepository {
   final _storage = SecureStorage();
 
   ///

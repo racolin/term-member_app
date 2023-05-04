@@ -8,17 +8,17 @@ class TokenModel {
   final String refreshToken;
 
   factory TokenModel.fromJson(Map<String, dynamic> json) => TokenModel(
-    accessToken: json['access_token'] as String,
-    refreshToken: json['refresh_token'] as String,
+    accessToken: json['accessToken'] as String,
+    refreshToken: json['refreshToken'] as String,
   );
 
   Map<String, dynamic> toJson() => <String, dynamic>{
-    'access_token': accessToken,
-    'refresh_token': refreshToken,
+    'accessToken': accessToken,
+    'refreshToken': refreshToken,
   };
 
   @override
   String toString() {
-    return 'Token{access_token: $accessToken, refresh_token: $refreshToken }';
+    return 'Token{accessToken: $accessToken, refreshToken: $refreshToken }';
   }
 }

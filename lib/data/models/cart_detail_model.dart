@@ -14,7 +14,9 @@ class CartDetailModel extends CartModel {
   final String addressName;
   final List<CartProductModel> products;
   final CartReviewModel? review;
-  final int point;
+  final int? point;
+
+  int get total => products.fold(0, (pre, e) => pre + e.cost);
 
   const CartDetailModel({
     required super.id,

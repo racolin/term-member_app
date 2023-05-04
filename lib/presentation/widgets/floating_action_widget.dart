@@ -1,9 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:member_app/business_logic/cubits/cart_cubit.dart';
+import 'package:member_app/business_logic/cubits/cart_template_cubit.dart';
+import 'package:member_app/business_logic/cubits/product_cubit.dart';
 
 import '../../supports/convert.dart';
 import '../../presentation/res/strings/values.dart';
 import '../../presentation/widgets/app_image_widget.dart';
 import '../../data/models/cart_model.dart';
+import '../bottom_sheet/cart_bottom_sheet.dart';
 import '../res/dimen/dimens.dart';
 
 class FloatingActionWidget extends StatefulWidget {
@@ -216,54 +221,79 @@ class _FloatingActionWidgetState extends State<FloatingActionWidget>
   }
 
   Widget _getCost(int cost, int amount) {
-    return Container(
-      margin: EdgeInsets.all(_getValue(6, 10, _controller.value)),
-      decoration: BoxDecoration(
-        color: Theme.of(context).primaryColor,
-        borderRadius: BorderRadius.circular(spaceLG),
-      ),
-      height: spaceLG * 2,
-      // width: 100,
-      child: Row(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          const SizedBox(
-            width: 6,
-          ),
-          CircleAvatar(
-            backgroundColor: Colors.white,
-            radius: _getValue(12, 14, _controller.value),
-            child: Text(
-              (amount).toString(),
-              style: TextStyle(
-                fontSize: 12,
-                color: Theme.of(context).primaryColor,
+    return GestureDetector(
+      onTap: () {
+        showModalBottomSheet(
+          context: context,
+          isScrollControlled: true,
+          backgroundColor: Colors.transparent,
+          builder: (ctx) {
+            return MultiBlocProvider(
+              providers: [
+                BlocProvider<CartCubit>.value(
+                  value: BlocProvider.of<CartCubit>(context),
+                ),
+                BlocProvider<ProductCubit>.value(
+                  value: BlocProvider.of<ProductCubit>(context),
+                ),
+                BlocProvider<CartTemplateCubit>.value(
+                  value: BlocProvider.of<CartTemplateCubit>(context),
+                ),
+              ],
+              child: const CartBottomSheet(),
+            );
+          },
+        );
+      },
+      child: Container(
+        margin: EdgeInsets.all(_getValue(6, 10, _controller.value)),
+        decoration: BoxDecoration(
+          color: Theme.of(context).primaryColor,
+          borderRadius: BorderRadius.circular(spaceLG),
+        ),
+        height: spaceLG * 2,
+        // width: 100,
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            const SizedBox(
+              width: 6,
+            ),
+            CircleAvatar(
+              backgroundColor: Colors.white,
+              radius: _getValue(12, 14, _controller.value),
+              child: Text(
+                (amount).toString(),
+                style: TextStyle(
+                  fontSize: 12,
+                  color: Theme.of(context).primaryColor,
+                ),
               ),
             ),
-          ),
-          const SizedBox(
-            width: 2,
-          ),
-          Text(
-            numberToCurrency(cost, 'đ'),
-            style: const TextStyle(
-              fontSize: fontSM,
-              color: Colors.white,
-              fontWeight: FontWeight.w600,
+            const SizedBox(
+              width: 2,
             ),
-          ),
-          const SizedBox(
-            width: 2,
-          ),
-          const Icon(
-            Icons.keyboard_arrow_right_outlined,
-            size: 12,
-            color: Colors.white,
-          ),
-          const SizedBox(
-            width: 6,
-          ),
-        ],
+            Text(
+              numberToCurrency(cost, 'đ'),
+              style: const TextStyle(
+                fontSize: fontSM,
+                color: Colors.white,
+                fontWeight: FontWeight.w600,
+              ),
+            ),
+            const SizedBox(
+              width: 2,
+            ),
+            const Icon(
+              Icons.keyboard_arrow_right_outlined,
+              size: 12,
+              color: Colors.white,
+            ),
+            const SizedBox(
+              width: 6,
+            ),
+          ],
+        ),
       ),
     );
   }

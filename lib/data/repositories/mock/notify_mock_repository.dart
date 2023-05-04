@@ -1,11 +1,11 @@
 import 'package:dio/dio.dart';
 
-import '../../data/models/notify_model.dart';
-import '../../business_logic/repositories/notify_repository.dart';
-import '../../exception/app_exception.dart';
-import '../../exception/app_message.dart';
+import '../../models/notify_model.dart';
+import '../../../business_logic/repositories/notify_repository.dart';
+import '../../../exception/app_exception.dart';
+import '../../../exception/app_message.dart';
 
-class NotifyApiRepository extends NotifyRepository {
+class NotifyMockRepository extends NotifyRepository {
   var _list = [
     ...List.generate(
       8,

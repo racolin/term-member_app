@@ -1,9 +1,10 @@
 import '../../data/models/promotion_category_model.dart';
 import '../../data/models/promotion_model.dart';
+import '../../data/models/response_model.dart';
 
 abstract class PromotionRepository {
 
-  Future<MapEntry<int, List<PromotionModel>>> gets();
+  Future<ResponseModel<MapEntry<int, List<PromotionModel>>>> gets();
 
-  Future<List<PromotionCategoryModel>> getCategories();
+  Future<ResponseModel<List<PromotionCategoryModel>>> getCategories();
 }

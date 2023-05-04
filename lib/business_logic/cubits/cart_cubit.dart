@@ -17,7 +17,36 @@ class CartCubit extends Cubit<CartState> {
       : _repository = repository,
         super(CartInitial()) {
     /// Thiếu bước lưu cart local khi login thì nạp lại
-    emit(CartLoaded(products: [], categoryId: DeliveryType.takeOut));
+    emit(CartLoaded(
+      products: [
+        CartProductModel(
+          id: 'id',
+          name: 'name',
+          cost: 25000,
+          options: ['OPTION-1-1'],
+          amount: 2,
+          note: 'note',
+        ),
+        CartProductModel(
+          id: 'id',
+          name: 'name',
+          cost: 25000,
+          options: ['OPTION-1-1'],
+          amount: 2,
+          note: 'note',
+        ),
+        CartProductModel(
+          id: 'id',
+          name: 'name',
+          cost: 25000,
+          options: ['OPTION-1-1'],
+          amount: 2,
+          note: 'note',
+        ),
+      ],
+      categoryId: DeliveryType.takeOut,
+      fee: 18000,
+    ));
   }
 
   Future<AppMessage?> checkAndSetVoucher(VoucherModel voucher) async {
@@ -296,7 +325,7 @@ class CartCubit extends Cubit<CartState> {
           categoryId: DeliveryType.values[categoryId],
           fee: fee,
         ));
-      } on AppException catch(ex) {
+      } on AppException catch (ex) {
         return ex.message;
       }
     }

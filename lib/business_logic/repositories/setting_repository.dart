@@ -1,18 +1,19 @@
 import '../../data/models/address_model.dart';
 import '../../data/models/addresses_list_model.dart';
 import '../../data/models/profile_model.dart';
+import '../../data/models/response_model.dart';
 
 abstract class SettingRepository {
-  Future<ProfileModel?> getProfile();
+  Future<ResponseModel<ProfileModel>> getProfile();
 
-  Future<bool?> updateProfile({
+  Future<ResponseModel<bool>> updateProfile({
     required String lastName,
     required String firstName,
   });
 
-  Future<AddressesListModel> getAddresses();
+  Future<ResponseModel<AddressesListModel>> getAddresses();
 
-  Future<String?> createAddress({
+  Future<ResponseModel<String>> createAddress({
     required String name,
     required String address,
     required String note,
@@ -22,13 +23,13 @@ abstract class SettingRepository {
     required String phone,
   });
 
-  Future<bool?> updateAddress({
+  Future<ResponseModel<bool>> updateAddress({
     required AddressModel address,
   });
 
-  Future<bool?> deleteAddress({
+  Future<ResponseModel<bool>> deleteAddress({
     required String id,
   });
 
-  Future<bool?> changeNotify();
+  Future<ResponseModel<bool>> changeNotify();
 }

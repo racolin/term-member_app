@@ -1,6 +1,6 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../data/repositories/news_api_repository.dart';
+import '../../data/repositories/mock/news_mock_repository.dart';
 import '../../exception/app_exception.dart';
 import '../../exception/app_message.dart';
 import '../repositories/news_repository.dart';

@@ -1,11 +1,11 @@
 import 'package:dio/dio.dart';
 
-import '../../business_logic/repositories/news_repository.dart';
-import '../../data/models/news_model.dart';
-import '../../exception/app_exception.dart';
-import '../../exception/app_message.dart';
+import '../../../business_logic/repositories/news_repository.dart';
+import '../../models/news_model.dart';
+import '../../../exception/app_exception.dart';
+import '../../../exception/app_message.dart';
 
-class NewsApiRepository extends NewsRepository {
+class NewsMockRepository extends NewsRepository {
   @override
   Future<List<NewsModel>> gets() async {
     try {

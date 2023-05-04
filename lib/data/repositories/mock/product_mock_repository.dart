@@ -1,13 +1,13 @@
 import 'package:dio/dio.dart';
 
-import '../../data/models/product_category_model.dart';
-import '../../data/models/product_model.dart';
-import '../../data/models/product_option_model.dart';
-import '../../business_logic/repositories/product_repository.dart';
-import '../../exception/app_exception.dart';
-import '../../exception/app_message.dart';
+import '../../models/product_category_model.dart';
+import '../../models/product_model.dart';
+import '../../models/product_option_model.dart';
+import '../../../business_logic/repositories/product_repository.dart';
+import '../../../exception/app_exception.dart';
+import '../../../exception/app_message.dart';
 
-class ProductApiRepository extends ProductRepository {
+class ProductMockRepository extends ProductRepository {
   var _products = List.generate(
     40,
     (index) => ProductModel(

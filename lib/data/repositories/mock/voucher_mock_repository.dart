@@ -1,11 +1,11 @@
 import 'package:dio/dio.dart';
 
-import '../../data/models/voucher_model.dart';
-import '../../business_logic/repositories/voucher_repository.dart';
-import '../../exception/app_exception.dart';
-import '../../exception/app_message.dart';
+import '../../models/voucher_model.dart';
+import '../../../business_logic/repositories/voucher_repository.dart';
+import '../../../exception/app_exception.dart';
+import '../../../exception/app_message.dart';
 
-class VoucherApiRepository extends VoucherRepository {
+class VoucherMockRepository extends VoucherRepository {
   @override
   Future<List<VoucherModel>> getsAvailable() async {
     try {

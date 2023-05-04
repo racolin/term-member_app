@@ -1,6 +1,7 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:member_app/exception/app_exception.dart';
 
+import '../../data/models/response_model.dart';
 import '../../exception/app_message.dart';
 import '../repositories/auth_repository.dart';
 import '../states/auth_state.dart';
@@ -15,7 +16,14 @@ class AuthCubit extends Cubit<AuthState> {
   // Action data
   Future<AppMessage?> login(String phone) async {
     try {
-      bool? result = await _repository.login(phone: phone);
+      ResponseModel<bool> result = await _repository.login(phone: phone);
+      if (result.type == ResponseType.failure) {
+        return result.message;
+      } else if (result.data) {
+
+      } else {
+
+      }
       if (result == null) {
         return AppMessage(
           type: AppMessageType.error,

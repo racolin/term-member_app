@@ -2,13 +2,13 @@ import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-import '../../data/models/notify_model.dart';
-import '../../data/models/address_model.dart';
-import '../../data/models/addresses_list_model.dart';
-import '../../data/models/profile_model.dart';
-import '../../business_logic/repositories/setting_repository.dart';
-import '../../exception/app_exception.dart';
-import '../../exception/app_message.dart';
+import '../../../data/models/notify_model.dart';
+import '../../../data/models/address_model.dart';
+import '../../../data/models/addresses_list_model.dart';
+import '../../../data/models/profile_model.dart';
+import '../../../business_logic/repositories/setting_repository.dart';
+import '../../../exception/app_exception.dart';
+import '../../../exception/app_message.dart';
 
 class SettingApiRepository extends SettingRepository {
   // var _notifies = List.generate(

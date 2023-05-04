@@ -17,7 +17,19 @@ class CartDetailCubit extends Cubit<CartDetailState> {
 
     try {
       _repository.getDetailById(id: id).then((detail) {
-        emit(CartDetailLoaded(cart: detail));
+        if (detail != null) {
+          emit(CartDetailLoaded(cart: detail));
+        } else {
+          emit(
+            CartDetailFailure(
+              message: AppMessage(
+                type: AppMessageType.failure,
+                title: 'Không tìm thấy',
+                content: 'Không tìm được chi tiết của đơn hàng',
+              ),
+            ),
+          );
+        }
       });
     } on AppException catch (ex) {}
   }
@@ -29,7 +41,8 @@ class CartDetailCubit extends Cubit<CartDetailState> {
       return AppMessage(
         type: AppMessageType.failure,
         title: 'Có lỗi!',
-        content: 'Có lỗi xảy ra khi đánh giá đơn hàng. Bạn có thể đánh giá lại!',
+        content:
+            'Có lỗi xảy ra khi đánh giá đơn hàng. Bạn có thể đánh giá lại!',
       );
     }
     return null;

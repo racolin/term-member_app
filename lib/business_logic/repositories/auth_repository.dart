@@ -1,9 +1,11 @@
+import 'package:member_app/data/models/response_model.dart';
+
 abstract class AuthRepository {
-  Future<bool?> login({
+  Future<ResponseModel<bool>> login({
     required String phone,
   });
 
-  Future<bool?> register({
+  Future<ResponseModel<bool>> register({
     required String phone,
     required String firstName,
     required String lastName,
@@ -11,7 +13,7 @@ abstract class AuthRepository {
     required int dob,
   });
 
-  Future<bool?> otpCheck({
+  Future<ResponseModel<bool>> otpCheck({
     required String phone,
     required String otp,
   });

@@ -24,7 +24,6 @@ class _SettingScreenState extends State<SettingScreen> {
           txtSetting,
           style: TextStyle(fontSize: 16),
         ),
-        backgroundColor: Colors.orange.withAlpha(50),
         elevation: 0,
         leading: IconButton(
           splashRadius: 28,

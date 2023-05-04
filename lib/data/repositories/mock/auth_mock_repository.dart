@@ -1,10 +1,10 @@
 import 'package:dio/dio.dart';
 
-import '../../business_logic/repositories/auth_repository.dart';
-import '../../exception/app_exception.dart';
-import '../../exception/app_message.dart';
+import '../../../business_logic/repositories/auth_repository.dart';
+import '../../../exception/app_exception.dart';
+import '../../../exception/app_message.dart';
 
-class AuthApiRepository extends AuthRepository {
+class AuthMockRepository extends AuthRepository {
   @override
   Future<bool?> login({
     required String phone,

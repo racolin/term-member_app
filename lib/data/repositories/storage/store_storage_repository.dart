@@ -1,10 +1,10 @@
 import 'package:dio/dio.dart';
 import 'package:member_app/data/models/store_detail_model.dart';
 
-import '../../data/models/store_model.dart';
-import '../../business_logic/repositories/store_repository.dart';
-import '../../exception/app_exception.dart';
-import '../../exception/app_message.dart';
+import '../../../data/models/store_model.dart';
+import '../../../business_logic/repositories/store_repository.dart';
+import '../../../exception/app_exception.dart';
+import '../../../exception/app_message.dart';
 
 class StoreApiRepository extends StoreRepository {
   var _list = List.generate(

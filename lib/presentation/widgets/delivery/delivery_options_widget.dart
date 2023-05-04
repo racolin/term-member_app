@@ -8,7 +8,7 @@ import '../../../business_logic/blocs/interval/interval_bloc.dart';
 import '../../../business_logic/cubits/home_cubit.dart';
 import '../../../business_logic/repositories/store_repository.dart';
 import '../../../business_logic/states/home_state.dart';
-import '../../../data/repositories/store_api_repository.dart';
+import '../../../data/repositories/mock/store_mock_repository.dart';
 import '../../../presentation/pages/store_search_page.dart';
 import '../../app_router.dart';
 import '../../bottom_sheet/method_order_bottom_sheet.dart';
@@ -47,7 +47,7 @@ class DeliveryOptionsWidget extends StatelessWidget {
                         context,
                         MaterialPageRoute(
                           builder: (ctx) => RepositoryProvider<StoreRepository>(
-                            create: (ctx) => StoreApiRepository(),
+                            create: (ctx) => StoreMockRepository(),
                             child: MultiBlocProvider(
                               providers: [
                                 BlocProvider<StoreCubit>(

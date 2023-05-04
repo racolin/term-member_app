@@ -1,5 +1,6 @@
 import 'package:flutter/services.dart';
-import 'package:member_app/exception/app_exception.dart';
+
+import '../../../data/models/response_model.dart';
 import '../../../business_logic/repositories/account_repository.dart';
 import '../../services/secure_storage.dart';
 import '../../../exception/app_message.dart';
@@ -7,33 +8,45 @@ import '../../../exception/app_message.dart';
 class AccountStorageRepository extends AccountRepository {
   final _storage = SecureStorage();
 
-  ///
-  /// Can throw AppException
-  ///
   @override
-  Future<void> logout() async {
+  Future<ResponseModel<bool>> logout() async {
     try {
       await _storage.deleteToken();
+      return ResponseModel<bool>(
+        type: ResponseType.success,
+        data: true,
+      );
     } on PlatformException catch (ex) {
-      throw AppException(
+      return ResponseModel<bool>(
+        type: ResponseType.failure,
         message: AppMessage(
           type: AppMessageType.failure,
-          title: 'Lỗi',
+          title: 'Có lỗi',
           content: 'Quá trình đăng xuất gặp vấn đề. Hãy thử lại!',
+          description: ex.toString(),
         ),
       );
     }
   }
 
-  ///
-  /// Without Exception
-  ///
-  Future<bool> isLogin() async {
+  @override
+  Future<ResponseModel<bool>> isLogin() async {
     try {
       String? accessToken = await _storage.getAccessToken();
-      return accessToken != null;
+      return ResponseModel<bool>(
+        type: ResponseType.success,
+        data: accessToken != null,
+      );
     } on PlatformException catch (ex) {
-      return false;
+      return ResponseModel<bool>(
+        type: ResponseType.failure,
+        message: AppMessage(
+          type: AppMessageType.failure,
+          title: 'Có lỗi!',
+          content: 'Lỗi khi kiểm tra trạng thái đăng nhập',
+          description: ex.toString(),
+        ),
+      );
     }
   }
 }

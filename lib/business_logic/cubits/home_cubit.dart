@@ -1,4 +1,5 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:member_app/business_logic/repositories/account_repository.dart';
 
 import '../../data/repositories/storage/account_storage_repository.dart';
 import '../../exception/app_exception.dart';
@@ -6,7 +7,7 @@ import '../../exception/app_message.dart';
 import '../states/home_state.dart';
 
 class HomeCubit extends Cubit<HomeState> {
-  final _repository = AccountStorageRepository();
+  final AccountRepository _repository = AccountStorageRepository();
 
   HomeCubit(bool login) : super(HomeInitial()) {
     emit(HomeLoading());

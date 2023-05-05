@@ -76,7 +76,7 @@ class AppClientInterceptors extends QueuedInterceptorsWrapper {
       try {
         await _storage.persistToken(token);
       } on PlatformException catch (ex) {
-
+        // logged in but can't persist token
       }
     }
     return handler.next(response);

@@ -8,41 +8,20 @@ import '../../../data/models/cart_model.dart';
 import '../../../exception/app_exception.dart';
 import '../../../exception/app_message.dart';
 import '../../models/cart_status_model.dart';
+import '../../models/response_model.dart';
 
-class CartApiRepository extends CartRepository {
+class CartStorageRepository extends CartRepository {
   @override
-  Future<CartDetailModel?> checkVoucher({
+  Future<ResponseModel<CartDetailModel>> checkVoucher({
     required String voucherId,
     required int categoryId,
     required List<CartProductModel> products,
   }) async {
-    try {
-      return CartDetailModel.fromMap({
-        "fee": 18000,
-        "cost": 100000,
-        "voucherDiscount": 25000,
-        "products": products
-            .map(
-              (e) => CartProductModel.fromMap({
-                "id": e.id,
-                "cost": 35000,
-              }),
-            )
-            .toList(),
-      });
-    } on DioError catch (ex) {
-      throw AppException(
-        message: AppMessage(
-          type: AppMessageType.error,
-          title: 'Lỗi mạng!',
-          content: 'Gặp sự cố khi kiểm tra Voucher',
-        ),
-      );
-    }
+    throw UnimplementedError();
   }
 
   @override
-  Future<String?> create({
+  Future<ResponseModel<String>> create({
     required int categoryId,
     required int payType,
     required String phone,
@@ -51,158 +30,35 @@ class CartApiRepository extends CartRepository {
     String? addressName,
     required List<CartProductModel> products,
   }) async {
-    try {
-      return 'CART-11';
-    } on DioError catch (ex) {
-      throw AppException(
-        message: AppMessage(
-          type: AppMessageType.error,
-          title: 'Lỗi mạng!',
-          content: 'Gặp sự cố khi tạo Cart',
-        ),
-      );
-    }
+    throw UnimplementedError();
   }
 
   @override
-  Future<CartDetailModel?> getDetailById({
+  Future<ResponseModel<CartDetailModel>> getDetailById({
     required String id,
   }) async {
-    try {
-      return CartDetailModel(
-        id: id,
-        name: 'Đường Đen Marble Latte, Hi-Tea Yuzu Trần Châu +2 sản phẩm khác',
-        categoryId: DeliveryType.delivery,
-        cost: 114000,
-        time: DateTime(2023, 4, 11, 14, 14, 56),
-        code: 'TCHL5KHF6GF',
-        statusId: 'STT-01',
-        fee: 0,
-        payType: 0,
-        phone: '0868754872',
-        receiver: 'Phan Trung Tín',
-        voucherId: 'VOUCHER-01',
-        voucherDiscount: 114000,
-        voucherName: 'Giảm 50% + FREESHIP đơn 4 ly',
-        addressName: '125/42/14 Bùi Đình Tuý, Bình Thạnh, TP.HCM',
-        products: [
-          CartProductModel.fromMap({
-            "id": 'PD-01',
-            "name": 'Đường Đen Marble Latte',
-            "options": ['Vừa, Nhiều đường'],
-            "cost": 55000,
-            "amount": 1,
-            "note": 'Nhỏ',
-          }),
-          CartProductModel.fromMap({
-            "id": 'PD-02',
-            "name": 'Hi-Tea Yuzu Trân Châu',
-            "options": ['Vừa, Nhiều đường'],
-            "cost": 59000,
-            "amount": 1,
-            "note": 'Vừa',
-          }),
-          CartProductModel.fromMap({
-            "id": 'PD-03',
-            "name": 'Hi-Tea Đào',
-            "options": ['Vừa, Nhiều đường'],
-            "cost": 59000,
-            "amount": 1,
-            "note": 'Vừa',
-          }),
-          CartProductModel.fromMap({
-            "id": 'PD-04',
-            "name": 'Trà Đen Macchiato',
-            "options": ['Vừa, Nhiều đường'],
-            "cost": 55000,
-            "amount": 1,
-            "note": 'Vừa',
-          }),
-        ],
-        point: 56,
-      );
-    } on DioError catch (ex) {
-      throw AppException(
-        message: AppMessage(
-          type: AppMessageType.error,
-          title: 'Lỗi mạng!',
-          content: 'Gặp sự cố khi lấy chi tiết Cart',
-        ),
-      );
-    }
+    throw UnimplementedError();
   }
 
   @override
-  Future<List<CartStatusModel>> getStatuses() async {
-    try {
-      return [
-        const CartStatusModel(id: 'STT-01', name: 'Đang thực hiện'),
-        const CartStatusModel(id: 'STT-02', name: 'Đã hoàn tất'),
-        const CartStatusModel(id: 'STT-03', name: 'Đã huỷ'),
-      ];
-    } on DioError catch (ex) {
-      throw AppException(
-        message: AppMessage(
-          type: AppMessageType.error,
-          title: 'Lỗi mạng!',
-          content: 'Gặp sự cố khi lấy danh sách status',
-        ),
-      );
-    }
-    return [];
+  Future<ResponseModel<List<CartStatusModel>>> getStatuses() async {
+    throw UnimplementedError();
   }
 
   @override
-  Future<MapEntry<int, List<CartModel>>> getsByStatusId({
+  Future<ResponseModel<MapEntry<int, List<CartModel>>>> getsByStatusId({
     required String statusId,
     int? page,
     int? limit,
   }) async {
-    try {
-      if (statusId == 'STT-01') {
-        return MapEntry(0, []);
-      }
-      return MapEntry(
-        43,
-        List.generate(
-          20,
-          (index) => CartModel(
-            id: 'CART-01',
-            name:
-                'Đường Đen Marble Latte, Hi-Tea Yuzu Trần Châu +2 sản phẩm khác',
-            categoryId: DeliveryType.values[Random().nextInt(3)],
-            cost: 114000,
-            time: DateTime(2023, 4, 11, 14, 14, 56),
-            rate: Random().nextInt(5),
-          ),
-        ),
-      );
-    } on DioError catch (ex) {
-      throw AppException(
-        message: AppMessage(
-          type: AppMessageType.error,
-          title: 'Lỗi mạng!',
-          content: 'Gặp sự cố khi lấy danh sách Cart bằng status',
-        ),
-      );
-    }
+    throw UnimplementedError();
   }
 
   @override
-  Future<bool?> review({
+  Future<ResponseModel<bool>> review({
     required int rate,
     String? review,
   }) async {
-    try {
-      return Random(1000).nextBool();
-    } on DioError catch (ex) {
-      throw AppException(
-        message: AppMessage(
-          type: AppMessageType.error,
-          title: 'Lỗi mạng!',
-          content: 'Gặp sự cố khi review Cart',
-        ),
-      );
-    }
+    throw UnimplementedError();
   }
 }

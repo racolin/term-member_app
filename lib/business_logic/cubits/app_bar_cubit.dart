@@ -29,6 +29,14 @@ class AppBarCubit extends Cubit<AppBarState> {
     }
   }
 
+
+  // base method: return response model, use to avoid repeat code.
+
+  // api method
+
+  // get data method: return model if state is loaded, else return null
+  Future<>
+
   Future<AppMessage?> reloadAppBar() async {
     try {
       var appBar = await _repository.getAppBar();

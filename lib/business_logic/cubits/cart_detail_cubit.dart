@@ -34,6 +34,12 @@ class CartDetailCubit extends Cubit<CartDetailState> {
     } on AppException catch (ex) {}
   }
 
+  // base method: return response model, use to avoid repeat code.
+
+  // api method
+
+  // get data method: return model if state is loaded, else return null
+
   Future<AppMessage?> review(int rate, String review) async {
     bool? result = await _repository.review(rate: rate, review: review);
 

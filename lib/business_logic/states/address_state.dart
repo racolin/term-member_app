@@ -1,4 +1,5 @@
 import 'package:flutter/foundation.dart';
+import 'package:member_app/exception/app_message.dart';
 
 import '../../data/models/address_model.dart';
 
@@ -27,4 +28,12 @@ class AddressLoaded extends AddressState {
       otherAddresses: otherAddresses ?? this.otherAddresses,
     );
   }
+}
+
+class AddressFailure extends AddressState {
+  final AppMessage message;
+
+  AddressFailure({
+    required this.message,
+  });
 }

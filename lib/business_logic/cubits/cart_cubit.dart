@@ -49,6 +49,12 @@ class CartCubit extends Cubit<CartState> {
     ));
   }
 
+  // base method: return response model, use to avoid repeat code.
+
+  // api method
+
+  // get data method: return model if state is loaded, else return null
+
   Future<AppMessage?> checkAndSetVoucher(VoucherModel voucher) async {
     if (this.state is! CartLoaded) {
       return AppMessage(

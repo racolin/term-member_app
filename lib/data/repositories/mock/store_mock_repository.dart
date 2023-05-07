@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:member_app/data/models/response_model.dart';
 import 'package:member_app/data/models/store_detail_model.dart';
 
 import '../../models/store_model.dart';
@@ -13,32 +14,35 @@ class StoreMockRepository extends StoreRepository {
       id: 'STORE$index',
       address: 'Võ Thị Sáu, Quận 3, Thành phố Hồ Chí Minh',
       name: '175A Lý Chính Thắng',
-      image: 'https://file.hstatic.net/1000075078/file/grandview5_35ccc48004574095b53e1de3b86a9eb5_master.jpg',
+      image:
+          'https://file.hstatic.net/1000075078/file/grandview5_35ccc48004574095b53e1de3b86a9eb5_master.jpg',
       distance: 100 * index * index,
       isFavorite: false,
     ),
   );
 
   @override
-  Future<bool?> changeFavorite({required String id}) async {
-    try {
-      return true;
-    } on DioError catch (ex) {
-      throw AppException(
-        message: AppMessage(
-          type: AppMessageType.error,
-          title: 'Lỗi mạng!',
-          content: 'Gặp sự cố khi thay đổi cửa hàng yêu thích!',
-        ),
-      );
-    }
-    return false;
+  Future<ResponseModel<bool>> changeFavorite({required String id}) async {
+    return ResponseModel<bool>(
+      type: ResponseModelType.success,
+      data: true,
+    );
+    return ResponseModel<bool>(
+      type: ResponseModelType.failure,
+      message: AppMessage(
+        type: AppMessageType.error,
+        title: 'Lỗi mạng!',
+        content: 'Gặp sự cố khi thay đổi cửa hàng yêu thích!',
+      ),
+    );
   }
 
   @override
-  Future<StoreDetailModel?> getDetail({required String id}) async {
-    try {
-      return StoreDetailModel(
+  Future<ResponseModel<StoreDetailModel>> getDetail(
+      {required String id}) async {
+    return ResponseModel<StoreDetailModel>(
+      type: ResponseModelType.success,
+      data: StoreDetailModel(
         id: id,
         openTime: '07:00-21:00',
         phone: '0868754872',
@@ -48,34 +52,40 @@ class StoreMockRepository extends StoreRepository {
           'https://file.hstatic.net/1000075078/file/grandview3_badde8d8296d4474b7ecb2ae67fb2dd8_master.jpg',
           'https://file.hstatic.net/1000075078/file/grandview5_35ccc48004574095b53e1de3b86a9eb5_master.jpg',
         ],
-        unavailableProducts: ['PRODUCT-1','PRODUCT-12','PRODUCT-4',],
-        unavailableOptions: ['OPTION-1',],
+        unavailableProducts: [
+          'PRODUCT-1',
+          'PRODUCT-12',
+          'PRODUCT-4',
+        ],
+        unavailableOptions: [
+          'OPTION-1',
+        ],
         unavailableCategories: [],
-      );
-    } on DioError catch (ex) {
-      throw AppException(
-        message: AppMessage(
-          type: AppMessageType.error,
-          title: 'Lỗi mạng!',
-          content: 'Gặp sự cố khi lấy danh sách cửa hàng',
-        ),
-      );
-    }
+      ),
+    );
+    return ResponseModel<StoreDetailModel>(
+      type: ResponseModelType.failure,
+      message: AppMessage(
+        type: AppMessageType.error,
+        title: 'Lỗi mạng!',
+        content: 'Gặp sự cố khi lấy danh sách cửa hàng',
+      ),
+    );
   }
 
   @override
-  Future<List<StoreModel>> gets() async {
-    try {
-      return _list;
-    } on DioError catch (ex) {
-      throw AppException(
-        message: AppMessage(
-          type: AppMessageType.error,
-          title: 'Lỗi mạng!',
-          content: 'Gặp sự cố khi lấy danh sách cửa hàng',
-        ),
-      );
-    }
-    return [];
+  Future<ResponseModel<List<StoreModel>>> gets() async {
+    return ResponseModel<List<StoreModel>>(
+      type: ResponseModelType.success,
+      data: _list,
+    );
+    return ResponseModel<List<StoreModel>>(
+      type: ResponseModelType.failure,
+      message: AppMessage(
+        type: AppMessageType.error,
+        title: 'Lỗi mạng!',
+        content: 'Gặp sự cố khi lấy danh sách cửa hàng',
+      ),
+    );
   }
 }

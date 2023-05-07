@@ -22,6 +22,12 @@ class HomeCubit extends Cubit<HomeState> {
 
   bool get login => (state is HomeLoaded && (state as HomeLoaded).login);
 
+  // base method: return response model, use to avoid repeat code.
+
+  // api method
+
+  // get data method: return model if state is loaded, else return null
+
   // Action data
   Future<AppMessage?> logout() async {
     try {

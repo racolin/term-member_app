@@ -1,5 +1,7 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:member_app/data/models/address_model.dart';
+import 'package:member_app/data/models/addresses_list_model.dart';
+import 'package:member_app/data/models/response_model.dart';
 
 import '../../exception/app_message.dart';
 import '../../business_logic/states/address_state.dart';
@@ -12,15 +14,25 @@ class AddressCubit extends Cubit<AddressState> {
   AddressCubit({required SettingRepository repository})
       : _repository = repository,
         super(AddressInitial()) {
-    try {
-      _repository.getAddresses().then((list) {
+    emit(AddressLoading());
+    _repository.getAddresses().then((res) {
+      if (res.type == ResponseModelType.success) {
+        var list = res.data;
         emit(AddressLoaded(
           defaultAddresses: list.defaults,
           otherAddresses: list.others,
         ));
-      });
-    } on AppException catch (ex) {}
+      } else {
+        emit(AddressFailure(message: res.message));
+      }
+    });
   }
+
+  // base method: return response model, use to avoid repeat code.
+
+  // api method
+
+  // get data method: return model if state is loaded, else return null
 
   Future<AppMessage?> getAddresses() async {
     try {

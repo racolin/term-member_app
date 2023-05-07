@@ -1,12 +1,12 @@
 import '../../exception/app_message.dart';
 
-enum ResponseType { success, failure }
+enum ResponseModelType { success, failure }
 
 class ResponseModel<T extends Object> {
   ///
   /// ResponseType { success, failure }
   ///
-  final ResponseType type;
+  final ResponseModelType type;
 
   final AppMessage? _message;
 
@@ -29,8 +29,8 @@ class ResponseModel<T extends Object> {
   })  : _data = data,
         _message = message,
         assert(
-          (type == ResponseType.failure && message != null) ||
-              (type == ResponseType.success && data != null),
+          (type == ResponseModelType.failure && message != null) ||
+              (type == ResponseModelType.success && data != null),
           'If failure, message must be not null. If success, data must be not null',
         );
 }

@@ -13,11 +13,17 @@ class AuthCubit extends Cubit<AuthState> {
       : _repository = repository,
         super(AuthInitial());
 
+  // base method: return response model, use to avoid repeat code.
+
+  // api method
+
+  // get data method: return model if state is loaded, else return null
+
   // Action data
   Future<AppMessage?> login(String phone) async {
     try {
       ResponseModel<bool> result = await _repository.login(phone: phone);
-      if (result.type == ResponseType.failure) {
+      if (result.type == ResponseModelType.failure) {
         return result.message;
       } else if (result.data) {
 

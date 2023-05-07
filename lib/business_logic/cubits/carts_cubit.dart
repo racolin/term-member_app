@@ -40,6 +40,12 @@ class CartsCubit extends Cubit<CartsState> {
     } on AppException catch (ex) {}
   }
 
+  // base method: return response model, use to avoid repeat code.
+
+  // api method
+
+  // get data method: return model if state is loaded, else return null
+
   Future<AppMessage?> loadMore(String id) async {
     if (state is CartsLoaded) {
       var state = this.state as CartsLoaded;

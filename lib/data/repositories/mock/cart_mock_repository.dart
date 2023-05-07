@@ -1,23 +1,22 @@
 import 'dart:math';
 
-import 'package:dio/dio.dart';
-
 import '../../../business_logic/repositories/cart_repository.dart';
 import '../../models/cart_detail_model.dart';
 import '../../models/cart_model.dart';
-import '../../../exception/app_exception.dart';
 import '../../../exception/app_message.dart';
 import '../../models/cart_status_model.dart';
+import '../../models/response_model.dart';
 
 class CartMockRepository extends CartRepository {
   @override
-  Future<CartDetailModel?> checkVoucher({
+  Future<ResponseModel<CartDetailModel>> checkVoucher({
     required String voucherId,
     required int categoryId,
     required List<CartProductModel> products,
   }) async {
-    try {
-      return CartDetailModel.fromMap({
+    return ResponseModel<CartDetailModel>(
+      type: ResponseModelType.success,
+      data: CartDetailModel.fromMap({
         "fee": 18000,
         "cost": 100000,
         "voucherDiscount": 25000,
@@ -29,20 +28,20 @@ class CartMockRepository extends CartRepository {
               }),
             )
             .toList(),
-      });
-    } on DioError catch (ex) {
-      throw AppException(
-        message: AppMessage(
-          type: AppMessageType.error,
-          title: 'Lỗi mạng!',
-          content: 'Gặp sự cố khi kiểm tra Voucher',
-        ),
-      );
-    }
+      }),
+    );
+    return ResponseModel<CartDetailModel>(
+      type: ResponseModelType.failure,
+      message: AppMessage(
+        type: AppMessageType.error,
+        title: 'Có lỗi!',
+        content: 'Gặp sự cố khi kiểm tra mã khuyến mãi!',
+      ),
+    );
   }
 
   @override
-  Future<String?> create({
+  Future<ResponseModel<String>> create({
     required int categoryId,
     required int payType,
     required String phone,
@@ -51,25 +50,28 @@ class CartMockRepository extends CartRepository {
     String? addressName,
     required List<CartProductModel> products,
   }) async {
-    try {
-      return 'CART-11';
-    } on DioError catch (ex) {
-      throw AppException(
-        message: AppMessage(
-          type: AppMessageType.error,
-          title: 'Lỗi mạng!',
-          content: 'Gặp sự cố khi tạo Cart',
-        ),
-      );
-    }
+    return ResponseModel<String>(
+      type: ResponseModelType.success,
+      data: 'CART-11',
+      // data: false,
+    );
+    return ResponseModel<String>(
+      type: ResponseModelType.failure,
+      message: AppMessage(
+        type: AppMessageType.error,
+        title: 'Có lỗi!',
+        content: 'Gặp sự cố khi tạo đơn hàng',
+      ),
+    );
   }
 
   @override
-  Future<CartDetailModel?> getDetailById({
+  Future<ResponseModel<CartDetailModel>> getDetailById({
     required String id,
   }) async {
-    try {
-      return CartDetailModel(
+    return ResponseModel<CartDetailModel>(
+      type: ResponseModelType.success,
+      data: CartDetailModel(
         id: id,
         name: 'Đường Đen Marble Latte, Hi-Tea Yuzu Trần Châu +2 sản phẩm khác',
         categoryId: DeliveryType.delivery,
@@ -120,89 +122,91 @@ class CartMockRepository extends CartRepository {
           }),
         ],
         point: 56,
-      );
-    } on DioError catch (ex) {
-      throw AppException(
-        message: AppMessage(
-          type: AppMessageType.error,
-          title: 'Lỗi mạng!',
-          content: 'Gặp sự cố khi lấy chi tiết Cart',
-        ),
-      );
-    }
+      ),
+    );
+    return ResponseModel<CartDetailModel>(
+      type: ResponseModelType.failure,
+      message: AppMessage(
+        type: AppMessageType.error,
+        title: 'Lỗi mạng!',
+        content: 'Gặp sự cố khi lấy chi tiết đơn hàng',
+      ),
+    );
   }
 
   @override
-  Future<List<CartStatusModel>> getStatuses() async {
-    try {
-      return [
+  Future<ResponseModel<List<CartStatusModel>>> getStatuses() async {
+    return ResponseModel<List<CartStatusModel>>(
+      type: ResponseModelType.success,
+      data: [
         const CartStatusModel(id: 'STT-01', name: 'Đang thực hiện'),
         const CartStatusModel(id: 'STT-02', name: 'Đã hoàn tất'),
         const CartStatusModel(id: 'STT-03', name: 'Đã huỷ'),
-      ];
-    } on DioError catch (ex) {
-      throw AppException(
-        message: AppMessage(
-          type: AppMessageType.error,
-          title: 'Lỗi mạng!',
-          content: 'Gặp sự cố khi lấy danh sách status',
-        ),
-      );
-    }
-    return [];
+      ],
+      // data: false,
+    );
+    return ResponseModel<List<CartStatusModel>>(
+      type: ResponseModelType.failure,
+      message: AppMessage(
+        type: AppMessageType.error,
+        title: 'Có lỗi!',
+        content: 'Gặp sự cố khi lấy danh sách trạng thái đơn hàng',
+      ),
+    );
   }
 
   @override
-  Future<MapEntry<int, List<CartModel>>> getsByStatusId({
+  Future<ResponseModel<MapEntry<int, List<CartModel>>>> getsByStatusId({
     required String statusId,
     int? page,
     int? limit,
   }) async {
-    try {
-      if (statusId == 'STT-01') {
-        return MapEntry(0, []);
-      }
-      return MapEntry(
+    return ResponseModel<MapEntry<int, List<CartModel>>>(
+      type: ResponseModelType.success,
+      data: statusId == 'STT-01' ? const MapEntry(0, []) : MapEntry(
         43,
         List.generate(
           20,
-          (index) => CartModel(
+              (index) => CartModel(
             id: 'CART-01',
             name:
-                'Đường Đen Marble Latte, Hi-Tea Yuzu Trần Châu +2 sản phẩm khác',
+            'Đường Đen Marble Latte, Hi-Tea Yuzu Trần Châu +2 sản phẩm khác',
             categoryId: DeliveryType.values[Random().nextInt(3)],
             cost: 114000,
             time: DateTime(2023, 4, 11, 14, 14, 56),
             rate: Random().nextInt(5),
           ),
         ),
-      );
-    } on DioError catch (ex) {
-      throw AppException(
-        message: AppMessage(
-          type: AppMessageType.error,
-          title: 'Lỗi mạng!',
-          content: 'Gặp sự cố khi lấy danh sách Cart bằng status',
-        ),
-      );
-    }
+      ),
+      // data: false,
+    );
+    return ResponseModel<MapEntry<int, List<CartModel>>>(
+      type: ResponseModelType.failure,
+      message: AppMessage(
+        type: AppMessageType.error,
+        title: 'Có lỗi!',
+        content: 'Gặp sự cố khi lấy danh sách đơn hàng theo trạng thái',
+      ),
+    );
   }
 
   @override
-  Future<bool?> review({
+  Future<ResponseModel<bool>> review({
     required int rate,
     String? review,
   }) async {
-    try {
-      return Random(1000).nextBool();
-    } on DioError catch (ex) {
-      throw AppException(
-        message: AppMessage(
-          type: AppMessageType.error,
-          title: 'Lỗi mạng!',
-          content: 'Gặp sự cố khi review Cart',
-        ),
-      );
-    }
+    return ResponseModel<bool>(
+      type: ResponseModelType.success,
+      data: Random(1000).nextBool(),
+      // data: false,
+    );
+    return ResponseModel<bool>(
+      type: ResponseModelType.failure,
+      message: AppMessage(
+        type: AppMessageType.error,
+        title: 'Có lỗi!',
+        content: 'Gặp sự cố khi đánh giá đơn hàng',
+      ),
+    );
   }
 }

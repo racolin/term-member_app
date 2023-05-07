@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:member_app/data/models/response_model.dart';
 
 import '../../models/app_bar_model.dart';
 import '../../models/card_model.dart';
@@ -9,29 +10,31 @@ import '../../../exception/app_message.dart';
 
 class MemberMockRepository extends MemberRepository {
   @override
-  Future<AppBarModel?> getAppBar() async {
-    try {
-      return const AppBarModel(
+  Future<ResponseModel<AppBarModel>> getAppBar() async {
+    return ResponseModel<AppBarModel>(
+      type: ResponseModelType.success,
+      data: const AppBarModel(
         greeting: 'Chúc ngủ ngon',
         cartTemplateAmount: 8,
         voucherAmount: 4,
         notifyAmount: 7,
-      );
-    } on DioError catch (ex) {
-      throw AppException(
-        message: AppMessage(
-          type: AppMessageType.error,
-          title: 'Lỗi mạng!',
-          content: 'Gặp sự cố khi lấy App Bar',
-        ),
-      );
-    }
+      ),
+    );
+    return ResponseModel<AppBarModel>(
+      type: ResponseModelType.failure,
+      message: AppMessage(
+        type: AppMessageType.error,
+        title: 'Có lỗi!',
+        content: 'Gặp sự cố khi lấy App Bar',
+      ),
+    );
   }
 
   @override
-  Future<CardModel?> getCard() async {
-    try {
-      return const CardModel(
+  Future<ResponseModel<CardModel>> getCard() async {
+    return ResponseModel<CardModel>(
+      type: ResponseModelType.success,
+      data: const CardModel(
         id: 'CARD-01',
         code: 'UMT19110475',
         name: 'Tín Phan',
@@ -45,25 +48,26 @@ class MemberMockRepository extends MemberRepository {
         description: 'Còn 300 BEAN nữa để thăng hạng|Đổi điểm không ảnh hưởng '
             'đến cấp bậc. Cùng đổi điểm nào!|Sắp đạt mức cuối rồi!',
         color: 4292467199,
-      );
-    } on DioError catch (ex) {
-      throw AppException(
-        message: AppMessage(
-          type: AppMessageType.error,
-          title: 'Lỗi mạng!',
-          content: 'Gặp sự cố khi lấy Card',
-        ),
-      );
-    }
+      ),
+    );
+    return ResponseModel<CardModel>(
+      type: ResponseModelType.failure,
+      message: AppMessage(
+        type: AppMessageType.error,
+        title: 'Có lỗi!',
+        content: 'Gặp sự cố khi lấy thẻ thành viên',
+      ),
+    );
   }
 
   @override
-  Future<MapEntry<int, List<HistoryPointModel>>> getHistoryPoint({
+  Future<ResponseModel<MapEntry<int, List<HistoryPointModel>>>> getHistoryPoint({
     int? page,
     int? limit,
   }) async {
-    try {
-      return MapEntry(65, List.generate(
+    return ResponseModel<MapEntry<int, List<HistoryPointModel>>>(
+      type: ResponseModelType.success,
+      data: MapEntry(65, List.generate(
         20,
             (index) => HistoryPointModel(
           id: 'HISTORY-$index',
@@ -72,15 +76,15 @@ class MemberMockRepository extends MemberRepository {
           'Đường Đen Marble Latte, Hi-Tea Yuzu Trần Châu +2 sản phẩm khác',
           time: DateTime.now(),
         ),
-      ));
-    } on DioError catch (ex) {
-      throw AppException(
-        message: AppMessage(
-          type: AppMessageType.error,
-          title: 'Lỗi mạng!',
-          content: 'Gặp sự cố khi lấy danh sách history point',
-        ),
-      );
-    }
+      )),
+    );
+    return ResponseModel<MapEntry<int, List<HistoryPointModel>>>(
+      type: ResponseModelType.failure,
+      message: AppMessage(
+        type: AppMessageType.error,
+        title: 'Có lỗi!',
+        content: 'Gặp sự cố khi lấy danh sách history point',
+      ),
+    );
   }
 }

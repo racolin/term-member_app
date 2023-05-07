@@ -6,6 +6,7 @@ import '../../models/product_option_model.dart';
 import '../../../business_logic/repositories/product_repository.dart';
 import '../../../exception/app_exception.dart';
 import '../../../exception/app_message.dart';
+import '../../models/response_model.dart';
 
 class ProductMockRepository extends ProductRepository {
   var _products = List.generate(
@@ -269,98 +270,99 @@ class ProductMockRepository extends ProductRepository {
   ];
 
   @override
-  Future<bool?> changeFavorite({required String id}) async {
-    try {
-      return _favorites.remove(id);
-    } on DioError catch (ex) {
-      throw AppException(
-        message: AppMessage(
-          type: AppMessageType.error,
-          title: 'Lỗi mạng!',
-          content: 'Gặp sự cố khi thay đổi yêu thích',
-        ),
-      );
-    }
-    return false;
+  Future<ResponseModel<bool>> changeFavorite({required String id}) async {
+    return ResponseModel<bool>(
+      type: ResponseModelType.success,
+      data: _favorites.remove(id),
+    );
+    return ResponseModel<bool>(
+      type: ResponseModelType.failure,
+      message: AppMessage(
+        type: AppMessageType.error,
+        title: 'Lỗi mạng!',
+        content: 'Gặp sự cố khi thay đổi yêu thích',
+      ),
+    );
   }
 
   @override
-  Future<List<ProductCategoryModel>> getCategories() async {
-    try {
-      return _categories;
-    } on DioError catch (ex) {
-      throw AppException(
-        message: AppMessage(
-          type: AppMessageType.error,
-          title: 'Lỗi mạng!',
-          content: 'Gặp sự cố khi lấy danh sách category',
-        ),
-      );
-    }
-    return [];
+  Future<ResponseModel<List<ProductCategoryModel>>> getCategories() async {
+    return ResponseModel<List<ProductCategoryModel>>(
+      type: ResponseModelType.success,
+      data: _categories,
+    );
+    return ResponseModel<List<ProductCategoryModel>>(
+      type: ResponseModelType.failure,
+      message: AppMessage(
+        type: AppMessageType.error,
+        title: 'Lỗi mạng!',
+        content: 'Gặp sự cố khi lấy danh sách category',
+      ),
+    );
   }
 
   @override
-  Future<List<String>> getFavorites() async {
-    try {
-      return _favorites;
-    } on DioError catch (ex) {
-      throw AppException(
+  Future<ResponseModel<List<String>>> getFavorites() async {
+    return ResponseModel<List<String>>(
+      type: ResponseModelType.success,
+      data: _favorites,
+    );
+    return ResponseModel<List<String>>(
+        type: ResponseModelType.failure,
         message: AppMessage(
           type: AppMessageType.error,
           title: 'Lỗi mạng!',
           content: 'Gặp sự cố khi lấy danh sách yêu thích',
-        ),
-      );
-    }
-    return [];
+        ));
   }
 
   @override
-  Future<List<ProductOptionModel>> getOptions() async {
-    try {
-      return _options;
-    } on DioError catch (ex) {
-      throw AppException(
-        message: AppMessage(
-          type: AppMessageType.error,
-          title: 'Lỗi mạng!',
-          content: 'Gặp sự cố khi lấy danh sách lựa chọn',
-        ),
-      );
-    }
-    return [];
+  Future<ResponseModel<List<ProductOptionModel>>> getOptions() async {
+    return ResponseModel<List<ProductOptionModel>>(
+      type: ResponseModelType.success,
+      data: _options,
+    );
+    return ResponseModel<List<ProductOptionModel>>(
+      type: ResponseModelType.failure,
+      message: AppMessage(
+        type: AppMessageType.error,
+        title: 'Lỗi mạng!',
+        content: 'Gặp sự cố khi lấy danh sách lựa chọn',
+      ),
+    );
   }
 
   @override
-  Future<List<ProductModel>> gets() async {
-    try {
-      return _products;
-    } on DioError catch (ex) {
-      throw AppException(
-        message: AppMessage(
-          type: AppMessageType.error,
-          title: 'Lỗi mạng!',
-          content: 'Gặp sự cố khi lấy danh sách sản phẩm',
-        ),
-      );
-    }
-    return [];
+  Future<ResponseModel<List<ProductModel>>> gets() async {
+    return ResponseModel<List<ProductModel>>(
+      type: ResponseModelType.success,
+      data: _products,
+    );
+    return ResponseModel<List<ProductModel>>(
+      type: ResponseModelType.failure,
+      message: AppMessage(
+        type: AppMessageType.error,
+        title: 'Lỗi mạng!',
+        content: 'Gặp sự cố khi lấy danh sách sản phẩm',
+      ),
+    );
   }
 
   @override
-  Future<List<ProductModel>> getsSuggestion({int limit = 4}) async {
-    try {
-      return _products.sublist(0, 4);
-    } on DioError catch (ex) {
-      throw AppException(
-        message: AppMessage(
-          type: AppMessageType.error,
-          title: 'Lỗi mạng!',
-          content: 'Gặp sự cố khi lấy danh sách sản phẩm',
-        ),
-      );
-    }
-    return [];
+  Future<ResponseModel<List<ProductModel>>> getsSuggestion({
+    int limit = 4,
+  }) async {
+    return ResponseModel<List<ProductModel>>(
+      type: ResponseModelType.success,
+      data: _products.sublist(0, 4),
+    );
+    return ResponseModel<List<ProductModel>>(
+      type: ResponseModelType.failure,
+      message: AppMessage(
+        type: AppMessageType.error,
+        title: 'Lỗi mạng!',
+        content: 'Gặp sự cố khi lấy danh sách sản phẩm',
+      ),
+    );
   }
 }

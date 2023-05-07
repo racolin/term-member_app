@@ -1,8 +1,7 @@
 import 'package:dio/dio.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:member_app/data/models/response_model.dart';
 
-import '../../models/notify_model.dart';
 import '../../models/address_model.dart';
 import '../../models/addresses_list_model.dart';
 import '../../models/profile_model.dart';
@@ -75,23 +74,23 @@ class SettingMockRepository extends SettingRepository {
   );
 
   @override
-  Future<bool?> changeNotify() async {
-    try {
-      return true;
-    } on DioError catch (ex) {
-      throw AppException(
-        message: AppMessage(
-          type: AppMessageType.error,
-          title: 'Lỗi mạng!',
-          content: 'Gặp sự cố khi chuyển sang đã đọc',
-        ),
-      );
-    }
-    return false;
+  Future<ResponseModel<bool>> changeNotify() async {
+    return ResponseModel<bool>(
+      type: ResponseModelType.success,
+      data: true,
+    );
+    return ResponseModel<bool>(
+      type: ResponseModelType.failure,
+      message: AppMessage(
+        type: AppMessageType.error,
+        title: 'Lỗi mạng!',
+        content: 'Gặp sự cố khi chuyển sang đã đọc',
+      ),
+    );
   }
 
   @override
-  Future<String?> createAddress({
+  Future<ResponseModel<String>> createAddress({
     required String name,
     required String address,
     required String note,
@@ -100,158 +99,167 @@ class SettingMockRepository extends SettingRepository {
     required String receiver,
     required String phone,
   }) async {
-    try {
-      _others.add(
-        AddressModel(
-          id: 'OTHER-$othersCount',
-          name: name,
-          address: address,
-          lat: lat,
-          lng: lng,
-          note: note,
-          receiver: receiver,
-          phone: phone,
-        ),
-      );
-      othersCount++;
-      return 'ADDRESS-NEW';
-    } on DioError catch (ex) {
-      throw AppException(
-        message: AppMessage(
-          type: AppMessageType.error,
-          title: 'Lỗi mạng!',
-          content: 'Gặp sự cố khi tạo địa chỉ',
-        ),
-      );
-    }
-    return null;
+    _others.add(
+      AddressModel(
+        id: 'OTHER-$othersCount',
+        name: name,
+        address: address,
+        lat: lat,
+        lng: lng,
+        note: note,
+        receiver: receiver,
+        phone: phone,
+      ),
+    );
+    othersCount++;
+    return ResponseModel<String>(
+      type: ResponseModelType.success,
+      data: 'ADDRESS-NEW',
+    );
+    return ResponseModel<String>(
+      type: ResponseModelType.failure,
+      message: AppMessage(
+        type: AppMessageType.error,
+        title: 'Lỗi mạng!',
+        content: 'Gặp sự cố khi tạo địa chỉ',
+      ),
+    );
   }
 
   @override
-  Future<bool?> deleteAddress({
+  Future<ResponseModel<bool>> deleteAddress({
     required String id,
   }) async {
-    try {
-      _others.removeWhere((e) => e.id == id);
-      return true;
-    } on DioError catch (ex) {
-      throw AppException(
-        message: AppMessage(
-          type: AppMessageType.error,
-          title: 'Lỗi mạng!',
-          content: 'Gặp sự cố khi xoá địa chỉ',
-        ),
-      );
-    }
-    return false;
+    _others.removeWhere((e) => e.id == id);
+    return ResponseModel<bool>(
+      type: ResponseModelType.success,
+      data: true,
+    );
+    return ResponseModel<bool>(
+      type: ResponseModelType.failure,
+      message: AppMessage(
+        type: AppMessageType.error,
+        title: 'Lỗi mạng!',
+        content: 'Gặp sự cố khi xoá địa chỉ',
+      ),
+    );
   }
 
   @override
-  Future<AddressesListModel> getAddresses() async {
-    try {
-      return AddressesListModel(defaults: _defaults, others: _others);
-    } on DioError catch (ex) {
-      throw AppException(
-        message: AppMessage(
-          type: AppMessageType.error,
-          title: 'Lỗi mạng!',
-          content: 'Gặp sự cố khi chuyển sang đã đọc',
-        ),
-      );
-    }
-    return AddressesListModel(defaults: [], others: []);
+  Future<ResponseModel<AddressesListModel>> getAddresses() async {
+    return ResponseModel<AddressesListModel>(
+      type: ResponseModelType.success,
+      data: AddressesListModel(
+        defaults: _defaults,
+        others: _others,
+      ),
+    );
+    return ResponseModel<AddressesListModel>(
+      type: ResponseModelType.failure,
+      message: AppMessage(
+        type: AppMessageType.error,
+        title: 'Lỗi mạng!',
+        content: 'Gặp sự cố khi chuyển sang đã đọc',
+      ),
+    );
   }
 
   @override
-  Future<ProfileModel?> getProfile() async {
-    try {
-      return _profile;
-    } on DioError catch (ex) {
-      throw AppException(
-        message: AppMessage(
-          type: AppMessageType.error,
-          title: 'Lỗi mạng!',
-          content: 'Gặp sự cố khi lấy profile',
-        ),
-      );
-    }
-    return null;
+  Future<ResponseModel<ProfileModel>> getProfile() async {
+    return ResponseModel<ProfileModel>(
+      type: ResponseModelType.success,
+      data: _profile,
+    );
+    return ResponseModel<ProfileModel>(
+      type: ResponseModelType.failure,
+      message: AppMessage(
+        type: AppMessageType.error,
+        title: 'Lỗi mạng!',
+        content: 'Gặp sự cố khi lấy profile',
+      ),
+    );
   }
 
   @override
-  Future<bool?> updateAddress({
+  Future<ResponseModel<bool>> updateAddress({
     required AddressModel address,
   }) async {
-    try {
-      var list = _defaults + _others;
-      int index = list.indexWhere((e) => e.id == address.id);
-      if (index == -1) {
-        throw AppException(
-          message: AppMessage(
-            type: AppMessageType.error,
-            title: 'Lỗi mạng!',
-            content: 'Không tìm thấy mã địa chỉ',
-          ),
-        );
-      }
-      if (index >= _defaults.length) {
-        _others[_defaults.length - index] = AddressModel(
-          id: address.id,
-          name: address.name,
-          address: address.address,
-          note: address.note,
-          receiver: address.receiver,
-          phone: address.phone,
-          lat: address.lat,
-          lng: address.lng,
-        );
-      } else {
-        _defaults[index] = AddressModel(
-          id: address.id,
-          name: address.name,
-          address: address.address,
-          note: address.note,
-          receiver: address.receiver,
-          phone: address.phone,
-          lat: address.lat,
-          lng: address.lng,
-        );
-      }
-      return true;
-    } on DioError catch (ex) {
-      throw AppException(
+    var list = _defaults + _others;
+    int index = list.indexWhere((e) => e.id == address.id);
+    if (index == -1) {
+      return ResponseModel<bool>(
+        type: ResponseModelType.failure,
         message: AppMessage(
           type: AppMessageType.error,
           title: 'Lỗi mạng!',
-          content: 'Gặp sự cố khi sửa địa chỉ',
+          content: 'Không tìm thấy mã địa chỉ',
         ),
       );
     }
-    return false;
+    if (index >= _defaults.length) {
+      _others[_defaults.length - index] = AddressModel(
+        id: address.id,
+        name: address.name,
+        address: address.address,
+        note: address.note,
+        receiver: address.receiver,
+        phone: address.phone,
+        lat: address.lat,
+        lng: address.lng,
+      );
+    } else {
+      _defaults[index] = AddressModel(
+        id: address.id,
+        name: address.name,
+        address: address.address,
+        note: address.note,
+        receiver: address.receiver,
+        phone: address.phone,
+        lat: address.lat,
+        lng: address.lng,
+      );
+    }
+    return ResponseModel<bool>(
+      type: ResponseModelType.success,
+      data: true,
+    );
+    return ResponseModel<bool>(
+      type: ResponseModelType.failure,
+      message: AppMessage(
+        type: AppMessageType.error,
+        title: 'Lỗi mạng!',
+        content: 'Gặp sự cố khi sửa địa chỉ',
+      ),
+    );
+    return ResponseModel<bool>(
+      type: ResponseModelType.success,
+      data: false,
+    );
   }
 
   @override
-  Future<bool?> updateProfile({
+  Future<ResponseModel<bool>> updateProfile({
     required String lastName,
     required String firstName,
   }) async {
-    try {
-      _profile = ProfileModel(
-        firstName: firstName,
-        lastName: lastName,
-        dob: _profile.dob,
-        gender: _profile.gender,
-        phone: _profile.phone,
-      );
-    } on DioError catch (ex) {
-      throw AppException(
-        message: AppMessage(
-          type: AppMessageType.error,
-          title: 'Lỗi mạng!',
-          content: 'Gặp sự cố khi sửa profile',
-        ),
-      );
-    }
-    return false;
+    _profile = ProfileModel(
+      firstName: firstName,
+      lastName: lastName,
+      dob: _profile.dob,
+      gender: _profile.gender,
+      phone: _profile.phone,
+    );
+    return ResponseModel<bool>(
+      type: ResponseModelType.failure,
+      message: AppMessage(
+        type: AppMessageType.error,
+        title: 'Lỗi mạng!',
+        content: 'Gặp sự cố khi sửa profile',
+      ),
+    );
+    return ResponseModel<bool>(
+      type: ResponseModelType.success,
+      data: true,
+    );
   }
 }

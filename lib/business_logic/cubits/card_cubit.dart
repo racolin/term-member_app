@@ -33,6 +33,12 @@ class CardCubit extends Cubit<CardState> {
     }
   }
 
+  // base method: return response model, use to avoid repeat code.
+
+  // api method
+
+  // get data method: return model if state is loaded, else return null
+
   // Action data
   Future<AppMessage?> reloadCard() async {
     try {

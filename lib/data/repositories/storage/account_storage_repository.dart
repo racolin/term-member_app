@@ -13,12 +13,12 @@ class AccountStorageRepository extends AccountRepository {
     try {
       await _storage.deleteToken();
       return ResponseModel<bool>(
-        type: ResponseType.success,
+        type: ResponseModelType.success,
         data: true,
       );
     } on PlatformException catch (ex) {
       return ResponseModel<bool>(
-        type: ResponseType.failure,
+        type: ResponseModelType.failure,
         message: AppMessage(
           type: AppMessageType.failure,
           title: 'Có lỗi',
@@ -34,12 +34,12 @@ class AccountStorageRepository extends AccountRepository {
     try {
       String? accessToken = await _storage.getAccessToken();
       return ResponseModel<bool>(
-        type: ResponseType.success,
+        type: ResponseModelType.success,
         data: accessToken != null,
       );
     } on PlatformException catch (ex) {
       return ResponseModel<bool>(
-        type: ResponseType.failure,
+        type: ResponseModelType.failure,
         message: AppMessage(
           type: AppMessageType.failure,
           title: 'Có lỗi!',

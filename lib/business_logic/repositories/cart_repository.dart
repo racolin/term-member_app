@@ -4,6 +4,16 @@ import '../../data/models/cart_status_model.dart';
 import '../../data/models/response_model.dart';
 
 abstract class CartRepository {
+
+  ///
+  /// Success: data is [ResponseModel<MapEntry<int, List<CartModel>>>], message = null
+  ///
+  /// - key (int) is maxCount
+  ///
+  /// - value is List<CartModel>
+  ///
+  /// Failure: data = null, message != null
+  ///
   Future<ResponseModel<MapEntry<int, List<CartModel>>>> getsByStatusId({
     required String statusId,
     int? page,
@@ -16,7 +26,7 @@ abstract class CartRepository {
 
   Future<ResponseModel<List<CartStatusModel>>> getStatuses();
 
-  Future<bool?> review({
+  Future<ResponseModel<bool>> review({
     required int rate,
     String? review,
   });

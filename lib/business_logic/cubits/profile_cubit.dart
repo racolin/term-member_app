@@ -34,6 +34,12 @@ class ProfileCubit extends Cubit<ProfileState> {
     );
   }
 
+  // base method: return response model, use to avoid repeat code.
+
+  // api method
+
+  // get data method: return model if state is loaded, else return null
+
   Future<AppMessage?> getProfile() async {
     try {
       var profile = await _repository.getProfile();

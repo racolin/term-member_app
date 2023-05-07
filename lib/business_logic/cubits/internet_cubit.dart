@@ -20,6 +20,12 @@ class InternetCubit extends Cubit<InternetState> {
     });
   }
 
+
+  // base method: return response model, use to avoid repeat code.
+
+  // api method
+
+  // get data method: return model if state is loaded, else return null
   bool get hasInternet => InternetType.connected == state.type;
 
   @override

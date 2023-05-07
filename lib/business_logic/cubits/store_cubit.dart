@@ -26,6 +26,12 @@ class StoreCubit extends Cubit<StoreState>
     }
   }
 
+  // base method: return response model, use to avoid repeat code.
+
+  // api method
+
+  // get data method: return model if state is loaded, else return null
+
   // Action data
   Future<AppMessage?> reloadStores() async {
     try {

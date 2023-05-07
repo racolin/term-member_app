@@ -22,6 +22,12 @@ class NewsCubit extends Cubit<NewsState> {
     }
   }
 
+  // base method: return response model, use to avoid repeat code.
+
+  // api method
+
+  // get data method: return model if state is loaded, else return null
+
   // Action data
   Future<AppMessage?> reloadNews() async {
     try {

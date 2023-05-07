@@ -36,6 +36,12 @@ class VoucherCubit extends Cubit<VoucherState> {
     } on AppException catch (ex) {}
   }
 
+  // base method: return response model, use to avoid repeat code.
+
+  // api method
+
+  // get data method: return model if state is loaded, else return null
+
   Future<AppMessage?> reloadVouchers() async {
     try {
       var list = await _repository.getsAvailable();

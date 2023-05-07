@@ -9,4 +9,10 @@ class ProductScrollCubit extends Cubit<ProductScrollState> {
   void setIndex(int index) {
     emit(ProductScrollLoaded(index: index));
   }
+
+// base method: return response model, use to avoid repeat code.
+
+// api method
+
+// get data method: return model if state is loaded, else return null
 }

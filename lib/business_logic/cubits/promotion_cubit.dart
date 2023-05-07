@@ -37,6 +37,12 @@ class PromotionCubit extends Cubit<PromotionState> {
     } on AppException catch (ex) {}
   }
 
+  // base method: return response model, use to avoid repeat code.
+
+  // api method
+
+  // get data method: return model if state is loaded, else return null
+
   Future<AppMessage?> reloadPromotions() async {
     try {
       var map = await _repository.gets();

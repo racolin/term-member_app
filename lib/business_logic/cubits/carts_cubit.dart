@@ -2,6 +2,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:member_app/presentation/res/strings/values.dart';
 
 import '../../data/models/paging_model.dart';
+import 'package:member_app/data/models/response_model.dart';
 import '../../exception/app_message.dart';
 import '../../data/models/cart_model.dart';
 import '../repositories/cart_repository.dart';

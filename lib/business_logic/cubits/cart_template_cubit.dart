@@ -1,6 +1,6 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../exception/app_exception.dart';
+import 'package:member_app/data/models/response_model.dart';
 import '../../business_logic/repositories/cart_template_repository.dart';
 import '../../business_logic/states/cart_template_state.dart';
 import '../../data/models/cart_template_model.dart';

@@ -2,7 +2,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../exception/app_message.dart';
 import '../../business_logic/states/profile_state.dart';
-import '../../exception/app_exception.dart';
+import 'package:member_app/data/models/response_model.dart';
 import '../repositories/setting_repository.dart';
 
 class ProfileCubit extends Cubit<ProfileState> {

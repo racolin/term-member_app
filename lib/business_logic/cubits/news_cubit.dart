@@ -1,7 +1,5 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-
-import '../../data/repositories/mock/news_mock_repository.dart';
-import '../../exception/app_exception.dart';
+import 'package:member_app/data/models/response_model.dart';
 import '../../exception/app_message.dart';
 import '../repositories/news_repository.dart';
 import '../states/news_state.dart';

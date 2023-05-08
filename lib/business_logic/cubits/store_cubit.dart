@@ -2,6 +2,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:member_app/business_logic/blocs/interval/interval_submit.dart';
 import 'package:member_app/data/models/store_detail_model.dart';
 import 'package:member_app/data/models/store_model.dart';
+import 'package:member_app/data/models/response_model.dart';
 
 import '../../exception/app_message.dart';
 import '../../presentation/res/strings/values.dart';

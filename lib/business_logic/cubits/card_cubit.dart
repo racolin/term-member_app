@@ -1,4 +1,5 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:member_app/data/models/response_model.dart';
 
 import '../../business_logic/repositories/member_repository.dart';
 import '../../exception/app_message.dart';

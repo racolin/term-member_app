@@ -52,6 +52,7 @@ class ApiRouter {
   // Promotion
   static const String promotionAll = '/member/promotion/all';
   static const String promotionCategoryAll = '/member/promotion-category/all';
+  static String promotionExchange(String id) => '/member/promotion/$id/exchange';
 
   // Member data
   static const String memberDataPointHistory = '/member/member-data/point-history';
@@ -67,7 +68,7 @@ class ApiRouter {
   static String cartStatusGet(String id) => '/member/cart-status/$id';
   static String cartGet(String id) => '/member/cart/$id';
   static const String cartStatusAll = '/member/cart-status/all';
-  static const String cartReview = '/member/cart/review';
+  static String cartReview(String id) => '/member/cart/$id/review';
   static const String cartCheckVoucher = '/member/cart/check-voucher';
   static const String cartCreate = '/member/cart/create';
 

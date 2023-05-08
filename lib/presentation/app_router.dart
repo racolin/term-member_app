@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:member_app/presentation/pages/reward_screen.dart';
-import 'package:member_app/presentation/screens/address_screen.dart';
-import 'package:member_app/presentation/screens/cart_detail_screen.dart';
-import 'package:member_app/presentation/screens/carts_screen.dart';
-import 'package:member_app/presentation/screens/setting_screen.dart';
-import 'package:member_app/presentation/screens/splash_screen.dart';
 
+import '../data/repositories/api/auth_api_repository.dart';
+import 'pages/reward_screen.dart';
+import 'screens/address_screen.dart';
+import 'screens/cart_detail_screen.dart';
+import 'screens/carts_screen.dart';
+import 'screens/setting_screen.dart';
+import 'screens/splash_screen.dart';
 import '../../business_logic/cubits/product_scroll_cubit.dart';
 import '../business_logic/cubits/auth_cubit.dart';
 import '../business_logic/cubits/cart_detail_cubit.dart';
@@ -47,8 +48,8 @@ import '../business_logic/cubits/promotion_cubit.dart';
 import '../business_logic/cubits/voucher_cubit.dart';
 import '../data/repositories/mock/cart_mock_repository.dart';
 import '../data/repositories/storage/account_storage_repository.dart';
-import '../presentation/screens/login_screen.dart';
-import '../presentation/screens/home_screen.dart';
+import 'screens/login_screen.dart';
+import 'screens/home_screen.dart';
 import 'screens/address_select_screen.dart';
 import 'screens/notify_screen.dart';
 import 'screens/profile_screen.dart';
@@ -199,7 +200,7 @@ class AppRouter {
         return MaterialPageRoute(
           builder: (context) {
             return RepositoryProvider<AuthRepository>(
-              create: (context) => AuthMockRepository(),
+              create: (context) => AuthApiRepository(),
               child: BlocProvider<AuthCubit>(
                 create: (context) => AuthCubit(
                   repository: RepositoryProvider.of<AuthRepository>(
@@ -211,6 +212,21 @@ class AppRouter {
             );
           },
         );
+        // return MaterialPageRoute(
+        //   builder: (context) {
+        //     return RepositoryProvider<AuthRepository>(
+        //       create: (context) => AuthMockRepository(),
+        //       child: BlocProvider<AuthCubit>(
+        //         create: (context) => AuthCubit(
+        //           repository: RepositoryProvider.of<AuthRepository>(
+        //             context,
+        //           ),
+        //         ),
+        //         child: const LoginScreen(),
+        //       ),
+        //     );
+        //   },
+        // );
       case reward:
         return MaterialPageRoute(
           builder: (context) {

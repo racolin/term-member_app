@@ -9,6 +9,7 @@ class VoucherModel {
   final String? sliderImage;
   final DateTime from;
   final DateTime to;
+  final DateTime? usedAt;
   final String description;
 
   const VoucherModel({
@@ -20,6 +21,7 @@ class VoucherModel {
     required this.sliderImage,
     required this.from,
     required this.to,
+    required this.usedAt,
     required this.description,
   });
 
@@ -33,6 +35,7 @@ class VoucherModel {
       'sliderImage': sliderImage,
       'from': from.millisecondsSinceEpoch,
       'to': to.millisecondsSinceEpoch,
+      'usedAt': usedAt?.millisecondsSinceEpoch,
       'description': description,
     };
   }
@@ -51,6 +54,9 @@ class VoucherModel {
       to: map['to'] != null
           ? DateTime.fromMillisecondsSinceEpoch(map['to'])
           : DateTime.now(),
+      usedAt: map['usedAt'] != null
+          ? DateTime.fromMillisecondsSinceEpoch(map['usedAt'])
+          : null,
       description: map['description'] ?? txtDefault,
     );
   }

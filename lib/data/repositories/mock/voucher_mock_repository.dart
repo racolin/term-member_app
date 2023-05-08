@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:member_app/data/models/response_model.dart';
 
 import '../../models/voucher_model.dart';
@@ -23,6 +25,7 @@ class VoucherMockRepository extends VoucherRepository {
                   'https://static.vecteezy.com/system/resources/previews/001/349/622/non_2x/bubble-tea-in-milk-splash-advertisement-banner-free-vector.jpg',
               from: DateTime(2023, 3, 29),
               to: DateTime(2023, 4, 29),
+              usedAt: Random().nextBool() ? null : DateTime.now(),
               description: 'Miễn phí giao hàng cho đơn hàng bất kì: '
                   '\n- Áp dụng cho toàn bộ menu The Coffee House'
                   '\n- Không áp dụng cho các chường trình khuyến mãi song song.',
@@ -41,6 +44,7 @@ class VoucherMockRepository extends VoucherRepository {
                   'https://static.vecteezy.com/system/resources/previews/001/349/622/non_2x/bubble-tea-in-milk-splash-advertisement-banner-free-vector.jpg',
               from: DateTime(2023, 3, 29),
               to: DateTime(2023, 4, 22),
+              usedAt: Random().nextBool() ? null : DateTime.now(),
               description: 'Miễn phí giao hàng cho đơn hàng bất kì: '
                   '\n- Áp dụng cho toàn bộ menu The Coffee House'
                   '\n- Không áp dụng cho các chường trình khuyến mãi song song.',
@@ -59,6 +63,7 @@ class VoucherMockRepository extends VoucherRepository {
                   'https://static.vecteezy.com/system/resources/previews/001/349/622/non_2x/bubble-tea-in-milk-splash-advertisement-banner-free-vector.jpg',
               from: DateTime(2023, 3, 29),
               to: DateTime(2023, 4, 22),
+              usedAt: Random().nextBool() ? null : DateTime.now(),
               description: 'Miễn phí giao hàng cho đơn hàng bất kì: '
                   '\n- Áp dụng cho toàn bộ menu The Coffee House'
                   '\n- Không áp dụng cho các chường trình khuyến mãi song song.',
@@ -92,6 +97,7 @@ class VoucherMockRepository extends VoucherRepository {
               'https://static.vecteezy.com/system/resources/previews/001/349/622/non_2x/bubble-tea-in-milk-splash-advertisement-banner-free-vector.jpg',
           from: DateTime(2023, 3, 29),
           to: DateTime(2023, 4, 29),
+          usedAt: Random().nextBool() ? null : DateTime.now(),
           description: 'Miễn phí giao hàng cho đơn hàng bất kì: '
               '\n- Áp dụng cho toàn bộ menu The Coffee House'
               '\n- Không áp dụng cho các chường trình khuyến mãi song song.',

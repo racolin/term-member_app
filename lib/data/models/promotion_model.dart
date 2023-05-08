@@ -11,7 +11,9 @@ class PromotionModel {
   final String description;
   final DateTime from;
   final DateTime to;
-  final int mark;
+  final bool isFeatured;
+  final int exchangeCount;
+  // final int mark;
 
   const PromotionModel({
     required this.id,
@@ -24,7 +26,9 @@ class PromotionModel {
     required this.description,
     required this.from,
     required this.to,
-    required this.mark,
+    required this.isFeatured,
+    required this.exchangeCount,
+    // required this.mark,
   });
 
   Map<String, dynamic> toMap() {
@@ -39,7 +43,9 @@ class PromotionModel {
       'description': description,
       'from': from.millisecondsSinceEpoch,
       'to': to.millisecondsSinceEpoch,
-      'mark': mark,
+      'isFeatured': isFeatured,
+      'exchangeCount': exchangeCount,
+      // 'mark': mark,
     };
   }
 
@@ -59,7 +65,9 @@ class PromotionModel {
       to: map['to'] != null
           ? DateTime.fromMillisecondsSinceEpoch(map['to'])
           : DateTime.now(),
-      mark: map['mark'] ?? 0,
+      isFeatured: map['isFeatured'] ?? false,
+      exchangeCount: map['exchangeCount'] ?? 0,
+      // mark: map['mark'] ?? 0,
     );
   }
 }

@@ -152,7 +152,9 @@ class PromotionMockRepository extends PromotionRepository {
                   point: 99,
                   from: DateTime(2023, 3, 17),
                   to: DateTime(2023, 5, 17),
-                  mark: (Random().nextDouble() * 400).toInt() + 600,
+                  isFeatured: Random().nextBool(),
+                  exchangeCount: 15,
+                  // mark: (Random().nextDouble() * 400).toInt() + 600,
                   backgroundImage:
                       'https://www.tiendauroi.com/wp-content/uploads/2019/05/2409aa3f79aad8d71acdf0bf233353bbded1a009.jpeg',
                 ),
@@ -172,7 +174,9 @@ class PromotionMockRepository extends PromotionRepository {
                   point: 99,
                   from: DateTime(2023, 3, 17),
                   to: DateTime(2023, 5, 17),
-                  mark: (Random().nextDouble() * 400).toInt() + 600,
+                  isFeatured: Random().nextBool(),
+                  exchangeCount: 15,
+                  // mark: (Random().nextDouble() * 400).toInt() + 600,
                   backgroundImage:
                       'https://www.tiendauroi.com/wp-content/uploads/2019/05/2409aa3f79aad8d71acdf0bf233353bbded1a009.jpeg',
                 ),

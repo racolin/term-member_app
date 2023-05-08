@@ -130,11 +130,13 @@ class CartCubit extends Cubit<CartState> {
 
     var state = this.state as CartLoaded;
 
-    if (state.categoryId == null ||
+    if (state.store == null ||
+        state.categoryId == null ||
         state.payType == null ||
         state.phone == null ||
         state.phone == '' ||
         state.receiver == null ||
+        state.time == null ||
         state.receiver == '') {
       return AppMessage(
         type: AppMessageType.failure,
@@ -143,10 +145,12 @@ class CartCubit extends Cubit<CartState> {
       );
     }
     var res = await _repository.create(
+      storeId: state.store!.id,
       categoryId: state.categoryId!.index,
       payType: state.payType!,
       phone: state.phone!,
       receiver: state.receiver!,
+      receivingTime: state.time!.millisecondsSinceEpoch,
       products: state.products,
       addressName: '${state.addressName}|${state.addressDescription}',
       voucherId: state.voucher?.id,

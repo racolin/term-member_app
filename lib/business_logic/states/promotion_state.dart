@@ -55,7 +55,7 @@ class PromotionLoaded extends PromotionState {
   }
 
   List<PromotionModel> getOutStanding() {
-    return promotions.where((e) => e.mark >= threshold).toList();
+    return promotions.where((e) => e.isFeatured).toList();
   }
 }
 

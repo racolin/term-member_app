@@ -16,7 +16,7 @@ class CartDetailCubit extends Cubit<CartDetailState> {
     emit(CartDetailLoading());
 
     _repository.getDetailById(id: id).then((res) {
-      if (res.type == AppMessageType.success) {
+      if (res.type == ResponseModelType.success) {
         emit(CartDetailLoaded(cart: res.data));
       } else {
         emit(CartDetailFailure(message: res.message));
@@ -33,7 +33,7 @@ class CartDetailCubit extends Cubit<CartDetailState> {
   Future<AppMessage?> review(int rate, String review) async {
     var res =  await _repository.review(rate: rate, review: review);
 
-    if (res.type == AppMessageType.success) {
+    if (res.type == ResponseModelType.success) {
       return null;
     } else {
       return res.message;

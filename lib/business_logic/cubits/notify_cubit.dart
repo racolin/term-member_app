@@ -13,7 +13,7 @@ class NotifyCubit extends Cubit<NotifyState> {
         super(NotifyInitial()) {
     emit(NotifyLoading());
     _repository.gets().then((res) {
-      if (res.type == AppMessageType.success) {
+      if (res.type == ResponseModelType.success) {
         emit(NotifyLoaded(list: res.data));
       } else {
         emit(NotifyFailure(message: res.message));
@@ -30,7 +30,7 @@ class NotifyCubit extends Cubit<NotifyState> {
   // Action data
   Future<AppMessage?> reloadNotify() async {
     var res = await _repository.gets();
-    if (res.type == AppMessageType.success) {
+    if (res.type == ResponseModelType.success) {
       emit(NotifyLoaded(list: res.data));
       return null;
     } else {
@@ -40,7 +40,7 @@ class NotifyCubit extends Cubit<NotifyState> {
 
   Future<AppMessage?> check(String id) async {
     var res = await _repository.checkNotify(id: id);
-    if (res.type == AppMessageType.success) {
+    if (res.type == ResponseModelType.success) {
       if (res.data) {
         var list = (state as NotifyLoaded).list;
         var index = list.indexWhere((e) => e.id == id);

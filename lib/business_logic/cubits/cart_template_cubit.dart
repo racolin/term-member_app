@@ -17,7 +17,7 @@ class CartTemplateCubit extends Cubit<CartTemplateState> {
     emit(CartTemplateLoading());
 
     _repository.gets().then((res) {
-      if (res.type == AppMessageType.success) {
+      if (res.type == ResponseModelType.success) {
         emit(CartTemplateLoaded(
           list: res.data.value,
           limit: res.data.key,
@@ -37,7 +37,7 @@ class CartTemplateCubit extends Cubit<CartTemplateState> {
   Future<AppMessage?> reloadCartTemplates() async {
     var res = await _repository.gets();
 
-    if (res.type == AppMessageType.success) {
+    if (res.type == ResponseModelType.success) {
       emit(CartTemplateLoaded(
         list: res.data.value,
         limit: res.data.key,
@@ -69,7 +69,7 @@ class CartTemplateCubit extends Cubit<CartTemplateState> {
       products: products,
     );
 
-    if (res.type == AppMessageType.success) {
+    if (res.type == ResponseModelType.success) {
       var list = state.list;
       int index = list.indexWhere((e) => e.id == id);
       if (index == -1) {
@@ -104,7 +104,7 @@ class CartTemplateCubit extends Cubit<CartTemplateState> {
 
     var res = await _repository.delete(id: id);
 
-    if (res.type == AppMessageType.success) {
+    if (res.type == ResponseModelType.success) {
       var list = state.list;
       int index = list.indexWhere((e) => e.id == id);
       if (index == -1) {
@@ -145,7 +145,7 @@ class CartTemplateCubit extends Cubit<CartTemplateState> {
       products: products,
     );
 
-    if (res.type == AppMessageType.success) {
+    if (res.type == ResponseModelType.success) {
       var list = state.list;
       list.add(
         CartTemplateModel(
@@ -174,7 +174,7 @@ class CartTemplateCubit extends Cubit<CartTemplateState> {
     var state = this.state as CartTemplateLoaded;
 
     var res = await _repository.arrange(ids: ids);
-    if (res.type == AppMessageType.success) {
+    if (res.type == ResponseModelType.success) {
       var list = <CartTemplateModel>[];
       for (int i = 0; i < ids.length; i++) {
         int index = state.list.indexWhere((e) => ids[i] == e.id);

@@ -96,7 +96,7 @@ class CartCubit extends Cubit<CartState> {
       state.products,
     );
 
-    if (res.type == AppMessageType.success) {
+    if (res.type == ResponseModelType.success) {
       var checked = res.data;
       var products = state.products.map((product) {
         int index = checked.products.indexWhere((e) => product.id == e.id);
@@ -152,7 +152,7 @@ class CartCubit extends Cubit<CartState> {
       voucherId: state.voucher?.id,
     );
 
-    if (res.type == AppMessageType.success) {
+    if (res.type == ResponseModelType.success) {
       return AppMessage(
         type: AppMessageType.success,
         title: 'Thành công',
@@ -310,7 +310,7 @@ class CartCubit extends Cubit<CartState> {
         state.products,
       );
 
-      if (res.type == AppMessageType.success) {
+      if (res.type == ResponseModelType.success) {
         emit(state.copyWith(
           categoryId: DeliveryType.values[categoryId],
           fee: fee,

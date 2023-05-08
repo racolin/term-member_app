@@ -18,7 +18,7 @@ class StoreCubit extends Cubit<StoreState>
         super(StoreInitial()) {
     emit(StoreLoading());
     _repository.gets().then((res) {
-      if (res.type == AppMessageType.success) {
+      if (res.type == ResponseModelType.success) {
         emit(StoreLoaded(list: res.data));
       } else {
         emit(StoreFailure(message: res.message));
@@ -35,7 +35,7 @@ class StoreCubit extends Cubit<StoreState>
   // Action data
   Future<AppMessage?> reloadStores() async {
     var res = await _repository.gets();
-    if (res.type == AppMessageType.success) {
+    if (res.type == ResponseModelType.success) {
       emit(StoreLoaded(list: res.data));
       return null;
     } else {
@@ -53,7 +53,7 @@ class StoreCubit extends Cubit<StoreState>
     }
 
     var res = await _repository.getDetail(id: id);
-    if (res.type == AppMessageType.success) {
+    if (res.type == ResponseModelType.success) {
       emit((state as StoreLoaded).copyWith(detail: res.data));
       return null;
     } else {

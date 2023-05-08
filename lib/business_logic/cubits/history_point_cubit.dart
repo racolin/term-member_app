@@ -18,7 +18,7 @@ class HistoryPointCubit extends Cubit<HistoryPointState> {
         super(HistoryPointInitial()) {
     emit(HistoryPointLoading());
     _repository.getHistoryPoint(page: 1, limit: 20).then((res) {
-      if (res.type == AppMessageType.success) {
+      if (res.type == ResponseModelType.success) {
         var mapEntry = res.data;
         PagingModel<HistoryPointModel>(
             limit: 20, list: mapEntry.value, maxCount: mapEntry.key, page: 1);
@@ -46,7 +46,7 @@ class HistoryPointCubit extends Cubit<HistoryPointState> {
   Future<AppMessage?> reloadHistoryPoint() async {
     var res = await _repository.getHistoryPoint(page: 1, limit: 20);
 
-    if (res.type == AppMessageType.success) {
+    if (res.type == ResponseModelType.success) {
       var mapEntry = res.data;
 
       emit(HistoryPointLoaded(
@@ -78,7 +78,7 @@ class HistoryPointCubit extends Cubit<HistoryPointState> {
         limit: state.paging.limit,
       );
       var mapEntry = res.data;
-      if (res.type == AppMessageType.success) {
+      if (res.type == ResponseModelType.success) {
         state.paging.next(mapEntry.value, mapEntry.key);
         emit(state.copyWith(paging: state.paging.copyWith()));
         return null;

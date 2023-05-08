@@ -7,6 +7,7 @@ import '../../../exception/app_message.dart';
 class VoucherMockRepository extends VoucherRepository {
   @override
   Future<ResponseModel<List<VoucherModel>>> getsAvailable() async {
+    print('getsAvailable');
     return ResponseModel<List<VoucherModel>>(
       type: ResponseModelType.success,
       data: List.generate(

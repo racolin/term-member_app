@@ -15,13 +15,13 @@ class CartsCubit extends Cubit<CartsState> {
         super(CartsInitial()) {
     emit(CartsLoading());
     _repository.getStatuses().then((res) {
-      if (res.type == AppMessageType.success) {
+      if (res.type == ResponseModelType.success) {
         var statuses = res.data;
         if (statuses.isNotEmpty) {
           _repository
               .getsByStatusId(statusId: statuses[0].id, page: 1, limit: 20)
               .then((res) {
-            if (res.type == AppMessageType.success) {
+            if (res.type == ResponseModelType.success) {
               Map<String, PagingModel<CartModel>> listCarts = {};
               for (var e in statuses) {
                 listCarts[e.id] = PagingModel<CartModel>(
@@ -80,7 +80,7 @@ class CartsCubit extends Cubit<CartsState> {
         page: state.listCarts[id]!.page,
         limit: state.listCarts[id]!.limit,
       );
-      if (res.type == AppMessageType.success) {
+      if (res.type == ResponseModelType.success) {
         state.listCarts[id]!.next(res.data.value, res.data.key);
 
         emit(state.copyWith(listCarts: state.listCarts));

@@ -13,7 +13,7 @@ class PromotionCubit extends Cubit<PromotionState> {
         super(PromotionInitial()) {
     emit(PromotionLoading());
     _repository.gets().then((res) {
-      if (res.type == AppMessageType.success) {
+      if (res.type == ResponseModelType.success) {
         var map = res.data;
         if (state is PromotionLoaded) {
           emit(
@@ -35,7 +35,7 @@ class PromotionCubit extends Cubit<PromotionState> {
       }
     });
     _repository.getCategories().then((res) {
-      if (res.type == AppMessageType.success) {
+      if (res.type == ResponseModelType.success) {
         var list = res.data;
         if (state is PromotionLoaded) {
           emit((state as PromotionLoaded).copyWith(categories: list));
@@ -60,7 +60,7 @@ class PromotionCubit extends Cubit<PromotionState> {
 
   Future<AppMessage?> reloadPromotions() async {
     var resStatus = await _repository.gets();
-    if (resStatus.type == AppMessageType.success) {
+    if (resStatus.type == ResponseModelType.success) {
       var map = resStatus.data;
       if (state is PromotionLoaded) {
         emit(
@@ -80,7 +80,7 @@ class PromotionCubit extends Cubit<PromotionState> {
       return resStatus.message;
     }
     var resList = await _repository.getCategories();
-    if (resList.type == AppMessageType.success) {
+    if (resList.type == ResponseModelType.success) {
       var list = resList.data;
 
       if (state is PromotionLoaded) {

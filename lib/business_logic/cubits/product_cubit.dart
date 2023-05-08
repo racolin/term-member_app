@@ -20,7 +20,7 @@ class ProductCubit extends Cubit<ProductState>
         super(ProductInitial()) {
     emit(ProductLoading());
     _repository.gets().then((res) {
-      if (res.type == AppMessageType.success) {
+      if (res.type == ResponseModelType.success) {
         var list = res.data;
         if (state is ProductLoaded) {
           emit((state as ProductLoaded).copyWith(list: list));
@@ -36,7 +36,7 @@ class ProductCubit extends Cubit<ProductState>
       }
     });
     _repository.getsSuggestion().then((res) {
-      if (res.type == AppMessageType.success) {
+      if (res.type == ResponseModelType.success) {
         var list = res.data;
         if (state is ProductLoaded) {
           emit((state as ProductLoaded).copyWith(suggestion: list));
@@ -48,7 +48,7 @@ class ProductCubit extends Cubit<ProductState>
       } else {}
     });
     _repository.getCategories().then((res) {
-      if (res.type == AppMessageType.success) {
+      if (res.type == ResponseModelType.success) {
         var listType = res.data;
 
         if (state is ProductLoaded) {
@@ -61,7 +61,7 @@ class ProductCubit extends Cubit<ProductState>
       } else {}
     });
     _repository.getOptions().then((res) {
-      if (res.type == AppMessageType.success) {
+      if (res.type == ResponseModelType.success) {
         var listOption = res.data;
         if (state is ProductLoaded) {
           emit((state as ProductLoaded).copyWith(listOption: listOption));
@@ -85,11 +85,11 @@ class ProductCubit extends Cubit<ProductState>
       var resList = await _repository.gets();
       var resListOption = await _repository.getOptions();
       var resListType = await _repository.getCategories();
-      if (resList.type == AppMessageType.success) {
-        var listOption = resListOption.type == AppMessageType.success
+      if (resList.type == ResponseModelType.success) {
+        var listOption = resListOption.type == ResponseModelType.success
             ? resListOption.data
             : null;
-        var listType = resListType.type == AppMessageType.success
+        var listType = resListType.type == ResponseModelType.success
             ? resListType.data
             : null;
         emit(ProductLoaded(
@@ -114,7 +114,7 @@ class ProductCubit extends Cubit<ProductState>
     }
 
     var res = await _repository.getFavorites();
-    if (res.type == AppMessageType.success) {
+    if (res.type == ResponseModelType.success) {
       var list = res.data;
       emit((state as ProductLoaded).copyWith(favorites: list));
       return null;

@@ -1,4 +1,5 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:member_app/data/models/response_model.dart';
 
 import '../../exception/app_message.dart';
 import '../../business_logic/states/voucher_state.dart';
@@ -15,7 +16,8 @@ class VoucherCubit extends Cubit<VoucherState> {
     var failure = 0;
     var error = {};
     _repository.getsAvailable().then((res) {
-      if (res.type == AppMessageType.success) {
+      print(res.type);
+      if (res.type == ResponseModelType.success) {
         if (state is VoucherLoaded) {
           emit((state as VoucherLoaded).copyWith(
             list: res.data,
@@ -43,7 +45,7 @@ class VoucherCubit extends Cubit<VoucherState> {
       }
     });
     _repository.getsUsed().then((res) {
-      if (res.type == AppMessageType.success) {
+      if (res.type == ResponseModelType.success) {
         if (state is VoucherLoaded) {
           emit((state as VoucherLoaded).copyWith(
             used: res.data,
@@ -81,7 +83,7 @@ class VoucherCubit extends Cubit<VoucherState> {
 
   Future<AppMessage?> loadAvailableVouchers() async {
     var res = await _repository.getsAvailable();
-    if (res.type == AppMessageType.success) {
+    if (res.type == ResponseModelType.success) {
       if (state is VoucherLoaded) {
         emit((state as VoucherLoaded).copyWith(list: res.data));
       } else {
@@ -97,7 +99,7 @@ class VoucherCubit extends Cubit<VoucherState> {
 
   Future<AppMessage?> loadUsedVouchers() async {
     var res = await _repository.getsUsed();
-    if (res.type == AppMessageType.success) {
+    if (res.type == ResponseModelType.success) {
       if (state is VoucherLoaded) {
         emit((state as VoucherLoaded).copyWith(used: res.data));
       } else {

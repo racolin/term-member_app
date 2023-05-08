@@ -14,7 +14,7 @@ class ProfileCubit extends Cubit<ProfileState> {
     emit(ProfileLoading());
 
     _repository.getProfile().then((res) {
-      if (res.type == AppMessageType.success) {
+      if (res.type == ResponseModelType.success) {
         emit(ProfileLoaded(
           profile: res.data,
         ));
@@ -32,7 +32,7 @@ class ProfileCubit extends Cubit<ProfileState> {
 
   Future<AppMessage?> getProfile() async {
     var res = await _repository.getProfile();
-    if (res.type == AppMessageType.success) {
+    if (res.type == ResponseModelType.success) {
       emit(ProfileLoaded(profile: res.data));
       return null;
     } else {
@@ -48,7 +48,7 @@ class ProfileCubit extends Cubit<ProfileState> {
         lastName: lastName,
         firstName: firstName,
       );
-      if (res.type == AppMessageType.success) {
+      if (res.type == ResponseModelType.success) {
         if (state is ProfileLoaded) {
           var state = this.state as ProfileLoaded;
           emit(

@@ -14,7 +14,7 @@ class NewsCubit extends Cubit<NewsState> {
         super(NewsInitial()) {
     emit(NewsLoading());
     _repository.gets().then((res) {
-      if (res.type == AppMessageType.success) {
+      if (res.type == ResponseModelType.success) {
         emit(NewsLoaded(list: res.data, index: 0));
       } else {
         emit(NewsFailure(message: res.message));
@@ -31,7 +31,7 @@ class NewsCubit extends Cubit<NewsState> {
   // Action data
   Future<AppMessage?> reloadNews() async {
       var res = await _repository.gets();
-      if (res.type == AppMessageType.success) {
+      if (res.type == ResponseModelType.success) {
         emit(NewsLoaded(list: res.data, index: 0));
         return null;
       } else {

@@ -13,7 +13,7 @@ class CardCubit extends Cubit<CardState> {
         super(CardInitial()) {
     emit(CardLoading());
     _repository.getCard().then((res) {
-      if (res.type == AppMessageType.success) {
+      if (res.type == ResponseModelType.success) {
         emit(CardLoaded(card: res.data));
       } else {
         emit(CardFailure(message: res.message));
@@ -27,7 +27,7 @@ class CardCubit extends Cubit<CardState> {
 
   Future<AppMessage?> reloadCard() async {
     var res = await _repository.getCard();
-    if (res.type == AppMessageType.success) {
+    if (res.type == ResponseModelType.success) {
       emit(CardLoaded(card: res.data));
       return null;
     } else {

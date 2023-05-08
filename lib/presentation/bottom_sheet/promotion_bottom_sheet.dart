@@ -223,7 +223,7 @@ class PromotionBottomSheet extends StatelessWidget {
                             'Bạn chưa đủ điều kiện để đổi khuyến mãi!';
                             showCupertinoDialog(
                               context: context,
-                              builder: (context) => DialogWidget(
+                              builder: (context) => AppDialog(
                                 message: AppMessage(
                                   type: AppMessageType.info,
                                   title: txtNotify,

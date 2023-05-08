@@ -4,6 +4,9 @@ class AppMessage {
   final AppMessageType type;
   final String title;
   final String content;
+  ///
+  /// Not null when message is exception
+  ///
   final String? description;
 
   AppMessage({

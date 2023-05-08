@@ -237,7 +237,7 @@ class PromotionPointPage extends StatelessWidget {
                   onClick: () {
                     showCupertinoDialog(
                       context: context,
-                      builder: (context) => DialogWidget(
+                      builder: (context) => AppDialog(
                         message: AppMessage(
                           type: AppMessageType.info,
                           title: txtNotify,

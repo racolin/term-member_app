@@ -13,82 +13,56 @@ class ProfileCubit extends Cubit<ProfileState> {
         super(ProfileInitial()) {
     emit(ProfileLoading());
 
-    try {
-      _repository.getProfile().then((profile) {
-        if (profile != null) {
-          emit(ProfileLoaded(
-            profile: profile,
-          ));
-        }
-      });
-    } on AppException catch (ex) {
-      emit(ProfileFailure(message: ex.message));
-    }
-    emit(
-      ProfileFailure(
-        message: AppMessage(
-            type: AppMessageType.failure,
-            title: 'Thất bại',
-            content: 'Tải Profile không thành công!'),
-      ),
-    );
+    _repository.getProfile().then((res) {
+      if (res.type == AppMessageType.success) {
+        emit(ProfileLoaded(
+          profile: res.data,
+        ));
+      } else {
+        emit(ProfileFailure(message: res.message));
+      }
+    });
   }
 
   // base method: return response model, use to avoid repeat code.
 
-  // api method
+  // action method, change state and return AppMessage?, null when success
 
   // get data method: return model if state is loaded, else return null
 
   Future<AppMessage?> getProfile() async {
-    try {
-      var profile = await _repository.getProfile();
-      if (profile == null) {
-        return AppMessage(
-          type: AppMessageType.failure,
-          title: 'Thất bại',
-          content: 'Tải Profile không thành công!',
-        );
-      }
-      if (state is ProfileLoaded) {
-        emit((state as ProfileLoaded).copyWith(profile: profile));
-      }
-    } on AppException catch (ex) {
-      return ex.message;
+    var res = await _repository.getProfile();
+    if (res.type == AppMessageType.success) {
+      emit(ProfileLoaded(profile: res.data));
+      return null;
+    } else {
+      return res.message;
     }
-    return null;
   }
 
   Future<AppMessage?> updateProfile({
     required String lastName,
     required String firstName,
   }) async {
-    try {
-      var result = await _repository.updateProfile(
+      var res = await _repository.updateProfile(
         lastName: lastName,
         firstName: firstName,
       );
-      if (result == null || !result) {
-        return AppMessage(
-          type: AppMessageType.failure,
-          title: 'Thất bại',
-          content: 'Cập nhật Profile không thành công!',
-        );
-      }
-      if (state is ProfileLoaded) {
-        var state = this.state as ProfileLoaded;
-        emit(
-          state.copyWith(
-            profile: state.profile.copyWith(
-              lastName: lastName,
-              firstName: firstName,
+      if (res.type == AppMessageType.success) {
+        if (state is ProfileLoaded) {
+          var state = this.state as ProfileLoaded;
+          emit(
+            state.copyWith(
+              profile: state.profile.copyWith(
+                lastName: lastName,
+                firstName: firstName,
+              ),
             ),
-          ),
-        );
+          );
+        }
+        return null;
+      } else {
+        return res.message;
       }
-    } on AppException catch (ex) {
-      return ex.message;
-    }
-    return null;
   }
 }

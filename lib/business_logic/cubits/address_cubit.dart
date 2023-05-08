@@ -1,11 +1,11 @@
+import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:member_app/data/models/address_model.dart';
-import 'package:member_app/data/models/addresses_list_model.dart';
-import 'package:member_app/data/models/response_model.dart';
 
+import '../../../data/models/address_model.dart';
+import '../../../data/models/response_model.dart';
 import '../../exception/app_message.dart';
 import '../../business_logic/states/address_state.dart';
-import '../../exception/app_exception.dart';
+import '../../presentation/res/strings/values.dart';
 import '../repositories/setting_repository.dart';
 
 class AddressCubit extends Cubit<AddressState> {
@@ -30,21 +30,21 @@ class AddressCubit extends Cubit<AddressState> {
 
   // base method: return response model, use to avoid repeat code.
 
-  // api method
+  // action method, change state and return AppMessage?, null when success
 
-  // get data method: return model if state is loaded, else return null
-
-  Future<AppMessage?> getAddresses() async {
-    try {
-      var list = await _repository.getAddresses();
+  Future<AppMessage?> reloadAddresses() async {
+    emit(AddressLoading());
+    var res = await _repository.getAddresses();
+    if (res.type == ResponseModelType.success) {
+      var list = res.data;
       emit(AddressLoaded(
         defaultAddresses: list.defaults,
         otherAddresses: list.others,
       ));
-    } on AppException catch (ex) {
-      return ex.message;
+      return null;
+    } else {
+      return res.message;
     }
-    return null;
   }
 
   Future<AppMessage?> createAddress({
@@ -59,29 +59,23 @@ class AddressCubit extends Cubit<AddressState> {
     if (state is! AddressLoaded) {
       return AppMessage(
         type: AppMessageType.failure,
-        title: 'Thất bại',
-        content: 'Hãy thử lại trong giây lát!',
+        title: txtFailureTitle,
+        content: txtToFast,
       );
     }
 
-    try {
-      String? id = await _repository.createAddress(
-        name: name,
-        address: address,
-        note: note,
-        receiver: receiver,
-        phone: phone,
-        lat: lat,
-        lng: lng,
-      );
+    var res = await _repository.createAddress(
+      name: name,
+      address: address,
+      note: note,
+      receiver: receiver,
+      phone: phone,
+      lat: lat,
+      lng: lng,
+    );
 
-      if (id == null) {
-        return AppMessage(
-          type: AppMessageType.failure,
-          title: 'Thất bại',
-          content: 'Không thể tạo địa chỉ mới. Hãy thử lại!',
-        );
-      }
+    if (res.type == ResponseModelType.success) {
+      var id = res.data;
       var state = this.state as AddressLoaded;
       emit(state.copyWith(
         otherAddresses: state.otherAddresses +
@@ -89,6 +83,7 @@ class AddressCubit extends Cubit<AddressState> {
               AddressModel(
                 id: id,
                 name: name,
+                icon: 0xf5cf,
                 address: address,
                 note: note,
                 receiver: receiver,
@@ -96,74 +91,97 @@ class AddressCubit extends Cubit<AddressState> {
               ),
             ],
       ));
-    } on AppException catch (ex) {
-      return ex.message;
+      return null;
+    } else {
+      return res.message;
     }
-    return null;
   }
 
   Future<AppMessage?> deleteAddress(String id) async {
     if (state is! AddressLoaded) {
       return AppMessage(
         type: AppMessageType.failure,
-        title: 'Thất bại',
-        content: 'Hãy thử lại trong giây lát!',
+        title: txtFailureTitle,
+        content: txtToFast,
       );
     }
 
-    try {
-      bool? result = await _repository.deleteAddress(id: id);
+    var res = await _repository.deleteAddress(id: id);
 
-      if (result == null || !result) {
+    if (res.type == ResponseModelType.success) {
+      if (res.data) {
+        var state = this.state as AddressLoaded;
+        emit(
+          state.copyWith(
+            otherAddresses: state.otherAddresses
+                .where(
+                  (e) => e.id != id,
+                )
+                .toList(),
+          ),
+        );
+        return null;
+      } else {
         return AppMessage(
           type: AppMessageType.failure,
-          title: 'Thất bại',
-          content: 'Không thể xoá địa chỉ. Hãy thử lại!',
+          title: 'Thất bại!',
+          content: 'Không thể xoá địa chỉ này!',
         );
       }
-      var state = this.state as AddressLoaded;
-      emit(
-        state.copyWith(
-          otherAddresses: state.otherAddresses
-              .where(
-                (e) => e.id != id,
-              )
-              .toList(),
-        ),
+    } else {
+      return res.message;
+    }
+  }
+
+  Future<AppMessage?> updateAddress(AddressModel model) async {
+    if (this.state is! AddressLoaded) {
+      return AppMessage(
+        type: AppMessageType.failure,
+        title: txtFailureTitle,
+        content: txtToFast,
       );
-    } on AppException catch (ex) {
-      return ex.message;
+    }
+    var state = this.state as AddressLoaded;
+    var index = state.otherAddresses.indexWhere((e) => e.id == model.id);
+    if (index == -1) {
+      return AppMessage(
+        type: AppMessageType.error,
+        title: 'Lỗi',
+        content: 'Không tồn tại ID của đia chỉ này!',
+      );
+    }
+    var res = await _repository.updateAddress(address: model);
+    if (res.type == ResponseModelType.success) {
+      if (res.data) {
+        var list = state.otherAddresses;
+        list[index] = model;
+
+        emit(state.copyWith(otherAddresses: list));
+
+        return null;
+      } else {
+        return AppMessage(
+          type: AppMessageType.failure,
+          title: 'Thất bại!',
+          content: 'Không thể cập nhật địa chỉ này!',
+        );
+      }
+    } else {
+      return res.message;
+    }
+  }
+
+  // get data method: return model if state is loaded, else return null
+  List<AddressModel>? get others {
+    if (state is AddressLoaded) {
+      return (state as AddressLoaded).otherAddresses;
     }
     return null;
   }
 
-  Future<AppMessage?> updateAddress(AddressModel model) async {
-    try {
-      var state = this.state as AddressLoaded;
-      var index = state.otherAddresses.indexWhere((e) => e.id == model.id);
-      if (index == -1) {
-        return AppMessage(
-          type: AppMessageType.error,
-          title: 'Lỗi',
-          content: 'Không tồn tại ID của đia chỉ này!',
-        );
-      }
-      bool? result = await _repository.updateAddress(address: model);
-
-      if (result == null || !result) {
-        return AppMessage(
-          type: AppMessageType.failure,
-          title: 'Không thành công',
-          content: 'Không cập nhật được địa chỉ!',
-        );
-      }
-
-      var list = state.otherAddresses;
-      list[index] = model;
-
-      emit(state.copyWith(otherAddresses: list));
-    } on AppException catch (ex) {
-      return ex.message;
+  List<AddressModel>? get defaults {
+    if (state is AddressLoaded) {
+      return (state as AddressLoaded).defaultAddresses;
     }
     return null;
   }

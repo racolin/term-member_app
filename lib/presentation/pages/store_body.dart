@@ -1,7 +1,10 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:member_app/business_logic/cubits/store_cubit.dart';
+import 'package:member_app/exception/app_message.dart';
 import 'package:member_app/presentation/bottom_sheet/store_bottom_sheet.dart';
+import 'package:member_app/presentation/dialogs/dialog_widget.dart';
 import 'package:member_app/presentation/res/dimen/dimens.dart';
 import 'package:member_app/presentation/res/strings/values.dart';
 
@@ -39,20 +42,66 @@ class StoreBody extends StatelessWidget {
           child: StoresMainWidget(
             searchKey: '',
             onClickItem: (model) {
+
               context
                   .read<StoreCubit>()
-                  .getDetailStore(model.id)
-                  .then((detail) {
-                if (detail != null) {
-                  showModalBottomSheet(
+                  .loadDetailStore(model.id)
+                  .then((message) {
+                if (message != null) {
+                  showCupertinoDialog(
                     context: context,
-                    backgroundColor: Colors.transparent,
-                    isScrollControlled: true,
                     builder: (context) {
-                      return StoreBottomSheet(store: model, detail: detail);
+                      return AppDialog(
+                        message: message,
+                        actions: [
+                          CupertinoDialogAction(
+                            child: const Text(txtYes),
+                            onPressed: () {
+                              Navigator.pop(context);
+                            },
+                          ),
+                        ],
+                      );
                     },
                   );
-                } else {}
+                } else {
+                  var detail =
+                      context.read<StoreCubit>().detailStore;
+                  if (detail == null) {
+                    showCupertinoDialog(
+                      context: context,
+                      builder: (context) {
+                        return AppDialog(
+                          message: AppMessage(
+                            type: AppMessageType.error,
+                            title: txtErrorTitle,
+                            content: 'Không có dữ liệu. Hãy thử lại!',
+                          ),
+                          actions: [
+                            CupertinoDialogAction(
+                              child: const Text(txtYes),
+                              onPressed: () {
+                                Navigator.pop(context);
+                              },
+                            ),
+                          ],
+                        );
+                      },
+                    );
+                  } else {
+                    showModalBottomSheet(
+                      context: context,
+                      backgroundColor: Colors.transparent,
+                      isScrollControlled: true,
+                      builder: (context) {
+                        return StoreBottomSheet(
+                          store: model,
+                          detail: detail,
+                        );
+                      },
+                    );
+                  }
+                }
               });
             },
           ),
@@ -86,18 +135,63 @@ class StoreBody extends StatelessWidget {
                             onClick: (StoreModel model) {
                               context
                                   .read<StoreCubit>()
-                                  .getDetailStore(model.id)
-                                  .then((detail) {
-                                if (detail != null) {
-                                  showModalBottomSheet(
+                                  .loadDetailStore(model.id)
+                                  .then((message) {
+                                if (message != null) {
+                                  showCupertinoDialog(
                                     context: context,
-                                    backgroundColor: Colors.transparent,
-                                    isScrollControlled: true,
                                     builder: (context) {
-                                      return StoreBottomSheet(store: model, detail: detail);
+                                      return AppDialog(
+                                        message: message,
+                                        actions: [
+                                          CupertinoDialogAction(
+                                            child: const Text(txtYes),
+                                            onPressed: () {
+                                              Navigator.pop(context);
+                                            },
+                                          ),
+                                        ],
+                                      );
                                     },
                                   );
-                                } else {}
+                                } else {
+                                  var detail =
+                                      context.read<StoreCubit>().detailStore;
+                                  if (detail == null) {
+                                    showCupertinoDialog(
+                                      context: context,
+                                      builder: (context) {
+                                        return AppDialog(
+                                          message: AppMessage(
+                                            type: AppMessageType.error,
+                                            title: txtErrorTitle,
+                                            content: 'Không có dữ liệu. Hãy thử lại!',
+                                          ),
+                                          actions: [
+                                            CupertinoDialogAction(
+                                              child: const Text(txtYes),
+                                              onPressed: () {
+                                                Navigator.pop(context);
+                                              },
+                                            ),
+                                          ],
+                                        );
+                                      },
+                                    );
+                                  } else {
+                                    showModalBottomSheet(
+                                      context: context,
+                                      backgroundColor: Colors.transparent,
+                                      isScrollControlled: true,
+                                      builder: (context) {
+                                        return StoreBottomSheet(
+                                          store: model,
+                                          detail: detail,
+                                        );
+                                      },
+                                    );
+                                  }
+                                }
                               });
                             },
                           ),

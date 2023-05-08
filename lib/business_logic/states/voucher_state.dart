@@ -1,4 +1,5 @@
 import 'package:flutter/foundation.dart';
+import 'package:member_app/exception/app_message.dart';
 
 import '../../presentation/res/strings/values.dart';
 import '../../data/models/voucher_model.dart';
@@ -15,9 +16,9 @@ class VoucherLoaded extends VoucherState {
   final List<VoucherModel> used;
 
   VoucherLoaded({
-    required this.list,
+    List<VoucherModel>? list,
     List<VoucherModel>? used,
-  }) : used = used ?? [];
+  }) : used = used ?? [], list = list ?? [];
 
   VoucherLoaded copyWith({
     List<VoucherModel>? list,
@@ -57,4 +58,12 @@ class VoucherLoaded extends VoucherState {
         )
         .toList();
   }
+}
+
+class VoucherFailure extends VoucherState {
+  final AppMessage message;
+
+  VoucherFailure({
+    required this.message,
+  });
 }

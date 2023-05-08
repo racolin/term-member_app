@@ -1,10 +1,10 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:member_app/business_logic/blocs/interval/interval_submit.dart';
+import 'package:member_app/data/models/store_detail_model.dart';
 import 'package:member_app/data/models/store_model.dart';
 
-import '../../data/models/store_detail_model.dart';
-import '../../exception/app_exception.dart';
 import '../../exception/app_message.dart';
+import '../../presentation/res/strings/values.dart';
 import '../repositories/store_repository.dart';
 import '../states/store_state.dart';
 
@@ -17,55 +17,72 @@ class StoreCubit extends Cubit<StoreState>
       : _repository = repository,
         super(StoreInitial()) {
     emit(StoreLoading());
-    try {
-      _repository.gets().then((list) {
-        emit(StoreLoaded(list: list));
-      });
-    } on AppException catch (ex) {
-      emit(StoreFailure(message: ex.message));
-    }
+    _repository.gets().then((res) {
+      if (res.type == AppMessageType.success) {
+        emit(StoreLoaded(list: res.data));
+      } else {
+        emit(StoreFailure(message: res.message));
+      }
+    });
   }
 
   // base method: return response model, use to avoid repeat code.
 
-  // api method
+  // action method, change state and return AppMessage?, null when success
 
   // get data method: return model if state is loaded, else return null
 
   // Action data
   Future<AppMessage?> reloadStores() async {
-    try {
-      var list = await _repository.gets();
-      emit(StoreLoaded(list: list));
-    } on AppException catch (ex) {
-      return ex.message;
+    var res = await _repository.gets();
+    if (res.type == AppMessageType.success) {
+      emit(StoreLoaded(list: res.data));
+      return null;
+    } else {
+      return res.message;
     }
-    return null;
   }
 
-  Future<StoreDetailModel?> getDetailStore(String id) async {
-    try {
-      return await _repository.getDetail(id: id);
-    } on AppException catch (ex) {
+  Future<AppMessage?> loadDetailStore(String id) async {
+    if (state is! StoreLoaded) {
+      return AppMessage(
+        type: AppMessageType.failure,
+        title: txtFailureTitle,
+        content: txtToFast,
+      );
+    }
+
+    var res = await _repository.getDetail(id: id);
+    if (res.type == AppMessageType.success) {
+      emit((state as StoreLoaded).copyWith(detail: res.data));
+      return null;
+    } else {
+      return res.message;
+    }
+  }
+
+  StoreDetailModel? get detailStore {
+    if (state is! StoreLoaded) {
       return null;
     }
-    return null;
+    return (state as StoreLoaded).detail;
   }
 
   // Action UI
-  AppMessage? selectStore(String id) {
-    if (state is StoreLoaded) {
-      if ((state as StoreLoaded).list.any((e) => e.id == id)) {
-        emit((state as StoreLoaded).copyWith(selectedId: id));
-        return null;
-      }
-    }
-    return AppMessage(
-      type: AppMessageType.failure,
-      title: 'Có lỗi',
-      content: 'Thao tác của bạn không được thực hiện',
-    );
-  }
+  // AppMessage? selectStore(String id) {
+  //   if (state is! StoreLoaded) {
+  //     return AppMessage(
+  //       type: AppMessageType.failure,
+  //       title: txtFailureTitle,
+  //       content: txtToFast,
+  //     );
+  //   }
+  //
+  //   if ((state as StoreLoaded).list.any((e) => e.id == id)) {
+  //     emit((state as StoreLoaded).copyWith(selectedId: id));
+  //     return null;
+  //   } else {}
+  // }
 
   @override
   Future<List<StoreModel>> submit([String? key]) async {

@@ -1,4 +1,5 @@
 import 'package:flutter/foundation.dart';
+import 'package:member_app/exception/app_message.dart';
 
 import '../../presentation/res/strings/values.dart';
 import '../../data/models/promotion_category_model.dart';
@@ -56,4 +57,12 @@ class PromotionLoaded extends PromotionState {
   List<PromotionModel> getOutStanding() {
     return promotions.where((e) => e.mark >= threshold).toList();
   }
+}
+
+class PromotionFailure extends PromotionState {
+  final AppMessage message;
+
+  PromotionFailure({
+    required this.message,
+  });
 }

@@ -223,7 +223,7 @@ class OtherBody extends StatelessWidget {
                     if (login) {
                       showCupertinoDialog(
                         context: context,
-                        builder: (context) => DialogWidget(
+                        builder: (context) => AppDialog(
                           message: AppMessage(
                             type: AppMessageType.info,
                             title: txtLogOut,

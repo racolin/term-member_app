@@ -4,11 +4,11 @@ import 'package:flutter/material.dart';
 import '../../exception/app_message.dart';
 import '../../presentation/res/dimen/dimens.dart';
 
-class DialogWidget extends StatelessWidget {
+class AppDialog extends StatelessWidget {
   final AppMessage message;
   final List<CupertinoDialogAction> actions;
 
-  const DialogWidget({
+  const AppDialog({
     Key? key,
     required this.message,
     this.actions = const [],

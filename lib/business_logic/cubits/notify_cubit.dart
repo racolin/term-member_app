@@ -12,46 +12,46 @@ class NotifyCubit extends Cubit<NotifyState> {
       : _repository = repository,
         super(NotifyInitial()) {
     emit(NotifyLoading());
-    try {
-      _repository.gets().then((list) {
-        emit(NotifyLoaded(list: list));
-      });
-    } on AppException catch (ex) {
-      emit(NotifyFailure(message: ex.message));
-    }
+    _repository.gets().then((res) {
+      if (res.type == AppMessageType.success) {
+        emit(NotifyLoaded(list: res.data));
+      } else {
+        emit(NotifyFailure(message: res.message));
+      }
+    });
   }
 
   // base method: return response model, use to avoid repeat code.
 
-  // api method
+  // action method, change state and return AppMessage?, null when success
 
   // get data method: return model if state is loaded, else return null
 
   // Action data
   Future<AppMessage?> reloadNotify() async {
-    try {
-      var list = await _repository.gets();
-      emit(NotifyLoaded(list: list));
-    } on AppException catch (ex) {
-      return ex.message;
+    var res = await _repository.gets();
+    if (res.type == AppMessageType.success) {
+      emit(NotifyLoaded(list: res.data));
+      return null;
+    } else {
+      return res.message;
     }
-    return null;
   }
 
   Future<AppMessage?> check(String id) async {
-    bool? check = await _repository.checkNotify(id: id);
-    if (check != null && check) {
-      var list = (state as NotifyLoaded).list;
-      var index = list.indexWhere((e) => e.id == id);
-      if (index != -1) {
-        emit(NotifyLoaded(list: list));
-        return null;
+    var res = await _repository.checkNotify(id: id);
+    if (res.type == AppMessageType.success) {
+      if (res.data) {
+        var list = (state as NotifyLoaded).list;
+        var index = list.indexWhere((e) => e.id == id);
+        if (index != -1) {
+          emit(NotifyLoaded(list: list));
+          return null;
+        }
       }
+      return null;
+    } else {
+      return res.message;
     }
-    return AppMessage(
-      type: AppMessageType.error,
-      title: 'Lỗi!',
-      content: 'Không thể tích thông báo',
-    );
   }
 }

@@ -2,7 +2,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../exception/app_message.dart';
 import '../../business_logic/states/voucher_state.dart';
-import '../../exception/app_exception.dart';
+import '../../presentation/res/strings/values.dart';
 import '../repositories/voucher_repository.dart';
 
 class VoucherCubit extends Cubit<VoucherState> {
@@ -12,67 +12,104 @@ class VoucherCubit extends Cubit<VoucherState> {
       : _repository = repository,
         super(VoucherInitial()) {
     emit(VoucherLoading());
-    try {
-      print('1213131313');
-      _repository.getsAvailable().then((list) {
+    var failure = 0;
+    var error = {};
+    _repository.getsAvailable().then((res) {
+      if (res.type == AppMessageType.success) {
         if (state is VoucherLoaded) {
-          emit((state as VoucherLoaded).copyWith(list: list));
+          emit((state as VoucherLoaded).copyWith(
+            list: res.data,
+          ));
         } else {
           emit(VoucherLoaded(
-            list: list,
+            list: res.data,
           ));
         }
-      });
-      _repository.getsUsed().then((list) {
+      } else {
+        failure++;
+        error['available'] = res.message.toString();
+        if (failure == 2) {
+          emit(
+            VoucherFailure(
+              message: AppMessage(
+                type: AppMessageType.error,
+                title: txtErrorTitle,
+                content: 'Có lỗi đã xảy ra khi tải voucher. Hãy thử lại!',
+                description: error.toString(),
+              ),
+            ),
+          );
+        }
+      }
+    });
+    _repository.getsUsed().then((res) {
+      if (res.type == AppMessageType.success) {
         if (state is VoucherLoaded) {
-          emit((state as VoucherLoaded).copyWith(used: list));
+          emit((state as VoucherLoaded).copyWith(
+            used: res.data,
+          ));
         } else {
           emit(VoucherLoaded(
-            used: list,
+            used: res.data,
             list: const [],
           ));
         }
-      });
-    } on AppException catch (ex) {}
+      } else {
+        failure++;
+        error['used'] = res.message.toString();
+        if (failure == 2) {
+          emit(
+            VoucherFailure(
+              message: AppMessage(
+                type: AppMessageType.error,
+                title: txtErrorTitle,
+                content: 'Có lỗi đã xảy ra khi tải voucher. Hãy thử lại!',
+                description: error.toString(),
+              ),
+            ),
+          );
+        }
+      }
+    });
   }
 
-  // base method: return response model, use to avoid repeat code.
+// base method: return response model, use to avoid repeat code.
 
-  // api method
+// action method, change state and return AppMessage?, null when success
 
-  // get data method: return model if state is loaded, else return null
+// get data method: return model if state is loaded, else return null
 
-  Future<AppMessage?> reloadVouchers() async {
-    try {
-      var list = await _repository.getsAvailable();
+  Future<AppMessage?> loadAvailableVouchers() async {
+    var res = await _repository.getsAvailable();
+    if (res.type == AppMessageType.success) {
       if (state is VoucherLoaded) {
-        emit((state as VoucherLoaded).copyWith(list: list));
+        emit((state as VoucherLoaded).copyWith(list: res.data));
       } else {
         emit(VoucherLoaded(
-          list: list,
+          list: res.data,
         ));
       }
-    } on AppException catch (ex) {
-      return ex.message;
+      return null;
+    } else {
+      return res.message;
     }
-    return null;
   }
 
-  Future<AppMessage?> getUsedVouchers() async {
-    try {
-      var list = await _repository.getsUsed();
+  Future<AppMessage?> loadUsedVouchers() async {
+    var res = await _repository.getsUsed();
+    if (res.type == AppMessageType.success) {
       if (state is VoucherLoaded) {
-        emit((state as VoucherLoaded).copyWith(used: list));
+        emit((state as VoucherLoaded).copyWith(used: res.data));
       } else {
         emit(VoucherLoaded(
-          used: list,
+          used: res.data,
           list: const [],
         ));
       }
-    } on AppException catch (ex) {
-      return ex.message;
+      return null;
+    } else {
+      return res.message;
     }
-    return null;
   }
 
   void clearUsedVouchers() {

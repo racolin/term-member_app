@@ -1,8 +1,8 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:member_app/exception/app_exception.dart';
 
 import '../../data/models/response_model.dart';
 import '../../exception/app_message.dart';
+import '../../presentation/res/strings/values.dart';
 import '../repositories/auth_repository.dart';
 import '../states/auth_state.dart';
 
@@ -15,29 +15,14 @@ class AuthCubit extends Cubit<AuthState> {
 
   // base method: return response model, use to avoid repeat code.
 
-  // api method
+  // action method, change state and return AppMessage?, null when success
 
-  // get data method: return model if state is loaded, else return null
-
-  // Action data
   Future<AppMessage?> login(String phone) async {
-    try {
-      ResponseModel<bool> result = await _repository.login(phone: phone);
-      if (result.type == ResponseModelType.failure) {
-        return result.message;
-      } else if (result.data) {
-
-      } else {
-
-      }
-      if (result == null) {
-        return AppMessage(
-          type: AppMessageType.error,
-          title: 'Lỗi',
-          content: 'Không thể đăng nhâp. Hãy thử lại!',
-        );
-      } else if (result) {
+    var res = await _repository.login(phone: phone);
+    if (res.type == ResponseModelType.success) {
+      if (res.data) {
         emit(AuthLogin(phone: phone));
+        return null;
       } else {
         return AppMessage(
           type: AppMessageType.error,
@@ -45,10 +30,9 @@ class AuthCubit extends Cubit<AuthState> {
           content: 'Số điện thoại không đúng!',
         );
       }
-    } on AppException catch (ex) {
-      return ex.message;
+    } else {
+      return res.message;
     }
-    return null;
   }
 
   Future<AppMessage?> register({
@@ -58,65 +42,56 @@ class AuthCubit extends Cubit<AuthState> {
     required String lastName,
     required int gender,
   }) async {
-    try {
-      bool? result = await _repository.register(
-        phone: phone,
-        dob: dob.millisecondsSinceEpoch,
-        firstName: firstName,
-        gender: gender,
-        lastName: lastName,
-      );
-      if (result == null) {
-        return AppMessage(
-          type: AppMessageType.error,
-          title: 'Trục trặc',
-          content: 'Không thể đăng ký. Hãy thử lại!',
-        );
-      } else if (result) {
+    var res = await _repository.register(
+      phone: phone,
+      dob: dob.millisecondsSinceEpoch,
+      firstName: firstName,
+      gender: gender,
+      lastName: lastName,
+    );
+    if (res.type == ResponseModelType.success) {
+      if (res.data) {
         emit(AuthLogin(phone: phone));
+        return null;
       } else {
         return AppMessage(
           type: AppMessageType.error,
-          title: 'Lỗi',
+          title: 'Có lỗi!',
           content: 'Không thể đăng ký. Hãy thử lại!',
         );
       }
-    } on AppException catch (ex) {
-      return ex.message;
+    } else {
+      return res.message;
     }
-    return null;
   }
 
   Future<AppMessage?> otpCheck(String otp) async {
     if (state is! AuthLogin) {
       return AppMessage(
-        type: AppMessageType.info,
-        title: 'Thông báo',
-        content: 'Giao diện chưa tải xong!',
+        type: AppMessageType.failure,
+        title: txtFailureTitle,
+        content: txtToFast,
       );
     }
-    try {
-      bool? result = await _repository.otpCheck(
-        phone: (state as AuthLogin).phone, otp: otp,
-      );
-      if (result == null) {
-        return AppMessage(
-          type: AppMessageType.failure,
-          title: 'Trục trặc',
-          content: 'Không thể kiểm tra OTP. Hãy thử lại!',
-        );
-      } else if (result) {
+
+    var res = await _repository.otpCheck(
+      phone: (state as AuthLogin).phone,
+      otp: otp,
+    );
+    if (res.type == ResponseModelType.success) {
+      if (res.data) {
         return null;
       } else {
         return AppMessage(
           type: AppMessageType.error,
-          title: 'Lỗi',
-          content: 'Không thể đăng ký. Hãy thử lại!',
+          title: 'Có lỗi!',
+          content: 'Không kiểm tra được mã otp.',
         );
       }
-    } on AppException catch (ex) {
-      return ex.message;
+    } else {
+      return res.message;
     }
-    return null;
   }
+
+// get data method: return model if state is loaded, else return null
 }

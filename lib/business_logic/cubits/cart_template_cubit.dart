@@ -5,6 +5,7 @@ import '../../business_logic/repositories/cart_template_repository.dart';
 import '../../business_logic/states/cart_template_state.dart';
 import '../../data/models/cart_template_model.dart';
 import '../../exception/app_message.dart';
+import '../../presentation/res/strings/values.dart';
 
 class CartTemplateCubit extends Cubit<CartTemplateState> {
   final CartTemplateRepository _repository;
@@ -15,43 +16,36 @@ class CartTemplateCubit extends Cubit<CartTemplateState> {
         super(CartTemplateInitial()) {
     emit(CartTemplateLoading());
 
-    try {
-      _repository.gets().then((map) {
+    _repository.gets().then((res) {
+      if (res.type == AppMessageType.success) {
         emit(CartTemplateLoaded(
-          list: map.value,
-          limit: map.key,
+          list: res.data.value,
+          limit: res.data.key,
         ));
-      });
-    } on AppException catch (ex) {
-    }
+      } else {
+        emit(CartTemplateFailure(message: res.message));
+      }
+    });
   }
 
   // base method: return response model, use to avoid repeat code.
 
-  // api method
+  // action method, change state and return AppMessage?, null when success
 
   // get data method: return model if state is loaded, else return null
 
   Future<AppMessage?> reloadCartTemplates() async {
-    if (state is! CartTemplateLoaded) {
-      return AppMessage(
-        type: AppMessageType.failure,
-        title: 'Cảnh báo',
-        content: 'Thao tác của bạn quá nhanh. Hãy thử lại!',
-      );
-    }
+    var res = await _repository.gets();
 
-    try {
-      var map = await _repository.gets();
+    if (res.type == AppMessageType.success) {
       emit(CartTemplateLoaded(
-        list: map.value,
-        limit: map.key,
+        list: res.data.value,
+        limit: res.data.key,
       ));
-    } on AppException catch (ex) {
-      return ex.message;
+      return null;
+    } else {
+      return res.message;
     }
-
-    return null;
   }
 
   Future<AppMessage?> editTemplate(
@@ -62,27 +56,20 @@ class CartTemplateCubit extends Cubit<CartTemplateState> {
     if (this.state is! CartTemplateLoaded) {
       return AppMessage(
         type: AppMessageType.failure,
-        title: 'Cảnh báo',
-        content: 'Thao tác của bạn quá nhanh. Hãy thử lại!',
+        title: txtFailureTitle,
+        content: txtToFast,
       );
     }
 
     var state = this.state as CartTemplateLoaded;
 
-    try {
-      bool? result = await _repository.edit(
-        id: id,
-        name: name,
-        products: products,
-      );
+    var res = await _repository.edit(
+      id: id,
+      name: name,
+      products: products,
+    );
 
-      if (result == null || !result) {
-        return AppMessage(
-          type: AppMessageType.error,
-          title: 'Lỗi',
-          content: 'Template chưa được sửa. Hãy thử lại!',
-        );
-      }
+    if (res.type == AppMessageType.success) {
       var list = state.list;
       int index = list.indexWhere((e) => e.id == id);
       if (index == -1) {
@@ -97,42 +84,34 @@ class CartTemplateCubit extends Cubit<CartTemplateState> {
         name: name,
       );
       emit(state.copyWith(list: list));
-    } on AppException catch (ex) {
-      return ex.message;
-    }
 
-    return null;
+      return null;
+    } else {
+      return res.message;
+    }
   }
 
   Future<AppMessage?> deleteCart(String id) async {
     if (this.state is! CartTemplateLoaded) {
       return AppMessage(
         type: AppMessageType.failure,
-        title: 'Cảnh báo',
-        content: 'Thao tác của bạn quá nhanh. Hãy thử lại!',
+        title: txtFailureTitle,
+        content: txtToFast,
       );
     }
 
     var state = this.state as CartTemplateLoaded;
 
-    try {
-      var result = await _repository.delete(id: id);
+    var res = await _repository.delete(id: id);
 
-      if (result == null || !result) {
-        return AppMessage(
-          type: AppMessageType.error,
-          title: 'Lỗi',
-          content: 'Template chưa được xoá. Hãy thử lại!',
-        );
-      }
-
+    if (res.type == AppMessageType.success) {
       var list = state.list;
       int index = list.indexWhere((e) => e.id == id);
       if (index == -1) {
         return AppMessage(
           type: AppMessageType.error,
-          title: 'Lỗi',
-          content: 'Không tìm thấy mã của template muốn xoá.',
+          title: txtErrorTitle,
+          content: 'Không tìm thấy mã của đơn hàng mẫu muốn xoá.',
         );
       }
 
@@ -141,11 +120,10 @@ class CartTemplateCubit extends Cubit<CartTemplateState> {
       emit(state.copyWith(
         list: list,
       ));
-    } on AppException catch (ex) {
-      return ex.message;
+      return null;
+    } else {
+      return res.message;
     }
-
-    return null;
   }
 
   Future<AppMessage?> createCart(
@@ -155,64 +133,48 @@ class CartTemplateCubit extends Cubit<CartTemplateState> {
     if (this.state is! CartTemplateLoaded) {
       return AppMessage(
         type: AppMessageType.failure,
-        title: 'Cảnh báo',
-        content: 'Thao tác của bạn quá nhanh. Hãy thử lại!',
+        title: txtFailureTitle,
+        content: txtToFast,
       );
     }
 
     var state = this.state as CartTemplateLoaded;
 
-    try {
-      String? id = await _repository.create(
-        name: name,
-        products: products,
-      );
-      if (id == null) {
-        return AppMessage(
-          type: AppMessageType.failure,
-          title: 'Lỗi',
-          content: 'Cart Template này chưa được tạo. Hãy thử lại!',
-        );
-      }
+    var res = await _repository.create(
+      name: name,
+      products: products,
+    );
 
+    if (res.type == AppMessageType.success) {
       var list = state.list;
       list.add(
         CartTemplateModel(
-          id: id,
+          id: res.data,
           name: name,
           index: list.length,
           products: products,
         ),
       );
       emit(CartTemplateLoaded(list: list));
-    } on AppException catch (ex) {
-      return ex.message;
+      return null;
+    } else {
+      return res.message;
     }
-
-    return null;
   }
 
   Future<AppMessage?> arrangeCart(List<String> ids) async {
     if (this.state is! CartTemplateLoaded) {
       return AppMessage(
         type: AppMessageType.failure,
-        title: 'Cảnh báo',
-        content: 'Thao tác của bạn quá nhanh. Hãy thử lại!',
+        title: txtFailureTitle,
+        content: txtToFast,
       );
     }
 
     var state = this.state as CartTemplateLoaded;
 
-    try {
-      bool? result = await _repository.arrange(ids: ids);
-      if (result == null || !result) {
-        return AppMessage(
-          type: AppMessageType.failure,
-          title: 'Lỗi',
-          content: 'Cart Templates chưa được sắp xếp. Hãy thử lại!',
-        );
-      }
-
+    var res = await _repository.arrange(ids: ids);
+    if (res.type == AppMessageType.success) {
       var list = <CartTemplateModel>[];
       for (int i = 0; i < ids.length; i++) {
         int index = state.list.indexWhere((e) => ids[i] == e.id);
@@ -220,16 +182,17 @@ class CartTemplateCubit extends Cubit<CartTemplateState> {
           return AppMessage(
             type: AppMessageType.failure,
             title: 'Lỗi',
-            content: 'Dữ liệu trên giao diện không đúng. Hãy thoát ra và vào lại!',
+            content:
+                'Dữ liệu trên giao diện không đúng. Hãy thoát ra và vào lại!',
           );
         }
         list.add(state.list[index].copyWith(index: i));
       }
       emit(CartTemplateLoaded(list: list));
-    } on AppException catch (ex) {
-      return ex.message;
-    }
 
-    return null;
+      return null;
+    } else {
+      return res.message;
+    }
   }
 }

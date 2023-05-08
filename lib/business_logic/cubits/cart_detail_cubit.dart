@@ -15,42 +15,28 @@ class CartDetailCubit extends Cubit<CartDetailState> {
         super(CartDetailInitial()) {
     emit(CartDetailLoading());
 
-    try {
-      _repository.getDetailById(id: id).then((detail) {
-        if (detail != null) {
-          emit(CartDetailLoaded(cart: detail));
-        } else {
-          emit(
-            CartDetailFailure(
-              message: AppMessage(
-                type: AppMessageType.failure,
-                title: 'Không tìm thấy',
-                content: 'Không tìm được chi tiết của đơn hàng',
-              ),
-            ),
-          );
-        }
-      });
-    } on AppException catch (ex) {}
+    _repository.getDetailById(id: id).then((res) {
+      if (res.type == AppMessageType.success) {
+        emit(CartDetailLoaded(cart: res.data));
+      } else {
+        emit(CartDetailFailure(message: res.message));
+      }
+    });
   }
 
   // base method: return response model, use to avoid repeat code.
 
-  // api method
+  // action method, change state and return AppMessage?, null when success
 
   // get data method: return model if state is loaded, else return null
 
   Future<AppMessage?> review(int rate, String review) async {
-    bool? result = await _repository.review(rate: rate, review: review);
+    var res =  await _repository.review(rate: rate, review: review);
 
-    if (result == null || !result) {
-      return AppMessage(
-        type: AppMessageType.failure,
-        title: 'Có lỗi!',
-        content:
-            'Có lỗi xảy ra khi đánh giá đơn hàng. Bạn có thể đánh giá lại!',
-      );
+    if (res.type == AppMessageType.success) {
+      return null;
+    } else {
+      return res.message;
     }
-    return null;
   }
 }

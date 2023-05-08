@@ -1,4 +1,5 @@
 import 'package:member_app/data/models/paging_model.dart';
+import 'package:member_app/exception/app_message.dart';
 
 import '../../data/models/cart_model.dart';
 import '../../data/models/cart_status_model.dart';
@@ -29,6 +30,13 @@ class CartsLoaded extends CartsState {
   }
 }
 
+class CartsFailure extends CartsState {
+  final AppMessage message;
+
+  CartsFailure({
+    required this.message,
+  });
+}
 
 // class CartsLoaded extends CartsState {
 //   final List<MapEntry<CartStatusModel, PagingModel<CartModel>>> listCarts;

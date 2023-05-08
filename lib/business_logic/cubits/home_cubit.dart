@@ -4,6 +4,7 @@ import 'package:member_app/business_logic/repositories/account_repository.dart';
 import '../../data/repositories/storage/account_storage_repository.dart';
 import '../../exception/app_exception.dart';
 import '../../exception/app_message.dart';
+import '../../presentation/res/strings/values.dart';
 import '../states/home_state.dart';
 
 class HomeCubit extends Cubit<HomeState> {
@@ -24,7 +25,7 @@ class HomeCubit extends Cubit<HomeState> {
 
   // base method: return response model, use to avoid repeat code.
 
-  // api method
+  // action method, change state and return AppMessage?, null when success
 
   // get data method: return model if state is loaded, else return null
 
@@ -39,20 +40,16 @@ class HomeCubit extends Cubit<HomeState> {
   }
 
   // Action UI
-  AppException? setBody(HomeBodyType type) {
+  AppMessage? setBody(HomeBodyType type) {
     if (state is! HomeLoaded) {
-      return AppException(
-        message: AppMessage(
-          type: AppMessageType.failure,
-          title: 'Đợi',
-          content: 'Thao tác chưa được xửt lý vì quá nhanh.',
-        ),
+      return AppMessage(
+        type: AppMessageType.failure,
+        title: txtFailureTitle,
+        content: txtToFast,
       );
     }
 
-    emit((state as HomeLoaded).copyWith(
-      type: type,
-    ));
+    emit((state as HomeLoaded).copyWith(type: type));
 
     return null;
   }

@@ -1,4 +1,5 @@
 import 'package:flutter/foundation.dart';
+import 'package:member_app/data/models/store_detail_model.dart';
 import 'package:member_app/exception/app_message.dart';
 
 import '../../data/models/news_model.dart';
@@ -13,20 +14,20 @@ class StoreLoading extends StoreState {}
 
 class StoreLoaded extends StoreState {
   final List<StoreModel> list;
-  final String? selectedId;
+  final StoreDetailModel? detail;
 
   StoreLoaded({
     required this.list,
-    this.selectedId,
+    this.detail,
   });
 
   StoreLoaded copyWith({
     List<StoreModel>? list,
-    String? selectedId,
+    StoreDetailModel? detail,
   }) {
     return StoreLoaded(
       list: list ?? this.list,
-      selectedId: selectedId ?? this.selectedId,
+      detail: detail ?? this.detail,
     );
   }
 }

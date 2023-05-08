@@ -28,6 +28,6 @@ class CartDetailFailure extends CartDetailState {
   final AppMessage? message;
 
   CartDetailFailure({
-    this.message,
+    required this.message,
   });
 }

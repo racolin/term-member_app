@@ -12,11 +12,16 @@ class PromotionCubit extends Cubit<PromotionState> {
       : _repository = repository,
         super(PromotionInitial()) {
     emit(PromotionLoading());
-    try {
-      _repository.gets().then((map) {
+    _repository.gets().then((res) {
+      if (res.type == AppMessageType.success) {
+        var map = res.data;
         if (state is PromotionLoaded) {
-          emit((state as PromotionLoaded).copyWith(
-            promotions: map.value, threshold: map.key,),);
+          emit(
+            (state as PromotionLoaded).copyWith(
+              promotions: map.value,
+              threshold: map.key,
+            ),
+          );
         } else {
           emit(PromotionLoaded(
             promotions: map.value,
@@ -24,31 +29,46 @@ class PromotionCubit extends Cubit<PromotionState> {
             threshold: map.key,
           ));
         }
-      });
-      _repository.getCategories().then((list) {
+      } else {
+        emit(PromotionFailure(message: res.message));
+        return;
+      }
+    });
+    _repository.getCategories().then((res) {
+      if (res.type == AppMessageType.success) {
+        var list = res.data;
         if (state is PromotionLoaded) {
           emit((state as PromotionLoaded).copyWith(categories: list));
         } else {
           emit(PromotionLoaded(
-            categories: list, promotions: const [],threshold: 0,
+            categories: list,
+            promotions: const [],
+            threshold: 0,
           ));
         }
-      });
-    } on AppException catch (ex) {}
+      } else {
+        emit(PromotionFailure(message: res.message));
+      }
+    });
   }
 
   // base method: return response model, use to avoid repeat code.
 
-  // api method
+  // action method, change state and return AppMessage?, null when success
 
   // get data method: return model if state is loaded, else return null
 
   Future<AppMessage?> reloadPromotions() async {
-    try {
-      var map = await _repository.gets();
+    var resStatus = await _repository.gets();
+    if (resStatus.type == AppMessageType.success) {
+      var map = resStatus.data;
       if (state is PromotionLoaded) {
-        emit((state as PromotionLoaded).copyWith(
-          promotions: map.value, threshold: map.key,),);
+        emit(
+          (state as PromotionLoaded).copyWith(
+            promotions: map.value,
+            threshold: map.key,
+          ),
+        );
       } else {
         emit(PromotionLoaded(
           promotions: map.value,
@@ -56,18 +76,25 @@ class PromotionCubit extends Cubit<PromotionState> {
           threshold: map.key,
         ));
       }
-      _repository.getCategories().then((list) {
-        if (state is PromotionLoaded) {
-          emit((state as PromotionLoaded).copyWith(categories: list));
-        } else {
-          emit(PromotionLoaded(
-            categories: list, promotions: const [],threshold: 0,
-          ));
-        }
-      });
-    } on AppException catch (ex) {
-      return ex.message;
+    } else {
+      return resStatus.message;
     }
-    return null;
+    var resList = await _repository.getCategories();
+    if (resList.type == AppMessageType.success) {
+      var list = resList.data;
+
+      if (state is PromotionLoaded) {
+        emit((state as PromotionLoaded).copyWith(categories: list));
+      } else {
+        emit(PromotionLoaded(
+          categories: list,
+          promotions: const [],
+          threshold: 0,
+        ));
+      }
+      return null;
+    } else {
+      return resList.message;
+    }
   }
 }

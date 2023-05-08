@@ -1,9 +1,10 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:member_app/business_logic/repositories/member_repository.dart';
+import 'package:member_app/data/models/response_model.dart';
 
-import '../../exception/app_exception.dart';
-import '../../exception/app_message.dart';
+import '../../../business_logic/repositories/member_repository.dart';
 import '../../data/models/app_bar_model.dart';
+import '../../exception/app_message.dart';
+import '../../presentation/res/strings/values.dart';
 import '../states/app_bar_state.dart';
 
 class AppBarCubit extends Cubit<AppBarState> {
@@ -19,39 +20,46 @@ class AppBarCubit extends Cubit<AppBarState> {
       voucherAmount: 0,
       notifyAmount: 0,
     );
-    try {
-      _repository.getAppBar().then((appBar) {
-        appBar ??= model;
-        emit(AppBarLoaded(appBar: appBar));
-      });
-    } on AppException catch (ex) {
-      emit(AppBarLoaded(appBar: model));
-    }
+    _repository.getAppBar().then((res) {
+      if (res.type == ResponseModelType.success) {
+        emit(AppBarLoaded(appBar: res.data));
+      } else {
+        emit(AppBarLoaded(appBar: model));
+        // emit(AppBarFailure(message: res.message));
+      }
+    });
   }
-
 
   // base method: return response model, use to avoid repeat code.
 
-  // api method
-
-  // get data method: return model if state is loaded, else return null
-  Future<>
+  // action method, change state and return AppMessage?, null when success
 
   Future<AppMessage?> reloadAppBar() async {
-    try {
-      var appBar = await _repository.getAppBar();
-
-      appBar ??= const AppBarModel(
-        greeting: 'Xin chào!',
-        cartTemplateAmount: 0,
-        voucherAmount: 0,
-        notifyAmount: 0,
+    if (state is! AppBarLoaded) {
+      return AppMessage(
+        type: AppMessageType.failure,
+        title: txtFailureTitle,
+        content: txtToFast,
       );
-      emit(AppBarLoaded(appBar: appBar));
-    } on AppException catch (ex) {
-      return ex.message;
     }
 
+    var res = await _repository.getAppBar();
+
+    if (res.type == ResponseModelType.success) {
+      emit(AppBarLoaded(appBar: res.data));
+      return null;
+    } else {
+      return res.message;
+    }
+  }
+
+  // get data method: return model if state is loaded, else return null
+
+  AppBarModel? get appBar {
+    if (state is AppBarLoaded) {
+      return (state as AppBarLoaded).appBar;
+    }
     return null;
   }
+
 }

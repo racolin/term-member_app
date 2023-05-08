@@ -13,30 +13,30 @@ class NewsCubit extends Cubit<NewsState> {
       : _repository = repository,
         super(NewsInitial()) {
     emit(NewsLoading());
-    try {
-      _repository.gets().then((list) {
-        emit(NewsLoaded(list: list, index: 0));
-      });
-    } on AppException catch (ex) {
-      emit(NewsFailure(message: ex.message));
-    }
+    _repository.gets().then((res) {
+      if (res.type == AppMessageType.success) {
+        emit(NewsLoaded(list: res.data, index: 0));
+      } else {
+        emit(NewsFailure(message: res.message));
+      }
+    });
   }
 
   // base method: return response model, use to avoid repeat code.
 
-  // api method
+  // action method, change state and return AppMessage?, null when success
 
   // get data method: return model if state is loaded, else return null
 
   // Action data
   Future<AppMessage?> reloadNews() async {
-    try {
-      var list = await _repository.gets();
-      emit(NewsLoaded(list: list, index: 0));
-    } on AppException catch (ex) {
-      return ex.message;
-    }
-    return null;
+      var res = await _repository.gets();
+      if (res.type == AppMessageType.success) {
+        emit(NewsLoaded(list: res.data, index: 0));
+        return null;
+      } else {
+        return res.message;
+      }
   }
 
   // Action UI

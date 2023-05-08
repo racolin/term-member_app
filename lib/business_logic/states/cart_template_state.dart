@@ -1,3 +1,5 @@
+import 'package:member_app/exception/app_message.dart';
+
 import '../../data/models/cart_template_model.dart';
 
 abstract class CartTemplateState {}
@@ -26,4 +28,12 @@ class CartTemplateLoaded extends CartTemplateState {
       limit: limit ?? this.limit,
     );
   }
+}
+
+class CartTemplateFailure extends CartTemplateState {
+  final AppMessage message;
+
+  CartTemplateFailure({
+    required this.message,
+  });
 }

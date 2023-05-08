@@ -96,7 +96,17 @@ const txtConfirm = 'Đồng ý';
 const txtSendReview = 'Gửi đánh giá';
 const txtProduct = 'sản phẩm';
 
+const txtFailureTitle = 'Thất bại!';
+const txtSuccessTitle = 'Thành công!';
+const txtNotifyTitle = 'Thông báo!';
+const txtErrorTitle = 'Có lỗi!';
+
+const txtToFast = 'Thao tác quá nhanh, hãy đợi và thử lại!';
+
+
+// assets
 const assetDefaultIcon = 'assets/images/icon_default.png';
 const assetDefaultImage = 'assets/images/image_default.png';
 const assetDeliveryImage = 'assets/images/image_delivery.jpeg';
 const assetTakeAwayImage = 'assets/images/image_take_away.png';
+

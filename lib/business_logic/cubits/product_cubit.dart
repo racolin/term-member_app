@@ -7,6 +7,7 @@ import '../../business_logic/repositories/product_repository.dart';
 import '../../business_logic/states/product_state.dart';
 import '../../exception/app_exception.dart';
 import '../../exception/app_message.dart';
+import '../../presentation/res/strings/values.dart';
 import '../blocs/interval/interval_submit.dart';
 
 class ProductCubit extends Cubit<ProductState>
@@ -18,8 +19,9 @@ class ProductCubit extends Cubit<ProductState>
   })  : _repository = repository,
         super(ProductInitial()) {
     emit(ProductLoading());
-    try {
-      _repository.gets().then((list) {
+    _repository.gets().then((res) {
+      if (res.type == AppMessageType.success) {
+        var list = res.data;
         if (state is ProductLoaded) {
           emit((state as ProductLoaded).copyWith(list: list));
         } else {
@@ -27,8 +29,15 @@ class ProductCubit extends Cubit<ProductState>
             list: list,
           ));
         }
-      });
-      _repository.getsSuggestion().then((list) {
+      } else {
+        emit(ProductLoaded(
+          list: const [],
+        ));
+      }
+    });
+    _repository.getsSuggestion().then((res) {
+      if (res.type == AppMessageType.success) {
+        var list = res.data;
         if (state is ProductLoaded) {
           emit((state as ProductLoaded).copyWith(suggestion: list));
         } else {
@@ -36,8 +45,12 @@ class ProductCubit extends Cubit<ProductState>
             suggestion: list,
           ));
         }
-      });
-      _repository.getCategories().then((listType) {
+      } else {}
+    });
+    _repository.getCategories().then((res) {
+      if (res.type == AppMessageType.success) {
+        var listType = res.data;
+
         if (state is ProductLoaded) {
           emit((state as ProductLoaded).copyWith(listType: listType));
         } else {
@@ -45,8 +58,11 @@ class ProductCubit extends Cubit<ProductState>
             listType: listType,
           ));
         }
-      });
-      _repository.getOptions().then((listOption) {
+      } else {}
+    });
+    _repository.getOptions().then((res) {
+      if (res.type == AppMessageType.success) {
+        var listOption = res.data;
         if (state is ProductLoaded) {
           emit((state as ProductLoaded).copyWith(listOption: listOption));
         } else {
@@ -54,26 +70,34 @@ class ProductCubit extends Cubit<ProductState>
             listOption: listOption,
           ));
         }
-      });
-    } on AppException catch (ex) {}
+      } else {}
+    });
   }
 
   // base method: return response model, use to avoid repeat code.
 
-  // api method
+  // action method, change state and return AppMessage?, null when success
 
   // get data method: return model if state is loaded, else return null
 
   Future<AppMessage?> reloadData() async {
     try {
-      var list = await _repository.gets();
-      var listOption = await _repository.getOptions();
-      var listType = await _repository.getCategories();
-      emit(ProductLoaded(
-        list: list,
-        listOption: listOption,
-        listType: listType,
-      ));
+      var resList = await _repository.gets();
+      var resListOption = await _repository.getOptions();
+      var resListType = await _repository.getCategories();
+      if (resList.type == AppMessageType.success) {
+        var listOption = resListOption.type == AppMessageType.success
+            ? resListOption.data
+            : null;
+        var listType = resListType.type == AppMessageType.success
+            ? resListType.data
+            : null;
+        emit(ProductLoaded(
+          list: resList.data,
+          listOption: listOption,
+          listType: listType,
+        ));
+      } else {}
     } on AppException catch (ex) {
       return ex.message;
     }
@@ -81,21 +105,22 @@ class ProductCubit extends Cubit<ProductState>
   }
 
   Future<AppMessage?> loadFavorites() async {
-    if (state is ProductLoaded) {
-      try {
-        var list = await _repository.getFavorites();
-        emit((state as ProductLoaded).copyWith(favorites: list));
-      } on AppException catch (ex) {
-        return ex.message;
-      }
-    } else {
+    if (state is! ProductLoaded) {
       return AppMessage(
         type: AppMessageType.failure,
-        title: 'Hãy đợi',
-        content: 'Thao tác của bạn quá nhanh. Hãy thử lại!',
+        title: txtFailureTitle,
+        content: txtToFast,
       );
     }
-    return null;
+
+    var res = await _repository.getFavorites();
+    if (res.type == AppMessageType.success) {
+      var list = res.data;
+      emit((state as ProductLoaded).copyWith(favorites: list));
+      return null;
+    } else {
+      return res.message;
+    }
   }
 
   AppMessage? setUnavailable({
@@ -103,21 +128,22 @@ class ProductCubit extends Cubit<ProductState>
     required List<String> categories,
     required List<String> options,
   }) {
-    if (state is ProductLoaded) {
-      emit(
-        (state as ProductLoaded).copyWith(
-          unavailableList: products,
-          unavailableListOption: options,
-          unavailableListType: categories,
-        ),
+    if (state is! ProductLoaded) {
+      return AppMessage(
+        type: AppMessageType.failure,
+        title: txtFailureTitle,
+        content: txtToFast,
       );
-      return null;
     }
-    return AppMessage(
-      type: AppMessageType.failure,
-      title: 'Xảy ra lỗi',
-      content: 'Không thể lọc sản sẩm theo cửa hàng.',
+
+    emit(
+      (state as ProductLoaded).copyWith(
+        unavailableList: products,
+        unavailableListOption: options,
+        unavailableListType: categories,
+      ),
     );
+    return null;
   }
 
   @override

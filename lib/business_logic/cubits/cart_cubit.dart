@@ -1,4 +1,5 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:member_app/data/models/response_model.dart';
 
 import '../../data/models/cart_model.dart';
 import '../../exception/app_exception.dart';
@@ -7,6 +8,7 @@ import '../../data/models/store_detail_model.dart';
 import '../../data/models/store_model.dart';
 import '../../data/models/voucher_model.dart';
 import '../../exception/app_message.dart';
+import '../../presentation/res/strings/values.dart';
 import '../repositories/cart_repository.dart';
 import '../states/cart_state.dart';
 
@@ -51,7 +53,21 @@ class CartCubit extends Cubit<CartState> {
 
   // base method: return response model, use to avoid repeat code.
 
-  // api method
+  Future<ResponseModel<CartDetailModel>> _checkVoucher(
+    String voucherId,
+    int categoryId,
+    List<CartProductModel> products,
+  ) async {
+    var res = await _repository.checkVoucher(
+      voucherId: voucherId,
+      categoryId: categoryId,
+      products: products,
+    );
+
+    return res;
+  }
+
+  // action method, change state and return AppMessage?, null when success
 
   // get data method: return model if state is loaded, else return null
 
@@ -59,8 +75,8 @@ class CartCubit extends Cubit<CartState> {
     if (this.state is! CartLoaded) {
       return AppMessage(
         type: AppMessageType.failure,
-        title: 'Hãy đợi',
-        content: 'Thao tác của bạn quá nhanh',
+        title: txtFailureTitle,
+        content: txtToFast,
       );
     }
 
@@ -74,13 +90,14 @@ class CartCubit extends Cubit<CartState> {
       );
     }
 
-    try {
-      CartDetailModel checked = await _checkVoucher(
-        voucher.id,
-        state.categoryId!.index,
-        state.products,
-      );
+    var res = await _checkVoucher(
+      voucher.id,
+      state.categoryId!.index,
+      state.products,
+    );
 
+    if (res.type == AppMessageType.success) {
+      var checked = res.data;
       var products = state.products.map((product) {
         int index = checked.products.indexWhere((e) => product.id == e.id);
 
@@ -96,41 +113,18 @@ class CartCubit extends Cubit<CartState> {
         fee: checked.fee,
         products: products,
       ));
-    } on AppException catch (ex) {
-      return ex.message;
+      return null;
+    } else {
+      return res.message;
     }
-    return null;
-  }
-
-  Future<CartDetailModel> _checkVoucher(
-    String voucherId,
-    int categoryId,
-    List<CartProductModel> products,
-  ) async {
-    CartDetailModel? checked = await _repository.checkVoucher(
-      voucherId: voucherId,
-      categoryId: categoryId,
-      products: products,
-    );
-
-    if (checked == null) {
-      throw AppException(
-        message: AppMessage(
-          type: AppMessageType.error,
-          title: 'Có lỗi!',
-          content: 'Voucher của bạn chưa được kiểm tra. Hãy thử lại!',
-        ),
-      );
-    }
-    return checked;
   }
 
   Future<AppMessage?> create() async {
     if (this.state is! CartLoaded) {
       return AppMessage(
         type: AppMessageType.failure,
-        title: 'Hãy đợi',
-        content: 'Thao tác của bạn quá nhanh',
+        title: txtFailureTitle,
+        content: txtToFast,
       );
     }
 
@@ -144,47 +138,37 @@ class CartCubit extends Cubit<CartState> {
         state.receiver == '') {
       return AppMessage(
         type: AppMessageType.failure,
-        title: 'Chưa đủ thông tin',
+        title: txtFailureTitle,
         content: 'Bạn chưa điền đầy đủ thông tin đơn hàng!',
       );
     }
-    try {
-      String? id = await _repository.create(
-        categoryId: state.categoryId!.index,
-        payType: state.payType!,
-        phone: state.phone!,
-        receiver: state.receiver!,
-        products: state.products,
-        addressName: '${state.addressName}|${state.addressDescription}',
-        voucherId: state.voucher?.id,
-      );
+    var res = await _repository.create(
+      categoryId: state.categoryId!.index,
+      payType: state.payType!,
+      phone: state.phone!,
+      receiver: state.receiver!,
+      products: state.products,
+      addressName: '${state.addressName}|${state.addressDescription}',
+      voucherId: state.voucher?.id,
+    );
 
-      if (id != null) {
-        return AppMessage(
-          type: AppMessageType.success,
-          title: 'Thành công',
-          content: 'Bạn đã đặt hàng thành công!',
-        );
-      }
-
+    if (res.type == AppMessageType.success) {
       return AppMessage(
-        type: AppMessageType.error,
-        title: 'Lỗi!',
-        content: 'Đơn hàng gặp trục trặc. Vui lòng thử lại!',
+        type: AppMessageType.success,
+        title: 'Thành công',
+        content: 'Bạn đã đặt hàng thành công!',
       );
-    } on AppException catch (ex) {
-      return ex.message;
+    } else {
+      return res.message;
     }
-
-    return null;
   }
 
   AppMessage? setAddress(String addressName, String addressDescription) {
     if (this.state is! CartLoaded) {
       return AppMessage(
         type: AppMessageType.failure,
-        title: 'Hãy đợi',
-        content: 'Thao tác của bạn quá nhanh',
+        title: txtFailureTitle,
+        content: txtToFast,
       );
     }
 
@@ -202,8 +186,8 @@ class CartCubit extends Cubit<CartState> {
     if (this.state is! CartLoaded) {
       return AppMessage(
         type: AppMessageType.failure,
-        title: 'Hãy đợi',
-        content: 'Thao tác của bạn quá nhanh',
+        title: txtFailureTitle,
+        content: txtToFast,
       );
     }
 
@@ -221,8 +205,8 @@ class CartCubit extends Cubit<CartState> {
     if (this.state is! CartLoaded) {
       return AppMessage(
         type: AppMessageType.failure,
-        title: 'Hãy đợi',
-        content: 'Thao tác của bạn quá nhanh',
+        title: txtFailureTitle,
+        content: txtToFast,
       );
     }
 
@@ -240,8 +224,8 @@ class CartCubit extends Cubit<CartState> {
     if (this.state is! CartLoaded) {
       return AppMessage(
         type: AppMessageType.failure,
-        title: 'Hãy đợi',
-        content: 'Thao tác của bạn quá nhanh',
+        title: txtFailureTitle,
+        content: txtToFast,
       );
     }
 
@@ -258,8 +242,8 @@ class CartCubit extends Cubit<CartState> {
     if (this.state is! CartLoaded) {
       return AppMessage(
         type: AppMessageType.failure,
-        title: 'Hãy đợi',
-        content: 'Thao tác của bạn quá nhanh',
+        title: txtFailureTitle,
+        content: txtToFast,
       );
     }
 
@@ -276,8 +260,8 @@ class CartCubit extends Cubit<CartState> {
     if (this.state is! CartLoaded) {
       return AppMessage(
         type: AppMessageType.failure,
-        title: 'Hãy đợi',
-        content: 'Thao tác của bạn quá nhanh',
+        title: txtFailureTitle,
+        content: txtToFast,
       );
     }
 
@@ -294,8 +278,8 @@ class CartCubit extends Cubit<CartState> {
     if (this.state is! CartLoaded) {
       return AppMessage(
         type: AppMessageType.failure,
-        title: 'Hãy đợi',
-        content: 'Thao tác của bạn quá nhanh',
+        title: txtFailureTitle,
+        content: txtToFast,
       );
     }
 
@@ -312,30 +296,35 @@ class CartCubit extends Cubit<CartState> {
     if (this.state is! CartLoaded) {
       return AppMessage(
         type: AppMessageType.failure,
-        title: 'Hãy đợi',
-        content: 'Thao tác của bạn quá nhanh',
+        title: txtFailureTitle,
+        content: txtToFast,
       );
     }
 
     var state = this.state as CartLoaded;
 
     if (state.voucher != null) {
-      try {
-        CartDetailModel checked = await _checkVoucher(
-          state.voucher!.id,
-          categoryId,
-          state.products,
-        );
+      var res = await _checkVoucher(
+        state.voucher!.id,
+        categoryId,
+        state.products,
+      );
 
+      if (res.type == AppMessageType.success) {
         emit(state.copyWith(
           categoryId: DeliveryType.values[categoryId],
           fee: fee,
         ));
-      } on AppException catch (ex) {
-        return ex.message;
+        return null;
+      } else {
+        return res.message;
       }
+    } else {
+      emit(state.copyWith(
+        categoryId: DeliveryType.values[categoryId],
+        // fee: fee,
+      ));
+      return null;
     }
-
-    return null;
   }
 }

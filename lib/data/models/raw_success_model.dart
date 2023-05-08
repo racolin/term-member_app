@@ -1,8 +1,8 @@
-class RawResponseModel {
+class RawSuccessModel {
   final bool? success;
   final dynamic data;
 
-  const RawResponseModel({
+  const RawSuccessModel({
     required this.success,
     required this.data,
   });
@@ -14,8 +14,8 @@ class RawResponseModel {
     };
   }
 
-  factory RawResponseModel.fromMap(Map<String, dynamic> map) {
-    return RawResponseModel(
+  factory RawSuccessModel.fromMap(Map<String, dynamic> map) {
+    return RawSuccessModel(
       success: map['success'] ?? false,
       data: map['data'],
     );

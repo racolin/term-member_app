@@ -1,8 +1,8 @@
-class RawResponseModel {
+class RawFailureModel {
   final String? error;
   final String? message;
 
-  const RawResponseModel({
+  const RawFailureModel({
     required this.error,
     required this.message,
   });
@@ -14,8 +14,8 @@ class RawResponseModel {
     };
   }
 
-  factory RawResponseModel.fromMap(Map<String, dynamic> map) {
-    return RawResponseModel(
+  factory RawFailureModel.fromMap(Map<String, dynamic> map) {
+    return RawFailureModel(
       error: map['error'],
       message: map['message'],
     );

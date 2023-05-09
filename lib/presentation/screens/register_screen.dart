@@ -1,15 +1,21 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:intl/intl.dart';
 import 'package:member_app/presentation/screens/otp_screen.dart';
 
 import '../../business_logic/cubits/auth_cubit.dart';
 import '../res/dimen/dimens.dart';
 import '../res/strings/values.dart';
 
-class RegisterScreen extends StatelessWidget {
+class RegisterScreen extends StatefulWidget {
   const RegisterScreen({Key? key}) : super(key: key);
 
+  @override
+  State<RegisterScreen> createState() => _RegisterScreenState();
+}
+
+class _RegisterScreenState extends State<RegisterScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -70,7 +76,11 @@ class RegisterForm extends StatefulWidget {
 }
 
 class _RegisterFormState extends State<RegisterForm> {
-  int gender = 0;
+  String _phone = '';
+  String _firstName = '';
+  String _lastName = '';
+  int _gender = 0;
+  int _dob = 0;
 
   @override
   Widget build(BuildContext context) {
@@ -119,6 +129,9 @@ class _RegisterFormState extends State<RegisterForm> {
                     child: TextField(
                       keyboardType: TextInputType.phone,
                       style: Theme.of(context).textTheme.bodyLarge,
+                      onChanged: (value) {
+                        _phone = value;
+                      },
                       decoration: const InputDecoration(
                         isDense: true,
                         contentPadding: EdgeInsets.zero,
@@ -160,6 +173,9 @@ class _RegisterFormState extends State<RegisterForm> {
                     child: TextField(
                       keyboardType: TextInputType.name,
                       style: Theme.of(context).textTheme.bodyLarge,
+                      onChanged: (value) {
+                        _lastName = value;
+                      },
                       decoration: const InputDecoration(
                         isDense: true,
                         contentPadding: EdgeInsets.zero,
@@ -198,6 +214,9 @@ class _RegisterFormState extends State<RegisterForm> {
                     child: TextField(
                       keyboardType: TextInputType.name,
                       style: Theme.of(context).textTheme.bodyLarge,
+                      onChanged: (value) {
+                        _firstName = value;
+                      },
                       decoration: const InputDecoration(
                         isDense: true,
                         contentPadding: EdgeInsets.zero,
@@ -222,13 +241,17 @@ class _RegisterFormState extends State<RegisterForm> {
             ),
           ],
         ),
-        GenderWidget(
-            gender: gender,
-            selectGender: (gender) {
-              setState(() {
-                this.gender = gender;
-              });
-            }),
+        SpecialInputWidget(
+          changeDate: (time) {
+            setState(() {
+              _dob = time;
+            });
+          },
+          selectGender: (gender) {
+            setState(() {
+              _gender = gender;
+            });
+          }),
         const SizedBox(
           height: dimXS,
         ),
@@ -289,22 +312,24 @@ class _RegisterFormState extends State<RegisterForm> {
   }
 }
 
-class GenderWidget extends StatefulWidget {
-  final int gender;
+class SpecialInputWidget extends StatefulWidget {
   final Function(int) selectGender;
+  final Function(int) changeDate;
 
-  const GenderWidget({
+  const SpecialInputWidget({
     Key? key,
-    this.gender = 0,
     required this.selectGender,
+    required this.changeDate,
   }) : super(key: key);
 
   @override
-  State<GenderWidget> createState() => _GenderWidgetState();
+  State<SpecialInputWidget> createState() => _SpecialInputWidgetState();
 }
 
-class _GenderWidgetState extends State<GenderWidget> {
+class _SpecialInputWidgetState extends State<SpecialInputWidget> {
   bool expand = true;
+  int dob = DateTime.now().millisecondsSinceEpoch;
+  int gender = 0;
 
   @override
   Widget build(BuildContext context) {
@@ -335,12 +360,12 @@ class _GenderWidgetState extends State<GenderWidget> {
                     },
                     child: AnimatedContainer(
                       duration: const Duration(milliseconds: 250),
-                      width: (!expand && widget.gender != 0) ? 0 : 32,
+                      width: (!expand && gender != 0) ? 0 : 32,
                       height: double.maxFinite,
                       decoration: BoxDecoration(
                         border: Border.all(color: Colors.grey, width: 0.5),
                         borderRadius: BorderRadius.circular(spaceXXS),
-                        color: widget.gender == 0 ? Colors.blue : Colors.white,
+                        color: gender == 0 ? Colors.blue : Colors.white,
                         image: const DecorationImage(
                           alignment: Alignment.centerLeft,
                           fit: BoxFit.cover,
@@ -355,13 +380,13 @@ class _GenderWidgetState extends State<GenderWidget> {
                     },
                     child: AnimatedContainer(
                       duration: const Duration(milliseconds: 250),
-                      width: (!expand && widget.gender != 1) ? 0 : 32,
+                      width: (!expand && gender != 1) ? 0 : 32,
                       margin: EdgeInsets.only(left: !expand ? 0 : 8),
                       height: double.maxFinite,
                       decoration: BoxDecoration(
                         border: Border.all(color: Colors.grey, width: 0.5),
                         borderRadius: BorderRadius.circular(spaceXXS),
-                        color: widget.gender == 1 ? Colors.blue : Colors.white,
+                        color: gender == 1 ? Colors.blue : Colors.white,
                         image: const DecorationImage(
                           alignment: Alignment.centerLeft,
                           fit: BoxFit.cover,
@@ -423,18 +448,6 @@ class _GenderWidgetState extends State<GenderWidget> {
                 ),
               ),
             ),
-            // Positioned(
-            //   top: spaceSM,
-            //   right: 0,
-            //   child: Container(
-            //     alignment: AlignmentDirectional.centerEnd,
-            //     height: 48,
-            //     child: const Icon(
-            //       Icons.keyboard_double_arrow_left_outlined,
-            //       size: fontMD,
-            //     ),
-            //   ),
-            // ),
           ],
         ),
         const SizedBox(width: spaceMD),
@@ -450,6 +463,7 @@ class _GenderWidgetState extends State<GenderWidget> {
                   borderRadius: BorderRadius.circular(spaceXS),
                   border: Border.all(color: Colors.black54, width: 0.5),
                 ),
+                child: Text(DateFormat('dd/MM/yyyy').format(DateTime.fromMillisecondsSinceEpoch(dob))),
               ),
               Positioned(
                 top: 2,
@@ -486,9 +500,11 @@ class _GenderWidgetState extends State<GenderWidget> {
                                     dateOrder: DatePickerDateOrder.dmy,
                                     initialDateTime: DateTime.now(),
                                     onDateTimeChanged: (val) {
-                                      // setState(() {
-                                      //   _chosenDateTime = val;
-                                      // });
+                                      setState(() {
+                                        widget.changeDate(val.millisecondsSinceEpoch);
+                                        dob = val.millisecondsSinceEpoch;
+                                        // _chosenDateTime = val;
+                                      });
                                     }),
                               ),
 

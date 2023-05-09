@@ -1,3 +1,5 @@
+import 'package:member_app/exception/app_message.dart';
+
 import '../../presentation/res/strings/values.dart';
 
 enum HomeBodyType {
@@ -36,4 +38,12 @@ class HomeLoaded extends HomeState {
       login: login ?? this.login,
     );
   }
+}
+
+class HomeFailure extends HomeState {
+  final AppMessage message;
+
+  HomeFailure({
+    required this.message,
+  });
 }

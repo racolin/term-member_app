@@ -1,19 +1,25 @@
 class Environment {
   final String base;
   final String url;
-  // final String baseImage;
+  final String baseImage;
 
   Environment._({
     required this.base,
     required this.url,
-    // required this.baseImage,
+    required this.baseImage,
   });
-  factory Environment.dev() {
+
+  String get api => url + base;
+
+  factory Environment._dev() {
     return Environment._(
-      base: 'api/',
+      base: 'api/v1/',
       url: 'http://127.0.0.1:8080/',
-      // baseImage: 'file/render/',
+      baseImage: 'file/',
     );
+  }
+  factory Environment.env() {
+    return Environment._dev();
   }
 }
 
@@ -28,7 +34,7 @@ class AppConfig{
   }
   AppConfig._private();
   static final AppConfig appConfig = AppConfig._private();
-  Environment env = Environment.dev();
+  Environment env = Environment.env();
 }
 
 class ApiRouter {

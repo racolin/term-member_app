@@ -4,7 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:member_app/business_logic/cubits/store_cubit.dart';
 import 'package:member_app/exception/app_message.dart';
 import 'package:member_app/presentation/bottom_sheet/store_bottom_sheet.dart';
-import 'package:member_app/presentation/dialogs/dialog_widget.dart';
+import 'package:member_app/presentation/dialogs/app_dialog.dart';
 import 'package:member_app/presentation/res/dimen/dimens.dart';
 import 'package:member_app/presentation/res/strings/values.dart';
 

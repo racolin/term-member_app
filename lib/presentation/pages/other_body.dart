@@ -1,9 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:member_app/business_logic/cubits/home_cubit.dart';
 import 'package:member_app/exception/app_message.dart';
 import 'package:member_app/presentation/app_router.dart';
-import 'package:member_app/presentation/dialogs/dialog_widget.dart';
+import 'package:member_app/presentation/dialogs/app_dialog.dart';
 import 'package:member_app/presentation/res/strings/values.dart';
 import 'package:member_app/presentation/widgets/feature_card_widget.dart';
 import 'package:member_app/presentation/widgets/group_item_widget.dart';
@@ -93,24 +94,26 @@ class OtherBody extends StatelessWidget {
                   iconColor: Colors.green,
                   title: txtCartTemplate,
                   onClick: () {
-                    if (login) {Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (ctx) {
-                          return MultiRepositoryProvider(
-                            providers: [
-                              BlocProvider<ProductCubit>.value(
-                                value: BlocProvider.of<ProductCubit>(context),
-                              ),
-                              BlocProvider<CartTemplateCubit>.value(
-                                value: BlocProvider.of<CartTemplateCubit>(context),
-                              ),
-                            ],
-                            child: const CartTemplateScreen(),
-                          );
-                        },
-                      ),
-                    );
+                    if (login) {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (ctx) {
+                            return MultiRepositoryProvider(
+                              providers: [
+                                BlocProvider<ProductCubit>.value(
+                                  value: BlocProvider.of<ProductCubit>(context),
+                                ),
+                                BlocProvider<CartTemplateCubit>.value(
+                                  value: BlocProvider.of<CartTemplateCubit>(
+                                      context),
+                                ),
+                              ],
+                              child: const CartTemplateScreen(),
+                            );
+                          },
+                        ),
+                      );
                     } else {
                       Navigator.pushNamed(context, AppRouter.auth);
                     }
@@ -223,7 +226,7 @@ class OtherBody extends StatelessWidget {
                     if (login) {
                       showCupertinoDialog(
                         context: context,
-                        builder: (context) => AppDialog(
+                        builder: (ctx) => AppDialog(
                           message: AppMessage(
                             type: AppMessageType.info,
                             title: txtLogOut,
@@ -238,13 +241,37 @@ class OtherBody extends StatelessWidget {
                             ),
                             CupertinoDialogAction(
                               child: const Text(txtYes),
-                              onPressed: () {
-                                // clear data here
-                                Navigator.pushNamedAndRemoveUntil(
+                              onPressed: () async {
+                                var message = await BlocProvider.of<HomeCubit>(
                                   context,
-                                  AppRouter.auth,
-                                  (route) => false,
-                                );
+                                ).logout();
+                                // clear data here
+                                if (context.mounted) {
+                                  if (message == null) {
+                                    Navigator.pushNamedAndRemoveUntil(
+                                      context,
+                                      AppRouter.auth,
+                                      (route) => false,
+                                    );
+                                  } else {
+                                    showCupertinoDialog(
+                                      context: context,
+                                      builder: (context) {
+                                        return AppDialog(
+                                          message: message,
+                                          actions: [
+                                            CupertinoDialogAction(
+                                              child: const Text(txtConfirm),
+                                              onPressed: () {
+                                                Navigator.pop(context);
+                                              },
+                                            ),
+                                          ],
+                                        );
+                                      },
+                                    );
+                                  }
+                                }
                               },
                             ),
                           ],

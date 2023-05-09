@@ -17,7 +17,9 @@ class RawFailureModel {
   factory RawFailureModel.fromMap(Map<String, dynamic> map) {
     return RawFailureModel(
       error: map['error'],
-      message: map['message'],
+      message: (map['message'] is List)
+          ? (map['message'] as List).join('\n')
+          : map['message'],
     );
   }
 }

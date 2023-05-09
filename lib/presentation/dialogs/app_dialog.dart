@@ -1,5 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:member_app/presentation/app_router.dart';
+import 'package:member_app/presentation/res/strings/values.dart';
 
 import '../../exception/app_message.dart';
 import '../../presentation/res/dimen/dimens.dart';
@@ -34,12 +36,27 @@ class AppDialog extends StatelessWidget {
           fontWeight: FontWeight.w400,
         ),
       ),
-      actions: actions,
+      actions: message.type == AppMessageType.logout
+          ? [
+              CupertinoDialogAction(
+                child: const Text(txtLogIn),
+                onPressed: () {
+                  Navigator.pushNamedAndRemoveUntil(
+                    context,
+                    AppRouter.auth,
+                    (route) => false,
+                  );
+                },
+              ),
+            ]
+          : actions,
     );
   }
 
   Color _getColor(AppMessageType type) {
     switch (type) {
+      case AppMessageType.logout:
+        return Colors.red;
       case AppMessageType.error:
         return Colors.red;
       case AppMessageType.failure:

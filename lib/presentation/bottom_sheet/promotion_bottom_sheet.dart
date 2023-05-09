@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:member_app/exception/app_message.dart';
-import 'package:member_app/presentation/dialogs/dialog_widget.dart';
+import 'package:member_app/presentation/dialogs/app_dialog.dart';
 
 import '../../presentation/res/strings/values.dart';
 import '../../data/models/promotion_model.dart';

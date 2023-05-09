@@ -85,7 +85,6 @@ class AppRouter {
             // Ví dụ: RepositoryProvider<MemberRepository>(
             //           create: (context) => internet ? MemberMockRepository() : MemberLocalRepository(),
             //        )
-            bool login = settings.arguments == true ? true : false;
             return MultiRepositoryProvider(
               providers: [
                 RepositoryProvider<CartRepository>(
@@ -122,7 +121,7 @@ class AppRouter {
               child: MultiBlocProvider(
                 providers: [
                   BlocProvider(
-                    create: (context) => HomeCubit(login),
+                    create: (context) => HomeCubit(),
                   ),
                   BlocProvider(
                     create: (context) => CartCubit(

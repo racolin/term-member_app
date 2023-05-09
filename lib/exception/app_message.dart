@@ -1,4 +1,4 @@
-enum AppMessageType { error, failure, success, info, none }
+enum AppMessageType { error, failure, success, logout, info, none }
 
 class AppMessage {
   final AppMessageType type;
@@ -15,4 +15,9 @@ class AppMessage {
     required this.content,
     this.description,
   });
+
+  @override
+  String toString() {
+    return '{name: ${type.name}, title: $title, content: $content, description: $description}';
+  }
 }

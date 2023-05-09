@@ -1,4 +1,5 @@
 import 'package:flutter/services.dart';
+import 'package:member_app/presentation/res/strings/values.dart';
 
 import '../../../data/models/response_model.dart';
 import '../../../business_logic/repositories/account_repository.dart';
@@ -32,17 +33,24 @@ class AccountStorageRepository extends AccountRepository {
   @override
   Future<ResponseModel<bool>> isLogin() async {
     try {
-      String? accessToken = await _storage.getAccessToken();
-      return ResponseModel<bool>(
-        type: ResponseModelType.success,
-        data: accessToken != null,
-      );
+      var res = await _storage.getAccessToken();
+      if (res.type == ResponseModelType.success) {
+        return ResponseModel<bool>(
+          type: ResponseModelType.success,
+          data: true,
+        );
+      } else {
+        return ResponseModel<bool>(
+          type: ResponseModelType.success,
+          data: false,
+        );
+      }
     } on PlatformException catch (ex) {
       return ResponseModel<bool>(
         type: ResponseModelType.failure,
         message: AppMessage(
-          type: AppMessageType.failure,
-          title: 'Có lỗi!',
+          type: AppMessageType.error,
+          title: txtErrorTitle,
           content: 'Lỗi khi kiểm tra trạng thái đăng nhập',
           description: ex.toString(),
         ),

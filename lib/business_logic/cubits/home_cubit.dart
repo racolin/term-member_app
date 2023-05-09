@@ -1,5 +1,6 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:member_app/business_logic/repositories/account_repository.dart';
+import 'package:member_app/data/models/response_model.dart';
 
 import '../../data/repositories/storage/account_storage_repository.dart';
 import '../../exception/app_exception.dart';
@@ -10,14 +11,18 @@ import '../states/home_state.dart';
 class HomeCubit extends Cubit<HomeState> {
   final AccountRepository _repository = AccountStorageRepository();
 
-  HomeCubit(bool login) : super(HomeInitial()) {
+  HomeCubit() : super(HomeInitial()) {
     emit(HomeLoading());
-    _repository.isLogin().then((login) {
-      emit(HomeLoaded(
-        type: HomeBodyType.home,
-        login: true,
-        // login: login,
-      ));
+    _repository.isLogin().then((res) {
+      if (res.type == ResponseModelType.success) {
+        emit(HomeLoaded(
+          type: HomeBodyType.home,
+          login: res.data,
+          // login: login,
+        ));
+      } else {
+        emit(HomeFailure(message: res.message));
+      }
     });
   }
 

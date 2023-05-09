@@ -17,6 +17,12 @@ String dateToString(DateTime dateTime, String format) {
   return DateFormat(format).format(dateTime);
 }
 
+String secondToTime(int count) {
+  var minutes = count ~/ 60;
+  var seconds = count % 60;
+  return "${minutes.toString().padLeft(2, '0')}:${seconds.toString().padLeft(2, '0')}";
+}
+
 String toBarcodeString(String barcode, [double? width,
   double? height,
   double? fontHeight,]) {

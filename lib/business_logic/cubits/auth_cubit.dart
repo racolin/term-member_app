@@ -18,6 +18,7 @@ class AuthCubit extends Cubit<AuthState> {
   // action method, change state and return AppMessage?, null when success
 
   Future<AppMessage?> login(String phone) async {
+    phone = '+84$phone';
     var res = await _repository.login(phone: phone);
     if (res.type == ResponseModelType.success) {
       if (res.data) {
@@ -26,7 +27,7 @@ class AuthCubit extends Cubit<AuthState> {
       } else {
         return AppMessage(
           type: AppMessageType.error,
-          title: 'Lỗi',
+          title: txtFailureTitle,
           content: 'Số điện thoại không đúng!',
         );
       }

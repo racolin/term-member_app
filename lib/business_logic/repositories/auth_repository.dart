@@ -32,8 +32,5 @@ abstract class AuthRepository {
   Future<ResponseModel<bool>> otpCheck({
     required String phone,
     required String otp,
-  }) {
-    // TODO: implement otpCheck
-    throw UnimplementedError();
-  }
+  });
 }

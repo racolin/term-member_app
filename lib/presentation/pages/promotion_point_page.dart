@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:member_app/exception/app_message.dart';
-import 'package:member_app/presentation/dialogs/dialog_widget.dart';
+import 'package:member_app/presentation/dialogs/app_dialog.dart';
 import 'package:member_app/presentation/pages/loading_page.dart';
 import 'package:member_app/presentation/res/dimen/dimens.dart';
 import 'package:member_app/presentation/res/strings/values.dart';

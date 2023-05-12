@@ -1,70 +1,67 @@
-// import 'package:dio/dio.dart';
-//
-// import '../../../business_logic/repositories/news_repository.dart';
-// import '../../../data/models/news_model.dart';
-// import '../../../exception/app_exception.dart';
-// import '../../../exception/app_message.dart';
-//
-// class NewsStorageRepository extends NewsRepository {
-//   @override
-//   Future<List<NewsModel>> gets() async {
-//     try {
-//       return [
-//         NewsModel(
-//           id: 'NEWS1',
-//           name: 'Ưu đãi đặc biệt',
-//           items: List.generate(
-//             7,
-//             (index) => NewsItemModel(
-//               id: 'NEWSITEM',
-//               name: 'Cà phê đường đen: Vượt chuẩn vị men',
-//               image:
-//                   'https://product.hstatic.net/1000075078/product/1669707374_1642353251-ca-phe-dam-vi-viet-tui-new_7fdd610e98f54bcbb9b74992c14d1aed_master.jpg',
-//               time: DateTime.now(),
-//               url: 'https://flutter.dev/',
-//             ),
-//           ),
-//         ),
-//         NewsModel(
-//           id: 'NEWS2',
-//           name: 'Cập nhật từ nhà',
-//           items: List.generate(
-//             7,
-//             (index) => NewsItemModel(
-//               id: 'NEWSITEM',
-//               name: 'Cà phê đường đen: Vượt chuẩn vị men',
-//               image:
-//                   'https://product.hstatic.net/1000075078/product/1669707374_1642353251-ca-phe-dam-vi-viet-tui-new_7fdd610e98f54bcbb9b74992c14d1aed_master.jpg',
-//               time: DateTime.now(),
-//               url: 'https://flutter.dev/',
-//             ),
-//           ),
-//         ),
-//         NewsModel(
-//           id: 'NEWS3',
-//           name: '#CoffeeLover',
-//           items: List.generate(
-//             7,
-//             (index) => NewsItemModel(
-//               id: 'NEWSITEM',
-//               name: 'Cà phê đường đen: Vượt chuẩn vị men',
-//               image:
-//                   'https://product.hstatic.net/1000075078/product/1669707374_1642353251-ca-phe-dam-vi-viet-tui-new_7fdd610e98f54bcbb9b74992c14d1aed_master.jpg',
-//               time: DateTime.now(),
-//               url: 'https://flutter.dev/',
-//             ),
-//           ),
-//         ),
-//       ];
-//     } on DioError catch (ex) {
-//       throw AppException(
-//         message: AppMessage(
-//           type: AppMessageType.error,
-//           title: 'Lỗi mạng!',
-//           content: 'Gặp sự cố khi lấy App Bar',
-//         ),
-//       );
-//     }
-//     return [];
-//   }
-// }
+import 'package:dio/dio.dart';
+import 'package:dio/dio.dart';
+import 'package:member_app/data/models/response_model.dart';
+import 'package:member_app/data/services/api_client.dart';
+
+import '../../../business_logic/repositories/news_repository.dart';
+import '../../../data/models/news_model.dart';
+import '../../../exception/app_exception.dart';
+import '../../../exception/app_message.dart';
+import '../../../presentation/res/strings/values.dart';
+import '../../models/raw_failure_model.dart';
+import '../../models/raw_success_model.dart';
+import '../../services/api_config.dart';
+
+class NewsStorageRepository extends NewsRepository {
+  final _dio = ApiClient.dio;
+
+  @override
+  Future<ResponseModel<List<NewsModel>>> gets() async {
+    try {
+      var res = await _dio.get(
+        ApiRouter.notificationAll,
+        queryParameters: {'auth': true},
+      );
+      var raw = RawSuccessModel.fromMap(res.data);
+      return ResponseModel<List<NewsModel>>(
+        type: ResponseModelType.success,
+        data: (raw.data as List).map(
+          (e) => NewsModel.fromMap(e),
+        ).toList(),
+      );
+    } on DioError catch (ex) {
+      if (ex.error is AppMessage) {
+        return ResponseModel<List<NewsModel>>(
+          type: ResponseModelType.failure,
+          message: ex.error,
+        );
+      } else {
+        var raw = RawFailureModel.fromMap(
+          ex.response?.data ??
+              {
+                'statusCode': 444,
+                'message': 'Không có dữ liệu trả về!',
+              },
+        );
+        return ResponseModel<List<NewsModel>>(
+          type: ResponseModelType.failure,
+          message: AppMessage(
+            type: AppMessageType.error,
+            title: raw.error ?? txtErrorTitle,
+            content: raw.message ?? 'Không có dữ liệu trả về!',
+          ),
+        );
+      }
+    } on Exception catch (ex) {
+      return ResponseModel<List<NewsModel>>(
+        type: ResponseModelType.failure,
+        message: AppMessage(
+          title: txtErrorTitle,
+          type: AppMessageType.error,
+          content: 'Chưa phân tích được lỗi',
+          description: ex.toString(),
+        ),
+      );
+    }
+  }
+}

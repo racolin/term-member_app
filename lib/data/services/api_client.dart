@@ -23,6 +23,7 @@ class ApiClient {
     dio.interceptors.addAll({
       AppClientInterceptors(dio: dio),
       LogInterceptor(
+        error: true,
         responseBody: true,
         requestBody: true,
       ),
@@ -57,23 +58,6 @@ class AppClientInterceptors extends QueuedInterceptorsWrapper {
         );
       }
     }
-    // if (options.path == ApiRouter.authRefresh) {
-    //   var res = await _storage.getRefreshToken();
-    //   if (res.type == ResponseModelType.success) {
-    //     var refreshToken = res.data;
-    //     options.headers.addAll({'Authorization': 'Bearer $refreshToken'});
-    //   } else {
-    //     return handler.reject(
-    //       DioError(
-    //         requestOptions: options,
-    //         error: res.message,
-    //       ),
-    //     );
-    //   }
-    // }
-    print('1212121xxx');
-    print(options.path);
-    print(options.headers);
     options.queryParameters.remove('auth');
     return handler.next(options);
   }
@@ -95,20 +79,36 @@ class AppClientInterceptors extends QueuedInterceptorsWrapper {
         if (res.type == ResponseModelType.success) {
           var refreshToken = res.data;
           await dio.post(
-              ApiRouter.authRefresh,
-              options: Options(headers: {'Authorization': 'Bearer $refreshToken'})
-          );
-          print(1231);
-          var response = await dio.request(
-            err.requestOptions.path,
-            data: err.requestOptions.data,
-            queryParameters: err.requestOptions.queryParameters,
+            ApiRouter.authRefresh,
             options: Options(
-              method: err.requestOptions.method,
-              headers: err.requestOptions.headers,
+              headers: {'Authorization': 'Bearer $refreshToken'},
             ),
           );
-          return handler.resolve(response);
+          try {
+            var response = await dio.request(
+              err.requestOptions.path,
+              data: err.requestOptions.data,
+              queryParameters: err.requestOptions.queryParameters
+                ..addAll({
+                  'auth': true,
+                }),
+              options: Options(
+                method: err.requestOptions.method,
+                headers: err.requestOptions.headers,
+              ),
+            );
+            return handler.resolve(response);
+          } on DioError catch (ex) {
+            ex.error ==
+                AppMessage(
+                  type: AppMessageType.logout,
+                  title: txtErrorTitle,
+                  content:
+                      'Hãy đăng nhập lại vì hiện tài tài khoản của bạn không được xác thực!',
+                  description: ex.toString(),
+                );
+            return handler.reject(ex);
+          }
         } else {
           return handler.reject(
             DioError(
@@ -140,11 +140,14 @@ class AppClientInterceptors extends QueuedInterceptorsWrapper {
   ) async {
     if (response.requestOptions.path == ApiRouter.authSmsVerify) {
       var res = RawSuccessModel.fromMap(response.data);
-      var token = TokenModel.fromJson(res.data);
+      var token = TokenModel.fromMap(res.data);
       await _storage.persistToken(token);
     }
     if (response.requestOptions.path == ApiRouter.authRefresh) {
-      var token = TokenModel.fromJson(response.data);
+      print('response.data');
+      print(response.data);
+      var res = RawSuccessModel.fromMap(response.data);
+      var token = TokenModel.fromMap(res.data);
       await _storage.persistToken(token);
     }
     return handler.next(response);

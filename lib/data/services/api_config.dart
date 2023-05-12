@@ -14,7 +14,7 @@ class Environment {
   factory Environment._dev() {
     return Environment._(
       base: 'api/v1/',
-      url: 'http://127.0.0.1:8080/',
+      url: 'http://127.0.0.1/',
       baseImage: 'file/',
     );
   }

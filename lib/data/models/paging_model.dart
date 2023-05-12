@@ -18,10 +18,6 @@ class PagingModel<T> {
   }
 
   bool hasNext() {
-    print(list.length);
-    print(page);
-    print(limit);
-    print(maxCount);
     return list.length < maxCount;
   }
 

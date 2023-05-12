@@ -16,7 +16,6 @@ class VoucherCubit extends Cubit<VoucherState> {
     var failure = 0;
     var error = {};
     _repository.getsAvailable().then((res) {
-      print(res.type);
       if (res.type == ResponseModelType.success) {
         if (state is VoucherLoaded) {
           emit((state as VoucherLoaded).copyWith(

@@ -57,20 +57,23 @@ class AppClientInterceptors extends QueuedInterceptorsWrapper {
         );
       }
     }
-    if (options.path == ApiRouter.authRefresh) {
-      var res = await _storage.getRefreshToken();
-      if (res.type == ResponseModelType.success) {
-        var refreshToken = res.data;
-        options.headers.addAll({'Authorization': 'Bearer $refreshToken'});
-      } else {
-        return handler.reject(
-          DioError(
-            requestOptions: options,
-            error: res.message,
-          ),
-        );
-      }
-    }
+    // if (options.path == ApiRouter.authRefresh) {
+    //   var res = await _storage.getRefreshToken();
+    //   if (res.type == ResponseModelType.success) {
+    //     var refreshToken = res.data;
+    //     options.headers.addAll({'Authorization': 'Bearer $refreshToken'});
+    //   } else {
+    //     return handler.reject(
+    //       DioError(
+    //         requestOptions: options,
+    //         error: res.message,
+    //       ),
+    //     );
+    //   }
+    // }
+    print('1212121xxx');
+    print(options.path);
+    print(options.headers);
     options.queryParameters.remove('auth');
     return handler.next(options);
   }
@@ -81,12 +84,39 @@ class AppClientInterceptors extends QueuedInterceptorsWrapper {
     ErrorInterceptorHandler handler,
   ) async {
     // Refresh here
+    print('error');
+    print(err.response?.statusCode);
     if (err.response?.statusCode == 401) {
+      print(1212121);
       try {
-        await dio.post(
-          ApiRouter.authRefresh,
-          queryParameters: {'auth': false},
-        );
+        var res = await _storage.getRefreshToken();
+        _storage.getRefreshToken().then((value) => print(value.data));
+        _storage.getAccessToken().then((value) => print(value.data));
+        if (res.type == ResponseModelType.success) {
+          var refreshToken = res.data;
+          await dio.post(
+              ApiRouter.authRefresh,
+              options: Options(headers: {'Authorization': 'Bearer $refreshToken'})
+          );
+          print(1231);
+          var response = await dio.request(
+            err.requestOptions.path,
+            data: err.requestOptions.data,
+            queryParameters: err.requestOptions.queryParameters,
+            options: Options(
+              method: err.requestOptions.method,
+              headers: err.requestOptions.headers,
+            ),
+          );
+          return handler.resolve(response);
+        } else {
+          return handler.reject(
+            DioError(
+              requestOptions: err.requestOptions,
+              error: res.message,
+            ),
+          );
+        }
       } on DioError catch (ex) {
         return handler.next(ex);
       }

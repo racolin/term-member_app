@@ -42,7 +42,6 @@ class _Selected {
               },
             ),
         } {
-    print(selected);
   }
 
   int get cost {

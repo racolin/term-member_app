@@ -26,11 +26,12 @@ class AppImageWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var img = image == null ? null : image!.contains('http') ? image : 'http://$image';
     return ClipRRect(
       borderRadius: borderRadius,
       child: CachedNetworkImage(
         cacheKey: cachedKey,
-        imageUrl: image ?? '',
+        imageUrl: img ?? '',
         imageBuilder: imageBuilder,
         height: height,
         width: width,

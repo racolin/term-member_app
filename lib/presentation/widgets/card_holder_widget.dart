@@ -102,8 +102,6 @@ class _CardHolderWidgetState extends State<CardHolderWidget>
         builder: (context, constraint) {
           var width = constraint.biggest.width;
           size = width * 5 / 7 / 16;
-          print("name");
-          print(name);
           return Column(
             mainAxisSize: MainAxisSize.min,
             children: [

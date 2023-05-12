@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../data/repositories/api/auth_api_repository.dart';
+import '../data/repositories/api/member_api_repository.dart';
 import 'pages/reward_screen.dart';
 import 'screens/address_screen.dart';
 import 'screens/cart_detail_screen.dart';
@@ -97,8 +98,11 @@ class AppRouter {
                   create: (context) => AccountStorageRepository(),
                 ),
                 RepositoryProvider<MemberRepository>(
-                  create: (context) => MemberMockRepository(),
+                  create: (context) => MemberApiRepository(),
                 ),
+                // RepositoryProvider<MemberRepository>(
+                //   create: (context) => MemberMockRepository(),
+                // ),
                 RepositoryProvider<NewsRepository>(
                   create: (context) => NewsMockRepository(),
                 ),

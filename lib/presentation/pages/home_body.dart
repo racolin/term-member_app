@@ -56,7 +56,8 @@ class _HomeBodyState extends State<HomeBody> {
               centerTitle: true,
               background: AppImageWidget(
                 height: collapseHeight,
-                image: "https://png.pngtree.com/background/20210709/original/pngtree-simple-style-coffee-bean-food-and-drinks-poster-background-picture-image_905716.jpg",
+                image:
+                    "https://png.pngtree.com/background/20210709/original/pngtree-simple-style-coffee-bean-food-and-drinks-poster-background-picture-image_905716.jpg",
                 errorWidget: (ctx, url, error) {
                   return Container(
                     height: collapseHeight,
@@ -72,7 +73,10 @@ class _HomeBodyState extends State<HomeBody> {
                         image: AssetImage(assetDefaultImage),
                       ),
                     ),
-                    child: const CardWidget(isDetail: false),
+                    child: const CardWidget(
+                      isDetail: false,
+                      color: Colors.grey,
+                    ),
                   );
                 },
                 imageBuilder: (ctx, provider) {
@@ -90,11 +94,15 @@ class _HomeBodyState extends State<HomeBody> {
                         image: provider,
                       ),
                     ),
-                    child: widget.login ? const CardWidget(isDetail: false) : const CardHomeWidget(),
+                    child: widget.login
+                        ? const CardWidget(
+                            isDetail: false,
+                            color: Colors.grey,
+                          )
+                        : const CardHomeWidget(),
                   );
                 },
               ),
-
             ),
           ),
         ];

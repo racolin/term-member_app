@@ -18,10 +18,12 @@ class CardWidget extends StatelessWidget {
   final double barWidth = 300;
   final double cardHeight = 160;
   final double top = 172;
+  final Color color;
 
   const CardWidget({
     Key? key,
     this.isDetail = false,
+    required this.color,
   }) : super(key: key);
 
   @override
@@ -219,6 +221,7 @@ class CardWidget extends StatelessWidget {
                 nextRankName: card.nextRankName,
                 maxProgress: card.nextRankPoint,
                 progress: card.point,
+                color: color,
               ),
             ),
             const SizedBox(height: 2),
@@ -282,6 +285,7 @@ class SliderRank extends StatelessWidget {
   final String nextRankName;
   final int maxProgress;
   final int progress;
+  final Color color;
 
   const SliderRank({
     Key? key,
@@ -289,6 +293,7 @@ class SliderRank extends StatelessWidget {
     required this.nextRankName,
     required this.maxProgress,
     required this.progress,
+    required this.color,
   }) : super(key: key);
 
   @override
@@ -308,8 +313,8 @@ class SliderRank extends StatelessWidget {
               width: width,
               height: spaceXS,
               decoration: BoxDecoration(
-                gradient: const LinearGradient(
-                  colors: [Colors.orange, Colors.deepOrange],
+                gradient: LinearGradient(
+                  colors: [color.withAlpha(100), color],
                 ),
                 borderRadius: BorderRadius.circular(spaceXS / 2),
               ),
@@ -323,12 +328,12 @@ class SliderRank extends StatelessWidget {
               decoration: BoxDecoration(
                 color: Colors.white,
                 borderRadius: BorderRadius.circular(spaceSM),
-                border: Border.all(width: 2, color: Colors.orange),
+                border: Border.all(width: 2, color: color),
               ),
               alignment: Alignment.center,
-              child: const Icon(
+              child: Icon(
                 Icons.eco,
-                color: Colors.orange,
+                color: color,
                 size: fontLG,
               ),
             ),

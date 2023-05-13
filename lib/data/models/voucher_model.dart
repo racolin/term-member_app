@@ -1,10 +1,12 @@
+import 'dart:math';
+
 import 'package:member_app/presentation/res/strings/values.dart';
 
 class VoucherModel {
   final String id;
   final String code;
   final String name;
-  final String image;
+  final String? image;
   final String partner;
   final String? sliderImage;
   final DateTime from;
@@ -47,16 +49,20 @@ class VoucherModel {
       name: map['name'] ?? txtUnknown,
       image: map['image'],
       partner: map['partner'] ?? txtAppName,
-      sliderImage: map['sliderImage'],
-      from: map['from'] != null
-          ? DateTime.fromMillisecondsSinceEpoch(map['from'])
-          : DateTime.now(),
-      to: map['to'] != null
-          ? DateTime.fromMillisecondsSinceEpoch(map['to'])
-          : DateTime.now(),
-      usedAt: map['usedAt'] != null
-          ? DateTime.fromMillisecondsSinceEpoch(map['usedAt'])
-          : null,
+      // sliderImage: map['sliderImage'],
+      sliderImage: Random().nextBool() ? map['image'] : null,
+      from: DateTime.tryParse(map['time'] ?? '') ?? DateTime.now(),
+      // map['time'] == null
+      //     ? DateTime.now()
+      //     : DateTime.fromMillisecondsSinceEpoch(map['time']),
+      to: DateTime.tryParse(map['time'] ?? '') ?? DateTime.now(),
+      // map['time'] == null
+      //     ? DateTime.now()
+      //     : DateTime.fromMillisecondsSinceEpoch(map['time']),
+      usedAt: DateTime.tryParse(map['time'] ?? ''),
+      // map['time'] == null
+      //     ? DateTime.now()
+      //     : DateTime.fromMillisecondsSinceEpoch(map['time']),
       description: map['description'] ?? txtDefault,
     );
   }

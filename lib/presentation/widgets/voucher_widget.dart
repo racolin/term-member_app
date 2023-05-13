@@ -4,6 +4,7 @@ import '../../data/models/voucher_model.dart';
 import '../../supports/convert.dart';
 import '../clippers/ticket_clipper.dart';
 import '../res/dimen/dimens.dart';
+import 'app_image_widget.dart';
 
 class VoucherWidget extends StatelessWidget {
   final VoucherModel voucher;
@@ -39,10 +40,7 @@ class VoucherWidget extends StatelessWidget {
                   padding: const EdgeInsets.all(spaceSM),
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(spaceXS),
-                    child: Image.network(
-                      voucher.image,
-                      fit: BoxFit.cover,
-                    ),
+                    child: AppImageWidget(image: voucher.image),
                   ),
                 ),
               ),

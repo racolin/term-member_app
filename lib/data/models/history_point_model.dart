@@ -4,7 +4,7 @@ class HistoryPointModel {
   final String id;
   final int point;
   final String name;
-  final String? targetId;
+  final int? targetId;
   final DateTime time;
 
   const HistoryPointModel({
@@ -31,7 +31,7 @@ class HistoryPointModel {
       point: map['point'] ?? 0,
       name: map['name'] ?? txtUnknown,
       targetId: map['targetId'],
-      time: map['time'] ?? DateTime.now(),
+      time: DateTime.fromMillisecondsSinceEpoch(map['time'] ?? 0),
     );
   }
 }

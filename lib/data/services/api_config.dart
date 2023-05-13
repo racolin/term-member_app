@@ -61,7 +61,7 @@ class ApiRouter {
   static String promotionExchange(String id) => '/member/promotion/$id/exchange';
 
   // Member data
-  static const String memberDataPointHistory = '/member/member-data/point-history';
+  static const String memberDataPointHistory = '/member-data/point-history';
 
   // Product
   static const String productAll = '/member/product/all';

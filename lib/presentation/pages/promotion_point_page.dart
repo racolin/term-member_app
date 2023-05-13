@@ -15,6 +15,7 @@ import '../../business_logic/cubits/promotion_cubit.dart';
 import '../../business_logic/cubits/voucher_cubit.dart';
 import '../../business_logic/states/promotion_state.dart';
 import '../../business_logic/states/voucher_state.dart';
+import '../app_router.dart';
 import '../bottom_sheet/voucher_bottom_sheet.dart';
 import '../screens/voucher_screen.dart';
 import '../widgets/feature_card_widget.dart';
@@ -288,7 +289,9 @@ class PromotionPointPage extends StatelessWidget {
                   iconColor: Colors.amber,
                   icon: Icons.history_edu,
                   title: '$txtHistory $txtPointName',
-                  onClick: () {},
+                  onClick: () {
+                    Navigator.pushNamed(context, AppRouter.historyPoint);
+                  },
                 ),
               ),
               const SizedBox(width: spaceXS),

@@ -41,8 +41,7 @@ class HistoryPointScreen extends StatelessWidget {
               var list = (state as HistoryPointLoaded).paging.list;
               return ListView.builder(
                 padding: const EdgeInsets.symmetric(vertical: 16),
-                itemBuilder: (context, index) =>
-                    _getHistoryItem(list[index]),
+                itemBuilder: (context, index) => _getHistoryItem(list[index]),
                 itemCount: list.length,
               );
           }
@@ -68,7 +67,7 @@ class HistoryPointScreen extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      dateToString(model.time, 'HH:mm - dd/mm/yyyy'),
+                      dateToString(model.time, 'HH:mm - dd/MM/yyyy'),
                       style: const TextStyle(
                         fontSize: 13,
                         fontWeight: FontWeight.w300,
@@ -76,7 +75,7 @@ class HistoryPointScreen extends StatelessWidget {
                     ),
                     const SizedBox(height: 4),
                     Text(
-                      'Đơn hàng #${model.id}',
+                      model.name,
                       style: const TextStyle(
                         fontWeight: FontWeight.w600,
                         fontSize: 16,
@@ -89,10 +88,11 @@ class HistoryPointScreen extends StatelessWidget {
                 padding: const EdgeInsets.symmetric(horizontal: 12.0),
                 child: Text(
                   model.point.toString(),
-                  style: const TextStyle(
-                      color: Colors.green,
-                      fontSize: 14,
-                      fontWeight: FontWeight.w300),
+                  style: TextStyle(
+                    color: model.point > 0 ? Colors.green : Colors.red,
+                    fontSize: 14,
+                    fontWeight: FontWeight.w500,
+                  ),
                 ),
               )
             ],

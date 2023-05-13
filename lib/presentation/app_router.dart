@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:member_app/business_logic/cubits/history_point_cubit.dart';
+import 'package:member_app/presentation/screens/history_point_screen.dart';
 
 import '../data/repositories/api/auth_api_repository.dart';
 import '../data/repositories/api/member_api_repository.dart';
@@ -67,6 +69,7 @@ class AppRouter {
   static const String carts = '/carts';
   static const String profile = '/profile';
   static const String notify = '/notify';
+  static const String historyPoint = '/history_point';
 
   static Route<dynamic>? onGenerateAppRoute(
     RouteSettings settings,
@@ -321,6 +324,22 @@ class AppRouter {
                   ),
                 ),
                 child: const NotifyScreen(),
+              ),
+            );
+          },
+        );
+      case historyPoint:
+        return MaterialPageRoute(
+          builder: (context) {
+            return RepositoryProvider<MemberRepository>(
+              create: (context) => MemberApiRepository(),
+              child: BlocProvider<HistoryPointCubit>(
+                create: (context) => HistoryPointCubit(
+                  repository: RepositoryProvider.of<MemberRepository>(
+                    context,
+                  ),
+                ),
+                child: const HistoryPointScreen(),
               ),
             );
           },

@@ -153,8 +153,8 @@ class ProductMockRepository extends ProductRepository {
       name: 'Size',
       minSelected: 1,
       maxSelected: 1,
-      defs: ["OPTION-1-1"],
-      items: [
+      defaultSelect: ["OPTION-1-1"],
+      optionItems: [
         ProductOptionItemModel(
           id: 'OPTION-1-1',
           name: 'Nhỏ',
@@ -180,8 +180,8 @@ class ProductMockRepository extends ProductRepository {
       name: 'Topping',
       minSelected: 0,
       maxSelected: 2,
-      defs: ["OPTION-2-1"],
-      items: [
+      defaultSelect: ["OPTION-2-1"],
+      optionItems: [
         ProductOptionItemModel(
           id: 'OPTION-2-1',
           name: 'Thạch phô mai',
@@ -207,8 +207,8 @@ class ProductMockRepository extends ProductRepository {
       name: 'Lượng đường',
       minSelected: 0,
       maxSelected: 1,
-      defs: ["OPTION-3-1"],
-      items: [
+      defaultSelect: ["OPTION-3-1"],
+      optionItems: [
         ProductOptionItemModel(
           id: 'OPTION-3-1',
           name: 'Ít đường',
@@ -234,8 +234,8 @@ class ProductMockRepository extends ProductRepository {
       name: 'Hộp đựng',
       minSelected: 1,
       maxSelected: 1,
-      defs: ["OPTION-4-1"],
-      items: [
+      defaultSelect: ["OPTION-4-1"],
+      optionItems: [
         ProductOptionItemModel(
           id: 'OPTION-4-1',
           name: 'Nhựa dùng 1 lần',

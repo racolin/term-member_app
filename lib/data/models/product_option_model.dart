@@ -5,16 +5,16 @@ class ProductOptionModel {
   final String name;
   final int minSelected;
   final int maxSelected;
-  final List<String> defs;
-  final List<ProductOptionItemModel> items;
-
+  final List<String> defaultSelect;
+  final List<ProductOptionItemModel> optionItems;
+  
   const ProductOptionModel({
     required this.id,
     required this.name,
     required this.minSelected,
     required this.maxSelected,
-    required this.defs,
-    required this.items,
+    required this.defaultSelect,
+    required this.optionItems,
   });
 
   Map<String, dynamic> toMap() {
@@ -23,23 +23,27 @@ class ProductOptionModel {
       'name': name,
       'minSelected': minSelected,
       'maxSelected': maxSelected,
-      'defs': defs,
-      'items': items,
+      'defaultSelect': defaultSelect,
+      'optionItems': optionItems,
     };
   }
 
   factory ProductOptionModel.fromMap(Map<String, dynamic> map) {
+    var mi = map['minSelected'] ?? 0;
+    var items = map['optionItems'] == null
+        ? <ProductOptionItemModel>[]
+        : (map['optionItems'] as List)
+        .map((e) => ProductOptionItemModel.fromMap(e))
+        .toList();
     return ProductOptionModel(
       id: map['id']!,
       name: map['name'] ?? txtNone,
-      minSelected: map['minSelected'] ?? 0,
+      minSelected: mi,
       maxSelected: map['maxSelected'] ?? 0,
-      defs: map['defs'] ?? [],
-      items: map['items'] == null
-          ? []
-          : (map['items'] as List)
-              .map((e) => ProductOptionItemModel.fromMap(e))
-              .toList(),
+      defaultSelect: (map['defaultSelect'] is List)
+          ? (map['defaultSelect'] as List).map<String>((e) => e as String).toList()
+          : <String>[],
+      optionItems: items,
     );
   }
 }

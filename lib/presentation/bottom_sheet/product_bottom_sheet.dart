@@ -23,38 +23,43 @@ class ProductBottomSheet extends StatefulWidget {
 
 class _Selected {
   final List<ProductOptionModel> options;
+  final int defaultCost;
   Map<String, MapEntry<int, Map<String, MapEntry<int, bool>>>> selected;
 
   _Selected({
     required this.options,
+    required this.defaultCost,
   }) : selected = {
           for (var i = 0; i < options.length; i++)
             options[i].id: MapEntry(
               i,
               {
-                for (var j = 0; j < options[i].items.length; j++)
-                  options[i].items[j].id: MapEntry(
+                for (var j = 0; j < options[i].optionItems.length; j++)
+                  options[i].optionItems[j].id: MapEntry(
                     j,
-                    options[i].defs.contains(
-                          options[i].items[j].id,
+                    options[i].defaultSelect.contains(
+                          options[i].optionItems[j].id,
                         ),
                   ),
               },
             ),
-        } {
-  }
+        } {}
 
   int get cost {
-    return selected.values.fold(
-      0,
-      (preParent, eParent) =>
-          preParent +
-          eParent.value.values.fold(
-            0,
-            (pre, e) =>
-                pre + (e.value ? options[eParent.key].items[e.key].cost : 0),
-          ),
-    );
+    return defaultCost +
+        selected.values.fold(
+          0,
+          (preParent, eParent) =>
+              preParent +
+              eParent.value.values.fold(
+                0,
+                (pre, e) =>
+                    pre +
+                    (e.value
+                        ? options[eParent.key].optionItems[e.key].cost
+                        : 0),
+              ),
+        );
   }
 
   bool get(String parentId, String id) {
@@ -115,6 +120,7 @@ class _ProductBottomSheetState extends State<ProductBottomSheet> {
     if (context.read<ProductCubit>().state is ProductLoaded) {
       var state = context.read<ProductCubit>().state as ProductLoaded;
       selected = _Selected(
+        defaultCost: widget.product.cost,
         options: state.listOption
             .where(
               (e) => widget.product.optionIds.contains(e.id),
@@ -411,8 +417,8 @@ class _ProductBottomSheetState extends State<ProductBottomSheet> {
                     children: [
                       selectedModel.isRadio(model.id)
                           ? Radio<String>(
-                              value: model.items[index].id,
-                              onChanged: model.items[index].disable
+                              value: model.optionItems[index].id,
+                              onChanged: model.optionItems[index].disable
                                   ? null
                                   : (id) {
                                       if (id != null) {
@@ -426,32 +432,35 @@ class _ProductBottomSheetState extends State<ProductBottomSheet> {
                           : Checkbox(
                               value: selectedModel.get(
                                 model.id,
-                                model.items[index].id,
+                                model.optionItems[index].id,
                               ),
-                              onChanged: model.items[index].disable
+                              onChanged: model.optionItems[index].disable
                                   ? null
                                   : (status) {
                                       if (status != null) {
                                         setState(() {
                                           selectedModel.set(
                                             model.id,
-                                            model.items[index].id,
+                                            model.optionItems[index].id,
                                             status,
                                           );
                                         });
                                       }
                                     },
                             ),
-                      Text(model.items[index].name),
+                      Text(model.optionItems[index].name),
                       Expanded(
                         child: Align(
                           alignment: Alignment.centerRight,
                           child: Text(
-                            model.items[index].disable ? '$txtDisable | ' : '',
+                            model.optionItems[index].disable
+                                ? '$txtDisable | '
+                                : '',
                           ),
                         ),
                       ),
-                      Text(numberToCurrency(model.items[index].cost, 'đ')),
+                      Text(
+                          numberToCurrency(model.optionItems[index].cost, 'đ')),
                       const SizedBox(
                         width: 8,
                       ),
@@ -462,7 +471,7 @@ class _ProductBottomSheetState extends State<ProductBottomSheet> {
                   padding: EdgeInsets.only(left: 16.0),
                   child: Divider(height: 1),
                 ),
-                itemCount: model.items.length,
+                itemCount: model.optionItems.length,
               ),
             ],
           ),
@@ -470,7 +479,11 @@ class _ProductBottomSheetState extends State<ProductBottomSheet> {
     );
   }
 
-  Widget _getMoreRequire(String name, String description, hint) {
+  Widget _getMoreRequire(
+    String name,
+    String description,
+    String hint,
+  ) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -499,12 +512,13 @@ class _ProductBottomSheetState extends State<ProductBottomSheet> {
           padding: const EdgeInsets.all(12.0),
           child: TextField(
             style: const TextStyle(
-              fontSize: 18,
+              fontSize: 16,
               fontWeight: FontWeight.w400,
             ),
             maxLines: null,
             // controller: _moreRequireController,
             decoration: InputDecoration(
+              isDense: true,
               border: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(12),
               ),

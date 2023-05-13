@@ -1,26 +1,23 @@
 import 'package:dio/dio.dart';
-import 'package:dio/dio.dart';
-import 'package:member_app/data/models/response_model.dart';
-import 'package:member_app/data/services/api_client.dart';
 
+import '../../models/response_model.dart';
+import '../../services/api_client.dart';
 import '../../../business_logic/repositories/news_repository.dart';
-import '../../../data/models/news_model.dart';
-import '../../../exception/app_exception.dart';
+import '../../models/news_model.dart';
 import '../../../exception/app_message.dart';
 import '../../../presentation/res/strings/values.dart';
 import '../../models/raw_failure_model.dart';
 import '../../models/raw_success_model.dart';
 import '../../services/api_config.dart';
 
-class NewsStorageRepository extends NewsRepository {
+class NewsApiRepository extends NewsRepository {
   final _dio = ApiClient.dio;
 
   @override
   Future<ResponseModel<List<NewsModel>>> gets() async {
     try {
       var res = await _dio.get(
-        ApiRouter.notificationAll,
-        queryParameters: {'auth': true},
+        ApiRouter.news,
       );
       var raw = RawSuccessModel.fromMap(res.data);
       return ResponseModel<List<NewsModel>>(

@@ -15,7 +15,7 @@ class NewsMockRepository extends NewsRepository {
           NewsModel(
             id: 'NEWS1',
             name: 'Ưu đãi đặc biệt',
-            items: List.generate(
+            news: List.generate(
               7,
               (index) => NewsItemModel(
                 id: 'NEWSITEM',
@@ -30,7 +30,7 @@ class NewsMockRepository extends NewsRepository {
           NewsModel(
             id: 'NEWS2',
             name: 'Cập nhật từ nhà',
-            items: List.generate(
+            news: List.generate(
               7,
               (index) => NewsItemModel(
                 id: 'NEWSITEM',
@@ -45,7 +45,7 @@ class NewsMockRepository extends NewsRepository {
           NewsModel(
             id: 'NEWS3',
             name: '#CoffeeLover',
-            items: List.generate(
+            news: List.generate(
               7,
               (index) => NewsItemModel(
                 id: 'NEWSITEM',

@@ -86,7 +86,7 @@ class ApiRouter {
   static String cartTemplateDelete(String id) => '/member/cart-template/$id';
 
   // News
-  static const String news = 'Member/news';
+  static const String news = 'member/news';
 
   // Store
   static const String storeShort = '/member/store/short';

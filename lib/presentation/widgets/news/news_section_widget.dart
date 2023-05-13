@@ -93,7 +93,7 @@ class _NewsSectionWidgetState extends State<NewsSectionWidget> {
                   ),
                 ),
                 NewsWidget(
-                  newsList: state.list[state.index].items,
+                  newsList: state.list[state.index].news,
                 ),
               ],
             );

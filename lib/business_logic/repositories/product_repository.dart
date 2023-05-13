@@ -7,7 +7,7 @@ import '../../data/models/response_model.dart';
 abstract class ProductRepository {
   Future<ResponseModel<List<ProductModel>>> gets();
 
-  Future<ResponseModel<List<ProductModel>>> getsSuggestion({int limit});
+  Future<ResponseModel<List<String>>> getsSuggestion({int limit});
 
   Future<ResponseModel<List<ProductCategoryModel>>> getCategories();
 

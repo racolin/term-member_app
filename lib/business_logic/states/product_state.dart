@@ -23,7 +23,7 @@ class ProductLoading extends ProductState {
 
 class ProductLoaded extends ProductState {
   final List<ProductModel> _list;
-  final List<ProductModel> _suggestion;
+  final List<String> _suggestion;
   final List<ProductCategoryModel> _listType;
   final List<ProductOptionModel> _listOption;
   final List<String> _unavailable;
@@ -33,7 +33,7 @@ class ProductLoaded extends ProductState {
 
   ProductLoaded({
     List<ProductModel>? list,
-    List<ProductModel>? suggestion = const [],
+    List<String>? suggestion = const [],
     List<ProductCategoryModel>? listType,
     List<ProductOptionModel>? listOption,
     List<String>? unavailable,
@@ -57,7 +57,9 @@ class ProductLoaded extends ProductState {
       )
       .toList();
 
-  List<ProductModel> get suggestion => _suggestion;
+  List<ProductModel> get suggestion {
+   return _list.where((e) => _suggestion.contains(e.id)).toList();
+  }
 
   List<ProductOptionModel> get listOption => _listOption
       .where(
@@ -90,7 +92,7 @@ class ProductLoaded extends ProductState {
         .where(
           (e) =>
               !_unavailable.contains(e.id) &&
-              _listType[index].productIDs.contains(e.id),
+              _listType[index].productIds.contains(e.id),
         )
         .toList();
   }
@@ -101,7 +103,7 @@ class ProductLoaded extends ProductState {
 
   ProductLoaded copyWith({
     List<ProductModel>? list,
-    List<ProductModel>? suggestion,
+    List<String>? suggestion,
     List<ProductCategoryModel>? listType,
     List<ProductOptionModel>? listOption,
     List<String>? unavailableList,

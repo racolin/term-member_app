@@ -25,7 +25,6 @@ class ApiClient {
       LogInterceptor(
         error: true,
         responseBody: true,
-        requestBody: true,
       ),
     });
 
@@ -72,10 +71,10 @@ class AppClientInterceptors extends QueuedInterceptorsWrapper {
     print(err.response?.statusCode);
     if (err.response?.statusCode == 401) {
       print(1212121);
+      var res = await _storage.getRefreshToken();
+      _storage.getRefreshToken().then((value) => print(value.data));
+      _storage.getAccessToken().then((value) => print(value.data));
       try {
-        var res = await _storage.getRefreshToken();
-        _storage.getRefreshToken().then((value) => print(value.data));
-        _storage.getAccessToken().then((value) => print(value.data));
         if (res.type == ResponseModelType.success) {
           var refreshToken = res.data;
           await dio.post(
@@ -84,6 +83,7 @@ class AppClientInterceptors extends QueuedInterceptorsWrapper {
               headers: {'Authorization': 'Bearer $refreshToken'},
             ),
           );
+          print('aaaaccc');
           try {
             var response = await dio.request(
               err.requestOptions.path,
@@ -107,9 +107,11 @@ class AppClientInterceptors extends QueuedInterceptorsWrapper {
                       'Hãy đăng nhập lại vì hiện tài tài khoản của bạn không được xác thực!',
                   description: ex.toString(),
                 );
+            print('xxxmmm111');
             return handler.reject(ex);
           }
         } else {
+          print('xxxmmm');
           return handler.reject(
             DioError(
               requestOptions: err.requestOptions,

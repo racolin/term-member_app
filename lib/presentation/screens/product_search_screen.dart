@@ -7,27 +7,27 @@ import '../../business_logic/cubits/home_cubit.dart';
 import '../../business_logic/states/cart_state.dart';
 import '../../business_logic/states/home_state.dart';
 import '../../data/models/product_model.dart';
-import '../../presentation/res/dimen/dimens.dart';
+import '../res/dimen/dimens.dart';
 import '../bottom_sheet/method_order_bottom_sheet.dart';
 import '../res/strings/values.dart';
 import '../widgets/floating_action_widget.dart';
 import '../widgets/product/product_widget.dart';
 
-class ProductSearchPage extends StatefulWidget {
+class ProductSearchScreen extends StatefulWidget {
   final Function(ProductModel) onClick;
   final bool withFloatingButton;
 
-  const ProductSearchPage({
+  const ProductSearchScreen({
     Key? key,
     required this.onClick,
     this.withFloatingButton = true,
   }) : super(key: key);
 
   @override
-  State<ProductSearchPage> createState() => _ProductSearchPageState();
+  State<ProductSearchScreen> createState() => _ProductSearchScreenState();
 }
 
-class _ProductSearchPageState extends State<ProductSearchPage> {
+class _ProductSearchScreenState extends State<ProductSearchScreen> {
   bool expanded = false;
 
   double oldPixel = 0;
@@ -62,7 +62,8 @@ class _ProductSearchPageState extends State<ProductSearchPage> {
                 child: NotificationListener<ScrollNotification>(
                   onNotification: (notification) {
                     if (!notification.metrics.outOfRange) {
-                      if ((notification.metrics.pixels - oldPixel).abs() > gap &&
+                      if ((notification.metrics.pixels - oldPixel).abs() >
+                              gap &&
                           notification.metrics.axis == Axis.vertical) {
                         double sub = notification.metrics.pixels - oldPixel;
                         if (direction * sub > 0) {
@@ -74,15 +75,23 @@ class _ProductSearchPageState extends State<ProductSearchPage> {
                     }
                     return true;
                   },
-                  child: ListView.builder(
-                    padding: const EdgeInsets.only(top: spaceXXS),
-                    itemBuilder: (context, index) {
-                      return Padding(
-                        padding: const EdgeInsets.all(spaceXS),
-                        child: ProductWidget(model: list[index]),
-                      );
-                    },
-                    itemCount: list.length,
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Expanded(
+                        child: ListView.builder(
+                          padding: const EdgeInsets.only(top: spaceXXS),
+                          itemBuilder: (context, index) {
+                            return Padding(
+                              padding: const EdgeInsets.all(spaceXS),
+                              child: ProductWidget(model: list[index]),
+                            );
+                          },
+                          itemCount: list.length,
+                        ),
+                      ),
+                      const SizedBox(height: dimXXL),
+                    ],
                   ),
                 ),
               ),
@@ -90,49 +99,50 @@ class _ProductSearchPageState extends State<ProductSearchPage> {
           );
         },
       ),
-      floatingActionButtonLocation:
-      FloatingActionButtonLocation.centerFloat,
-      floatingActionButton: !widget.withFloatingButton ? null : BlocBuilder<HomeCubit, HomeState>(
-        builder: (context, homeState) {
-          switch (homeState.runtimeType) {
-            case HomeLoaded:
-              homeState as HomeLoaded;
-              return (homeState.type == HomeBodyType.home ||
-                  homeState.type == HomeBodyType.order)
-                  ? BlocBuilder<CartCubit, CartState>(
-                builder: (context, cartState) {
-                  if (cartState is CartLoaded) {
-                    return FloatingActionWidget(
-                      addressName: cartState.addressName,
-                      type: cartState.categoryId,
-                      amount: cartState.payType,
-                      cost: cartState.calculateCost,
-                      expanded: expanded,
-                      onClick: () {
-                        showModalBottomSheet(
-                          context: context,
-                          shape: const RoundedRectangleBorder(
-                            borderRadius: BorderRadius.vertical(
-                              top: Radius.circular(16),
-                            ),
-                          ),
-                          builder: (context) =>
-                              MethodOrderBottomSheet(
-                                type: cartState.categoryId,
-                                addressName: cartState.addressName,
-                              ),
-                        );
-                      },
-                    );
-                  }
-                  return const SizedBox();
-                },
-              )
-                  : const SizedBox();
-          }
-          return const SizedBox();
-        },
-      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+      floatingActionButton: !widget.withFloatingButton
+          ? null
+          : BlocBuilder<HomeCubit, HomeState>(
+              builder: (context, homeState) {
+                switch (homeState.runtimeType) {
+                  case HomeLoaded:
+                    homeState as HomeLoaded;
+                    return (homeState.type == HomeBodyType.home ||
+                            homeState.type == HomeBodyType.order)
+                        ? BlocBuilder<CartCubit, CartState>(
+                            builder: (context, cartState) {
+                              if (cartState is CartLoaded) {
+                                return FloatingActionWidget(
+                                  addressName: cartState.addressName,
+                                  type: cartState.categoryId,
+                                  amount: cartState.payType,
+                                  cost: cartState.calculateCost,
+                                  expanded: expanded,
+                                  onClick: () {
+                                    showModalBottomSheet(
+                                      context: context,
+                                      shape: const RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.vertical(
+                                          top: Radius.circular(16),
+                                        ),
+                                      ),
+                                      builder: (context) =>
+                                          MethodOrderBottomSheet(
+                                        type: cartState.categoryId,
+                                        addressName: cartState.addressName,
+                                      ),
+                                    );
+                                  },
+                                );
+                              }
+                              return const SizedBox();
+                            },
+                          )
+                        : const SizedBox();
+                }
+                return const SizedBox();
+              },
+            ),
     );
   }
 
@@ -153,9 +163,11 @@ class _ProductSearchPageState extends State<ProductSearchPage> {
                 ),
                 prefixIcon: const Icon(Icons.search),
               ),
+              style: Theme.of(context).textTheme.bodyLarge,
               onChanged: (value) {
-                context.read<IntervalBloc<ProductModel>>().add(
-                    IntervalSearch(key: value));
+                context
+                    .read<IntervalBloc<ProductModel>>()
+                    .add(IntervalSearch(key: value));
               },
             ),
           ),

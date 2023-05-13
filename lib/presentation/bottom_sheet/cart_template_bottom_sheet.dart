@@ -9,7 +9,7 @@ import '../../business_logic/cubits/product_cubit.dart';
 import '../../data/models/cart_template_model.dart';
 import '../../data/models/product_model.dart';
 import '../../supports/convert.dart';
-import '../pages/product_search_page.dart';
+import '../screens/product_search_screen.dart';
 import '../res/dimen/dimens.dart';
 import '../res/strings/values.dart';
 import '../widgets/app_image_widget.dart';
@@ -139,7 +139,7 @@ class CartTemplateBottomSheet extends StatelessWidget {
                                                 ),
                                               ),
                                             ],
-                                            child: ProductSearchPage(
+                                            child: ProductSearchScreen(
                                               onClick: (model) {
                                                 Navigator.pop(context);
                                               },

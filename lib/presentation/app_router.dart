@@ -6,6 +6,7 @@ import 'package:member_app/presentation/screens/history_point_screen.dart';
 import '../data/repositories/api/auth_api_repository.dart';
 import '../data/repositories/api/member_api_repository.dart';
 import '../data/repositories/api/news_api_repository.dart';
+import '../data/repositories/api/product_api_repository.dart';
 import '../data/repositories/api/voucher_api_repository.dart';
 import 'pages/reward_screen.dart';
 import 'screens/address_screen.dart';
@@ -115,8 +116,11 @@ class AppRouter {
                 //   create: (context) => NewsMockRepository(),
                 // ),
                 RepositoryProvider<ProductRepository>(
-                  create: (context) => ProductMockRepository(),
+                  create: (context) => ProductApiRepository(),
                 ),
+                // RepositoryProvider<ProductRepository>(
+                //   create: (context) => ProductMockRepository(),
+                // ),
                 RepositoryProvider<PromotionRepository>(
                   create: (context) => PromotionMockRepository(),
                 ),

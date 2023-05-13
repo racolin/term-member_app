@@ -65,9 +65,10 @@ class ApiRouter {
 
   // Product
   static const String productAll = '/member/product/all';
+  static const String productSuggestion = '/member/product/suggestion';
   static String productFavoriteUpdate(String id) => '/member/product/$id/favorite';
   static const String productFavoriteAll = '/member/product/favorite/all';
-  static const String productCategoryAll = '/member/product-category/all';
+  static const String productCategoryAll = '/member/product-category';
   static const String productOptionAll = '/member/product-option/all';
 
   // Cart

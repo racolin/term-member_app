@@ -4,13 +4,13 @@ class ProductCategoryModel {
   final String id;
   final String name;
   final String? image;
-  final List<String> productIDs;
+  final List<String> productIds;
 
   ProductCategoryModel({
     required this.id,
     required this.name,
     this.image,
-    required this.productIDs,
+    required this.productIds,
   });
 
   Map<String, dynamic> toMap() {
@@ -18,7 +18,7 @@ class ProductCategoryModel {
       'id': id,
       'name': name,
       'image': image,
-      'productIDs': productIDs,
+      'productIds': productIds,
     };
   }
 
@@ -27,7 +27,9 @@ class ProductCategoryModel {
       id: map['id']!,
       name: map['name'] ?? txtUnknown,
       image: map['image'],
-      productIDs: map['productIDs'] ?? [],
+      productIds: (map['productIds'] is List)
+          ? (map['productIds'] as List).map<String>((e) => e as String).toList()
+          : <String>[],
     );
   }
 }

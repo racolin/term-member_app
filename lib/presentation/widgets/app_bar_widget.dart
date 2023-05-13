@@ -5,7 +5,7 @@ import 'package:member_app/business_logic/cubits/cart_cubit.dart';
 import 'package:member_app/business_logic/cubits/cart_template_cubit.dart';
 import 'package:member_app/business_logic/cubits/voucher_cubit.dart';
 import 'package:member_app/presentation/app_router.dart';
-import 'package:member_app/presentation/pages/product_search_page.dart';
+import 'package:member_app/presentation/screens/product_search_screen.dart';
 import 'package:member_app/presentation/screens/product_favorite_screen.dart';
 import 'package:member_app/presentation/screens/voucher_screen.dart';
 
@@ -214,7 +214,7 @@ class _AppBarWidget extends StatelessWidget {
                                         ),
                                       ),
                                     ],
-                                    child: ProductSearchPage(onClick: (model) {
+                                    child: ProductSearchScreen(onClick: (model) {
                                       Navigator.pop(context);
                                     }),
                                   );

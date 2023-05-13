@@ -33,7 +33,7 @@ class ProductStorageRepository extends ProductRepository {
   }
 
   @override
-  Future<ResponseModel<List<ProductModel>>> getsSuggestion({int limit = 4}) async {
+  Future<ResponseModel<List<String>>> getsSuggestion({int limit = 4}) async {
     throw UnimplementedError();
   }
 }

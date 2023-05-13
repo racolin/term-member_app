@@ -14,7 +14,7 @@ class ProductMockRepository extends ProductRepository {
     (index) => ProductModel(
       id: 'PRODUCT-$index',
       name: 'Cà Phê Sữa Đá',
-      // cost: 20000 + index * 1000,
+      cost: 20000 + index * 1000,
       image:
           'https://product.hstatic.net/1000075078/product/1669736835_ca-phe-sua-da_15ae84580c4141fc809ac8fffd72b194.png',
       images: [
@@ -33,7 +33,7 @@ class ProductMockRepository extends ProductRepository {
         image:
             'https://product.hstatic.net/1000075078/product/1669736835_ca-phe-sua-da_15ae84580c4141fc809ac8fffd72b194.png',
         name: 'Món mới phải thử',
-        productIDs: [
+        productIds: [
           'PRODUCT-0',
           'PRODUCT-1',
           'PRODUCT-7',
@@ -46,7 +46,7 @@ class ProductMockRepository extends ProductRepository {
         image:
             'https://product.hstatic.net/1000075078/product/1669736835_ca-phe-sua-da_15ae84580c4141fc809ac8fffd72b194.png',
         name: 'Cà phê',
-        productIDs: [
+        productIds: [
           'PRODUCT-0',
           'PRODUCT-1',
           'PRODUCT-7',
@@ -59,7 +59,7 @@ class ProductMockRepository extends ProductRepository {
         image:
             'https://product.hstatic.net/1000075078/product/1669736835_ca-phe-sua-da_15ae84580c4141fc809ac8fffd72b194.png',
         name: 'CloudFee',
-        productIDs: [
+        productIds: [
           'PRODUCT-0',
           'PRODUCT-1',
           'PRODUCT-7',
@@ -72,7 +72,7 @@ class ProductMockRepository extends ProductRepository {
         image:
             'https://product.hstatic.net/1000075078/product/1669736835_ca-phe-sua-da_15ae84580c4141fc809ac8fffd72b194.png',
         name: 'CloudTea',
-        productIDs: [
+        productIds: [
           'PRODUCT-0',
           'PRODUCT-1',
           'PRODUCT-7',
@@ -85,7 +85,7 @@ class ProductMockRepository extends ProductRepository {
         image:
             'https://product.hstatic.net/1000075078/product/1669736835_ca-phe-sua-da_15ae84580c4141fc809ac8fffd72b194.png',
         name: 'Thưởng thức tại nhà',
-        productIDs: [
+        productIds: [
           'PRODUCT-0',
           'PRODUCT-1',
           'PRODUCT-7',
@@ -98,7 +98,7 @@ class ProductMockRepository extends ProductRepository {
         image:
             'https://product.hstatic.net/1000075078/product/1669736835_ca-phe-sua-da_15ae84580c4141fc809ac8fffd72b194.png',
         name: 'Hi-Tea Healthy',
-        productIDs: [
+        productIds: [
           'PRODUCT-0',
           'PRODUCT-1',
           'PRODUCT-7',
@@ -111,7 +111,7 @@ class ProductMockRepository extends ProductRepository {
         image:
             'https://product.hstatic.net/1000075078/product/1669736835_ca-phe-sua-da_15ae84580c4141fc809ac8fffd72b194.png',
         name: 'Trà trái cây - Trà sữa',
-        productIDs: [
+        productIds: [
           'PRODUCT-0',
           'PRODUCT-1',
           'PRODUCT-7',
@@ -124,7 +124,7 @@ class ProductMockRepository extends ProductRepository {
         image:
             'https://product.hstatic.net/1000075078/product/1669736835_ca-phe-sua-da_15ae84580c4141fc809ac8fffd72b194.png',
         name: 'Bánh Snack',
-        productIDs: [
+        productIds: [
           'PRODUCT-0',
           'PRODUCT-1',
           'PRODUCT-7',
@@ -137,7 +137,7 @@ class ProductMockRepository extends ProductRepository {
         image:
             'https://product.hstatic.net/1000075078/product/1669736835_ca-phe-sua-da_15ae84580c4141fc809ac8fffd72b194.png',
         name: 'Bánh Snack',
-        productIDs: [
+        productIds: [
           'PRODUCT-0',
           'PRODUCT-1',
           'PRODUCT-7',
@@ -349,14 +349,14 @@ class ProductMockRepository extends ProductRepository {
   }
 
   @override
-  Future<ResponseModel<List<ProductModel>>> getsSuggestion({
+  Future<ResponseModel<List<String>>> getsSuggestion({
     int limit = 4,
   }) async {
-    return ResponseModel<List<ProductModel>>(
+    return ResponseModel<List<String>>(
       type: ResponseModelType.success,
-      data: _products.sublist(0, 4),
+      data: _products.sublist(0, 4).map((e) => e.id).toList(),
     );
-    return ResponseModel<List<ProductModel>>(
+    return ResponseModel<List<String>>(
       type: ResponseModelType.failure,
       message: AppMessage(
         type: AppMessageType.error,

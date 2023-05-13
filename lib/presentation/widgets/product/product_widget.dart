@@ -81,7 +81,7 @@ class ProductWidget extends StatelessWidget {
                           height: spaceXXS,
                         ),
                         Text(
-                          numberToCurrency(100000, 'đ'),
+                          numberToCurrency(model.cost, 'đ'),
                           style: const TextStyle(fontSize: fontMD),
                         ),
                       ],

@@ -14,7 +14,7 @@ import '../widgets/product/product_widget.dart';
 class OrderBody extends StatefulWidget {
   final VoidCallback onScroll;
   final int perRow = 4;
-  final int row = 2;
+  final int row = 1;
   final bool login;
 
   const OrderBody({
@@ -62,19 +62,25 @@ class _OrderBodyState extends State<OrderBody> {
               return const SizedBox();
             case ProductLoaded:
               state as ProductLoaded;
+              var listType = state.listType;
               if (heights.isEmpty) {
                 heights.add(dimXL * widget.row + spaceSM * 2);
-                for (int index = 1; index < state.listType.length; index++) {
+                for (int index = 1; index < listType.length; index++) {
                   heights.add(heights[index - 1]);
                   if (index == 1 && widget.login) {
                     heights[index] += 307;
                   }
+                  print('length');
+                  print(listType[index].id);
+                  print(state
+                      .getProductsByCategoryId(listType[index].id).length);
                   heights[index] += 43 +
                       116 *
                           state
-                              .getProductsByCategoryId(state.listType[index].id)
+                              .getProductsByCategoryId(listType[index - 1].id)
                               .length;
                 }
+                print(heights);
               }
               return NotificationListener<ScrollNotification>(
                 onNotification: (notification) {
@@ -112,20 +118,20 @@ class _OrderBodyState extends State<OrderBody> {
                         return const SizedBox();
                       }
                     }
-                    if (index == state.listType.length + 2) {
+                    if (index == listType.length + 2) {
                       return const SizedBox(
                         height: dimLG,
                       );
                     }
                     // height: 43 + 116 * n
                     return _getListProduct(
-                      state.listType[index - (index > 2 ? 2 : 1)].name,
+                      listType[index - (index > 2 ? 2 : 1)].name,
                       state.getProductsByCategoryId(
-                        state.listType[index - (index > 2 ? 2 : 1)].id,
+                        listType[index - (index > 2 ? 2 : 1)].id,
                       ),
                     );
                   },
-                  itemCount: state.listType.length + 3,
+                  itemCount: listType.length + 3,
                 ),
               );
           }

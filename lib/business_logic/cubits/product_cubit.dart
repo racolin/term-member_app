@@ -20,47 +20,6 @@ class ProductCubit extends Cubit<ProductState>
   })  : _repository = repository,
         super(ProductInitial()) {
     emit(ProductLoading());
-    _repository.gets().then((res) {
-      if (res.type == ResponseModelType.success) {
-        var list = res.data;
-        if (state is ProductLoaded) {
-          emit((state as ProductLoaded).copyWith(list: list));
-        } else {
-          emit(ProductLoaded(
-            list: list,
-          ));
-        }
-      } else {
-        emit(ProductLoaded(
-          list: const [],
-        ));
-      }
-    });
-    _repository.getsSuggestion().then((res) {
-      if (res.type == ResponseModelType.success) {
-        var list = res.data;
-        if (state is ProductLoaded) {
-          emit((state as ProductLoaded).copyWith(suggestion: list));
-        } else {
-          emit(ProductLoaded(
-            suggestion: list,
-          ));
-        }
-      } else {}
-    });
-    _repository.getCategories().then((res) {
-      if (res.type == ResponseModelType.success) {
-        var listType = res.data;
-
-        if (state is ProductLoaded) {
-          emit((state as ProductLoaded).copyWith(listType: listType));
-        } else {
-          emit(ProductLoaded(
-            listType: listType,
-          ));
-        }
-      } else {}
-    });
     _repository.getOptions().then((res) {
       if (res.type == ResponseModelType.success) {
         var listOption = res.data;
@@ -70,8 +29,61 @@ class ProductCubit extends Cubit<ProductState>
           emit(ProductLoaded(
             listOption: listOption,
           ));
+          _repository.gets().then((res) {
+            if (res.type == ResponseModelType.success) {
+              var list = res.data;
+              if (state is ProductLoaded) {
+                emit((state as ProductLoaded).copyWith(list: list));
+              } else {
+                emit(ProductLoaded(
+                  list: list,
+                ));
+              }
+              _repository.getsSuggestion().then((res) {
+                if (res.type == ResponseModelType.success) {
+                  var list = res.data;
+                  if (state is ProductLoaded) {
+                    emit((state as ProductLoaded).copyWith(suggestion: list));
+                  } else {
+                    emit(ProductLoaded(
+                      suggestion: list,
+                    ));
+                  }
+                } else {
+                  emit(ProductLoaded(
+                    suggestion: const [],
+                  ));
+                }
+              });
+              _repository.getCategories().then((res) {
+                if (res.type == ResponseModelType.success) {
+                  var listType = res.data;
+
+                  if (state is ProductLoaded) {
+                    emit((state as ProductLoaded).copyWith(listType: listType));
+                  } else {
+                    emit(ProductLoaded(
+                      listType: listType,
+                    ));
+                  }
+                } else {
+                  emit(ProductLoaded(
+                    listType: const [],
+                  ));
+                }
+              });
+            } else {
+              emit(ProductLoaded(
+                list: const [],
+              ));
+            }
+          });
         }
-      } else {}
+      } else {
+        emit(ProductLoaded(
+          listOption: const [],
+        ));
+      }
     });
   }
 

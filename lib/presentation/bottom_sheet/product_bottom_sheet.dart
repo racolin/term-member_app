@@ -329,7 +329,7 @@ class _ProductBottomSheetState extends State<ProductBottomSheet> {
             height: 4,
           ),
           Text(
-            numberToCurrency(100000, 'đ'),
+            numberToCurrency(widget.product.cost, 'đ'),
             style: const TextStyle(
               fontSize: 18,
               color: Colors.black87,

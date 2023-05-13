@@ -123,7 +123,9 @@ class ProductApiRepository extends ProductRepository {
       var raw = RawSuccessModel.fromMap(res.data);
       return ResponseModel<List<String>>(
         type: ResponseModelType.success,
-        data: raw.data,
+        data: (raw.data['products'] is List)
+            ? (raw.data['products'] as List).map<String>((e) => e as String).toList()
+            : <String>[],
       );
     } on DioError catch (ex) {
       if (ex.error is AppMessage) {
@@ -267,7 +269,6 @@ class ProductApiRepository extends ProductRepository {
   Future<ResponseModel<List<String>>> getsSuggestion({
     int limit = 4,
   }) async {
-    print('adasdasdasdasdasdasdasdas');
     try {
       var res = await _dio.get(
         ApiRouter.productSuggestion,

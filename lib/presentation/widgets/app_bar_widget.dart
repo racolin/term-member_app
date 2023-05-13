@@ -1,10 +1,13 @@
 import 'package:badges/badges.dart' as badges;
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:member_app/business_logic/cubits/cart_cubit.dart';
 import 'package:member_app/business_logic/cubits/cart_template_cubit.dart';
 import 'package:member_app/business_logic/cubits/voucher_cubit.dart';
 import 'package:member_app/presentation/app_router.dart';
+import 'package:member_app/presentation/dialogs/app_dialog.dart';
+import 'package:member_app/presentation/dialogs/loading_dialog.dart';
 import 'package:member_app/presentation/screens/product_search_screen.dart';
 import 'package:member_app/presentation/screens/product_favorite_screen.dart';
 import 'package:member_app/presentation/screens/voucher_screen.dart';
@@ -214,7 +217,8 @@ class _AppBarWidget extends StatelessWidget {
                                         ),
                                       ),
                                     ],
-                                    child: ProductSearchScreen(onClick: (model) {
+                                    child:
+                                        ProductSearchScreen(onClick: (model) {
                                       Navigator.pop(context);
                                     }),
                                   );
@@ -259,33 +263,69 @@ class _AppBarWidget extends StatelessWidget {
                             if (!state.login) {
                               Navigator.pushNamed(context, AppRouter.auth);
                             } else {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (ctx) {
-                                    return MultiRepositoryProvider(
-                                      providers: [
-                                        BlocProvider<ProductCubit>.value(
-                                          value: BlocProvider.of<ProductCubit>(
-                                            context,
-                                          ),
-                                        ),
-                                        BlocProvider<HomeCubit>.value(
-                                          value: BlocProvider.of<HomeCubit>(
-                                            context,
-                                          ),
-                                        ),
-                                        BlocProvider<CartCubit>.value(
-                                          value: BlocProvider.of<CartCubit>(
-                                            context,
-                                          ),
-                                        ),
-                                      ],
-                                      child: const ProductFavoriteScreen(),
+                              // showCupertinoDialog(
+                              //   context: context,
+                              //   builder: (context) {
+                              //     return const LoadingDialog();
+                              //   },
+                              // );
+                              // context.read<ProductCubit>().loadFavorites().then(
+                              //   (message) {
+                              //     Navigator.pop(context);
+                              //     if (message == null) {
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (ctx) {
+                                          return MultiRepositoryProvider(
+                                            providers: [
+                                              BlocProvider<ProductCubit>.value(
+                                                value: BlocProvider.of<
+                                                    ProductCubit>(
+                                                  context,
+                                                ),
+                                              ),
+                                              BlocProvider<HomeCubit>.value(
+                                                value:
+                                                    BlocProvider.of<HomeCubit>(
+                                                  context,
+                                                ),
+                                              ),
+                                              BlocProvider<CartCubit>.value(
+                                                value:
+                                                    BlocProvider.of<CartCubit>(
+                                                  context,
+                                                ),
+                                              ),
+                                            ],
+                                            child:
+                                                const ProductFavoriteScreen(),
+                                          );
+                                        },
+                                      ),
                                     );
-                                  },
-                                ),
-                              );
+                              //     } else {
+                              //       showCupertinoDialog(
+                              //         context: context,
+                              //         builder: (context) {
+                              //           return AppDialog(
+                              //             message: message,
+                              //             actions: [
+                              //               CupertinoDialogAction(
+                              //                 child: const Text(
+                              //                   txtConfirm,
+                              //                 ),
+                              //                 onPressed: () {
+                              //                   Navigator.pop(context);
+                              //                 },
+                              //               ),
+                              //             ],
+                              //           );
+                              //         },
+                              //       );
+                              //     }
+                              //   },
+                              // );
                             }
                           },
                           child: Ink(
@@ -499,7 +539,7 @@ class BaseActionWidget extends StatelessWidget {
             ),
           ),
           onPressed: () {
-            if (login){
+            if (login) {
               Navigator.push(
                 context,
                 MaterialPageRoute(
@@ -511,8 +551,8 @@ class BaseActionWidget extends StatelessWidget {
                   },
                 ),
               );
-            }else {
-            Navigator.pushNamed(context, AppRouter.auth);
+            } else {
+              Navigator.pushNamed(context, AppRouter.auth);
             }
           },
           icon: const Icon(

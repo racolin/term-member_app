@@ -72,6 +72,25 @@ class ProductCubit extends Cubit<ProductState>
                   ));
                 }
               });
+              _repository.getFavorites().then((res) {
+                if (res.type == ResponseModelType.success) {
+                  var favorites = res.data;
+
+                  if (state is ProductLoaded) {
+                    emit((state as ProductLoaded).copyWith(
+                      favorites: favorites,
+                    ));
+                  } else {
+                    emit(ProductLoaded(
+                      favorites: favorites,
+                    ));
+                  }
+                } else {
+                  emit(ProductLoaded(
+                    favorites: const [],
+                  ));
+                }
+              });
             } else {
               emit(ProductLoaded(
                 list: const [],
@@ -136,6 +155,31 @@ class ProductCubit extends Cubit<ProductState>
     }
   }
 
+  Future<AppMessage?> changeFavorite(String id, bool status) async {
+    if (this.state is! ProductLoaded) {
+      return AppMessage(
+        type: AppMessageType.failure,
+        title: txtFailureTitle,
+        content: txtToFast,
+      );
+    }
+    var state = this.state as ProductLoaded;
+
+    var res = await _repository.changeFavorite(id: id);
+    if (res.type == ResponseModelType.success) {
+      var list = state.favorites;
+      if (status) {
+        list.remove(id);
+      } else {
+        list.add(id);
+      }
+      emit(state.copyWith(favorites: list));
+      return null;
+    } else {
+      return res.message;
+    }
+  }
+
   AppMessage? setUnavailable({
     required List<String> products,
     required List<String> categories,
@@ -165,5 +209,12 @@ class ProductCubit extends Cubit<ProductState>
       return (state as ProductLoaded).getSearch(key);
     }
     return <ProductModel>[];
+  }
+
+  bool checkFavorite(String id) {
+    if (state is! ProductLoaded) {
+      return false;
+    }
+    return (state as ProductLoaded).checkFavorite(id);
   }
 }

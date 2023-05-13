@@ -54,6 +54,7 @@ class _ProductFavoriteScreenState extends State<ProductFavoriteScreen> {
           case ProductLoaded:
             state as ProductLoaded;
             var list = state.getFavorites();
+            print(list.length);
             return Scaffold(
               appBar: AppBar(
                 leading: IconButton(

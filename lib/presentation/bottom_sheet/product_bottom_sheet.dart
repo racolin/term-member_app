@@ -1,7 +1,10 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:member_app/business_logic/cubits/product_cubit.dart';
 import 'package:member_app/business_logic/states/product_state.dart';
+import 'package:member_app/exception/app_message.dart';
+import 'package:member_app/presentation/dialogs/app_dialog.dart';
 
 import '../../data/models/product_option_model.dart';
 import '../../data/models/product_model.dart';
@@ -114,11 +117,13 @@ class _ProductBottomSheetState extends State<ProductBottomSheet> {
   late _Selected selected;
   int amount = 1;
   String? note;
+  bool isFavorite = false;
 
   @override
   void initState() {
     if (context.read<ProductCubit>().state is ProductLoaded) {
       var state = context.read<ProductCubit>().state as ProductLoaded;
+      loadFavorite();
       selected = _Selected(
         defaultCost: widget.product.cost,
         options: state.listOption
@@ -129,6 +134,10 @@ class _ProductBottomSheetState extends State<ProductBottomSheet> {
       );
     }
     super.initState();
+  }
+
+  void loadFavorite() {
+    isFavorite = context.read<ProductCubit>().checkFavorite(widget.product.id);
   }
 
   void setAmount(int n) {
@@ -211,7 +220,7 @@ class _ProductBottomSheetState extends State<ProductBottomSheet> {
                             ),
                           ],
                         ),
-                        _getInformation(false),
+                        _getInformation(isFavorite),
                         _getOptions(selected),
                         _getMoreRequire(
                           'Yêu cầu khác',
@@ -323,7 +332,38 @@ class _ProductBottomSheetState extends State<ProductBottomSheet> {
                 ),
               ),
               GestureDetector(
-                onTap: () {},
+                onTap: () async {
+                  var message =
+                      await context.read<ProductCubit>().changeFavorite(
+                            widget.product.id,
+                            isFavorite,
+                          );
+                  if (mounted) {
+                    if (message == null) {
+                      setState(() {
+                        loadFavorite();
+                        // this.isFavorite = !isFavorite;
+                      });
+                    } else {
+                      showCupertinoDialog(
+                        context: context,
+                        builder: (context) {
+                          return AppDialog(
+                            message: message,
+                            actions: [
+                              CupertinoDialogAction(
+                                child: const Text(txtConfirm),
+                                onPressed: () {
+                                  Navigator.pop(context);
+                                },
+                              ),
+                            ],
+                          );
+                        },
+                      );
+                    }
+                  }
+                },
                 child: Icon(
                   isFavorite ? Icons.favorite : Icons.favorite_border,
                   color: Colors.orange,

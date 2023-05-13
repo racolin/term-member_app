@@ -98,7 +98,16 @@ class ProductLoaded extends ProductState {
   }
 
   List<ProductModel> getFavorites() {
+    print(_favorites.length);
+    print('sasa');
+    for (var element in _list) { print(element.id);}
     return _list.where((e) => _favorites.contains(e.id)).toList();
+  }
+
+  List<String> get favorites => _favorites;
+
+  bool checkFavorite(String id) {
+    return _favorites.any((element) => element == id);
   }
 
   ProductLoaded copyWith({

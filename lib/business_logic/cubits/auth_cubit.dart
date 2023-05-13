@@ -43,6 +43,7 @@ class AuthCubit extends Cubit<AuthState> {
     required String lastName,
     required int gender,
   }) async {
+    phone = '+84$phone';
     var res = await _repository.register(
       phone: phone,
       dob: dob.millisecondsSinceEpoch,

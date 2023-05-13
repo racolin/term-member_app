@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
+import 'package:member_app/presentation/dialogs/app_dialog.dart';
 import 'package:member_app/presentation/screens/otp_screen.dart';
 
 import '../../business_logic/cubits/auth_cubit.dart';
@@ -241,17 +242,15 @@ class _RegisterFormState extends State<RegisterForm> {
             ),
           ],
         ),
-        SpecialInputWidget(
-          changeDate: (time) {
-            setState(() {
-              _dob = time;
-            });
-          },
-          selectGender: (gender) {
-            setState(() {
-              _gender = gender;
-            });
-          }),
+        SpecialInputWidget(changeDate: (time) {
+          setState(() {
+            _dob = time;
+          });
+        }, selectGender: (gender) {
+          setState(() {
+            _gender = gender;
+          });
+        }),
         const SizedBox(
           height: dimXS,
         ),
@@ -283,20 +282,48 @@ class _RegisterFormState extends State<RegisterForm> {
           width: double.maxFinite,
           height: 48,
           child: ElevatedButton(
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (ctx) {
-                    return BlocProvider<AuthCubit>.value(
-                      value: BlocProvider.of<AuthCubit>(
-                        context,
-                      ),
-                      child: const OtpScreen(),
-                    );
-                  },
-                ),
-              );
+            onPressed: () async {
+              var message = await context.read<AuthCubit>().register(
+                    phone: _phone,
+                    dob: DateTime.fromMillisecondsSinceEpoch(_dob),
+                    firstName: _firstName,
+                    lastName: _lastName,
+                    gender: _gender,
+                  );
+              if (mounted) {
+                if (message != null) {
+                  showCupertinoDialog(
+                    context: context,
+                    builder: (context) {
+                      return AppDialog(
+                        message: message,
+                        actions: [
+                          CupertinoDialogAction(
+                            child: const Text(txtConfirm),
+                            onPressed: () {
+                              Navigator.pop(context);
+                            },
+                          ),
+                        ],
+                      );
+                    },
+                  );
+                } else {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (ctx) {
+                        return BlocProvider<AuthCubit>.value(
+                          value: BlocProvider.of<AuthCubit>(
+                            context,
+                          ),
+                          child: const OtpScreen(),
+                        );
+                      },
+                    ),
+                  );
+                }
+              }
             },
             child: Text(
               txtRegister,
@@ -354,9 +381,12 @@ class _SpecialInputWidgetState extends State<SpecialInputWidget> {
               child: Row(
                 mainAxisSize: MainAxisSize.max,
                 children: [
-                  InkWell(
+                  GestureDetector(
                     onTap: () {
                       widget.selectGender(0);
+                      setState(() {
+                        gender = 0;
+                      });
                     },
                     child: AnimatedContainer(
                       duration: const Duration(milliseconds: 250),
@@ -374,9 +404,12 @@ class _SpecialInputWidgetState extends State<SpecialInputWidget> {
                       ),
                     ),
                   ),
-                  InkWell(
+                  GestureDetector(
                     onTap: () {
                       widget.selectGender(1);
+                      setState(() {
+                        gender = 1;
+                      });
                     },
                     child: AnimatedContainer(
                       duration: const Duration(milliseconds: 250),
@@ -463,7 +496,8 @@ class _SpecialInputWidgetState extends State<SpecialInputWidget> {
                   borderRadius: BorderRadius.circular(spaceXS),
                   border: Border.all(color: Colors.black54, width: 0.5),
                 ),
-                child: Text(DateFormat('dd/MM/yyyy').format(DateTime.fromMillisecondsSinceEpoch(dob))),
+                child: Text(DateFormat('dd/MM/yyyy')
+                    .format(DateTime.fromMillisecondsSinceEpoch(dob))),
               ),
               Positioned(
                 top: 2,
@@ -501,7 +535,8 @@ class _SpecialInputWidgetState extends State<SpecialInputWidget> {
                                     initialDateTime: DateTime.now(),
                                     onDateTimeChanged: (val) {
                                       setState(() {
-                                        widget.changeDate(val.millisecondsSinceEpoch);
+                                        widget.changeDate(
+                                            val.millisecondsSinceEpoch);
                                         dob = val.millisecondsSinceEpoch;
                                         // _chosenDateTime = val;
                                       });

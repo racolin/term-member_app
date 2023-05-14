@@ -11,7 +11,13 @@ class PromotionStorageRepository extends PromotionRepository {
   }
 
   @override
-  Future<ResponseModel<MapEntry<int, List<PromotionModel>>>> gets() async {
+  Future<ResponseModel<List<PromotionModel>>> gets() async {
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<ResponseModel<bool>> exchangePromotion(String id) {
+    // TODO: implement exchangePromotion
     throw UnimplementedError();
   }
 }

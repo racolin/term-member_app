@@ -11,7 +11,7 @@ import '../../models/raw_success_model.dart';
 import '../../services/api_config.dart';
 
 class NewsApiRepository extends NewsRepository {
-  final _dio = ApiClient.dio;
+  final _dio = ApiClient.dioNoAuth;
 
   @override
   Future<ResponseModel<List<NewsModel>>> gets() async {

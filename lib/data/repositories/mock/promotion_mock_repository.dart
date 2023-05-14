@@ -16,7 +16,7 @@ class PromotionMockRepository extends PromotionRepository {
       type: ResponseModelType.success,
       data: [
         PromotionCategoryModel(
-          id: 0,
+          id: '0',
           name: 'Tất cả',
           image:
               'https://apprecs.org/gp/images/app-icons/300/d1/com.thecoffeehouse.guestapp.jpg',
@@ -29,7 +29,7 @@ class PromotionMockRepository extends PromotionRepository {
           ],
         ),
         PromotionCategoryModel(
-          id: 1,
+          id: '1',
           name: 'The Coffee House',
           image:
               'https://apprecs.org/gp/images/app-icons/300/d1/com.thecoffeehouse.guestapp.jpg',
@@ -42,7 +42,7 @@ class PromotionMockRepository extends PromotionRepository {
           ],
         ),
         PromotionCategoryModel(
-          id: 2,
+          id: '2',
           name: 'Ăn uống',
           image:
               'https://apprecs.org/gp/images/app-icons/300/d1/com.thecoffeehouse.guestapp.jpg',
@@ -55,7 +55,7 @@ class PromotionMockRepository extends PromotionRepository {
           ],
         ),
         PromotionCategoryModel(
-          id: 3,
+          id: '3',
           name: 'Du lịch',
           image:
               'https://apprecs.org/gp/images/app-icons/300/d1/com.thecoffeehouse.guestapp.jpg',
@@ -68,7 +68,7 @@ class PromotionMockRepository extends PromotionRepository {
           ],
         ),
         PromotionCategoryModel(
-          id: 4,
+          id: '4',
           name: 'Mua sắm',
           image:
               'https://apprecs.org/gp/images/app-icons/300/d1/com.thecoffeehouse.guestapp.jpg',
@@ -81,7 +81,7 @@ class PromotionMockRepository extends PromotionRepository {
           ],
         ),
         PromotionCategoryModel(
-          id: 5,
+          id: '5',
           name: 'Giải trí',
           image:
               'https://apprecs.org/gp/images/app-icons/300/d1/com.thecoffeehouse.guestapp.jpg',
@@ -94,7 +94,7 @@ class PromotionMockRepository extends PromotionRepository {
           ],
         ),
         PromotionCategoryModel(
-          id: 6,
+          id: '6',
           name: 'Dịch vụ',
           image:
               'https://apprecs.org/gp/images/app-icons/300/d1/com.thecoffeehouse.guestapp.jpg',
@@ -107,7 +107,7 @@ class PromotionMockRepository extends PromotionRepository {
           ],
         ),
         PromotionCategoryModel(
-          id: 7,
+          id: '7',
           name: 'Giới hạn',
           image:
               'https://apprecs.org/gp/images/app-icons/300/d1/com.thecoffeehouse.guestapp.jpg',
@@ -132,57 +132,55 @@ class PromotionMockRepository extends PromotionRepository {
   }
 
   @override
-  Future<ResponseModel<MapEntry<int, List<PromotionModel>>>> gets() async {
-    return ResponseModel<MapEntry<int, List<PromotionModel>>>(
+  Future<ResponseModel<List<PromotionModel>>> gets() async {
+    return ResponseModel<List<PromotionModel>>(
       type: ResponseModelType.success,
-      data: MapEntry(
-          800,
+      data: List.generate(
+            7,
+            (index) => PromotionModel(
+              id: 'PM-$index',
+              partnerImage:
+                  'https://apprecs.org/gp/images/app-icons/300/d1/com.thecoffeehouse.guestapp.jpg',
+              partner: 'Beauty Garden',
+              name: 'Giảm 50.000đ cho đơn 199.000đ',
+              description: 'Miễn phí giao hàng cho đơn hàng bất kì: '
+                  '\n- Áp dụng cho toàn bộ menu The Coffee House'
+                  '\n- Không áp dụng cho các chường trình khuyến mãi song song.',
+              expire: 30,
+              point: 99,
+              from: DateTime(2023, 3, 17),
+              to: DateTime(2023, 5, 17),
+              isFeatured: Random().nextBool(),
+              exchangeCount: 15,
+              // mark: (Random().nextDouble() * 400).toInt() + 600,
+              backgroundImage:
+                  'https://www.tiendauroi.com/wp-content/uploads/2019/05/2409aa3f79aad8d71acdf0bf233353bbded1a009.jpeg',
+            ),
+          ) +
           List.generate(
-                7,
-                (index) => PromotionModel(
-                  id: 'PM-$index',
-                  partnerImage:
-                      'https://apprecs.org/gp/images/app-icons/300/d1/com.thecoffeehouse.guestapp.jpg',
-                  partner: 'Beauty Garden',
-                  name: 'Giảm 50.000đ cho đơn 199.000đ',
-                  description: 'Miễn phí giao hàng cho đơn hàng bất kì: '
-                      '\n- Áp dụng cho toàn bộ menu The Coffee House'
-                      '\n- Không áp dụng cho các chường trình khuyến mãi song song.',
-                  expire: 30,
-                  point: 99,
-                  from: DateTime(2023, 3, 17),
-                  to: DateTime(2023, 5, 17),
-                  isFeatured: Random().nextBool(),
-                  exchangeCount: 15,
-                  // mark: (Random().nextDouble() * 400).toInt() + 600,
-                  backgroundImage:
-                      'https://www.tiendauroi.com/wp-content/uploads/2019/05/2409aa3f79aad8d71acdf0bf233353bbded1a009.jpeg',
-                ),
-              ) +
-              List.generate(
-                7,
-                (index) => PromotionModel(
-                  id: 'PM-$index',
-                  partnerImage:
-                      'https://apprecs.org/gp/images/app-icons/300/d1/com.thecoffeehouse.guestapp.jpg',
-                  partner: 'The Coffee House',
-                  name: 'Giảm 50.000đ cho đơn 199.000đ',
-                  description: 'Miễn phí giao hàng cho đơn hàng bất kì: '
-                      '\n- Áp dụng cho toàn bộ menu The Coffee House'
-                      '\n- Không áp dụng cho các chường trình khuyến mãi song song.',
-                  expire: 30,
-                  point: 99,
-                  from: DateTime(2023, 3, 17),
-                  to: DateTime(2023, 5, 17),
-                  isFeatured: Random().nextBool(),
-                  exchangeCount: 15,
-                  // mark: (Random().nextDouble() * 400).toInt() + 600,
-                  backgroundImage:
-                      'https://www.tiendauroi.com/wp-content/uploads/2019/05/2409aa3f79aad8d71acdf0bf233353bbded1a009.jpeg',
-                ),
-              )),
+            7,
+            (index) => PromotionModel(
+              id: 'PM-$index',
+              partnerImage:
+                  'https://apprecs.org/gp/images/app-icons/300/d1/com.thecoffeehouse.guestapp.jpg',
+              partner: 'The Coffee House',
+              name: 'Giảm 50.000đ cho đơn 199.000đ',
+              description: 'Miễn phí giao hàng cho đơn hàng bất kì: '
+                  '\n- Áp dụng cho toàn bộ menu The Coffee House'
+                  '\n- Không áp dụng cho các chường trình khuyến mãi song song.',
+              expire: 30,
+              point: 99,
+              from: DateTime(2023, 3, 17),
+              to: DateTime(2023, 5, 17),
+              isFeatured: Random().nextBool(),
+              exchangeCount: 15,
+              // mark: (Random().nextDouble() * 400).toInt() + 600,
+              backgroundImage:
+                  'https://www.tiendauroi.com/wp-content/uploads/2019/05/2409aa3f79aad8d71acdf0bf233353bbded1a009.jpeg',
+            ),
+          ),
     );
-    return ResponseModel<MapEntry<int, List<PromotionModel>>>(
+    return ResponseModel<List<PromotionModel>>(
       type: ResponseModelType.failure,
       message: AppMessage(
         type: AppMessageType.error,
@@ -191,4 +189,10 @@ class PromotionMockRepository extends PromotionRepository {
       ),
     );
   }
+
+  @override
+  Future<ResponseModel<bool>> exchangePromotion(String id) {
+    throw UnimplementedError();
+  }
+
 }

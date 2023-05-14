@@ -1,12 +1,15 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:member_app/exception/app_message.dart';
 import 'package:member_app/presentation/dialogs/app_dialog.dart';
 
+import '../../business_logic/cubits/promotion_cubit.dart';
 import '../../presentation/res/strings/values.dart';
 import '../../data/models/promotion_model.dart';
 import '../../supports/convert.dart';
 import '../clippers/ticket_clipper.dart';
+import '../widgets/app_image_widget.dart';
 
 class PromotionBottomSheet extends StatelessWidget {
   final PromotionModel promotion;
@@ -50,16 +53,13 @@ class PromotionBottomSheet extends StatelessWidget {
                               borderRadius: const BorderRadius.vertical(
                                 top: Radius.circular(16),
                               ),
-                              child: promotion.backgroundImage == null
-                                  ? Image.asset(
-                                      'assets/images/image_default.png',
-                                    )
-                                  : Image.network(
-                                      promotion.backgroundImage!,
-                                      height: 450,
-                                      width: double.maxFinite,
-                                      fit: BoxFit.cover,
-                                    ),
+                              child: AppImageWidget(
+                                image: promotion.backgroundImage,
+                                height: 450,
+                                width: double.maxFinite,
+                                assetsDefaultImage:
+                                    'assets/images/image_default.png',
+                              ),
                             ),
                             const SizedBox(height: 56),
                             Card(
@@ -133,7 +133,8 @@ class PromotionBottomSheet extends StatelessWidget {
                               ),
                             ),
                             Padding(
-                              padding: const EdgeInsets.symmetric(vertical: 0, horizontal: 24),
+                              padding: const EdgeInsets.symmetric(
+                                  vertical: 0, horizontal: 24),
                               child: Text(promotion.description),
                             ),
                             const SizedBox(
@@ -205,39 +206,61 @@ class PromotionBottomSheet extends StatelessWidget {
                       mainAxisSize: MainAxisSize.max,
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Text(
-                          'Đổi ${promotion.point} $txtPointName lấy promotion này',
-                          maxLines: 2,
-                          style: const TextStyle(
-                            color: Colors.white,
-                            fontWeight: FontWeight.w500,
-                            fontSize: 15,
+                        Expanded(
+                          child: Text(
+                            'Đổi ${promotion.point} $txtPointName \nlấy promotion này',
+                            maxLines: 2,
+                            style: const TextStyle(
+                              color: Colors.white,
+                              fontWeight: FontWeight.w500,
+                              fontSize: 15,
+                            ),
                           ),
                         ),
                         ElevatedButton(
-                          onPressed: () {
-                            var title =
-                            // value
-                            //     ? 'Bạn đã đổi khuyến mãi thành công!'
-                            //     :
-                            'Bạn chưa đủ điều kiện để đổi khuyến mãi!';
-                            showCupertinoDialog(
-                              context: context,
-                              builder: (context) => AppDialog(
-                                message: AppMessage(
-                                  type: AppMessageType.info,
-                                  title: txtNotify,
-                                  content: title,
-                                ),
-                                actions: [
-                                  CupertinoDialogAction(
-                                      child: const Text(txtConfirm),
-                                      onPressed: () {
-                                        Navigator.pop(context);
-                                      }),
-                                ],
-                              ),
-                            );
+                          onPressed: () async {
+                            await context
+                                .read<PromotionCubit>()
+                                .exchange(
+                                  promotion.id,
+                                )
+                                .then((message) {
+                              if (message == null) {
+                                showCupertinoDialog(
+                                  context: context,
+                                  builder: (context) => AppDialog(
+                                    message: AppMessage(
+                                      type: AppMessageType.info,
+                                      title: txtNotify,
+                                      content:
+                                          'Bạn đã đổi khuyến mãi thành công!',
+                                    ),
+                                    actions: [
+                                      CupertinoDialogAction(
+                                          child: const Text(txtConfirm),
+                                          onPressed: () {
+                                            Navigator.pop(context);
+                                          }),
+                                    ],
+                                  ),
+                                );
+                              } else {
+                                showCupertinoDialog(
+                                  context: context,
+                                  builder: (context) => AppDialog(
+                                    message: message,
+                                    actions: [
+                                      CupertinoDialogAction(
+                                        child: const Text(txtConfirm),
+                                        onPressed: () {
+                                          Navigator.pop(context);
+                                        },
+                                      ),
+                                    ],
+                                  ),
+                                );
+                              }
+                            });
                           },
                           style: ButtonStyle(
                             backgroundColor:
@@ -283,14 +306,9 @@ class PromotionBottomSheet extends StatelessWidget {
                 padding: const EdgeInsets.all(12),
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(8),
-                  child: promotion.partnerImage == null
-                      ? Image.asset(
-                          'assets/image_default.png',
-                        )
-                      : Image.network(
-                          promotion.partnerImage!,
-                          fit: BoxFit.cover,
-                        ),
+                  child: AppImageWidget(
+                    image: promotion.partnerImage,
+                  ),
                 ),
               ),
             ),

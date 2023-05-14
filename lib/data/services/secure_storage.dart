@@ -1,5 +1,6 @@
 import 'package:flutter/services.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:jwt_decoder/jwt_decoder.dart';
 import 'package:member_app/data/models/token_model.dart';
 import 'package:member_app/presentation/res/strings/values.dart';
 
@@ -18,8 +19,11 @@ class SecureStorage {
   final FlutterSecureStorage _storage;
   static const _accessTokenKey = 'ACCESS_TOKEN';
   static const _refreshTokenKey = 'REFRESH_TOKEN';
+  TokenModel? _token;
 
   Future<ResponseModel<bool>> persistToken(TokenModel token) async {
+    _token = token;
+
     try {
       await _storage.write(
         key: _accessTokenKey,
@@ -57,6 +61,7 @@ class SecureStorage {
   }
 
   Future<ResponseModel<bool>> deleteToken() async {
+    _token = null;
     try {
       await _storage.delete(key: _accessTokenKey);
       await _storage.delete(key: _refreshTokenKey);
@@ -88,6 +93,13 @@ class SecureStorage {
   }
 
   Future<ResponseModel<TokenModel>> getToken() async {
+    if (_token != null) {
+      return ResponseModel<TokenModel>(
+        type: ResponseModelType.success,
+        data: _token!,
+      );
+    }
+
     try {
       String? access = await _storage.read(key: _accessTokenKey);
       String? refresh = await _storage.read(key: _refreshTokenKey);
@@ -132,7 +144,25 @@ class SecureStorage {
     }
   }
 
+  bool hasExpired(String token, int milliseconds) {
+    Map<String, dynamic> decodedToken = JwtDecoder.decode(token);
+    var exp = DateTime.fromMillisecondsSinceEpoch(
+      decodedToken['exp'] * 1000 ?? 0,
+    );
+    var e = DateTime.now().add(
+      Duration(milliseconds: milliseconds),
+    );
+    return exp.isAfter(e);
+  }
+
   Future<ResponseModel<String>> getAccessToken() async {
+    if (_token != null) {
+      return ResponseModel<String>(
+        type: ResponseModelType.success,
+        data: _token!.accessToken,
+      );
+    }
+
     try {
       String? accessToken = await _storage.read(key: _accessTokenKey);
       if (accessToken != null) {
@@ -144,9 +174,9 @@ class SecureStorage {
       return ResponseModel<String>(
         type: ResponseModelType.failure,
         message: AppMessage(
-          type: AppMessageType.failure,
+          type: AppMessageType.logout,
           title: txtFailureTitle,
-          content: 'Dữ liệu không có dữ liệu hoặc không đúng định dạng!',
+          content: 'Hãy đăng nhập lại!',
         ),
       );
     } on PlatformException catch (ex) {
@@ -173,6 +203,13 @@ class SecureStorage {
   }
 
   Future<ResponseModel<String>> getRefreshToken() async {
+    if (_token != null) {
+      return ResponseModel<String>(
+        type: ResponseModelType.success,
+        data: _token!.refreshToken,
+      );
+    }
+
     try {
       String? refreshToken = await _storage.read(key: _refreshTokenKey);
       if (refreshToken != null) {
@@ -213,6 +250,7 @@ class SecureStorage {
   }
 
   Future<ResponseModel<bool>> deleteAll() async {
+    _token = null;
     try {
       await _storage.deleteAll();
       return ResponseModel<bool>(

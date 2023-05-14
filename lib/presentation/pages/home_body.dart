@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:member_app/data/services/secure_storage.dart';
 
 import '../widgets/card_home_widget.dart';
 import '../res/strings/values.dart';
@@ -75,7 +74,6 @@ class _HomeBodyState extends State<HomeBody> {
                     ),
                     child: const CardWidget(
                       isDetail: false,
-                      color: Colors.grey,
                     ),
                   );
                 },
@@ -97,7 +95,6 @@ class _HomeBodyState extends State<HomeBody> {
                     child: widget.login
                         ? const CardWidget(
                             isDetail: false,
-                            color: Colors.grey,
                           )
                         : const CardHomeWidget(),
                   );

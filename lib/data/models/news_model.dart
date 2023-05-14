@@ -64,10 +64,9 @@ class NewsItemModel {
       id: map['id']!,
       name: map['name'] ?? txtUnknown,
       image: map['image'],
-      time: DateTime.tryParse(map['time'] ?? '') ?? DateTime.now(),
-      // map['time'] == null
-      //     ? DateTime.now()
-      //     : DateTime.fromMillisecondsSinceEpoch(map['time']),
+      time: map['time'] == null
+          ? DateTime.now()
+          : DateTime.fromMillisecondsSinceEpoch(map['time']),
       url: map['url'],
     );
   }

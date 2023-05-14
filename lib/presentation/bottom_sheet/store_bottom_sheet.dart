@@ -267,9 +267,8 @@ class StoreBottomSheet extends StatelessWidget {
       margin: const EdgeInsets.symmetric(vertical: 16),
       child: ClipRRect(
         borderRadius: BorderRadius.circular(8),
-        child: Image.network(
-          'https://www.google.com/maps/d/u/0/thumbnail?mid=16ICMtDmGmWt2B-p5_AJWkw-9-OY&hl=en',
-          fit: BoxFit.cover,
+        child: const AppImageWidget(
+          image: 'https://www.google.com/maps/d/u/0/thumbnail?mid=16ICMtDmGmWt2B-p5_AJWkw-9-OY&hl=en',
           height: 180,
         ),
       ),

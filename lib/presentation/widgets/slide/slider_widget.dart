@@ -24,7 +24,12 @@ class _SliderWidgetState extends State<SliderWidget> {
       builder: (context, state) {
         switch (state.runtimeType) {
           case VoucherLoading:
-            return const LoadingWidget();
+            return const Center(
+              child: Padding(
+                padding: EdgeInsets.all(spaceXL),
+                child: LoadingWidget(),
+              ),
+            );
           case VoucherLoaded:
             state as VoucherLoaded;
             var list = state.listSlider;

@@ -13,14 +13,14 @@ import '../../models/response_model.dart';
 import '../../services/api_config.dart';
 
 class ProductApiRepository extends ProductRepository {
-  final _dio = ApiClient.dio;
+  final _dioNoAuth = ApiClient.dioNoAuth;
+  final _dioAuth = ApiClient.dioAuth;
 
   @override
   Future<ResponseModel<bool>> changeFavorite({required String id}) async {
     try {
-      var res = await _dio.patch(
+      var res = await _dioAuth.patch(
         ApiRouter.productFavoriteUpdate(id),
-        queryParameters: {'auth': true},
       );
       var raw = RawSuccessModel.fromMap(res.data);
       return ResponseModel<bool>(
@@ -66,7 +66,7 @@ class ProductApiRepository extends ProductRepository {
   @override
   Future<ResponseModel<List<ProductCategoryModel>>> getCategories() async {
     try {
-      var res = await _dio.get(
+      var res = await _dioNoAuth.get(
         ApiRouter.productCategoryAll,
       );
       var raw = RawSuccessModel.fromMap(res.data);
@@ -117,7 +117,7 @@ class ProductApiRepository extends ProductRepository {
   @override
   Future<ResponseModel<List<String>>> getFavorites() async {
     try {
-      var res = await _dio.get(
+      var res = await _dioAuth.get(
         ApiRouter.productFavoriteAll,
       );
       var raw = RawSuccessModel.fromMap(res.data);
@@ -166,7 +166,7 @@ class ProductApiRepository extends ProductRepository {
   @override
   Future<ResponseModel<List<ProductOptionModel>>> getOptions() async {
     try {
-      var res = await _dio.get(
+      var res = await _dioNoAuth.get(
         ApiRouter.productOptionAll,
       );
       var raw = RawSuccessModel.fromMap(res.data);
@@ -217,7 +217,7 @@ class ProductApiRepository extends ProductRepository {
   @override
   Future<ResponseModel<List<ProductModel>>> gets() async {
     try {
-      var res = await _dio.get(
+      var res = await _dioNoAuth.get(
         ApiRouter.productAll,
       );
       var raw = RawSuccessModel.fromMap(res.data);
@@ -270,9 +270,8 @@ class ProductApiRepository extends ProductRepository {
     int limit = 4,
   }) async {
     try {
-      var res = await _dio.get(
+      var res = await _dioAuth.get(
         ApiRouter.productSuggestion,
-        queryParameters: {'auth': true},
       );
       var raw = RawSuccessModel.fromMap(res.data);
       return ResponseModel<List<String>>(

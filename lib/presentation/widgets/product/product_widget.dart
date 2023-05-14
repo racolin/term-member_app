@@ -6,6 +6,7 @@ import '../../../business_logic/cubits/product_cubit.dart';
 import '../../../data/models/product_model.dart';
 import '../../../supports/convert.dart';
 import '../../res/dimen/dimens.dart';
+import '../app_image_widget.dart';
 
 class ProductWidget extends StatelessWidget {
   final ProductModel model;
@@ -48,11 +49,10 @@ class ProductWidget extends StatelessWidget {
           children: [
             ClipRRect(
               borderRadius: BorderRadius.circular(spaceXS),
-              child: Image.network(
-                model.image,
+              child: AppImageWidget(
+                image: model.image,
                 height: height,
                 width: width,
-                fit: BoxFit.cover,
               ),
             ),
             Expanded(

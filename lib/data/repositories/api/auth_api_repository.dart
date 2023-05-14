@@ -10,7 +10,7 @@ import '../../../exception/app_message.dart';
 import '../../../presentation/res/strings/values.dart';
 
 class AuthApiRepository extends AuthRepository {
-  final _dio = ApiClient.dio;
+  final _dio = ApiClient.dioNoAuth;
 
   @override
   Future<ResponseModel<bool>> login({

@@ -42,7 +42,7 @@ class PromotionLoaded extends PromotionState {
     return promotions.where((e) => e.partner != txtAppName).toList();
   }
 
-  List<PromotionModel> getByCategoryId(int id) {
+  List<PromotionModel> getByCategoryId(String id) {
     int index = categories.indexWhere((e) => e.id == id);
     if (index == -1) {
       return [];

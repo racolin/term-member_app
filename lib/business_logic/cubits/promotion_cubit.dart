@@ -1,4 +1,5 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:member_app/presentation/res/strings/values.dart';
 
 import '../../exception/app_message.dart';
 import 'package:member_app/data/models/response_model.dart';
@@ -14,19 +15,17 @@ class PromotionCubit extends Cubit<PromotionState> {
     emit(PromotionLoading());
     _repository.gets().then((res) {
       if (res.type == ResponseModelType.success) {
-        var map = res.data;
+        var list = res.data;
         if (state is PromotionLoaded) {
           emit(
             (state as PromotionLoaded).copyWith(
-              promotions: map.value,
-              threshold: map.key,
+              promotions: list,
             ),
           );
         } else {
           emit(PromotionLoaded(
-            promotions: map.value,
+            promotions: list,
             categories: const [],
-            threshold: map.key,
           ));
         }
       } else {
@@ -61,19 +60,17 @@ class PromotionCubit extends Cubit<PromotionState> {
   Future<AppMessage?> reloadPromotions() async {
     var resStatus = await _repository.gets();
     if (resStatus.type == ResponseModelType.success) {
-      var map = resStatus.data;
+      var list = resStatus.data;
       if (state is PromotionLoaded) {
         emit(
           (state as PromotionLoaded).copyWith(
-            promotions: map.value,
-            threshold: map.key,
+            promotions: list,
           ),
         );
       } else {
         emit(PromotionLoaded(
-          promotions: map.value,
+          promotions: list,
           categories: const [],
-          threshold: map.key,
         ));
       }
     } else {
@@ -95,6 +92,23 @@ class PromotionCubit extends Cubit<PromotionState> {
       return null;
     } else {
       return resList.message;
+    }
+  }
+
+  Future<AppMessage?> exchange(String id) async {
+    var res = await _repository.exchangePromotion(id);
+    if (res.type == ResponseModelType.success) {
+      if (res.data) {
+      } else {
+        return AppMessage(
+          type: AppMessageType.failure,
+          title: txtFailureTitle,
+          content: 'Không đổi được khuyến mãi này!',
+        );
+      }
+      return null;
+    } else {
+      return res.message;
     }
   }
 }

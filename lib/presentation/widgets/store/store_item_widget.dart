@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../../../data/models/store_model.dart';
 import '../../res/dimen/dimens.dart';
+import '../app_image_widget.dart';
 
 class StoreItemWidget extends StatelessWidget {
   final Function(StoreModel) onClick;
@@ -45,11 +46,10 @@ class StoreItemWidget extends StatelessWidget {
             children: [
               ClipRRect(
                 borderRadius: BorderRadius.circular(spaceXS),
-                child: Image.network(
-                  store.image ?? '',
+                child: AppImageWidget(
+                  image: store.image,
                   height: 72,
                   width: 80,
-                  fit: BoxFit.cover,
                 ),
               ),
               Expanded(

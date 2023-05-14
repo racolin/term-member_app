@@ -13,14 +13,13 @@ import '../../services/api_client.dart';
 import '../../services/api_config.dart';
 
 class MemberApiRepository extends MemberRepository {
-  final _dio = ApiClient.dio;
+  final _dio = ApiClient.dioAuth;
 
   @override
   Future<ResponseModel<AppBarModel>> getAppBar() async {
     try {
       var res = await _dio.get(
         ApiRouter.appAppbar,
-        queryParameters: {'auth': true},
       );
       var raw = RawSuccessModel.fromMap(res.data);
       return ResponseModel<AppBarModel>(
@@ -68,7 +67,6 @@ class MemberApiRepository extends MemberRepository {
     try {
       var res = await _dio.get(
         ApiRouter.memberRankCard,
-        queryParameters: {'auth': true},
       );
       var raw = RawSuccessModel.fromMap(res.data);
       return ResponseModel<CardModel>(
@@ -121,7 +119,6 @@ class MemberApiRepository extends MemberRepository {
       var res = await _dio.get(
         ApiRouter.memberDataPointHistory,
         queryParameters: {
-          'auth': true,
           'page': page,
           'limit': limit,
         },

@@ -57,7 +57,6 @@ class PromotionPointPage extends StatelessWidget {
               children: [
                 const CardWidget(
                   isDetail: true,
-                  color: Colors.grey,
                 ),
                 _getFeatures(context),
                 Row(

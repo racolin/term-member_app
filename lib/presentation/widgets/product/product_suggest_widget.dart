@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:member_app/presentation/res/dimen/dimens.dart';
 import 'package:member_app/presentation/res/strings/values.dart';
+import 'package:member_app/presentation/widgets/app_image_widget.dart';
 
 import '../../../business_logic/cubits/product_cubit.dart';
 import '../../../data/models/product_model.dart';
@@ -41,9 +42,8 @@ class ProductSuggestWidget extends StatelessWidget {
           children: [
             ClipRRect(
               borderRadius: BorderRadius.circular(spaceXS),
-              child: Image.network(
-                product.image,
-                fit: BoxFit.cover,
+              child: AppImageWidget(
+                image: product.image,
                 width: 150,
                 height: 150,
               ),

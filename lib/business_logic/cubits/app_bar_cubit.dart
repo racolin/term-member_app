@@ -3,15 +3,19 @@ import 'package:member_app/data/models/response_model.dart';
 
 import '../../../business_logic/repositories/member_repository.dart';
 import '../../data/models/app_bar_model.dart';
+import '../../data/repositories/storage/account_storage_repository.dart';
 import '../../exception/app_message.dart';
 import '../../presentation/res/strings/values.dart';
+import '../repositories/account_repository.dart';
 import '../states/app_bar_state.dart';
 
 class AppBarCubit extends Cubit<AppBarState> {
+  final AccountRepository _accountRepository = AccountStorageRepository();
   final MemberRepository _repository;
 
-  AppBarCubit({required MemberRepository repository})
-      : _repository = repository,
+  AppBarCubit({
+    required MemberRepository repository,
+  })  : _repository = repository,
         super(AppBarInitial()) {
     emit(AppBarLoading());
     var model = const AppBarModel(
@@ -20,12 +24,22 @@ class AppBarCubit extends Cubit<AppBarState> {
       voucherAmount: 0,
       notifyAmount: 0,
     );
-    _repository.getAppBar().then((res) {
+    _accountRepository.isLogin().then((res) {
       if (res.type == ResponseModelType.success) {
-        emit(AppBarLoaded(appBar: res.data));
+        if (res.data) {
+          _repository.getAppBar().then((res) {
+            if (res.type == ResponseModelType.success) {
+              emit(AppBarLoaded(appBar: res.data));
+            } else {
+              emit(AppBarLoaded(appBar: model));
+              // emit(AppBarFailure(message: res.message));
+            }
+          });
+        } else {
+          emit(AppBarLoaded(appBar: model));
+        }
       } else {
         emit(AppBarLoaded(appBar: model));
-        // emit(AppBarFailure(message: res.message));
       }
     });
   }
@@ -61,5 +75,4 @@ class AppBarCubit extends Cubit<AppBarState> {
     }
     return null;
   }
-
 }

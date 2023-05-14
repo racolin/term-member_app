@@ -11,14 +11,13 @@ import '../../../exception/app_message.dart';
 import '../../services/api_config.dart';
 
 class VoucherApiRepository extends VoucherRepository {
-  final _dio = ApiClient.dio;
+  final _dio = ApiClient.dioAuth;
 
   @override
   Future<ResponseModel<List<VoucherModel>>> getsAvailable() async {
     try {
       var res = await _dio.get(
         ApiRouter.voucherAvailable,
-        queryParameters: {'auth': true},
       );
       var raw = RawSuccessModel.fromMap(res.data);
       return ResponseModel<List<VoucherModel>>(
@@ -68,7 +67,6 @@ class VoucherApiRepository extends VoucherRepository {
     try {
       var res = await _dio.get(
         ApiRouter.voucherUsed,
-        queryParameters: {'auth': true},
       );
       var raw = RawSuccessModel.fromMap(res.data);
       return ResponseModel<List<VoucherModel>>(

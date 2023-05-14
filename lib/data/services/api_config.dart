@@ -1,44 +1,54 @@
 class Environment {
-  final String base;
-  final String url;
-  final String baseImage;
+  final String _base;
+  final String _url;
+
+  // final String _baseImage;
+  String? accessToken;
+  String? refreshToken;
 
   Environment._({
-    required this.base,
-    required this.url,
-    required this.baseImage,
-  });
+    required String base,
+    required String url,
+    // required String baseImage,
+  })  : _base = base,
+        _url = url
+  // ,_baseImage = baseImage
+  ;
 
-  String get api => url + base;
+  String get api => _url + _base;
 
-  factory Environment._dev() {
-    return Environment._(
+  static Environment? _devInstance;
+
+  factory Environment.env() {
+    return _dev;
+  }
+
+  static Environment get _dev {
+    _devInstance ??= Environment._(
       base: 'api/v1/',
       url: 'http://127.0.0.1/',
-      baseImage: 'file/',
+      // baseImage: 'file/',
     );
-  }
-  factory Environment.env() {
-    return Environment._dev();
+    return _devInstance!;
   }
 }
 
 // Config environment
-class AppConfig{
-  factory AppConfig({Environment? env}){
-
-    if(env !=null){
+class AppConfig {
+  factory AppConfig({Environment? env}) {
+    if (env != null) {
       appConfig.env = env;
     }
     return appConfig;
   }
+
   AppConfig._private();
+
   static final AppConfig appConfig = AppConfig._private();
   Environment env = Environment.env();
 }
 
 class ApiRouter {
-
   // Auth
   static const String authLogin = '/member/auth/login';
   static const String authRegister = '/member/auth/register';
@@ -58,7 +68,9 @@ class ApiRouter {
   // Promotion
   static const String promotionAll = '/member/promotion/all';
   static const String promotionCategoryAll = '/member/promotion-category/all';
-  static String promotionExchange(String id) => '/member/promotion/$id/exchange';
+
+  static String promotionExchange(String id) =>
+      '/member/promotion/$id/exchange';
 
   // Member data
   static const String memberDataPointHistory = '/member-data/point-history';
@@ -66,15 +78,19 @@ class ApiRouter {
   // Product
   static const String productAll = '/member/product/all';
   static const String productSuggestion = '/member/product/suggestion';
-  static String productFavoriteUpdate(String id) => '/member/product/$id/favorite';
+
+  static String productFavoriteUpdate(String id) =>
+      '/member/product/$id/favorite';
   static const String productFavoriteAll = '/member/product/favorite/all';
   static const String productCategoryAll = '/member/product-category';
   static const String productOptionAll = '/member/product-option/all';
 
   // Cart
   static String cartStatusGet(String id) => '/member/cart-status/$id';
+
   static String cartGet(String id) => '/member/cart/$id';
   static const String cartStatusAll = '/member/cart-status/all';
+
   static String cartReview(String id) => '/member/cart/$id/review';
   static const String cartCheckVoucher = '/member/cart/check-voucher';
   static const String cartCreate = '/member/cart/create';
@@ -82,8 +98,10 @@ class ApiRouter {
   // Cart template
   static const String cartTemplateAll = '/member/cart-template/all';
   static const String cartTemplate = 'member/cart-template';
+
   static String cartTemplatePut(String id) => '/member/cart-template/$id';
   static const String cartTemplateArrange = '/member/cart-template/arrange';
+
   static String cartTemplateDelete(String id) => '/member/cart-template/$id';
 
   // News
@@ -91,17 +109,22 @@ class ApiRouter {
 
   // Store
   static const String storeShort = '/member/store/short';
+
   static String storeGet(String id) => '/member/store/$id';
+
   static String storeFavoritePatch(String id) => '/member/store/$id/favorite';
 
   // Notify
   static const String notificationAll = '/member/notification/all';
-  static String notificationCheckPatch(String id) => '/member/notification/$id/check';
+
+  static String notificationCheckPatch(String id) =>
+      '/member/notification/$id/check';
 
   // Setting
   static const String settingProfile = '/member/setting/profile';
   static const String settingAddress = '/member/setting/address';
-  static String settingAddressDelete(String id) => '/member/setting/address/$id';
-  static const String settingNotification = '/member/setting/notification';
 
+  static String settingAddressDelete(String id) =>
+      '/member/setting/address/$id';
+  static const String settingNotification = '/member/setting/notification';
 }

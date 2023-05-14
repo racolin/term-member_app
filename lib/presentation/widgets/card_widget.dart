@@ -18,12 +18,10 @@ class CardWidget extends StatelessWidget {
   final double barWidth = 300;
   final double cardHeight = 160;
   final double top = 172;
-  final Color color;
 
   const CardWidget({
     Key? key,
     this.isDetail = false,
-    required this.color,
   }) : super(key: key);
 
   @override
@@ -221,7 +219,7 @@ class CardWidget extends StatelessWidget {
                 nextRankName: card.nextRankName,
                 maxProgress: card.nextRankPoint,
                 progress: card.point,
-                color: color,
+                color: Color(card.color),
               ),
             ),
             const SizedBox(height: 2),

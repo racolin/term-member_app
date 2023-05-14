@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:member_app/presentation/res/dimen/dimens.dart';
 import 'package:member_app/presentation/res/strings/values.dart';
+import 'package:member_app/presentation/widgets/app_image_widget.dart';
 
+import '../../../business_logic/cubits/promotion_cubit.dart';
 import '../../../data/models/promotion_model.dart';
 import '../../bottom_sheet/promotion_bottom_sheet.dart';
 
@@ -26,12 +29,15 @@ class PromotionSmallWidget extends StatelessWidget {
           isScrollControlled: true,
           backgroundColor: Colors.transparent,
           builder: (context) {
-            return PromotionBottomSheet(
-              promotion: promotion,
+            return BlocProvider<PromotionCubit>.value(
+              value: BlocProvider.of<PromotionCubit>(context),
+              child: PromotionBottomSheet(
+                promotion: promotion,
+              ),
             );
           },
         );
-        },
+      },
       child: Ink(
         padding: const EdgeInsets.symmetric(vertical: spaceXS),
         decoration: BoxDecoration(
@@ -41,11 +47,11 @@ class PromotionSmallWidget extends StatelessWidget {
         child: ListTile(
           leading: ClipRRect(
             borderRadius: BorderRadius.circular(spaceXS),
-            child: Image.network(
-              promotion.partnerImage ?? '',
+            child: AppImageWidget(
+              image: promotion.partnerImage,
+              assetsDefaultImage: assetDefaultImage,
               height: dimXL,
               width: dimMD,
-              fit: BoxFit.cover,
             ),
           ),
           title: Padding(

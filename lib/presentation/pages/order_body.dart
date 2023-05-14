@@ -14,7 +14,7 @@ import '../widgets/product/product_widget.dart';
 class OrderBody extends StatefulWidget {
   final VoidCallback onScroll;
   final int perRow = 4;
-  final int row = 1;
+  final int row = 2;
   final bool login;
 
   const OrderBody({

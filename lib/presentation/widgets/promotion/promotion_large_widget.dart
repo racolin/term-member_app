@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:member_app/data/models/promotion_model.dart';
 import 'package:member_app/presentation/res/strings/values.dart';
 
+import '../../../business_logic/cubits/promotion_cubit.dart';
 import '../../bottom_sheet/promotion_bottom_sheet.dart';
 import '../../res/dimen/dimens.dart';
+import '../app_image_widget.dart';
 
 class PromotionLargeWidget extends StatelessWidget {
   final PromotionModel promotion;
@@ -23,8 +26,11 @@ class PromotionLargeWidget extends StatelessWidget {
           isScrollControlled: true,
           backgroundColor: Colors.transparent,
           builder: (context) {
-            return PromotionBottomSheet(
-              promotion: promotion,
+            return BlocProvider<PromotionCubit>.value(
+              value: BlocProvider.of<PromotionCubit>(context),
+              child: PromotionBottomSheet(
+                promotion: promotion,
+              ),
             );
           },
         );
@@ -42,9 +48,8 @@ class PromotionLargeWidget extends StatelessWidget {
                 borderRadius: const BorderRadius.vertical(
                   top: Radius.circular(spaceXS),
                 ),
-                child: Image.network(
-                  promotion.partnerImage ?? '',
-                  fit: BoxFit.cover,
+                child: AppImageWidget(
+                  image: promotion.partnerImage,
                   height: size,
                   width: size,
                 ),

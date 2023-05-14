@@ -1,7 +1,7 @@
 import 'package:member_app/presentation/res/strings/values.dart';
 
 class PromotionCategoryModel {
-  final int id;
+  final String id;
   final String name;
   final String? image;
   final List<String> promotionIds;
@@ -27,7 +27,9 @@ class PromotionCategoryModel {
       id: map['id']!,
       name: map['name'] ?? txtUnknown,
       image: map['image'],
-      promotionIds: map['promotionIds'] ?? [],
+      promotionIds: (map['promotionIds'] is List)
+          ? (map['promotionIds'] as List).map<String>((e) => e as String).toList()
+          : <String>[],
     );
   }
 }

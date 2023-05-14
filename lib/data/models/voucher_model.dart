@@ -49,8 +49,7 @@ class VoucherModel {
       name: map['name'] ?? txtUnknown,
       image: map['image'],
       partner: map['partner'] ?? txtAppName,
-      // sliderImage: map['sliderImage'],
-      sliderImage: Random().nextBool() ? map['image'] : null,
+      sliderImage: map['sliderImage'],
       from: DateTime.tryParse(map['time'] ?? '') ?? DateTime.now(),
       // map['time'] == null
       //     ? DateTime.now()

@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:member_app/business_logic/cubits/promotion_cubit.dart';
 import 'package:member_app/presentation/res/strings/values.dart';
 
 import '../../../data/models/promotion_model.dart';
 import '../../bottom_sheet/promotion_bottom_sheet.dart';
 import '../../res/dimen/dimens.dart';
+import '../app_image_widget.dart';
 
 class PromotionMeWidget extends StatelessWidget {
   final PromotionModel promotion;
@@ -22,9 +25,12 @@ class PromotionMeWidget extends StatelessWidget {
           context: context,
           isScrollControlled: true,
           backgroundColor: Colors.transparent,
-          builder: (context) {
-            return PromotionBottomSheet(
-              promotion: promotion,
+          builder: (ctx) {
+            return BlocProvider<PromotionCubit>.value(
+              value: BlocProvider.of<PromotionCubit>(context),
+              child: PromotionBottomSheet(
+                promotion: promotion,
+              ),
             );
           },
         );
@@ -42,9 +48,8 @@ class PromotionMeWidget extends StatelessWidget {
                 borderRadius: const BorderRadius.vertical(
                   top: Radius.circular(spaceXS),
                 ),
-                child: Image.network(
-                  promotion.partnerImage ?? '',
-                  fit: BoxFit.cover,
+                child: AppImageWidget(
+                  image: promotion.partnerImage,
                   height: size,
                   width: size,
                 ),
@@ -52,10 +57,10 @@ class PromotionMeWidget extends StatelessWidget {
               const SizedBox(
                 height: spaceXS,
               ),
-              CircleAvatar(
+              const CircleAvatar(
                 radius: spaceSM,
-                child: Image.network(
-                  'https://cdn-icons-png.flaticon.com/512/680/680391.png',
+                child: AppImageWidget(
+                  image: 'https://cdn-icons-png.flaticon.com/512/680/680391.png',
                 ),
               ),
               const SizedBox(
@@ -78,7 +83,8 @@ class PromotionMeWidget extends StatelessWidget {
               ),
               IntrinsicWidth(
                 child: Container(
-                  padding: const EdgeInsets.symmetric(horizontal: spaceMD, vertical: spaceXXS),
+                  padding: const EdgeInsets.symmetric(
+                      horizontal: spaceMD, vertical: spaceXXS),
                   alignment: Alignment.center,
                   decoration: BoxDecoration(
                     color: Colors.blue,

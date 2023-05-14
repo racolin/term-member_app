@@ -28,12 +28,14 @@ class PromotionSmallWidget extends StatelessWidget {
           context: context,
           isScrollControlled: true,
           backgroundColor: Colors.transparent,
-          builder: (context) {
-            return BlocProvider<PromotionCubit>.value(
-              value: BlocProvider.of<PromotionCubit>(context),
-              child: PromotionBottomSheet(
-                promotion: promotion,
-              ),
+          builder: (ctx) {
+            return PromotionBottomSheet(
+              promotion: promotion,
+              exchange: () {
+                return context.read<PromotionCubit>().exchange(
+                      promotion.id,
+                    );
+              },
             );
           },
         );

@@ -24,101 +24,101 @@ class VoucherBottomSheet extends StatelessWidget {
       maxChildSize: 1,
       builder: (context, scrollController) {
         return Container(
+          height: double.maxFinite,
           margin: const EdgeInsets.only(top: dimMD),
           padding: const EdgeInsets.all(spaceSM),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(spaceLG),
-            color: Colors.orangeAccent,
+            color: Theme.of(context).scaffoldBackgroundColor,
           ),
           child: Stack(
-            alignment: AlignmentDirectional.center,
+            alignment: AlignmentDirectional.topCenter,
             children: [
-              ClipRRect(
-                borderRadius: BorderRadius.circular(spaceLG),
-                child: SingleChildScrollView(
-                  child: Container(
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(spaceLG),
-                      color: Colors.white,
-                    ),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        const SizedBox(
-                          height: spaceLG,
+              SingleChildScrollView(
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(spaceLG),
+                  ),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      const SizedBox(
+                        height: spaceLG,
+                      ),
+                      Text(
+                        voucher.partner,
+                        style: const TextStyle(
+                          fontSize: fontSM,
+                          fontWeight: FontWeight.w600,
                         ),
-                        Text(
-                          voucher.partner,
-                          style: const TextStyle(
-                            fontSize: fontSM,
-                            fontWeight: FontWeight.w600,
-                          ),
+                      ),
+                      const SizedBox(
+                        height: spaceXS,
+                      ),
+                      Text(
+                        voucher.name,
+                        style: const TextStyle(
+                          fontWeight: FontWeight.w700,
+                          fontSize: fontLG,
                         ),
-                        const SizedBox(
+                        textAlign: TextAlign.center,
+                      ),
+                      const SizedBox(
+                        height: spaceLG,
+                      ),
+                      ClipPath(
+                        clipper: VerticalTicketClipper(numberOfSmall: 28),
+                        child: Container(
                           height: spaceXS,
+                          width: double.maxFinite,
+                          color: Theme.of(context).scaffoldBackgroundColor,
                         ),
-                        Text(
-                          voucher.name,
-                          style: const TextStyle(
+                      ),
+                      const SizedBox(height: spaceLG),
+                      _getQRCode(voucher.id),
+                      const SizedBox(height: spaceMD),
+                      ElevatedButton(
+                        onPressed: () {
+                          Navigator.pop(context, true);
+                        },
+                        style: ButtonStyle(
+                          shape: MaterialStateProperty.all(
+                            RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(spaceMD),
+                            ),
+                          ),
+                          backgroundColor: MaterialStateProperty.all(
+                            Colors.black,
+                          ),
+                        ),
+                        child: const Text(
+                          txtOrderStarted,
+                          style: TextStyle(
                             fontWeight: FontWeight.w700,
-                            fontSize: fontLG,
-                          ),
-                          textAlign: TextAlign.center,
-                        ),
-                        const SizedBox(
-                          height: spaceLG,
-                        ),
-                        ClipPath(
-                          clipper: VerticalTicketClipper(numberOfSmall: 28),
-                          child: Container(
-                            height: spaceXS,
-                            width: double.maxFinite,
-                            color: Colors.orangeAccent,
+                            color: Colors.white,
                           ),
                         ),
-                        const SizedBox(height: spaceLG),
-                        _getQRCode(voucher.id),
-                        const SizedBox(height: spaceMD),
-                        ElevatedButton(
-                          onPressed: () {
-                            Navigator.pop(context, true);
-                          },
-                          style: ButtonStyle(
-                            shape: MaterialStateProperty.all(
-                              RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(spaceMD),
-                              ),
-                            ),
-                            backgroundColor: MaterialStateProperty.all(
-                              Colors.black,
-                            ),
-                          ),
-                          child: const Text(
-                            txtOrderStarted,
-                            style: TextStyle(
-                              fontWeight: FontWeight.w700,
-                              color: Colors.white,
-                            ),
+                      ),
+                      _getExpire(),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: spaceMD,
+                        ),
+                        child: Text(
+                          voucher.description,
+                          textAlign: TextAlign.justify,
+                          style: const TextStyle(
+                            fontWeight: FontWeight.w300,
+                            height: 1.5,
                           ),
                         ),
-                        _getExpire(),
-                        Padding(
-                          padding:
-                          const EdgeInsets.symmetric(horizontal: spaceMD),
-                          child: Text(
-                            voucher.description,
-                            textAlign: TextAlign.justify,
-                            style: const TextStyle(
-                              fontWeight: FontWeight.w300,
-                              height: 1.5,
-                            ),
-                          ),
-                        ),
-                        const SizedBox(
-                          height: dimMD,
-                        ),
-                      ],
-                    ),
+                      ),
+                      const SizedBox(
+                        height: dimMD,
+                      ),
+                    ],
                   ),
                 ),
               ),

@@ -25,12 +25,14 @@ class PromotionLargeWidget extends StatelessWidget {
           context: context,
           isScrollControlled: true,
           backgroundColor: Colors.transparent,
-          builder: (context) {
-            return BlocProvider<PromotionCubit>.value(
-              value: BlocProvider.of<PromotionCubit>(context),
-              child: PromotionBottomSheet(
-                promotion: promotion,
-              ),
+          builder: (ctx) {
+            return PromotionBottomSheet(
+              promotion: promotion,
+              exchange: () {
+                return context.read<PromotionCubit>().exchange(
+                  promotion.id,
+                );
+              },
             );
           },
         );
@@ -41,7 +43,6 @@ class PromotionLargeWidget extends StatelessWidget {
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(spaceXS),
           ),
-          margin: EdgeInsets.zero,
           child: Column(
             children: [
               ClipRRect(
@@ -76,12 +77,15 @@ class PromotionLargeWidget extends StatelessWidget {
                           const SizedBox(
                             height: spaceXXS,
                           ),
-                          Text(
-                            promotion.name,
-                            maxLines: 2,
-                            overflow: TextOverflow.ellipsis,
-                            style: const TextStyle(
-                              fontSize: fontMD,
+                          SizedBox(
+                            height: 36,
+                            child: Text(
+                              promotion.name,
+                              maxLines: 2,
+                              overflow: TextOverflow.ellipsis,
+                              style: const TextStyle(
+                                fontSize: fontMD,
+                              ),
                             ),
                           ),
                         ],

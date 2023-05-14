@@ -26,11 +26,13 @@ class PromotionMeWidget extends StatelessWidget {
           isScrollControlled: true,
           backgroundColor: Colors.transparent,
           builder: (ctx) {
-            return BlocProvider<PromotionCubit>.value(
-              value: BlocProvider.of<PromotionCubit>(context),
-              child: PromotionBottomSheet(
-                promotion: promotion,
-              ),
+            return PromotionBottomSheet(
+              promotion: promotion,
+              exchange: () {
+                return context.read<PromotionCubit>().exchange(
+                  promotion.id,
+                );
+              },
             );
           },
         );
@@ -41,7 +43,6 @@ class PromotionMeWidget extends StatelessWidget {
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(spaceXS),
           ),
-          margin: EdgeInsets.zero,
           child: Column(
             children: [
               ClipRRect(
@@ -68,13 +69,16 @@ class PromotionMeWidget extends StatelessWidget {
               ),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: spaceXS),
-                child: Text(
-                  promotion.description,
-                  maxLines: 2,
-                  textAlign: TextAlign.center,
-                  overflow: TextOverflow.ellipsis,
-                  style: const TextStyle(
-                    fontSize: fontMD,
+                child: SizedBox(
+                  height: 36,
+                  child: Text(
+                    promotion.description,
+                    maxLines: 2,
+                    textAlign: TextAlign.center,
+                    overflow: TextOverflow.ellipsis,
+                    style: const TextStyle(
+                      fontSize: fontMD,
+                    ),
                   ),
                 ),
               ),

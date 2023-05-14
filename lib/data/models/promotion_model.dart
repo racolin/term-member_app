@@ -1,4 +1,5 @@
 import 'package:member_app/presentation/res/strings/values.dart';
+import 'package:member_app/supports/convert.dart';
 
 class PromotionModel {
   final String id;
@@ -10,7 +11,7 @@ class PromotionModel {
   final String partner;
   final String description;
   final DateTime from;
-  final DateTime to;
+  final DateTime? to;
   final bool isFeatured;
   final int exchangeCount;
   // final int mark;
@@ -42,11 +43,16 @@ class PromotionModel {
       'partner': partner,
       'description': description,
       'from': from.millisecondsSinceEpoch,
-      'to': to.millisecondsSinceEpoch,
+      'to': to?.millisecondsSinceEpoch,
       'isFeatured': isFeatured,
       'exchangeCount': exchangeCount,
       // 'mark': mark,
     };
+  }
+
+  String get expireName {
+    int day = expire ~/ 24;
+    return 'Sử dụng trong $day ngày';
   }
 
   factory PromotionModel.fromMap(Map<String, dynamic> map) {
@@ -64,7 +70,7 @@ class PromotionModel {
           : DateTime.now(),
       to: map['to'] != null
           ? DateTime.fromMillisecondsSinceEpoch(map['to'])
-          : DateTime.now(),
+          : null,
       isFeatured: map['isFeatured'] ?? false,
       exchangeCount: map['exchangeCount'] ?? 0,
       // mark: map['mark'] ?? 0,

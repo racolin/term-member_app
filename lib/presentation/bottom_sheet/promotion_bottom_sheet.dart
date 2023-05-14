@@ -1,10 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:member_app/exception/app_message.dart';
 import 'package:member_app/presentation/dialogs/app_dialog.dart';
+import 'package:member_app/presentation/res/dimen/dimens.dart';
 
-import '../../business_logic/cubits/promotion_cubit.dart';
 import '../../presentation/res/strings/values.dart';
 import '../../data/models/promotion_model.dart';
 import '../../supports/convert.dart';
@@ -13,10 +12,12 @@ import '../widgets/app_image_widget.dart';
 
 class PromotionBottomSheet extends StatelessWidget {
   final PromotionModel promotion;
+  final Future<AppMessage?> Function() exchange;
 
   const PromotionBottomSheet({
     Key? key,
     required this.promotion,
+    required this.exchange,
   }) : super(key: key);
 
   @override
@@ -29,134 +30,130 @@ class PromotionBottomSheet extends StatelessWidget {
         return Container(
           decoration: BoxDecoration(
             color: Theme.of(context).scaffoldBackgroundColor,
-            borderRadius: BorderRadius.circular(24),
+            borderRadius: BorderRadius.circular(spaceLG),
           ),
           margin: const EdgeInsets.only(top: 56),
           child: Stack(
-            alignment: AlignmentDirectional.center,
+            alignment: AlignmentDirectional.topCenter,
             children: [
               ClipRRect(
-                borderRadius: BorderRadius.circular(24),
+                borderRadius: BorderRadius.circular(spaceLG),
                 child: SingleChildScrollView(
-                  child: Container(
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(24),
-                      color: Theme.of(context).scaffoldBackgroundColor,
-                    ),
-                    child: Stack(
-                      alignment: AlignmentDirectional.center,
-                      children: [
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            ClipRRect(
-                              borderRadius: const BorderRadius.vertical(
-                                top: Radius.circular(16),
-                              ),
-                              child: AppImageWidget(
-                                image: promotion.backgroundImage,
-                                height: 450,
-                                width: double.maxFinite,
-                                assetsDefaultImage:
-                                    'assets/images/image_default.png',
-                              ),
+                  child: Stack(
+                    alignment: AlignmentDirectional.center,
+                    children: [
+                      Column(
+                        mainAxisSize: MainAxisSize.min,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          ClipRRect(
+                            borderRadius: const BorderRadius.vertical(
+                              top: Radius.circular(spaceMD),
                             ),
-                            const SizedBox(height: 56),
-                            Card(
-                              margin: const EdgeInsets.all(16),
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(8),
-                              ),
-                              child: Padding(
-                                padding: const EdgeInsets.symmetric(
-                                  horizontal: 14,
-                                  vertical: 18,
-                                ),
-                                child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        const Text(
-                                          'Quy đổi với',
-                                          style: TextStyle(
-                                            fontSize: 16,
-                                          ),
-                                        ),
-                                        Text.rich(
-                                          TextSpan(
-                                            text: promotion.point.toString(),
-                                            style: const TextStyle(
-                                              fontWeight: FontWeight.w700,
-                                              fontSize: 16,
-                                            ),
-                                            children: const [
-                                              TextSpan(
-                                                text: txtPointName,
-                                                style: TextStyle(
-                                                  fontWeight: FontWeight.w400,
-                                                  fontSize: 16,
-                                                ),
-                                              ),
-                                            ],
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                    Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        const Text(
-                                          'Thời hạn quy đổi',
-                                          style: TextStyle(
-                                            fontSize: 16,
-                                          ),
-                                        ),
-                                        Text(
-                                          dateToString(
-                                            promotion.to,
-                                            'dd/MM/yyyy',
-                                          ),
-                                          style: const TextStyle(
-                                            fontSize: 16,
-                                            fontWeight: FontWeight.w700,
-                                          ),
-                                        ),
-                                      ],
-                                    )
-                                  ],
-                                ),
-                              ),
+                            child: AppImageWidget(
+                              image: promotion.backgroundImage,
+                              height: 450,
+                              width: double.maxFinite,
+                              assetsDefaultImage:
+                                  'assets/images/image_default.png',
                             ),
-                            Padding(
-                              padding: const EdgeInsets.symmetric(
-                                  vertical: 0, horizontal: 24),
-                              child: Text(promotion.description),
-                            ),
-                            const SizedBox(
-                              height: 128,
-                            ),
-                          ],
-                        ),
-                        Positioned(
-                          top: 400,
-                          left: 16,
-                          right: 16,
-                          child: Container(
-                            // height: 96,
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(12),
-                              color: Colors.grey.withAlpha(50),
-                            ),
-                            child: _getTicket(promotion),
                           ),
+                          const SizedBox(height: 56),
+                          Card(
+                            margin: const EdgeInsets.all(16),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                            child: Padding(
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 14,
+                                vertical: 18,
+                              ),
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      const Text(
+                                        'Quy đổi với',
+                                        style: TextStyle(
+                                          fontSize: 16,
+                                        ),
+                                      ),
+                                      Text.rich(
+                                        TextSpan(
+                                          text: promotion.point.toString(),
+                                          style: const TextStyle(
+                                            fontWeight: FontWeight.w700,
+                                            fontSize: 16,
+                                          ),
+                                          children: const [
+                                            TextSpan(
+                                              text: ' $txtPointName',
+                                              style: TextStyle(
+                                                fontWeight: FontWeight.w400,
+                                                fontSize: 16,
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      const Text(
+                                        'Thời hạn quy đổi',
+                                        style: TextStyle(
+                                          fontSize: 16,
+                                        ),
+                                      ),
+                                      Text(
+                                        promotion.to == null ? 'Không giới hạn' :
+                                        dateToString(
+                                          promotion.to!,
+                                          'dd/MM/yyyy',
+                                        ),
+                                        style: const TextStyle(
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.w700,
+                                        ),
+                                      ),
+                                    ],
+                                  )
+                                ],
+                              ),
+                            ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.symmetric(
+                                vertical: 0, horizontal: 24),
+                            child: Text(promotion.description),
+                          ),
+                          const SizedBox(
+                            height: 128,
+                          ),
+                        ],
+                      ),
+                      Positioned(
+                        top: 400,
+                        left: 16,
+                        right: 16,
+                        child: Container(
+                          // height: 96,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(12),
+                            color: Colors.grey.withAlpha(50),
+                          ),
+                          child: _getTicket(promotion),
                         ),
-                      ],
-                    ),
+                      ),
+                    ],
                   ),
                 ),
               ),
@@ -219,48 +216,45 @@ class PromotionBottomSheet extends StatelessWidget {
                         ),
                         ElevatedButton(
                           onPressed: () async {
-                            await context
-                                .read<PromotionCubit>()
-                                .exchange(
-                                  promotion.id,
-                                )
-                                .then((message) {
-                              if (message == null) {
-                                showCupertinoDialog(
-                                  context: context,
-                                  builder: (context) => AppDialog(
-                                    message: AppMessage(
-                                      type: AppMessageType.info,
-                                      title: txtNotify,
-                                      content:
-                                          'Bạn đã đổi khuyến mãi thành công!',
+                            exchange().then(
+                              (message) {
+                                if (message == null) {
+                                  showCupertinoDialog(
+                                    context: context,
+                                    builder: (context) => AppDialog(
+                                      message: AppMessage(
+                                        type: AppMessageType.info,
+                                        title: txtNotify,
+                                        content:
+                                            'Bạn đã đổi khuyến mãi thành công!',
+                                      ),
+                                      actions: [
+                                        CupertinoDialogAction(
+                                            child: const Text(txtConfirm),
+                                            onPressed: () {
+                                              Navigator.pop(context);
+                                            }),
+                                      ],
                                     ),
-                                    actions: [
-                                      CupertinoDialogAction(
+                                  );
+                                } else {
+                                  showCupertinoDialog(
+                                    context: context,
+                                    builder: (context) => AppDialog(
+                                      message: message,
+                                      actions: [
+                                        CupertinoDialogAction(
                                           child: const Text(txtConfirm),
                                           onPressed: () {
                                             Navigator.pop(context);
-                                          }),
-                                    ],
-                                  ),
-                                );
-                              } else {
-                                showCupertinoDialog(
-                                  context: context,
-                                  builder: (context) => AppDialog(
-                                    message: message,
-                                    actions: [
-                                      CupertinoDialogAction(
-                                        child: const Text(txtConfirm),
-                                        onPressed: () {
-                                          Navigator.pop(context);
-                                        },
-                                      ),
-                                    ],
-                                  ),
-                                );
-                              }
-                            });
+                                          },
+                                        ),
+                                      ],
+                                    ),
+                                  );
+                                }
+                              },
+                            );
                           },
                           style: ButtonStyle(
                             backgroundColor:

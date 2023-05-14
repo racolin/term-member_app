@@ -62,7 +62,7 @@ class VoucherModel {
       // map['time'] == null
       //     ? DateTime.now()
       //     : DateTime.fromMillisecondsSinceEpoch(map['time']),
-      description: map['description'] ?? txtDefault,
+      description: (map['description'] ?? txtDefault),
     );
   }
 }

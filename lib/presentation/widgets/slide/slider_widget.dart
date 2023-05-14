@@ -32,7 +32,8 @@ class _SliderWidgetState extends State<SliderWidget> {
             );
           case VoucherLoaded:
             state as VoucherLoaded;
-            var list = state.listSlider;
+            var length = state.listSlider.length;
+            var list = state.listSlider.sublist(0, length < 6 ? length : 6);
             final double widthTotal = spaceLG * (list.length + spaceXXS / 4);
             return Container(
               margin: const EdgeInsets.all(spaceXS),

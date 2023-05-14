@@ -8,6 +8,12 @@ import '../res/dimen/dimens.dart';
 import '../res/strings/values.dart';
 import 'cart_template_widget.dart';
 
+class ReOrdersWidget extends StatefulWidget {
+  const ReOrdersWidget({Key? key}) : super(key: key);
+
+  @override
+  State<ReOrdersWidget> createState() => _ReOrdersWidgetState();
+}
 
 class _ReOrdersWidgetState extends State<ReOrdersWidget> {
   @override
@@ -43,7 +49,10 @@ class _ReOrdersWidgetState extends State<ReOrdersWidget> {
                     ),
                   ),
                 ),
-                for (var cart in state.list.sublist(0, 3))
+                for (var cart in state.list.sublist(
+                  0,
+                  state.list.length < 3 ? state.list.length : 3,
+                ))
                   CartTemplateWidget(cart: cart),
               ],
             );
@@ -52,11 +61,4 @@ class _ReOrdersWidgetState extends State<ReOrdersWidget> {
       },
     );
   }
-}
-
-class ReOrdersWidget extends StatefulWidget {
-  const ReOrdersWidget({Key? key}) : super(key: key);
-
-  @override
-  State<ReOrdersWidget> createState() => _ReOrdersWidgetState();
 }

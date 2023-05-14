@@ -5,6 +5,7 @@ import 'package:member_app/presentation/screens/history_point_screen.dart';
 
 import '../data/repositories/api/auth_api_repository.dart';
 import '../data/repositories/api/cart_api_repository.dart';
+import '../data/repositories/api/cart_template_api_repository.dart';
 import '../data/repositories/api/member_api_repository.dart';
 import '../data/repositories/api/news_api_repository.dart';
 import '../data/repositories/api/notify_api_repository.dart';
@@ -104,7 +105,8 @@ class AppRouter {
                   // create: (context) => CartMockRepository(),
                 ),
                 RepositoryProvider<CartTemplateRepository>(
-                  create: (context) => CartTemplateMockRepository(),
+                  // create: (context) => CartTemplateMockRepository(),
+                  create: (context) => CartTemplateApiRepository(),
                 ),
                 RepositoryProvider<AccountRepository>(
                   create: (context) => AccountStorageRepository(),

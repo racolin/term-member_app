@@ -77,7 +77,9 @@ class CartTemplateProductModel {
     return CartTemplateProductModel(
       id: map['id']!,
       amount: map['amount']!,
-      options: map['options'] ?? [],
+      options: (map['options'] is List)
+          ? (map['options'] as List).map<String>((e) => e as String).toList()
+          : <String>[],
     );
   }
 }

@@ -23,6 +23,14 @@ String secondToTime(int count) {
   return "${minutes.toString().padLeft(2, '0')}:${seconds.toString().padLeft(2, '0')}";
 }
 
+String meterToString(int meter) {
+  if (meter < 300) {
+    return '${meter} m';
+  } else {
+    return '${(meter / 1000).toStringAsPrecision(2)} km';
+  }
+}
+
 String toBarcodeString(String barcode, [double? width,
   double? height,
   double? fontHeight,]) {

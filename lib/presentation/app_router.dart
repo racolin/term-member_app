@@ -10,6 +10,7 @@ import '../data/repositories/api/notify_api_repository.dart';
 import '../data/repositories/api/product_api_repository.dart';
 import '../data/repositories/api/promotion_api_repository.dart';
 import '../data/repositories/api/setting_api_repository.dart';
+import '../data/repositories/api/store_api_repository.dart';
 import '../data/repositories/api/voucher_api_repository.dart';
 import 'pages/reward_screen.dart';
 import 'screens/address_screen.dart';
@@ -137,8 +138,11 @@ class AppRouter {
                   create: (context) => SettingApiRepository(),
                 ),
                 RepositoryProvider<StoreRepository>(
-                  create: (context) => StoreMockRepository(),
+                  create: (context) => StoreApiRepository(),
                 ),
+                // RepositoryProvider<StoreRepository>(
+                //   create: (context) => StoreMockRepository(),
+                // ),
                 RepositoryProvider<VoucherRepository>(
                   create: (context) => VoucherApiRepository(),
                 ),

@@ -40,9 +40,9 @@ class ProductModel {
       images: (map['images'] is List)
           ? (map['images'] as List).map<String>((e) => e as String).toList()
           : <String>[],
-      optionIds: (map['optionIds'] is List)
-          ? (map['optionIds'] as List).map<String>((e) => e as String).toList()
-          : <String>[],
+        optionIds: (map['optionIds'] is List)
+            ? (map['optionIds'] as List).map<String>((e) => e as String).toList()
+            : <String>[],
       description: map['description'] ?? txtDefault,
     );
   }

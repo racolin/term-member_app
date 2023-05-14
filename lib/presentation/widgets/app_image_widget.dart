@@ -8,6 +8,7 @@ class AppImageWidget extends StatelessWidget {
   final Widget Function(BuildContext, String, dynamic)? errorWidget;
   final String? cachedKey;
   final String assetsDefaultImage;
+  final BoxFit fit;
   final double? height;
   final double? width;
   final BorderRadius? borderRadius;
@@ -20,6 +21,7 @@ class AppImageWidget extends StatelessWidget {
     this.cachedKey,
     this.assetsDefaultImage = assetDefaultImage,
     this.height = double.maxFinite,
+    this.fit = BoxFit.cover,
     this.width = double.maxFinite,
     this.borderRadius = BorderRadius.zero,
   }) : super(key: key);
@@ -35,7 +37,7 @@ class AppImageWidget extends StatelessWidget {
         imageBuilder: imageBuilder,
         height: height,
         width: width,
-        fit: BoxFit.cover,
+        fit: fit,
         errorWidget: errorWidget ?? (context, url, error) => Image.asset(
           assetsDefaultImage,
           height: height,

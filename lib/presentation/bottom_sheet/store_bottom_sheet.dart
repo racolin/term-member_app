@@ -4,6 +4,7 @@ import 'package:member_app/presentation/res/strings/values.dart';
 import 'package:member_app/presentation/widgets/app_image_widget.dart';
 
 import '../../data/models/store_model.dart';
+import '../widgets/slide/slide_images_widget.dart';
 
 class StoreBottomSheet extends StatelessWidget {
   final StoreModel store;
@@ -36,7 +37,15 @@ class StoreBottomSheet extends StatelessWidget {
                     children: [
                       Stack(
                         children: [
-                          _getListImage(),
+                          SlideImagesWidget(
+                            height: 300,
+                            separator: 2,
+                            itemWidth: 250,
+                            borderRadius: const BorderRadius.vertical(
+                              top: Radius.circular(10),
+                            ),
+                            images: detail.images,
+                          ),
                           Positioned(
                             top: 12,
                             right: 12,
@@ -83,29 +92,6 @@ class StoreBottomSheet extends StatelessWidget {
           ),
         );
       },
-    );
-  }
-
-  Widget _getListImage() {
-    return SizedBox(
-      height: 300,
-      child: ClipRRect(
-        borderRadius: const BorderRadius.vertical(top: Radius.circular(10)),
-        // height: 300,
-        child: ListView.separated(
-          separatorBuilder: (context, index) => const SizedBox(
-            width: 2,
-          ),
-          scrollDirection: Axis.horizontal,
-          itemCount: detail.images.length,
-          itemBuilder: (context, index) => AppImageWidget(
-            image: detail.images[index],
-            assetsDefaultImage: 'assets/images/image_default.png',
-            width: 250,
-            height: 300,
-          ),
-        ),
-      ),
     );
   }
 
@@ -173,7 +159,12 @@ class StoreBottomSheet extends StatelessWidget {
               const SizedBox(
                 width: 16,
               ),
-              Text(store.address),
+              Expanded(
+                child: Text(
+                  store.address,
+                  style: const TextStyle(height: 1.5),
+                ),
+              ),
             ],
           ),
           Container(
@@ -268,7 +259,8 @@ class StoreBottomSheet extends StatelessWidget {
       child: ClipRRect(
         borderRadius: BorderRadius.circular(8),
         child: const AppImageWidget(
-          image: 'https://www.google.com/maps/d/u/0/thumbnail?mid=16ICMtDmGmWt2B-p5_AJWkw-9-OY&hl=en',
+          image:
+              'https://www.google.com/maps/d/u/0/thumbnail?mid=16ICMtDmGmWt2B-p5_AJWkw-9-OY&hl=en',
           height: 180,
         ),
       ),

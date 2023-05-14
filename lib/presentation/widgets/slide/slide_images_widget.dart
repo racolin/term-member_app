@@ -38,12 +38,24 @@ class SlideImagesWidget extends StatelessWidget {
                 ),
                 scrollDirection: Axis.horizontal,
                 itemCount: images.length,
-                itemBuilder: (context, index) => AppImageWidget(
-                  image: images[index],
-                  height: height,
-                  width: itemWidth,
-                  borderRadius: borderRadius,
-                ),
+                itemBuilder: (context, index) {
+                  BorderRadius corner = BorderRadius.zero;
+                  if (index == 0) {
+                    corner = BorderRadius.only(
+                      topLeft: borderRadius?.topLeft ?? Radius.zero,
+                    );
+                  } else if (index == images.length - 1) {
+                    corner = BorderRadius.only(
+                      topRight: borderRadius?.topRight ?? Radius.zero,
+                    );
+                  }
+                  return AppImageWidget(
+                    image: images[index],
+                    height: height,
+                    width: itemWidth,
+                    borderRadius: corner,
+                  );
+                },
               ),
       ),
     );

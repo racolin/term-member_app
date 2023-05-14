@@ -59,7 +59,9 @@ class ApiClient {
       NoAuthInterceptor(
         storage: SecureStorage(),
       ),
-      // LogInterceptor(),
+      LogInterceptor(
+        responseBody: true,
+      ),
     });
 
     return dio;

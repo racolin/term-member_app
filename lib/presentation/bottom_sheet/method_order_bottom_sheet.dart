@@ -6,6 +6,7 @@ import 'package:member_app/presentation/app_router.dart';
 import '../../business_logic/blocs/interval/interval_bloc.dart';
 import '../../business_logic/cubits/store_cubit.dart';
 import '../../data/models/store_model.dart';
+import '../../data/repositories/api/store_api_repository.dart';
 import '../../data/repositories/mock/store_mock_repository.dart';
 import '../../presentation/res/strings/values.dart';
 import '../../data/models/cart_model.dart';
@@ -92,7 +93,7 @@ class MethodOrderBottomSheet extends StatelessWidget {
                         context,
                         MaterialPageRoute(
                           builder: (ctx) => RepositoryProvider<StoreRepository>(
-                            create: (ctx) => StoreMockRepository(),
+                            create: (ctx) => StoreApiRepository(),
                             child: MultiBlocProvider(
                               providers: [
                                 BlocProvider<StoreCubit>(

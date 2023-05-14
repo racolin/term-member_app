@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../../data/models/store_model.dart';
+import '../../../supports/convert.dart';
 import '../../res/dimen/dimens.dart';
 import '../app_image_widget.dart';
 
@@ -81,7 +82,7 @@ class StoreItemWidget extends StatelessWidget {
                         ),
                       ),
                       const Spacer(),
-                      Text(store.distance.toString()),
+                      Text(meterToString(store.distance)),
                     ],
                   ),
                 ),

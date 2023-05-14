@@ -39,16 +39,25 @@ class StoreDetailModel {
   }
 
   factory StoreDetailModel.fromMap(Map<String, dynamic> map) {
+    print(map);
     return StoreDetailModel(
       id: map['id'] as String,
       openTime: map['openTime'] ?? txtNone,
       phone: map['phone'] ?? txtNone,
       lat: map['lat'],
       lng: map['lng'],
-      images: map['images'] ?? [],
-      unavailableProducts: map['unavailableProducts'] ?? [],
-      unavailableOptions: map['unavailableOptions'] ?? [],
-      unavailableCategories: map['unavailableCategories'] ?? [],
+      images: (map['images'] is List)
+          ? (map['images'] as List).map<String>((e) => e as String).toList()
+          : <String>[],
+      unavailableProducts: (map['unavailableProducts'] is List)
+          ? (map['unavailableProducts'] as List).map<String>((e) => e as String).toList()
+          : <String>[],
+      unavailableOptions: (map['unavailableOptions'] is List)
+          ? (map['unavailableOptions'] as List).map<String>((e) => e as String).toList()
+          : <String>[],
+      unavailableCategories: (map['unavailableCategories'] is List)
+          ? (map['unavailableCategories'] as List).map<String>((e) => e as String).toList()
+          : <String>[],
     );
   }
 }

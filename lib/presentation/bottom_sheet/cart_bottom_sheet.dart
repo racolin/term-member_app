@@ -149,7 +149,6 @@ class _CartBottomSheetState extends State<CartBottomSheet> {
       item = InkWell(
         onTap: onClick,
         child: Ink(
-          color: Colors.red,
           child: item,
         ),
       );

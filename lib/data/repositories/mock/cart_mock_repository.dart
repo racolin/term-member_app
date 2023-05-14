@@ -10,6 +10,7 @@ import '../../models/response_model.dart';
 class CartMockRepository extends CartRepository {
   @override
   Future<ResponseModel<CartDetailModel>> checkVoucher({
+    required String? storeId,
     required String voucherId,
     required int categoryId,
     required List<CartProductModel> products,
@@ -194,6 +195,7 @@ class CartMockRepository extends CartRepository {
 
   @override
   Future<ResponseModel<bool>> review({
+    required String id,
     required int rate,
     String? review,
   }) async {

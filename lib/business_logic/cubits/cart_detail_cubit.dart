@@ -31,8 +31,16 @@ class CartDetailCubit extends Cubit<CartDetailState> {
 
   // get data method: return model if state is loaded, else return null
 
-  Future<AppMessage?> review(int rate, String review) async {
-    var res =  await _repository.review(rate: rate, review: review);
+  Future<AppMessage?> review(
+    String id,
+    int rate,
+    String review,
+  ) async {
+    var res = await _repository.review(
+      id: id,
+      rate: rate,
+      review: review,
+    );
 
     if (res.type == ResponseModelType.success) {
       return null;

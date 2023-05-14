@@ -26,6 +26,7 @@ class CartsCubit extends Cubit<CartsState> {
               Map<String, PagingModel<CartModel>> listCarts = {};
               for (var e in statuses) {
                 listCarts[e.id] = PagingModel<CartModel>(
+                  page: 1,
                   limit: 20,
                   list: [],
                 );

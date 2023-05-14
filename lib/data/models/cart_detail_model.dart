@@ -8,9 +8,9 @@ class CartDetailModel extends CartModel {
   final int payType;
   final String phone;
   final String receiver;
-  final String voucherId;
+  final String? voucherId;
   final int voucherDiscount;
-  final String voucherName;
+  final String? voucherName;
   final String addressName;
   final List<CartProductModel> products;
   final CartReviewModel? review;
@@ -45,7 +45,7 @@ class CartDetailModel extends CartModel {
     return {
       'id': id,
       'name': name,
-      'categoryId': categoryId,
+      'categoryId': categoryId.index,
       'cost': cost,
       'time': time.millisecondsSinceEpoch,
       'rate': rate,
@@ -66,35 +66,37 @@ class CartDetailModel extends CartModel {
   }
 
   factory CartDetailModel.fromMap(Map<String, dynamic> map) {
+    CartReviewModel? review;
+    if (map['review'] != null && (map['review']! as Map).isNotEmpty) {
+      review = CartReviewModel.fromMap(
+        map['review'],
+      );
+    }
     return CartDetailModel(
       id: map['id']!,
       name: map['name'] ?? txtUnknown,
-      categoryId: map['categoryId']!,
+      categoryId: DeliveryType.values[map['categoryId']!],
       cost: map['cost'] ?? 0,
       time: map['time'] != null
           ? DateTime.fromMillisecondsSinceEpoch(map['time'])
           : DateTime.now(),
       rate: map['rate'],
       code: map['code'] as String,
-      statusId: map['statusId'] as String,
+      statusId: map['statusId'] ?? 'nonono',
       fee: map['fee'] as int,
       payType: map['payType'] as int,
       phone: map['phone'] as String,
       receiver: map['receiver'] as String,
-      voucherId: map['voucherId'] as String,
+      voucherId: map['voucherId'],
       voucherDiscount: map['voucherDiscount'] ?? 0,
-      voucherName: map['voucherName'] as String,
+      voucherName: map['voucherName'],
       addressName: map['addressName'] as String,
       products: map['products'] == null
           ? []
           : (map['products']! as List)
               .map((e) => CartProductModel.fromMap(e))
               .toList(),
-      review: map['review'] == null
-          ? null
-          : CartReviewModel.fromMap(
-              map['review'],
-            ),
+      review: review,
       point: map['point'] as int,
     );
   }
@@ -133,7 +135,7 @@ class CartProductModel {
       'id': id,
       'options': options,
       'amount': amount,
-      // 'cost': cost,
+      'note': note,
     };
   }
 

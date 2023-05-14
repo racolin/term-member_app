@@ -86,11 +86,10 @@ class ApiRouter {
   static const String productOptionAll = '/member/product-option/all';
 
   // Cart
-  static String cartStatusGet(String id) => '/member/cart-status/$id';
+  static String cartStatusGet(String id) => '/cart-status/$id';
+  static const String cartStatusAll = '/cart-status/all';
 
-  static String cartGet(String id) => '/member/cart/$id';
-  static const String cartStatusAll = '/member/cart-status/all';
-
+  static String cartGet(String id) => 'member/cart/$id';
   static String cartReview(String id) => '/member/cart/$id/review';
   static const String cartCheckVoucher = '/member/cart/check-voucher';
   static const String cartCreate = '/member/cart/create';

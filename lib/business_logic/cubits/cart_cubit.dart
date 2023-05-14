@@ -58,7 +58,9 @@ class CartCubit extends Cubit<CartState> {
     int categoryId,
     List<CartProductModel> products,
   ) async {
+    var storeId = (state is! CartLoaded) ? null : (state as CartLoaded).store?.id;
     var res = await _repository.checkVoucher(
+      storeId: storeId,
       voucherId: voucherId,
       categoryId: categoryId,
       products: products,

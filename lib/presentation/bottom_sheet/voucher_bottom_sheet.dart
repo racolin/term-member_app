@@ -77,7 +77,7 @@ class VoucherBottomSheet extends StatelessWidget {
                         ),
                       ),
                       const SizedBox(height: spaceLG),
-                      _getQRCode(voucher.id),
+                      _getQRCode(voucher.code),
                       const SizedBox(height: spaceMD),
                       ElevatedButton(
                         onPressed: () {

@@ -8,9 +8,37 @@ import '../../business_logic/states/history_point_state.dart';
 import '../../data/models/history_point_model.dart';
 import '../../supports/convert.dart';
 
-class HistoryPointScreen extends StatelessWidget {
+class HistoryPointScreen extends StatefulWidget {
   const HistoryPointScreen({Key? key}) : super(key: key);
-  static const String routeName = '/Point_history';
+
+  @override
+  State<HistoryPointScreen> createState() => _HistoryPointScreenState();
+}
+
+class _HistoryPointScreenState extends State<HistoryPointScreen> {
+  final ScrollController _controller = ScrollController();
+
+  @override
+  void initState() {
+    _controller.addListener(() {
+      if (_controller.position.atEdge) {
+        if (_controller.position.pixels == 0) {
+          // atTop
+        } else {
+          if (context.read<HistoryPointCubit>().hasNext()) {
+            context.read<HistoryPointCubit>().loadMore();
+          }
+        }
+      }
+    });
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -40,6 +68,7 @@ class HistoryPointScreen extends StatelessWidget {
             case HistoryPointLoaded:
               var list = (state as HistoryPointLoaded).paging.list;
               return ListView.builder(
+                controller: _controller,
                 padding: const EdgeInsets.symmetric(vertical: 16),
                 itemBuilder: (context, index) => _getHistoryItem(list[index]),
                 itemCount: list.length,

@@ -7,7 +7,6 @@ import 'package:member_app/presentation/res/dimen/dimens.dart';
 import '../../business_logic/cubits/carts_cubit.dart';
 import '../../business_logic/states/carts_state.dart';
 import '../../supports/convert.dart';
-import 'cart_detail_screen.dart';
 import '../pages/alert_page.dart';
 
 class CartsScreen extends StatefulWidget {

@@ -4,6 +4,7 @@ import 'package:member_app/business_logic/cubits/history_point_cubit.dart';
 import 'package:member_app/presentation/screens/history_point_screen.dart';
 
 import '../data/repositories/api/auth_api_repository.dart';
+import '../data/repositories/api/cart_api_repository.dart';
 import '../data/repositories/api/member_api_repository.dart';
 import '../data/repositories/api/news_api_repository.dart';
 import '../data/repositories/api/notify_api_repository.dart';
@@ -99,7 +100,8 @@ class AppRouter {
             return MultiRepositoryProvider(
               providers: [
                 RepositoryProvider<CartRepository>(
-                  create: (context) => CartMockRepository(),
+                  create: (context) => CartApiRepository(),
+                  // create: (context) => CartMockRepository(),
                 ),
                 RepositoryProvider<CartTemplateRepository>(
                   create: (context) => CartTemplateMockRepository(),
@@ -280,7 +282,7 @@ class AppRouter {
         return MaterialPageRoute(
           builder: (context) {
             return RepositoryProvider<CartRepository>(
-              create: (context) => CartMockRepository(),
+              create: (context) => CartApiRepository(),
               child: BlocProvider<CartDetailCubit>(
                 create: (context) => CartDetailCubit(
                   repository: RepositoryProvider.of<CartRepository>(
@@ -297,7 +299,7 @@ class AppRouter {
         return MaterialPageRoute(
           builder: (context) {
             return RepositoryProvider<CartRepository>(
-              create: (context) => CartMockRepository(),
+              create: (context) => CartApiRepository(),
               child: BlocProvider<CartsCubit>(
                 create: (context) => CartsCubit(
                   repository: RepositoryProvider.of<CartRepository>(

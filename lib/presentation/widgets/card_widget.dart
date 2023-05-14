@@ -185,7 +185,7 @@ class CardWidget extends StatelessWidget {
                     ),
                     margin: const EdgeInsets.all(spaceMD),
                     child: SvgPicture.string(
-                      card.id.barcode(barWidth, barHeight),
+                      card.code.barcode(barWidth, barHeight),
                     ),
                   ),
                 ],

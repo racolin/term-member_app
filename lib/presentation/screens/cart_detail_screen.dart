@@ -324,11 +324,13 @@ class _CartDetailScreenState extends State<CartDetailScreen> {
               icon,
               const SizedBox(width: spaceXXS),
             ],
-            Text(
-              content,
-              style: const TextStyle(
-                fontSize: fontMD,
-                color: Colors.black,
+            Expanded(
+              child: Text(
+                content,
+                style: const TextStyle(
+                  fontSize: fontMD,
+                  color: Colors.black,
+                ),
               ),
             ),
           ],
@@ -397,7 +399,7 @@ class _CartDetailScreenState extends State<CartDetailScreen> {
     int total,
     int fee,
     int voucherDiscount,
-    String voucherName,
+    String? voucherName,
     int payType,
   ) {
     return Container(
@@ -471,7 +473,7 @@ class _CartDetailScreenState extends State<CartDetailScreen> {
                           ),
                     ),
                     Text(
-                      voucherName,
+                      voucherName ?? 'Không có',
                     ),
                   ],
                 ),

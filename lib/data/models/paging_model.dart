@@ -6,7 +6,7 @@ class PagingModel<T> {
 
   PagingModel({
     required this.limit,
-    this.page = 0,
+    this.page = 1,
     List<T>? list,
     this.maxCount = 1,
   }) : list = list ?? [];

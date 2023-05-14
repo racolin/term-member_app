@@ -27,11 +27,13 @@ abstract class CartRepository {
   Future<ResponseModel<List<CartStatusModel>>> getStatuses();
 
   Future<ResponseModel<bool>> review({
+    required String id,
     required int rate,
     String? review,
   });
 
   Future<ResponseModel<CartDetailModel>> checkVoucher({
+    required String? storeId,
     required String voucherId,
     required int categoryId,
     required List<CartProductModel> products,

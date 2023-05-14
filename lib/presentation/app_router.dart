@@ -8,6 +8,7 @@ import '../data/repositories/api/member_api_repository.dart';
 import '../data/repositories/api/news_api_repository.dart';
 import '../data/repositories/api/product_api_repository.dart';
 import '../data/repositories/api/promotion_api_repository.dart';
+import '../data/repositories/api/setting_api_repository.dart';
 import '../data/repositories/api/voucher_api_repository.dart';
 import 'pages/reward_screen.dart';
 import 'screens/address_screen.dart';
@@ -128,8 +129,11 @@ class AppRouter {
                 // RepositoryProvider<PromotionRepository>(
                 //   create: (context) => PromotionMockRepository(),
                 // ),
+                // RepositoryProvider<SettingRepository>(
+                //   create: (context) => SettingMockRepository(),
+                // ),
                 RepositoryProvider<SettingRepository>(
-                  create: (context) => SettingMockRepository(),
+                  create: (context) => SettingApiRepository(),
                 ),
                 RepositoryProvider<StoreRepository>(
                   create: (context) => StoreMockRepository(),
@@ -304,10 +308,10 @@ class AppRouter {
         return MaterialPageRoute(
           builder: (context) {
             return RepositoryProvider<SettingRepository>(
-              create: (context) => SettingMockRepository(),
+              create: (context) => SettingApiRepository(),
               child: BlocProvider<ProfileCubit>(
                 create: (context) => ProfileCubit(
-                  repository: SettingMockRepository(),
+                  repository: RepositoryProvider.of<SettingRepository>(context),
                 ),
                 child: const ProfileScreen(),
               ),
@@ -318,10 +322,10 @@ class AppRouter {
         return MaterialPageRoute(
           builder: (context) {
             return RepositoryProvider<SettingRepository>(
-              create: (context) => SettingMockRepository(),
+              create: (context) => SettingApiRepository(),
               child: BlocProvider<ProfileCubit>(
                 create: (context) => ProfileCubit(
-                  repository: SettingMockRepository(),
+                  repository: RepositoryProvider.of<SettingRepository>(context),
                 ),
                 child: const SettingScreen(),
               ),

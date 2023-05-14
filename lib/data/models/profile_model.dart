@@ -26,14 +26,17 @@ class ProfileModel {
   }
 
   factory ProfileModel.fromMap(Map<String, dynamic> map) {
+    String phone = map['phone'] ?? txtNone;
+    phone = phone.replaceRange(0, 3, '');
     return ProfileModel(
       firstName: map['firstName'] ?? txtNone,
       lastName: map['lastName'] ?? txtNone,
-      dob: map['dob'] == null
-          ? DateTime.now()
-          : DateTime.fromMillisecondsSinceEpoch(map['dob']),
+      dob: DateTime.tryParse(map['dob'] ?? '') ?? DateTime.now(),
+      // map['dob'] == null
+      //     ? DateTime.now()
+      //     : DateTime.fromMillisecondsSinceEpoch(map['dob']),
       gender: map['gender'] ?? 0,
-      phone: map['phone'] ?? txtNone,
+      phone: phone,
     );
   }
 

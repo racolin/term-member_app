@@ -34,7 +34,7 @@ class SettingMockRepository extends SettingRepository {
   var _defaults = [
     AddressModel(
       id: 'ADDRESS-HOME',
-      icon: Icons.home_outlined.codePoint,
+      icon: 'Icons.home_outlined.codePoint',
       name: 'Địa chỉ phòng trọ',
       address: '125/42/14 Bùi Đình Tuý, Bình Thạnh, TP.Hồ Chí Minh',
       note: 'Cái nhà có cổng màu đen',
@@ -44,7 +44,7 @@ class SettingMockRepository extends SettingRepository {
     AddressModel(
       id: 'ADDRESS-WORK',
       name: 'Địa chỉ nơi làm việc',
-      icon: Icons.domain_outlined.codePoint,
+      icon: 'Icons.domain_outlined.codePoint',
       address: '419 Ngô Gia Tự, Quận 10, TP.Hồ Chí Minh',
       note: 'Toà nhà kế bên tiệm kính chứ không ohair tiệm kính',
       receiver: 'Phan Trung Tín',

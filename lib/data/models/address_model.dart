@@ -5,7 +5,7 @@ class AddressModel {
   final String name;
   final String address;
   final String note;
-  final int? icon;
+  final String? icon;
   final double? lat;
   final double? lng;
   final String receiver;
@@ -22,6 +22,11 @@ class AddressModel {
     required this.receiver,
     required this.phone,
   });
+
+  int get iconInt {
+    print('0x${icon ?? 'f02e'}');
+    return int.parse(icon ?? 'f02e', radix: 16);
+  }
 
   Map<String, dynamic> toMap() {
     return {

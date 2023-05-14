@@ -11,21 +11,21 @@ class AddressesListModel {
 
   Map<String, dynamic> toMap() {
     return {
-      'defaults': defaults,
-      'others': others,
+      'defaultAddress': defaults,
+      'otherAddress': others,
     };
   }
 
   factory AddressesListModel.fromMap(Map<String, dynamic> map) {
     return AddressesListModel(
-      defaults: map['defaults'] == null
+      defaults: map['defaultAddress'] == null
           ? []
-          : (map['defaults'] as List)
+          : (map['defaultAddress'] as List)
               .map((e) => AddressModel.fromMap(e))
               .toList(),
-      others: map['others'] == null
+      others: map['otherAddress'] == null
           ? []
-          : (map['others'] as List)
+          : (map['otherAddress'] as List)
           .map((e) => AddressModel.fromMap(e))
           .toList(),
     );

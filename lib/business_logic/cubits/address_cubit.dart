@@ -83,7 +83,7 @@ class AddressCubit extends Cubit<AddressState> {
               AddressModel(
                 id: id,
                 name: name,
-                icon: 0xf5cf,
+                icon: '0xf5cf',
                 address: address,
                 note: note,
                 receiver: receiver,

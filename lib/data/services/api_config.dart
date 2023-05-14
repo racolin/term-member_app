@@ -123,6 +123,7 @@ class ApiRouter {
   // Setting
   static const String settingProfile = '/member/setting/profile';
   static const String settingAddress = '/member/setting/address';
+  static String settingAddressUpdate(String id) => '/member/setting/address/$id';
 
   static String settingAddressDelete(String id) =>
       '/member/setting/address/$id';

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:member_app/presentation/screens/address_detail_screen.dart';
 
+import '../../data/repositories/api/setting_api_repository.dart';
 import '../../presentation/res/dimen/dimens.dart';
 import '../../business_logic/repositories/setting_repository.dart';
 import '../../business_logic/cubits/address_cubit.dart';
@@ -9,6 +10,7 @@ import '../../business_logic/states/address_state.dart';
 import '../../data/repositories/mock/setting_mock_repository.dart';
 import '../../presentation/pages/loading_page.dart';
 import '../../data/models/address_model.dart';
+import '../widgets/app_fa_icon_widget.dart';
 import '../widgets/app_icon_widget.dart';
 
 class AddressBody extends StatelessWidget {
@@ -22,7 +24,7 @@ class AddressBody extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return RepositoryProvider<SettingRepository>(
-      create: (context) => SettingMockRepository(),
+      create: (context) => SettingApiRepository(),
       child: BlocProvider<AddressCubit>(
         create: (context) => AddressCubit(
           repository: RepositoryProvider.of<SettingRepository>(context),
@@ -121,10 +123,10 @@ class AddressBody extends StatelessWidget {
       leading: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          AppIconWidget(
-            codePoint: model.icon,
+          AppFaIconWidget(
+            codePoint: model.iconInt,
             defaultCodePoint: Icons.bookmark_border_outlined.codePoint,
-            size: fontXL,
+            size: fontLG,
             color: Colors.black87,
           ),
         ],

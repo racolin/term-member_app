@@ -6,6 +6,7 @@ import 'package:member_app/presentation/screens/history_point_screen.dart';
 import '../data/repositories/api/auth_api_repository.dart';
 import '../data/repositories/api/member_api_repository.dart';
 import '../data/repositories/api/news_api_repository.dart';
+import '../data/repositories/api/notify_api_repository.dart';
 import '../data/repositories/api/product_api_repository.dart';
 import '../data/repositories/api/promotion_api_repository.dart';
 import '../data/repositories/api/setting_api_repository.dart';
@@ -336,13 +337,20 @@ class AppRouter {
         return MaterialPageRoute(
           builder: (context) {
             return RepositoryProvider<NotifyRepository>(
-              create: (context) => NotifyMockRepository(),
+              create: (context) => NotifyApiRepository(),
               child: BlocProvider<NotifyCubit>(
                 create: (context) => NotifyCubit(
                   repository: RepositoryProvider.of<NotifyRepository>(
                     context,
                   ),
                 ),
+              // create: (context) => NotifyMockRepository(),
+              // child: BlocProvider<NotifyCubit>(
+              //   create: (context) => NotifyCubit(
+              //     repository: RepositoryProvider.of<NotifyRepository>(
+              //       context,
+              //     ),
+              //   ),
                 child: const NotifyScreen(),
               ),
             );

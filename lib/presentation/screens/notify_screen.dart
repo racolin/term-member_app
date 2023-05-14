@@ -9,7 +9,6 @@ import '../res/dimen/dimens.dart';
 import '../widgets/notify_widget.dart';
 
 class NotifyScreen extends StatelessWidget {
-
   const NotifyScreen({Key? key}) : super(key: key);
 
   @override
@@ -25,8 +24,7 @@ class NotifyScreen extends StatelessWidget {
         ),
         title: Text(
           txtNotify,
-          style: Theme
-              .of(context)
+          style: Theme.of(context)
               .textTheme
               .titleSmall
               ?.copyWith(fontWeight: FontWeight.w600),
@@ -50,17 +48,21 @@ class NotifyScreen extends StatelessWidget {
             case NotifyInitial:
               return const SizedBox();
             case NotifyLoading:
-            return const LoadingPage();
+              return const LoadingPage();
             case NotifyLoaded:
               state as NotifyLoaded;
               return SingleChildScrollView(
-              child: Column(
-                children: state.list
-                    .map((notify) =>
-                    NotifyWidget(notify: notify))
-                    .toList(),
-              ),
-            );
+                child: Column(
+                  children: [
+                    ...state.list
+                        .map((notify) => NotifyWidget(notify: notify))
+                        .toList(),
+                    const SizedBox(
+                      height: dimMD,
+                    ),
+                  ],
+                ),
+              );
           }
           return const LoadingPage();
         },

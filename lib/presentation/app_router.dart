@@ -156,69 +156,69 @@ class AppRouter {
               ],
               child: MultiBlocProvider(
                 providers: [
-                  BlocProvider(
+                  BlocProvider<HomeCubit>(
                     create: (context) => HomeCubit(),
                   ),
-                  BlocProvider(
+                  BlocProvider<CartCubit>(
                     create: (context) => CartCubit(
                       repository: RepositoryProvider.of<CartRepository>(
                         context,
                       ),
                     ),
                   ),
-                  BlocProvider(
+                  BlocProvider<AppBarCubit>(
                     create: (context) => AppBarCubit(
                       repository: RepositoryProvider.of<MemberRepository>(
                         context,
                       ),
                     ),
                   ),
-                  BlocProvider(
+                  BlocProvider<CardCubit>(
                     create: (context) => CardCubit(
                       repository: RepositoryProvider.of<MemberRepository>(
                         context,
                       ),
                     ),
                   ),
-                  BlocProvider(
+                  BlocProvider<ProductCubit>(
                     create: (context) => ProductCubit(
                       repository: RepositoryProvider.of<ProductRepository>(
                         context,
                       ),
                     ),
                   ),
-                  BlocProvider(
+                  BlocProvider<ProductScrollCubit>(
                     create: (context) => ProductScrollCubit(),
                   ),
-                  BlocProvider(
+                  BlocProvider<VoucherCubit>(
                     create: (context) => VoucherCubit(
                       repository: RepositoryProvider.of<VoucherRepository>(
                         context,
                       ),
                     ),
                   ),
-                  BlocProvider(
+                  BlocProvider<PromotionCubit>(
                     create: (context) => PromotionCubit(
                       repository: RepositoryProvider.of<PromotionRepository>(
                         context,
                       ),
                     ),
                   ),
-                  BlocProvider(
+                  BlocProvider<StoreCubit>(
                     create: (context) => StoreCubit(
                       repository: RepositoryProvider.of<StoreRepository>(
                         context,
                       ),
                     ),
                   ),
-                  BlocProvider(
+                  BlocProvider<CartTemplateCubit>(
                     create: (context) => CartTemplateCubit(
                       repository: RepositoryProvider.of<CartTemplateRepository>(
                         context,
                       ),
                     ),
                   ),
-                  BlocProvider(
+                  BlocProvider<NewsCubit>(
                     create: (context) => NewsCubit(
                       repository: RepositoryProvider.of<NewsRepository>(
                         context,

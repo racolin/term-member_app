@@ -1,9 +1,12 @@
+import 'dart:convert';
+
 import 'package:flutter/services.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:jwt_decoder/jwt_decoder.dart';
 import 'package:member_app/data/models/token_model.dart';
 import 'package:member_app/presentation/res/strings/values.dart';
 
+import '../../business_logic/states/cart_state.dart';
 import '../../exception/app_message.dart';
 import '../models/response_model.dart';
 
@@ -19,7 +22,102 @@ class SecureStorage {
   final FlutterSecureStorage _storage;
   static const _accessTokenKey = 'ACCESS_TOKEN';
   static const _refreshTokenKey = 'REFRESH_TOKEN';
+  static const _cartLoaded = 'CART_LOADED';
   TokenModel? _token;
+
+  Future<ResponseModel<bool>> persistCartLoaded(CartLoaded cart) async {
+    try {
+      await _storage.write(
+        key: _cartLoaded,
+        value: jsonEncode(cart.toMap()),
+      );
+      return ResponseModel<bool>(
+        type: ResponseModelType.success,
+        data: true,
+      );
+    } on PlatformException catch (ex) {
+      return ResponseModel<bool>(
+        type: ResponseModelType.failure,
+        message: AppMessage(
+          title: txtErrorTitle,
+          type: AppMessageType.failure,
+          content: 'Có lỗi xảy ra khi lưu đơn hàng',
+          description: ex.message,
+        ),
+      );
+    } on Exception catch (ex) {
+      return ResponseModel<bool>(
+        type: ResponseModelType.failure,
+        message: AppMessage(
+          type: AppMessageType.failure,
+          title: txtUnknownErrorTitle,
+          content: txtUnknownHandle,
+          description: ex.toString(),
+        ),
+      );
+    }
+  }
+
+  Future<ResponseModel<bool>> deleteCartLoaded() async {
+    try {
+      await _storage.delete(key: _cartLoaded);
+      return ResponseModel<bool>(
+        type: ResponseModelType.success,
+        data: true,
+      );
+    } on PlatformException catch (ex) {
+      return ResponseModel<bool>(
+        type: ResponseModelType.failure,
+        message: AppMessage(
+          title: txtErrorTitle,
+          type: AppMessageType.error,
+          content: 'Gặp sự cố khi xoá đơn hàng.',
+          description: ex.message,
+        ),
+      );
+    } on Exception catch (ex) {
+      return ResponseModel<bool>(
+        type: ResponseModelType.failure,
+        message: AppMessage(
+          title: txtUnknownErrorTitle,
+          type: AppMessageType.failure,
+          content: txtUnknownHandle,
+          description: ex.toString(),
+        ),
+      );
+    }
+  }
+
+  Future<ResponseModel<CartLoaded>> getCartLoaded() async {
+    try {
+      String? cartLoaded = await _storage.read(key: _cartLoaded);
+      cartLoaded ??= '{}';
+      return ResponseModel<CartLoaded>(
+        type: ResponseModelType.success,
+        data: CartLoaded.fromMap(jsonDecode(cartLoaded)),
+      );
+    } on PlatformException catch (ex) {
+      return ResponseModel<CartLoaded>(
+        type: ResponseModelType.failure,
+        message: AppMessage(
+          type: AppMessageType.error,
+          title: txtErrorTitle,
+          content: 'Có lỗi xảy ra khi tải lại đơn hàng!\nHãy thử lại',
+          description: ex.message,
+        ),
+      );
+    } on Exception catch (ex) {
+      return ResponseModel<CartLoaded>(
+        type: ResponseModelType.failure,
+        message: AppMessage(
+          title: txtUnknownErrorTitle,
+          type: AppMessageType.failure,
+          content: txtUnknownHandle,
+          description: ex.toString(),
+        ),
+      );
+    }
+  }
 
   Future<ResponseModel<bool>> persistToken(TokenModel token) async {
     _token = token;

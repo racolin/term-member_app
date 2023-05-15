@@ -24,10 +24,38 @@ class HomeScreen extends StatefulWidget {
   State<HomeScreen> createState() => _HomeScreenState();
 }
 
-class _HomeScreenState extends State<HomeScreen> {
+class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver{
   @override
   void initState() {
+    WidgetsBinding.instance.addObserver(this);
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
+    super.dispose();
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+
+    switch (state) {
+      case AppLifecycleState.resumed:
+        context.read<CartCubit>().loadCartLoaded();
+        break;
+      case AppLifecycleState.inactive:
+        print('deb-inactive');
+        break;
+      case AppLifecycleState.paused:
+        context.read<CartCubit>().saveCartLoaded();
+        print('deb-paused');
+        break;
+      case AppLifecycleState.detached:
+        print('deb-detached');
+        break;
+    }
+    super.didChangeAppLifecycleState(state);
   }
 
   Widget _getBody(HomeBodyType type, bool login) {
@@ -129,9 +157,10 @@ class _HomeScreenState extends State<HomeScreen> {
                                 top: Radius.circular(16),
                               ),
                             ),
-                            builder: (context) => MethodOrderBottomSheet(
+                            builder: (ctx) => MethodOrderBottomSheet(
                               type: cartState.categoryId,
                               addressName: cartState.addressName,
+                              login: context.read<HomeCubit>().login,
                             ),
                           );
                         },

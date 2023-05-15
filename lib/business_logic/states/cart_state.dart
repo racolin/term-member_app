@@ -1,4 +1,5 @@
 import 'package:member_app/data/models/cart_model.dart';
+import 'package:member_app/exception/app_message.dart';
 
 import '../../data/models/cart_detail_model.dart';
 import '../../data/models/store_detail_model.dart';
@@ -90,4 +91,59 @@ class CartLoaded extends CartState {
       voucherDiscount: voucherDiscount ?? this.voucherDiscount,
     );
   }
+
+  Map<String, dynamic> toMap() {
+    return {
+      'store': store?.toMap(),
+      'storeDetail': storeDetail?.toMap(),
+      'addressName': addressName,
+      'addressDescription': addressDescription,
+      'phone': phone,
+      'receiver': receiver,
+      'categoryId': categoryId?.index,
+      'payType': payType,
+      'voucher': voucher?.toMap(),
+      'products': products.map((e) => e.toMap()),
+      'time': time.toString(),
+      'fee': fee,
+      'feeDiscount': feeDiscount,
+      'voucherDiscount': voucherDiscount,
+    };
+  }
+
+  factory CartLoaded.fromMap(Map<String, dynamic> map) {
+    return CartLoaded(
+      store: map['store'] == null ? null : StoreModel.fromMap(map['store']),
+      storeDetail: map['storeDetail'] == null
+          ? null
+          : StoreDetailModel.fromMap(map['storeDetail']),
+      addressName: map['addressName'],
+      addressDescription: map['addressDescription'],
+      phone: map['phone'],
+      receiver: map['receiver'],
+      categoryId: map['categoryId'] == null
+          ? null
+          : DeliveryType.values[map['categoryId']],
+      payType: map['payType'],
+      voucher:
+          map['voucher'] == null ? null : VoucherModel.fromMap(map['voucher']),
+      products: map['products'] == null
+          ? []
+          : (map['products'] as List)
+              .map((e) => CartProductModel.fromMap(e))
+              .toList(),
+      time: DateTime.tryParse(map['time'] ?? ''),
+      fee: map['fee'] ?? 0,
+      feeDiscount: map['feeDiscount'] ?? 0,
+      voucherDiscount: map['voucherDiscount'] ?? 0,
+    );
+  }
+}
+
+class CartFailure extends CartState {
+  final AppMessage message;
+
+  CartFailure({
+    required this.message,
+  });
 }

@@ -6,6 +6,7 @@ import '../../data/models/cart_detail_model.dart';
 import '../../data/models/store_detail_model.dart';
 import '../../data/models/store_model.dart';
 import '../../data/models/voucher_model.dart';
+import '../../data/services/secure_storage.dart';
 import '../../exception/app_message.dart';
 import '../../presentation/res/strings/values.dart';
 import '../repositories/cart_repository.dart';
@@ -13,41 +14,95 @@ import '../states/cart_state.dart';
 
 class CartCubit extends Cubit<CartState> {
   final CartRepository _repository;
+  final SecureStorage _storage = SecureStorage();
 
-  CartCubit({required CartRepository repository})
-      : _repository = repository,
+  CartCubit({
+    required CartRepository repository,
+  })  : _repository = repository,
         super(CartInitial()) {
+    print('res.type222');
+    _storage.getCartLoaded().then((res) {
+      print(res.type);
+      print('res.type');
+      if (res.type == ResponseModelType.success) {
+        emit(res.data);
+      } else {
+        emit(CartFailure(message: res.message));
+      }
+    });
+
     /// Thiếu bước lưu cart local khi login thì nạp lại
-    emit(CartLoaded(
-      products: [
-        CartProductModel(
-          id: 'id',
-          name: 'name',
-          cost: 25000,
-          options: ['OPTION-1-1'],
-          amount: 2,
-          note: 'note',
+    // emit(CartLoaded(
+    //   products: [
+    //     CartProductModel(
+    //       id: 'id',
+    //       name: 'name',
+    //       cost: 25000,
+    //       options: ['OPTION-1-1'],
+    //       amount: 2,
+    //       note: 'note',
+    //     ),
+    //     CartProductModel(
+    //       id: 'id',
+    //       name: 'name',
+    //       cost: 25000,
+    //       options: ['OPTION-1-1'],
+    //       amount: 2,
+    //       note: 'note',
+    //     ),
+    //     CartProductModel(
+    //       id: 'id',
+    //       name: 'name',
+    //       cost: 25000,
+    //       options: ['OPTION-1-1'],
+    //       amount: 2,
+    //       note: 'note',
+    //     ),
+    //   ],
+    //   categoryId: DeliveryType.takeOut,
+    //   fee: 18000,
+    // ));
+  }
+
+  Future<ResponseModel<bool>> saveCartLoaded() async {
+    if (state is! CartLoaded) {
+      return ResponseModel<bool>(
+        type: ResponseModelType.failure,
+        message: AppMessage(
+          type: AppMessageType.error,
+          title: txtErrorTitle,
+          content: 'Không thể lưu đơn hàng!',
         ),
-        CartProductModel(
-          id: 'id',
-          name: 'name',
-          cost: 25000,
-          options: ['OPTION-1-1'],
-          amount: 2,
-          note: 'note',
-        ),
-        CartProductModel(
-          id: 'id',
-          name: 'name',
-          cost: 25000,
-          options: ['OPTION-1-1'],
-          amount: 2,
-          note: 'note',
-        ),
-      ],
-      categoryId: DeliveryType.takeOut,
-      fee: 18000,
-    ));
+      );
+    }
+    var res = await _storage.persistCartLoaded(state as CartLoaded);
+    if (res.type == ResponseModelType.success) {
+      return ResponseModel<bool>(
+        type: ResponseModelType.success,
+        data: res.data,
+      );
+    } else {
+      return ResponseModel<bool>(
+        type: ResponseModelType.failure,
+        message: res.message,
+      );
+    }
+  }
+
+  Future<ResponseModel<bool>> loadCartLoaded() async {
+    var res = await _storage.getCartLoaded();
+    if (res.type == ResponseModelType.success) {
+      emit(res.data);
+      return ResponseModel<bool>(
+        type: ResponseModelType.success,
+        data: true,
+      );
+    } else {
+      return ResponseModel<bool>(
+        type: ResponseModelType.failure,
+        message: res.message,
+      );
+    }
   }
 
   // base method: return response model, use to avoid repeat code.
@@ -57,7 +112,8 @@ class CartCubit extends Cubit<CartState> {
     int categoryId,
     List<CartProductModel> products,
   ) async {
-    var storeId = (state is! CartLoaded) ? null : (state as CartLoaded).store?.id;
+    var storeId =
+        (state is! CartLoaded) ? null : (state as CartLoaded).store?.id;
     var res = await _repository.checkVoucher(
       storeId: storeId,
       voucherId: voucherId,

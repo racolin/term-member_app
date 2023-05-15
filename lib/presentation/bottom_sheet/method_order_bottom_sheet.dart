@@ -7,7 +7,6 @@ import '../../business_logic/blocs/interval/interval_bloc.dart';
 import '../../business_logic/cubits/store_cubit.dart';
 import '../../data/models/store_model.dart';
 import '../../data/repositories/api/store_api_repository.dart';
-import '../../data/repositories/mock/store_mock_repository.dart';
 import '../../presentation/res/strings/values.dart';
 import '../../data/models/cart_model.dart';
 import '../pages/store_search_page.dart';
@@ -15,11 +14,13 @@ import '../pages/store_search_page.dart';
 class MethodOrderBottomSheet extends StatelessWidget {
   final DeliveryType? type;
   final String? addressName;
+  final bool login;
 
   const MethodOrderBottomSheet({
     Key? key,
     required this.type,
     required this.addressName,
+    this.login = false,
   }) : super(key: key);
 
   @override
@@ -86,6 +87,13 @@ class MethodOrderBottomSheet extends StatelessWidget {
                     ),
                   ),
                   onPressed: () {
+                    if (login == false) {
+                      Navigator.pushNamed(
+                        context,
+                        AppRouter.auth,
+                      );
+                      return;
+                    }
                     if (method == DeliveryType.delivery) {
                       Navigator.pushNamed(context, AppRouter.addressSelect);
                     } else if (method == DeliveryType.takeOut) {
@@ -98,13 +106,14 @@ class MethodOrderBottomSheet extends StatelessWidget {
                               providers: [
                                 BlocProvider<StoreCubit>(
                                   create: (ctx) => StoreCubit(
-                                    repository: RepositoryProvider.of<StoreRepository>(ctx),
+                                    repository:
+                                        RepositoryProvider.of<StoreRepository>(
+                                            ctx),
                                   ),
                                 ),
                                 BlocProvider<IntervalBloc<StoreModel>>(
                                   create: (ctx) => IntervalBloc<StoreModel>(
-                                    submit:
-                                    BlocProvider.of<StoreCubit>(ctx),
+                                    submit: BlocProvider.of<StoreCubit>(ctx),
                                   ),
                                 ),
                               ],

@@ -124,10 +124,11 @@ class _ProductFavoriteScreenState extends State<ProductFavoriteScreen> {
                                             top: Radius.circular(16),
                                           ),
                                         ),
-                                        builder: (context) =>
+                                        builder: (ctx) =>
                                             MethodOrderBottomSheet(
                                           type: cartState.categoryId,
                                           addressName: cartState.addressName,
+                                          login: context.read<HomeCubit>().login,
                                         ),
                                       );
                                     },

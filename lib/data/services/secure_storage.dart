@@ -41,8 +41,8 @@ class SecureStorage {
       return ResponseModel<bool>(
         type: ResponseModelType.failure,
         message: AppMessage(
-          title: 'Có lỗi!',
-          type: AppMessageType.error,
+          title: txtErrorTitle,
+          type: AppMessageType.failure,
           content: 'Có lỗi xảy ra khi lưu phiên đăng nhập',
           description: ex.message,
         ),
@@ -51,9 +51,9 @@ class SecureStorage {
       return ResponseModel<bool>(
         type: ResponseModelType.failure,
         message: AppMessage(
-          type: AppMessageType.error,
-          title: 'Có lỗi!',
-          content: 'Chưa phân tích được lỗi',
+          type: AppMessageType.failure,
+          title: txtUnknownErrorTitle,
+          content: txtUnknownHandle,
           description: ex.toString(),
         ),
       );
@@ -75,7 +75,7 @@ class SecureStorage {
         message: AppMessage(
           title: txtErrorTitle,
           type: AppMessageType.error,
-          content: 'Gặp sự cố khi đăng xuất, hãy thử lại.',
+          content: 'Gặp sự cố khi xoá phiên đăng nhập.',
           description: ex.message,
         ),
       );
@@ -83,9 +83,9 @@ class SecureStorage {
       return ResponseModel<bool>(
         type: ResponseModelType.failure,
         message: AppMessage(
-          title: txtErrorTitle,
-          type: AppMessageType.error,
-          content: 'Chưa phân tích được lỗi',
+          title: txtUnknownErrorTitle,
+          type: AppMessageType.failure,
+          content: txtUnknownHandle,
           description: ex.toString(),
         ),
       );
@@ -100,48 +100,28 @@ class SecureStorage {
       );
     }
 
-    try {
-      String? access = await _storage.read(key: _accessTokenKey);
-      String? refresh = await _storage.read(key: _refreshTokenKey);
-
-      if (access != null && refresh != null) {
-        return ResponseModel<TokenModel>(
-          type: ResponseModelType.success,
-          data: TokenModel(
-            accessToken: access,
-            refreshToken: refresh,
-          ),
-        );
-      }
-      return ResponseModel<TokenModel>(
+    var resAccess = await getAccessToken();
+    if (resAccess.type == ResponseModelType.failure) {
+      return ResponseModel(
         type: ResponseModelType.failure,
-        message: AppMessage(
-          type: AppMessageType.none,
-          title: txtFailureTitle,
-          content: 'Dữ liệu không có dữ liệu hoặc không đúng định dạng!',
-        ),
-      );
-    } on PlatformException catch (ex) {
-      return ResponseModel<TokenModel>(
-        type: ResponseModelType.failure,
-        message: AppMessage(
-          type: AppMessageType.error,
-          title: txtErrorTitle,
-          content: 'Gặp sự cố khi lấy phiên đăng nhập!',
-          description: ex.message,
-        ),
-      );
-    } on Exception catch (ex) {
-      return ResponseModel<TokenModel>(
-        type: ResponseModelType.failure,
-        message: AppMessage(
-          type: AppMessageType.error,
-          title: txtErrorTitle,
-          content: 'Chưa phân tích được lỗi',
-          description: ex.toString(),
-        ),
+        message: resAccess.message,
       );
     }
+    var resRefresh = await getRefreshToken();
+    if (resRefresh.type == ResponseModelType.failure) {
+      return ResponseModel(
+        type: ResponseModelType.failure,
+        message: resRefresh.message,
+      );
+    }
+
+    return ResponseModel<TokenModel>(
+      type: ResponseModelType.success,
+      data: TokenModel(
+        accessToken: resAccess.data,
+        refreshToken: resRefresh.data,
+      ),
+    );
   }
 
   bool hasExpired(String token, int milliseconds) {
@@ -176,7 +156,7 @@ class SecureStorage {
         message: AppMessage(
           type: AppMessageType.logout,
           title: txtFailureTitle,
-          content: 'Hãy đăng nhập lại!',
+          content: 'Không có phiên đăng nhập> Hãy đăng nhập!',
         ),
       );
     } on PlatformException catch (ex) {
@@ -193,9 +173,9 @@ class SecureStorage {
       return ResponseModel<String>(
         type: ResponseModelType.failure,
         message: AppMessage(
-          title: txtErrorTitle,
-          type: AppMessageType.error,
-          content: 'Chưa phân tích được lỗi',
+          title: txtUnknownErrorTitle,
+          type: AppMessageType.failure,
+          content: txtUnknownHandle,
           description: ex.toString(),
         ),
       );
@@ -218,12 +198,13 @@ class SecureStorage {
           data: refreshToken,
         );
       }
+
       return ResponseModel<String>(
         type: ResponseModelType.failure,
         message: AppMessage(
-          type: AppMessageType.failure,
+          type: AppMessageType.none,
           title: txtFailureTitle,
-          content: 'Dữ liệu không có dữ liệu hoặc không đúng định dạng!',
+          content: 'Không thể làm mới phiên đăng nhập!',
         ),
       );
     } on PlatformException catch (ex) {
@@ -240,9 +221,9 @@ class SecureStorage {
       return ResponseModel<String>(
         type: ResponseModelType.failure,
         message: AppMessage(
-          type: AppMessageType.error,
-          title: txtErrorTitle,
-          content: 'Chưa phân tích được lỗi',
+          type: AppMessageType.failure,
+          title: txtUnknownErrorTitle,
+          content: txtUnknownHandle,
           description: ex.toString(),
         ),
       );
@@ -262,7 +243,7 @@ class SecureStorage {
         type: ResponseModelType.failure,
         message: AppMessage(
           title: txtErrorTitle,
-          type: AppMessageType.error,
+          type: AppMessageType.failure,
           content: 'Có vấn đề khi xoá dữ liệu để đăng xuất.\nHãy thử lại!',
           description: ex.message,
         ),
@@ -272,8 +253,8 @@ class SecureStorage {
         type: ResponseModelType.failure,
         message: AppMessage(
           title: txtUnknownErrorTitle,
-          type: AppMessageType.error,
-          content: 'Chưa phân tích được lỗi!',
+          type: AppMessageType.failure,
+          content: txtUnknownHandle,
           description: ex.toString(),
         ),
       );

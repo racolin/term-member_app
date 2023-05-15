@@ -102,6 +102,8 @@ const txtNotifyTitle = 'Thông báo!';
 const txtErrorTitle = 'Có lỗi!';
 const txtUnknownErrorTitle = 'Không xác định!';
 
+const txtUnknownHandle = 'Chưa phân tích được lỗi!';
+
 const txtToFast = 'Thao tác quá nhanh, hãy đợi và thử lại!';
 
 

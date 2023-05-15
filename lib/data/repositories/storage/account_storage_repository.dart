@@ -33,7 +33,7 @@ class AccountStorageRepository extends AccountRepository {
   @override
   Future<ResponseModel<bool>> isLogin() async {
     try {
-      var res = await _storage.getAccessToken();
+      var res = await _storage.getToken();
       if (res.type == ResponseModelType.success) {
         return ResponseModel<bool>(
           type: ResponseModelType.success,

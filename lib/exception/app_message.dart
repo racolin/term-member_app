@@ -1,6 +1,6 @@
 enum AppMessageType {
   ///
-  /// Lỗi được catch khi tương tác vớiserver
+  /// Lỗi được catch khi tương tác với server
   ///
   error,
 

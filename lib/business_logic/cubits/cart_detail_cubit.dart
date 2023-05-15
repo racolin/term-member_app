@@ -1,6 +1,5 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../exception/app_exception.dart';
 import 'package:member_app/data/models/response_model.dart';
 import '../../exception/app_message.dart';
 import '../repositories/cart_repository.dart';

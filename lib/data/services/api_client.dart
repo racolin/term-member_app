@@ -1,5 +1,4 @@
 import 'package:dio/dio.dart';
-import 'package:flutter/services.dart';
 import 'package:member_app/data/models/raw_success_model.dart';
 import 'package:member_app/data/models/token_model.dart';
 import 'package:member_app/data/services/api_config.dart';
@@ -103,19 +102,23 @@ class AuthInterceptor extends QueuedInterceptor {
           15000,
         );
         if (expRefreshToken) {
+          try {
+            var refresh = await _dioNoAuth.post(
+              ApiRouter.authRefresh,
+              options: Options(
+                headers: {'Authorization': 'Bearer ${token.refreshToken}'},
+              ),
+            );
 
-          var refresh = await _dioNoAuth.post(
-            ApiRouter.authRefresh,
-            options: Options(
-              headers: {'Authorization': 'Bearer ${token.refreshToken}'},
-            ),
-          );
-
-          var resRefresh = RawSuccessModel.fromMap(refresh.data);
-          var newToken = TokenModel.fromMap(resRefresh.data);
-          await _storage.persistToken(newToken);
-          options.headers
-              .addAll({'Authorization': 'Bearer ${newToken.accessToken}'});
+            var resRefresh = RawSuccessModel.fromMap(refresh.data);
+            var newToken = TokenModel.fromMap(resRefresh.data);
+            await _storage.persistToken(newToken);
+            options.headers.addAll({
+              'Authorization': 'Bearer ${newToken.accessToken}',
+            });
+          } on DioError catch (ex) {
+            return handler.reject(ex);
+          }
         } else {
           return handler.reject(
             DioError(

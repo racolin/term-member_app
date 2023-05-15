@@ -228,7 +228,7 @@ class OtherBody extends StatelessWidget {
                         context: context,
                         builder: (ctx) => AppDialog(
                           message: AppMessage(
-                            type: AppMessageType.info,
+                            type: AppMessageType.notify,
                             title: txtLogOut,
                             content: txtConfirmLogOut,
                           ),

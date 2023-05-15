@@ -6,7 +6,6 @@ import '../../models/address_model.dart';
 import '../../models/addresses_list_model.dart';
 import '../../models/profile_model.dart';
 import '../../../business_logic/repositories/setting_repository.dart';
-import '../../../exception/app_exception.dart';
 import '../../../exception/app_message.dart';
 
 class SettingMockRepository extends SettingRepository {

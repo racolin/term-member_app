@@ -63,7 +63,7 @@ class AppDialog extends StatelessWidget {
         return Colors.orange;
       case AppMessageType.success:
         return Colors.green;
-      case AppMessageType.info:
+      case AppMessageType.notify:
         return Colors.blue;
       case AppMessageType.none:
         return Colors.grey;

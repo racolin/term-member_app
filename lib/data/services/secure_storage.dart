@@ -116,7 +116,7 @@ class SecureStorage {
       return ResponseModel<TokenModel>(
         type: ResponseModelType.failure,
         message: AppMessage(
-          type: AppMessageType.failure,
+          type: AppMessageType.none,
           title: txtFailureTitle,
           content: 'Dữ liệu không có dữ liệu hoặc không đúng định dạng!',
         ),
@@ -263,17 +263,17 @@ class SecureStorage {
         message: AppMessage(
           title: txtErrorTitle,
           type: AppMessageType.error,
-          content: 'Gặp sự cố khi đăng xuất, hãy thử lại.',
+          content: 'Có vấn đề khi xoá dữ liệu để đăng xuất.\nHãy thử lại!',
           description: ex.message,
         ),
       );
-    } on Exception catch (ex) {
+    } catch (ex) {
       return ResponseModel<bool>(
         type: ResponseModelType.failure,
         message: AppMessage(
-          title: txtErrorTitle,
+          title: txtUnknownErrorTitle,
           type: AppMessageType.error,
-          content: 'Chưa phân tích được lỗi',
+          content: 'Chưa phân tích được lỗi!',
           description: ex.toString(),
         ),
       );

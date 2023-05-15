@@ -240,7 +240,7 @@ class PromotionPointPage extends StatelessWidget {
                       context: context,
                       builder: (context) => AppDialog(
                         message: AppMessage(
-                          type: AppMessageType.info,
+                          type: AppMessageType.notify,
                           title: txtNotify,
                           content: txtDeveloping,
                         ),

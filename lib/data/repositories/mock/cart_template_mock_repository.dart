@@ -2,7 +2,6 @@ import 'package:dio/dio.dart';
 
 import '../../../business_logic/repositories/cart_template_repository.dart';
 import '../../../data/models/cart_template_model.dart';
-import '../../../exception/app_exception.dart';
 import '../../../exception/app_message.dart';
 import '../../models/response_model.dart';
 

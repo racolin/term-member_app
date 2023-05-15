@@ -5,7 +5,6 @@ import '../../models/app_bar_model.dart';
 import '../../models/card_model.dart';
 import '../../models/history_point_model.dart';
 import '../../../business_logic/repositories/member_repository.dart';
-import '../../../exception/app_exception.dart';
 import '../../../exception/app_message.dart';
 
 class MemberMockRepository extends MemberRepository {

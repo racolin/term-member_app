@@ -3,7 +3,6 @@ import 'package:member_app/business_logic/repositories/account_repository.dart';
 import 'package:member_app/data/models/response_model.dart';
 
 import '../../data/repositories/storage/account_storage_repository.dart';
-import '../../exception/app_exception.dart';
 import '../../exception/app_message.dart';
 import '../../presentation/res/strings/values.dart';
 import '../states/home_state.dart';
@@ -36,12 +35,11 @@ class HomeCubit extends Cubit<HomeState> {
 
   // Action data
   Future<AppMessage?> logout() async {
-    try {
-      await _repository.logout();
-    } on AppException catch (ex) {
-      return ex.message;
+    var res = await _repository.logout();
+    if (res.type == ResponseModelType.success) {
+      return null;
     }
-    return null;
+    return res.message;
   }
 
   // Action UI

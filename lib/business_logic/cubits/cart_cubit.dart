@@ -2,7 +2,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:member_app/data/models/response_model.dart';
 
 import '../../data/models/cart_model.dart';
-import '../../exception/app_exception.dart';
 import '../../data/models/cart_detail_model.dart';
 import '../../data/models/store_detail_model.dart';
 import '../../data/models/store_model.dart';

@@ -3,7 +3,6 @@ import 'package:member_app/data/services/api_client.dart';
 
 import '../../../business_logic/repositories/cart_template_repository.dart';
 import '../../../data/models/cart_template_model.dart';
-import '../../../exception/app_exception.dart';
 import '../../../exception/app_message.dart';
 import '../../../presentation/res/strings/values.dart';
 import '../../models/raw_failure_model.dart';

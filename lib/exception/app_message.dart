@@ -1,9 +1,42 @@
-enum AppMessageType { error, failure, success, logout, info, none }
+enum AppMessageType {
+  ///
+  /// Lỗi được catch khi tương tác vớiserver
+  ///
+  error,
+
+  ///
+  /// Lỗi được catch trong app
+  ///
+  failure,
+  
+  ///
+  /// Thao tác thành công
+  /// 
+  success,
+  
+  ///
+  /// Lỗi và cần phải logout
+  /// 
+  logout,
+  
+  ///
+  /// Thông báo của ứng dụng tới người dùng.
+  ///
+  /// Không có lỗi xảy ra
+  /// 
+  notify,
+
+  ///
+  /// Lỗi do dữ liệu rỗng
+  ///
+  none;
+}
 
 class AppMessage {
   final AppMessageType type;
   final String title;
   final String content;
+
   ///
   /// Not null when message is exception
   ///

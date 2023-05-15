@@ -2,7 +2,6 @@ import 'package:dio/dio.dart';
 import 'package:member_app/data/models/response_model.dart';
 
 import '../../../business_logic/repositories/auth_repository.dart';
-import '../../../exception/app_exception.dart';
 import '../../../exception/app_message.dart';
 
 class AuthMockRepository extends AuthRepository {

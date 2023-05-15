@@ -223,7 +223,7 @@ class PromotionBottomSheet extends StatelessWidget {
                                     context: context,
                                     builder: (context) => AppDialog(
                                       message: AppMessage(
-                                        type: AppMessageType.info,
+                                        type: AppMessageType.notify,
                                         title: txtNotify,
                                         content:
                                             'Bạn đã đổi khuyến mãi thành công!',

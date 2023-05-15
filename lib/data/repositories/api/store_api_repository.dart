@@ -65,7 +65,7 @@ class StoreApiRepository extends StoreRepository {
   Future<ResponseModel<StoreDetailModel>> getDetail(
       {required String id}) async {
     try {
-      var res = await _dioAuth.get(
+      var res = await _dioNoAuth.get(
         ApiRouter.storeGet(id),
       );
       var raw = RawSuccessModel.fromMap(res.data);

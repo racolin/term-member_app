@@ -2,10 +2,6 @@ class Environment {
   final String _base;
   final String _url;
 
-  // final String _baseImage;
-  String? accessToken;
-  String? refreshToken;
-
   Environment._({
     required String base,
     required String url,

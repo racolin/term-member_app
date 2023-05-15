@@ -242,15 +242,18 @@ class _RegisterFormState extends State<RegisterForm> {
             ),
           ],
         ),
-        SpecialInputWidget(changeDate: (time) {
-          setState(() {
-            _dob = time;
-          });
-        }, selectGender: (gender) {
-          setState(() {
-            _gender = gender;
-          });
-        }),
+        SpecialInputWidget(
+          changeDate: (time) {
+            setState(() {
+              _dob = time;
+            });
+          },
+          selectGender: (gender) {
+            setState(() {
+              _gender = gender;
+            });
+          },
+        ),
         const SizedBox(
           height: dimXS,
         ),

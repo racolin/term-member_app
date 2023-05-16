@@ -264,24 +264,12 @@ class _ProfilePageState extends State<ProfilePage> {
                     ),
                     height: 48,
                     child: const Icon(
-                      Icons.keyboard_double_arrow_left_outlined,
+                      Icons.keyboard_double_arrow_right_outlined,
                       color: Colors.white,
                       size: fontLG,
                     ),
                   ),
                 ),
-                // Positioned(
-                //   top: spaceSM,
-                //   right: 0,
-                //   child: Container(
-                //     alignment: AlignmentDirectional.centerEnd,
-                //     height: 48,
-                //     child: const Icon(
-                //       Icons.keyboard_double_arrow_left_outlined,
-                //       size: fontMD,
-                //     ),
-                //   ),
-                // ),
               ],
             ),
             const SizedBox(width: spaceMD),

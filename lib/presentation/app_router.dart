@@ -1,21 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:member_app/business_logic/cubits/history_point_cubit.dart';
+import 'package:member_app/presentation/screens/address/address_screen.dart';
 import 'package:member_app/presentation/screens/history_point_screen.dart';
 
 import '../data/repositories/api/auth_api_repository.dart';
 import '../data/repositories/api/cart_api_repository.dart';
-import '../data/repositories/api/cart_template_api_repository.dart';
 import '../data/repositories/api/member_api_repository.dart';
 import '../data/repositories/api/news_api_repository.dart';
 import '../data/repositories/api/notify_api_repository.dart';
-import '../data/repositories/api/product_api_repository.dart';
 import '../data/repositories/api/promotion_api_repository.dart';
 import '../data/repositories/api/setting_api_repository.dart';
 import '../data/repositories/api/store_api_repository.dart';
 import '../data/repositories/api/voucher_api_repository.dart';
 import 'pages/reward_screen.dart';
-import 'screens/address_screen.dart';
 import 'screens/cart_detail_screen.dart';
 import 'screens/carts_screen.dart';
 import 'screens/setting_screen.dart';
@@ -29,12 +27,10 @@ import '../business_logic/cubits/carts_cubit.dart';
 import '../business_logic/cubits/store_cubit.dart';
 import '../business_logic/repositories/auth_repository.dart';
 import '../business_logic/repositories/cart_repository.dart';
-import '../business_logic/repositories/cart_template_repository.dart';
 import '../business_logic/repositories/account_repository.dart';
 import '../business_logic/repositories/member_repository.dart';
 import '../business_logic/repositories/news_repository.dart';
 import '../business_logic/repositories/notify_repository.dart';
-import '../business_logic/repositories/product_repository.dart';
 import '../business_logic/repositories/promotion_repository.dart';
 import '../business_logic/repositories/setting_repository.dart';
 import '../business_logic/repositories/store_repository.dart';
@@ -49,20 +45,17 @@ import '../data/repositories/mock/promotion_mock_repository.dart';
 import '../data/repositories/mock/setting_mock_repository.dart';
 import '../data/repositories/mock/store_mock_repository.dart';
 import '../data/repositories/mock/voucher_mock_repository.dart';
+import '../data/repositories/mock/cart_mock_repository.dart';
 import '../business_logic/cubits/app_bar_cubit.dart';
 import '../business_logic/cubits/card_cubit.dart';
-import '../business_logic/cubits/cart_cubit.dart';
-import '../business_logic/cubits/cart_template_cubit.dart';
 import '../business_logic/cubits/home_cubit.dart';
 import '../business_logic/cubits/news_cubit.dart';
-import '../business_logic/cubits/product_cubit.dart';
 import '../business_logic/cubits/promotion_cubit.dart';
 import '../business_logic/cubits/voucher_cubit.dart';
-import '../data/repositories/mock/cart_mock_repository.dart';
 import '../data/repositories/storage/account_storage_repository.dart';
 import 'screens/login_screen.dart';
 import 'screens/home_screen.dart';
-import 'screens/address_select_screen.dart';
+import 'screens/address/address_search_screen.dart';
 import 'screens/notify_screen.dart';
 import 'screens/profile_screen.dart';
 
@@ -104,10 +97,6 @@ class AppRouter {
                   create: (context) => CartApiRepository(),
                   // create: (context) => CartMockRepository(),
                 ),
-                RepositoryProvider<CartTemplateRepository>(
-                  // create: (context) => CartTemplateMockRepository(),
-                  create: (context) => CartTemplateApiRepository(),
-                ),
                 RepositoryProvider<AccountRepository>(
                   create: (context) => AccountStorageRepository(),
                 ),
@@ -122,12 +111,6 @@ class AppRouter {
                 ),
                 // RepositoryProvider<NewsRepository>(
                 //   create: (context) => NewsMockRepository(),
-                // ),
-                RepositoryProvider<ProductRepository>(
-                  create: (context) => ProductApiRepository(),
-                ),
-                // RepositoryProvider<ProductRepository>(
-                //   create: (context) => ProductMockRepository(),
                 // ),
                 RepositoryProvider<PromotionRepository>(
                   create: (context) => PromotionApiRepository(),
@@ -159,13 +142,6 @@ class AppRouter {
                   BlocProvider<HomeCubit>(
                     create: (context) => HomeCubit(),
                   ),
-                  BlocProvider<CartCubit>(
-                    create: (context) => CartCubit(
-                      repository: RepositoryProvider.of<CartRepository>(
-                        context,
-                      ),
-                    ),
-                  ),
                   BlocProvider<AppBarCubit>(
                     create: (context) => AppBarCubit(
                       repository: RepositoryProvider.of<MemberRepository>(
@@ -176,13 +152,6 @@ class AppRouter {
                   BlocProvider<CardCubit>(
                     create: (context) => CardCubit(
                       repository: RepositoryProvider.of<MemberRepository>(
-                        context,
-                      ),
-                    ),
-                  ),
-                  BlocProvider<ProductCubit>(
-                    create: (context) => ProductCubit(
-                      repository: RepositoryProvider.of<ProductRepository>(
                         context,
                       ),
                     ),
@@ -207,13 +176,6 @@ class AppRouter {
                   BlocProvider<StoreCubit>(
                     create: (context) => StoreCubit(
                       repository: RepositoryProvider.of<StoreRepository>(
-                        context,
-                      ),
-                    ),
-                  ),
-                  BlocProvider<CartTemplateCubit>(
-                    create: (context) => CartTemplateCubit(
-                      repository: RepositoryProvider.of<CartTemplateRepository>(
                         context,
                       ),
                     ),
@@ -277,7 +239,7 @@ class AppRouter {
       case addressSelect:
         return MaterialPageRoute(
           builder: (context) {
-            return const AddressSelectScreen();
+            return const AddressSearchScreen();
           },
         );
       case cartDetail:

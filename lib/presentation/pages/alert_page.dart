@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import '../res/dimen/dimens.dart';
 
 enum AlertType {
-  error(Colors.orange),
+  error(Colors.red),
   warning(Colors.orange),
   empty(Colors.blue);
 
@@ -16,12 +16,16 @@ class AlertPage extends StatelessWidget {
   final Widget icon;
   final String description;
   final AlertType type;
+  // final String actionName;
+  // final VoidCallback action;
 
   const AlertPage({
     Key? key,
     required this.icon,
     required this.type,
     required this.description,
+    // required this.action,
+    // required this.actionName,
   }) : super(key: key);
 
   @override
@@ -38,11 +42,14 @@ class AlertPage extends StatelessWidget {
           Text(
             description,
             style: TextStyle(
-              color: type.textColor,
-              fontSize: fontXL,
-              fontWeight: FontWeight.w600
-            ),
-          )
+                color: type.textColor,
+                fontSize: fontXL,
+                fontWeight: FontWeight.w600),
+          ),
+          // ElevatedButton(
+          //   onPressed: action,
+          //   child: Text(actionName),
+          // ),
         ],
       ),
     );

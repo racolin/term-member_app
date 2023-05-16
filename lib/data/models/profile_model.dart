@@ -31,10 +31,9 @@ class ProfileModel {
     return ProfileModel(
       firstName: map['firstName'] ?? txtNone,
       lastName: map['lastName'] ?? txtNone,
-      dob: DateTime.tryParse(map['dob'] ?? '') ?? DateTime.now(),
-      // map['dob'] == null
-      //     ? DateTime.now()
-      //     : DateTime.fromMillisecondsSinceEpoch(map['dob']),
+      dob: map['dob'] == null
+          ? DateTime.now()
+          : DateTime.fromMillisecondsSinceEpoch(map['dob']),
       gender: map['gender'] ?? 0,
       phone: phone,
     );

@@ -66,7 +66,7 @@ class SettingApiRepository extends SettingRepository {
   Future<ResponseModel<String>> createAddress({
     required String name,
     required String address,
-    required String note,
+    String? note,
     double? lat,
     double? lng,
     required String receiver,
@@ -78,7 +78,7 @@ class SettingApiRepository extends SettingRepository {
         data: {
           'name': name,
           'address': address,
-          'note': 'note',
+          'note': note,
           'lat': lat ?? 0,
           'lng': lng ?? 0,
           'receiver': receiver,
@@ -88,7 +88,7 @@ class SettingApiRepository extends SettingRepository {
       var raw = RawSuccessModel.fromMap(res.data);
       return ResponseModel<String>(
         type: ResponseModelType.success,
-        data: raw.data,
+        data: raw.data['id'],
       );
     } on DioError catch (ex) {
       if (ex.error is AppMessage) {
@@ -131,7 +131,7 @@ class SettingApiRepository extends SettingRepository {
     required String id,
   }) async {
     try {
-      var res = await _dio.patch(
+      var res = await _dio.delete(
         ApiRouter.settingAddressDelete(id),
       );
       var raw = RawSuccessModel.fromMap(res.data);

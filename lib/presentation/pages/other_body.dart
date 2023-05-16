@@ -99,18 +99,7 @@ class OtherBody extends StatelessWidget {
                         context,
                         MaterialPageRoute(
                           builder: (ctx) {
-                            return MultiRepositoryProvider(
-                              providers: [
-                                BlocProvider<ProductCubit>.value(
-                                  value: BlocProvider.of<ProductCubit>(context),
-                                ),
-                                BlocProvider<CartTemplateCubit>.value(
-                                  value: BlocProvider.of<CartTemplateCubit>(
-                                      context),
-                                ),
-                              ],
-                              child: const CartTemplateScreen(),
-                            );
+                            return const CartTemplateScreen();
                           },
                         ),
                       );
@@ -208,7 +197,11 @@ class OtherBody extends StatelessWidget {
                   ),
                   title: txtSetting,
                   onClick: () {
-                    Navigator.pushNamed(context, AppRouter.setting);
+                    if (login) {
+                      Navigator.pushNamed(context, AppRouter.setting);
+                    } else {
+                      Navigator.pushNamed(context, AppRouter.auth);
+                    }
                   },
                 ),
                 const Padding(

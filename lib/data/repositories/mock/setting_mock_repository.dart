@@ -92,7 +92,7 @@ class SettingMockRepository extends SettingRepository {
   Future<ResponseModel<String>> createAddress({
     required String name,
     required String address,
-    required String note,
+    String? note,
     double? lat,
     double? lng,
     required String receiver,
@@ -105,7 +105,7 @@ class SettingMockRepository extends SettingRepository {
         address: address,
         lat: lat,
         lng: lng,
-        note: note,
+        note: note ?? '',
         receiver: receiver,
         phone: phone,
       ),

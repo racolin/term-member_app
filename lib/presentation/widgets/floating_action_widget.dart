@@ -228,20 +228,7 @@ class _FloatingActionWidgetState extends State<FloatingActionWidget>
           isScrollControlled: true,
           backgroundColor: Colors.transparent,
           builder: (ctx) {
-            return MultiBlocProvider(
-              providers: [
-                BlocProvider<CartCubit>.value(
-                  value: BlocProvider.of<CartCubit>(context),
-                ),
-                BlocProvider<ProductCubit>.value(
-                  value: BlocProvider.of<ProductCubit>(context),
-                ),
-                BlocProvider<CartTemplateCubit>.value(
-                  value: BlocProvider.of<CartTemplateCubit>(context),
-                ),
-              ],
-              child: const CartBottomSheet(),
-            );
+            return const CartBottomSheet();
           },
         );
       },

@@ -50,7 +50,7 @@ class AddressCubit extends Cubit<AddressState> {
   Future<AppMessage?> createAddress({
     required String name,
     required String address,
-    required String note,
+    required String? note,
     double? lat,
     double? lng,
     required String receiver,
@@ -83,9 +83,8 @@ class AddressCubit extends Cubit<AddressState> {
               AddressModel(
                 id: id,
                 name: name,
-                icon: '0xf5cf',
                 address: address,
-                note: note,
+                note: note ?? '',
                 receiver: receiver,
                 phone: phone,
               ),

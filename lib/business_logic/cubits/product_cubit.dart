@@ -7,6 +7,7 @@ import 'package:member_app/data/models/response_model.dart';
 
 import '../../business_logic/repositories/product_repository.dart';
 import '../../business_logic/states/product_state.dart';
+import '../../data/models/product_option_model.dart';
 import '../../exception/app_message.dart';
 import '../../presentation/res/strings/values.dart';
 import '../blocs/interval/interval_submit.dart';
@@ -19,6 +20,16 @@ class ProductCubit extends Cubit<ProductState>
     required ProductRepository repository,
   })  : _repository = repository,
         super(ProductInitial()) {
+    _init();
+  }
+
+  // base method: return response model, use to avoid repeat code.
+
+  // action method, change state and return AppMessage?, null when success
+
+  // get data method: return model if state is loaded, else return null
+
+  void _init() async {
     emit(ProductLoading());
     _repository.getOptions().then((resOption) {
       if (resOption.type == ResponseModelType.success) {
@@ -32,7 +43,8 @@ class ProductCubit extends Cubit<ProductState>
               _repository.getFavorites(),
             ]).then((resList) {
               var resSuggestion = (resList[0] as ResponseModel<List<String>>);
-              var resCategory = (resList[1] as ResponseModel<List<ProductCategoryModel>>);
+              var resCategory =
+              (resList[1] as ResponseModel<List<ProductCategoryModel>>);
               var resFavorite = (resList[2] as ResponseModel<List<String>>);
               List<String> suggestion = [];
               List<ProductCategoryModel> category = [];
@@ -64,29 +76,23 @@ class ProductCubit extends Cubit<ProductState>
     });
   }
 
-  // base method: return response model, use to avoid repeat code.
-
-  // action method, change state and return AppMessage?, null when success
-
-  // get data method: return model if state is loaded, else return null
-
   Future<AppMessage?> reloadData() async {
-      var resList = await _repository.gets();
-      var resListOption = await _repository.getOptions();
-      var resListType = await _repository.getCategories();
-      if (resList.type == ResponseModelType.success) {
-        var listOption = resListOption.type == ResponseModelType.success
-            ? resListOption.data
-            : null;
-        var listType = resListType.type == ResponseModelType.success
-            ? resListType.data
-            : null;
-        emit(ProductLoaded(
-          list: resList.data,
-          listOption: listOption,
-          listType: listType,
-        ));
-      } else {}
+    var resListOption = await _repository.getOptions();
+    var resList = await _repository.gets();
+    var resListType = await _repository.getCategories();
+    if (resList.type == ResponseModelType.success) {
+      var listOption = resListOption.type == ResponseModelType.success
+          ? resListOption.data
+          : null;
+      var listType = resListType.type == ResponseModelType.success
+          ? resListType.data
+          : null;
+      emit(ProductLoaded(
+        list: resList.data,
+        listOption: listOption,
+        listType: listType,
+      ));
+    } else {}
     return null;
   }
 
@@ -170,5 +176,77 @@ class ProductCubit extends Cubit<ProductState>
       return false;
     }
     return (state as ProductLoaded).checkFavorite(id);
+  }
+
+  List<ProductModel> get list {
+    if (this.state is! ProductLoaded) {
+      return [];
+    }
+    var state = this.state as ProductLoaded;
+    return state.list;
+  }
+
+  List<ProductModel> get suggestion {
+    if (this.state is! ProductLoaded) {
+      return [];
+    }
+    var state = this.state as ProductLoaded;
+    return state.suggestion;
+  }
+
+  List<ProductOptionModel> get listOption {
+    if (this.state is! ProductLoaded) {
+      return [];
+    }
+    var state = this.state as ProductLoaded;
+    return state.listOption;
+  }
+
+  List<ProductModel> getSearch(String? key) {
+    if (this.state is! ProductLoaded) {
+      return [];
+    }
+    var state = this.state as ProductLoaded;
+    return state.getSearch(key);
+  }
+
+  List<ProductModel> getProductsByCategoryId(String categoryId) {
+    if (this.state is! ProductLoaded) {
+      return [];
+    }
+    var state = this.state as ProductLoaded;
+    return state.getProductsByCategoryId(categoryId);
+  }
+
+  List<ProductModel> getFavorites() {
+    if (this.state is! ProductLoaded) {
+      return [];
+    }
+    var state = this.state as ProductLoaded;
+    return state.getFavorites();
+  }
+
+  List<String> get favorites {
+    if (this.state is! ProductLoaded) {
+      return [];
+    }
+    var state = this.state as ProductLoaded;
+    return state.favorites;
+  }
+
+  ProductModel? getProductById(String id) {
+    if (this.state is! ProductLoaded) {
+      return null;
+    }
+    var state = this.state as ProductLoaded;
+    return state.getProductById(id);
+  }
+
+  ProductOptionItemModel? getProductOptionItemById(String id) {
+    if (this.state is! ProductLoaded) {
+      return null;
+    }
+    var state = this.state as ProductLoaded;
+    return state.getProductOptionItemById(id);
   }
 }

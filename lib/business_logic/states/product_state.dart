@@ -1,4 +1,5 @@
 import 'package:flutter/foundation.dart';
+import 'package:member_app/data/models/cart_template_model.dart';
 
 import '../../data/models/product_category_model.dart';
 import '../../data/models/product_option_model.dart';
@@ -49,6 +50,24 @@ class ProductLoaded extends ProductState {
         _unavailableTypes = unavailableTypes ?? [],
         _favorites = favorites ?? [] {
     print(runtimeType);
+  }
+
+  ProductModel? getProductById(String id) {
+    int index = _list.indexWhere((e) => e.id == id);
+    if (index == -1) {
+      return null;
+    }
+    return _list[index];
+  }
+
+  ProductOptionItemModel? getProductOptionItemById(String id) {
+    for (var i in _listOption) {
+      int index = i.optionItems.indexWhere((e) => e.id == id);
+      if (index != -1) {
+        return i.optionItems[index];
+      }
+    }
+    return null;
   }
 
   List<ProductModel> get list => _list

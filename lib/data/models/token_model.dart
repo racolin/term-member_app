@@ -8,7 +8,6 @@ class TokenModel {
   final String refreshToken;
 
   factory TokenModel.fromMap(Map<String, dynamic> json) {
-    print('Token: $json');
     return TokenModel(
       accessToken: json['accessToken'] as String,
       refreshToken: json['refreshToken'] as String,

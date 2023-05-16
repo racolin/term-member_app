@@ -55,4 +55,28 @@ class AddressModel {
       phone: map['phone'] ?? txtNone,
     );
   }
+
+  AddressModel copyWith({
+    String? id,
+    String? name,
+    String? address,
+    String? note,
+    String? icon,
+    double? lat,
+    double? lng,
+    String? receiver,
+    String? phone,
+  }) {
+    return AddressModel(
+      id: id ?? this.id,
+      name: name ?? this.name,
+      address: address ?? this.address,
+      note: note ?? this.note,
+      icon: icon ?? this.icon,
+      lat: lat ?? this.lat,
+      lng: lng ?? this.lng,
+      receiver: receiver ?? this.receiver,
+      phone: phone ?? this.phone,
+    );
+  }
 }

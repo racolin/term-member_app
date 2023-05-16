@@ -254,7 +254,7 @@ class SecureStorage {
         message: AppMessage(
           type: AppMessageType.logout,
           title: txtFailureTitle,
-          content: 'Không có phiên đăng nhập> Hãy đăng nhập!',
+          content: 'Bạn chưa đăng nhập. Hãy đăng nhập!',
         ),
       );
     } on PlatformException catch (ex) {

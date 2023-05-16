@@ -467,17 +467,7 @@ class BaseActionWidget extends StatelessWidget {
                   context,
                   MaterialPageRoute(
                     builder: (ctx) {
-                      return MultiRepositoryProvider(
-                        providers: [
-                          BlocProvider<ProductCubit>.value(
-                            value: BlocProvider.of<ProductCubit>(context),
-                          ),
-                          BlocProvider<CartTemplateCubit>.value(
-                            value: BlocProvider.of<CartTemplateCubit>(context),
-                          ),
-                        ],
-                        child: const CartTemplateScreen(),
-                      );
+                      return const CartTemplateScreen();
                     },
                   ),
                 );

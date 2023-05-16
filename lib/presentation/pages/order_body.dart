@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:member_app/presentation/pages/alert_page.dart';
 
 import '../../business_logic/cubits/product_cubit.dart';
 import '../../business_logic/states/product_state.dart';
@@ -70,17 +71,12 @@ class _OrderBodyState extends State<OrderBody> {
                   if (index == 1 && widget.login) {
                     heights[index] += 307;
                   }
-                  print('length');
-                  print(listType[index].id);
-                  print(state
-                      .getProductsByCategoryId(listType[index].id).length);
                   heights[index] += 43 +
                       116 *
                           state
                               .getProductsByCategoryId(listType[index - 1].id)
                               .length;
                 }
-                print(heights);
               }
               return NotificationListener<ScrollNotification>(
                 onNotification: (notification) {

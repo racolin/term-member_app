@@ -16,7 +16,7 @@ abstract class SettingRepository {
   Future<ResponseModel<String>> createAddress({
     required String name,
     required String address,
-    required String note,
+    String? note,
     double? lat,
     double? lng,
     required String receiver,

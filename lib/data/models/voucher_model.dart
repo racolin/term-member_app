@@ -51,17 +51,14 @@ class VoucherModel {
       partner: map['partner'] ?? txtAppName,
       sliderImage: map['sliderImage'],
       from:
-      // DateTime.tryParse(map['from'] ?? '') ?? DateTime.now(),
       map['from'] == null
           ? DateTime.now()
           : DateTime.fromMillisecondsSinceEpoch(map['from']),
       to:
-      // DateTime.tryParse(map['to'] ?? '') ?? DateTime.now(),
       map['to'] == null
           ? DateTime.now()
           : DateTime.fromMillisecondsSinceEpoch(map['to']),
       usedAt:
-      // DateTime.tryParse(map['usedAt'] ?? ''),
       map['usedAt'] == null
           ? DateTime.now()
           : DateTime.fromMillisecondsSinceEpoch(map['usedAt']),

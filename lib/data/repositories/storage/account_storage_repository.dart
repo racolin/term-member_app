@@ -12,7 +12,7 @@ class AccountStorageRepository extends AccountRepository {
   @override
   Future<ResponseModel<bool>> logout() async {
     try {
-      await _storage.deleteToken();
+      await _storage.deleteAll();
       return ResponseModel<bool>(
         type: ResponseModelType.success,
         data: true,

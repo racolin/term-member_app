@@ -164,11 +164,12 @@ class AuthInterceptor extends QueuedInterceptor {
 
     if (err.response?.statusCode == 403) {
       // print('auth-error-logout');
-      await _storage.deleteToken();
+      // await _storage.deleteToken();
+      await _storage.deleteAll();
       err.error = AppMessage(
         type: AppMessageType.logout,
         title: txtLogOut,
-        content: 'Phiên đăng nhập của bạn đã bị xoá. Đăng nhập lại!',
+        content: 'Phát hiện phiên đăng nhập bất thường. Hãy đăng nhập lại!!',
       );
     }
 

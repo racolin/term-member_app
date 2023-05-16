@@ -9,6 +9,7 @@ import 'package:member_app/presentation/res/strings/values.dart';
 import 'package:member_app/presentation/widgets/address/address_field.dart';
 
 import '../../../data/models/address_model.dart';
+import '../../../supports/check.dart';
 
 class AddressDetailScreen extends StatefulWidget {
   final AddressModel? model;
@@ -39,10 +40,6 @@ class _AddressDetailScreenState extends State<AddressDetailScreen> {
     receiver = widget.model?.receiver;
     phone = widget.model?.phone;
     super.initState();
-  }
-
-  bool verifyField(String? field) {
-    return field != null && field.isNotEmpty;
   }
 
   @override

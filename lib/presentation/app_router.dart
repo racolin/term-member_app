@@ -4,6 +4,7 @@ import 'package:member_app/business_logic/cubits/history_point_cubit.dart';
 import 'package:member_app/presentation/screens/address/address_screen.dart';
 import 'package:member_app/presentation/screens/history_point_screen.dart';
 
+import '../business_logic/cubits/address_cubit.dart';
 import '../data/repositories/api/auth_api_repository.dart';
 import '../data/repositories/api/cart_api_repository.dart';
 import '../data/repositories/api/member_api_repository.dart';
@@ -66,7 +67,7 @@ class AppRouter {
   static const String setting = '/setting';
   static const String reward = '/reward';
   static const String address = '/address';
-  static const String addressSelect = '/select-address';
+  static const String addressSearch = '/select-address';
   static const String cartDetail = '/cart-detail';
   static const String carts = '/carts';
   static const String profile = '/profile';
@@ -209,21 +210,21 @@ class AppRouter {
             );
           },
         );
-        // return MaterialPageRoute(
-        //   builder: (context) {
-        //     return RepositoryProvider<AuthRepository>(
-        //       create: (context) => AuthMockRepository(),
-        //       child: BlocProvider<AuthCubit>(
-        //         create: (context) => AuthCubit(
-        //           repository: RepositoryProvider.of<AuthRepository>(
-        //             context,
-        //           ),
-        //         ),
-        //         child: const LoginScreen(),
-        //       ),
-        //     );
-        //   },
-        // );
+      // return MaterialPageRoute(
+      //   builder: (context) {
+      //     return RepositoryProvider<AuthRepository>(
+      //       create: (context) => AuthMockRepository(),
+      //       child: BlocProvider<AuthCubit>(
+      //         create: (context) => AuthCubit(
+      //           repository: RepositoryProvider.of<AuthRepository>(
+      //             context,
+      //           ),
+      //         ),
+      //         child: const LoginScreen(),
+      //       ),
+      //     );
+      //   },
+      // );
       case reward:
         return MaterialPageRoute(
           builder: (context) {
@@ -233,13 +234,29 @@ class AppRouter {
       case address:
         return MaterialPageRoute(
           builder: (context) {
-            return const AddressScreen();
+            return RepositoryProvider<SettingRepository>(
+              create: (context) => SettingApiRepository(),
+              child: BlocProvider<AddressCubit>(
+                create: (context) => AddressCubit(
+                  repository: RepositoryProvider.of<SettingRepository>(context),
+                ),
+                child: const AddressScreen(),
+              ),
+            );
           },
         );
-      case addressSelect:
+      case addressSearch:
         return MaterialPageRoute(
           builder: (context) {
-            return const AddressSearchScreen();
+            return RepositoryProvider<SettingRepository>(
+              create: (context) => SettingApiRepository(),
+              child: BlocProvider<AddressCubit>(
+                create: (context) => AddressCubit(
+                  repository: RepositoryProvider.of<SettingRepository>(context),
+                ),
+                child: const AddressSearchScreen(),
+              ),
+            );
           },
         );
       case cartDetail:
@@ -314,13 +331,13 @@ class AppRouter {
                     context,
                   ),
                 ),
-              // create: (context) => NotifyMockRepository(),
-              // child: BlocProvider<NotifyCubit>(
-              //   create: (context) => NotifyCubit(
-              //     repository: RepositoryProvider.of<NotifyRepository>(
-              //       context,
-              //     ),
-              //   ),
+                // create: (context) => NotifyMockRepository(),
+                // child: BlocProvider<NotifyCubit>(
+                //   create: (context) => NotifyCubit(
+                //     repository: RepositoryProvider.of<NotifyRepository>(
+                //       context,
+                //     ),
+                //   ),
                 child: const NotifyScreen(),
               ),
             );

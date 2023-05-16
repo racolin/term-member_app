@@ -107,7 +107,7 @@ class DeliveryOptionsWidget extends StatelessWidget {
                 var state = context.read<CartCubit>().state;
                 if (state is CartLoaded) {
                   if (state.categoryId == DeliveryType.delivery) {
-                    Navigator.pushNamed(context, AppRouter.addressSelect);
+                    Navigator.pushNamed(context, AppRouter.addressSearch);
                   } else if (state.categoryId == DeliveryType.takeOut) {
                     context.read<HomeCubit>().setBody(HomeBodyType.order);
                   } else {

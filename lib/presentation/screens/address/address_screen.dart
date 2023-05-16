@@ -38,51 +38,43 @@ class AddressScreen extends StatelessWidget {
           ),
         ),
       ),
-      body: RepositoryProvider<SettingRepository>(
-        create: (context) => SettingApiRepository(),
-        child: BlocProvider<AddressCubit>(
-          create: (context) => AddressCubit(
-            repository: RepositoryProvider.of<SettingRepository>(context),
-          ),
-          child: BlocBuilder<AddressCubit, AddressState>(
-            builder: (context, state) {
-              switch (state.runtimeType) {
-                case AddressInitial:
-                  return const SizedBox();
-                case AddressLoading:
-                  return const LoadingPage();
-                case AddressLoaded:
-                  state as AddressLoaded;
-                  return SingleChildScrollView(
-                    child: Column(
-                      children: [
-                        for (var address in state.defaultAddresses)
-                          AddressWidget(
-                            model: address,
-                            onClick: () {
-                              _toDetail(context, address, true);
-                            },
-                          ),
-                        AddressAddWidget(
-                          onClick: () {
-                            _toDetail(context, null);
-                          },
-                        ),
-                        for (var address in state.otherAddresses)
-                          AddressWidget(
-                            model: address,
-                            onClick: () {
-                              _toDetail(context, address);
-                            },
-                          ),
-                      ],
-                    ),
-                  );
-              }
+      body: BlocBuilder<AddressCubit, AddressState>(
+        builder: (context, state) {
+          switch (state.runtimeType) {
+            case AddressInitial:
               return const SizedBox();
-            },
-          ),
-        ),
+            case AddressLoading:
+              return const LoadingPage();
+            case AddressLoaded:
+              state as AddressLoaded;
+              return SingleChildScrollView(
+                child: Column(
+                  children: [
+                    for (var address in state.defaultAddresses)
+                      AddressWidget(
+                        model: address,
+                        onClick: () {
+                          _toDetail(context, address, true);
+                        },
+                      ),
+                    AddressAddWidget(
+                      onClick: () {
+                        _toDetail(context, null);
+                      },
+                    ),
+                    for (var address in state.otherAddresses)
+                      AddressWidget(
+                        model: address,
+                        onClick: () {
+                          _toDetail(context, address);
+                        },
+                      ),
+                  ],
+                ),
+              );
+          }
+          return const SizedBox();
+        },
       ),
     );
   }

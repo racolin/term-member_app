@@ -1,6 +1,7 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:member_app/presentation/res/strings/values.dart';
 
+import '../../data/models/cart_detail_model.dart';
 import '../../data/models/paging_model.dart';
 import 'package:member_app/data/models/response_model.dart';
 import '../../exception/app_message.dart';
@@ -65,6 +66,25 @@ class CartsCubit extends Cubit<CartsState> {
   // action method, change state and return AppMessage?, null when success
 
   // get data method: return model if state is loaded, else return null
+
+  void setReview(String id, int rate) {
+    if (this.state is! CartsLoaded) {
+
+    }
+
+    var state = this.state as CartsLoaded;
+    var map = state.listCarts;
+
+    for (var key in map.keys) {
+      var index = map[key]?.list.indexWhere((e) => e.id == id) ?? -1;
+      if (index != -1) {
+        CartModel item = map[key]!.list[index].copyWith(rate: rate);
+        map[key]?.list[index] = item;
+        emit(state.copyWith(listCarts: state.listCarts));
+        return;
+      }
+    }
+  }
 
   Future<AppMessage?> loadMore(String id) async {
     if (this.state is! CartsLoaded) {

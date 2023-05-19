@@ -52,4 +52,22 @@ class CartModel {
       rate: map['rate'],
     );
   }
+
+  CartModel copyWith({
+    String? id,
+    String? name,
+    DeliveryType? categoryId,
+    int? cost,
+    DateTime? time,
+    int? rate,
+  }) {
+    return CartModel(
+      id: id ?? this.id,
+      name: name ?? this.name,
+      categoryId: categoryId ?? this.categoryId,
+      cost: cost ?? this.cost,
+      time: time ?? this.time,
+      rate: rate ?? this.rate,
+    );
+  }
 }

@@ -5,7 +5,9 @@ class CartDetailModel extends CartModel {
   final String code;
   final String statusId;
   final int fee;
+  final int originalFee;
   final int payType;
+  final String status;
   final String phone;
   final String receiver;
   final String? voucherId;
@@ -28,8 +30,10 @@ class CartDetailModel extends CartModel {
     required this.code,
     required this.statusId,
     required this.fee,
+    required this.originalFee,
     required this.payType,
     required this.phone,
+    required this.status,
     required this.receiver,
     required this.voucherId,
     required this.voucherDiscount,
@@ -52,8 +56,10 @@ class CartDetailModel extends CartModel {
       'code': code,
       'statusId': statusId,
       'fee': fee,
+      'originalFee': originalFee,
       'payType': payType,
       'phone': phone,
+      'state': status,
       'receiver': receiver,
       'voucherId': voucherId,
       'voucherDiscount': voucherDiscount,
@@ -82,10 +88,12 @@ class CartDetailModel extends CartModel {
           : DateTime.now(),
       rate: map['rate'],
       code: map['code'] as String,
-      statusId: map['statusId'] ?? 'nonono',
+      statusId: map['statusId'] ?? txtUnknown,
       fee: map['fee'] as int,
+      originalFee: map['originalFee'] ?? 18000,
       payType: map['payType'] as int,
       phone: map['phone'] as String,
+      status: map['state'] as String,
       receiver: map['receiver'] as String,
       voucherId: map['voucherId'],
       voucherDiscount: map['voucherDiscount'] ?? 0,
@@ -98,6 +106,55 @@ class CartDetailModel extends CartModel {
               .toList(),
       review: review,
       point: map['point'] as int,
+    );
+  }
+
+  @override
+  CartDetailModel copyWith({
+    String? id,
+    String? name,
+    DeliveryType? categoryId,
+    int? cost,
+    DateTime? time,
+    int? rate,
+    String? code,
+    String? statusId,
+    int? fee,
+    int? originalFee,
+    int? payType,
+    String? status,
+    String? phone,
+    String? receiver,
+    String? voucherId,
+    int? voucherDiscount,
+    String? voucherName,
+    String? addressName,
+    List<CartProductModel>? products,
+    CartReviewModel? review,
+    int? point,
+  }) {
+    return CartDetailModel(
+      id: id ?? this.id,
+      categoryId: categoryId ?? this.categoryId,
+      cost: cost ?? this.cost,
+      name: name ?? this.name,
+      time: time ?? this.time,
+      rate: rate ?? this.rate,
+      code: code ?? this.code,
+      statusId: statusId ?? this.statusId,
+      fee: fee ?? this.fee,
+      originalFee: originalFee ?? this.originalFee,
+      payType: payType ?? this.payType,
+      status: status ?? this.status,
+      phone: phone ?? this.phone,
+      receiver: receiver ?? this.receiver,
+      voucherId: voucherId ?? this.voucherId,
+      voucherDiscount: voucherDiscount ?? this.voucherDiscount,
+      voucherName: voucherName ?? this.voucherName,
+      addressName: addressName ?? this.addressName,
+      products: products ?? this.products,
+      review: review ?? this.review,
+      point: point ?? this.point,
     );
   }
 }
@@ -171,7 +228,7 @@ class CartProductModel {
 
 class CartReviewModel {
   final int rate;
-  final String review;
+  final String? review;
 
   const CartReviewModel({
     required this.rate,

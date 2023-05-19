@@ -3,11 +3,14 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:member_app/data/models/cart_model.dart';
 import 'package:member_app/presentation/app_router.dart';
 import 'package:member_app/presentation/res/dimen/dimens.dart';
+import 'package:member_app/presentation/widgets/cart/cart_widget.dart';
 
-import '../../business_logic/cubits/carts_cubit.dart';
-import '../../business_logic/states/carts_state.dart';
-import '../../supports/convert.dart';
-import '../pages/alert_page.dart';
+import '../../../business_logic/cubits/cart_detail_cubit.dart';
+import '../../../business_logic/cubits/carts_cubit.dart';
+import '../../../business_logic/repositories/cart_repository.dart';
+import '../../../business_logic/states/carts_state.dart';
+import '../../pages/alert_page.dart';
+import 'cart_detail_screen.dart';
 
 class CartsScreen extends StatefulWidget {
   const CartsScreen({Key? key}) : super(key: key);
@@ -19,10 +22,12 @@ class CartsScreen extends StatefulWidget {
 class _CartsScreenState extends State<CartsScreen> {
   var selected = 0;
   final ScrollController _controller = ScrollController();
+  final listPosition = <double>[0, 0, 0];
 
   @override
   void initState() {
     _controller.addListener(() {
+      listPosition[selected] = _controller.position.pixels;
       if (_controller.position.atEdge) {
         if (_controller.position.pixels == 0) {
           // atTop
@@ -80,23 +85,29 @@ class _CartsScreenState extends State<CartsScreen> {
                           index++)
                         Container(
                           margin: const EdgeInsets.symmetric(
-                              horizontal: 4, vertical: 8),
+                            horizontal: 4,
+                            vertical: 8,
+                          ),
                           child: InkWell(
                             borderRadius: BorderRadius.circular(16),
                             onTap: () {
-                              context
-                                  .read<CartsCubit>()
-                                  .tap(state.statuses[index].id);
+                              context.read<CartsCubit>().tap(
+                                    state.statuses[index].id,
+                                  );
                               setState(() {
                                 selected = index;
                               });
+                              _controller.jumpTo(listPosition[selected]);
                             },
                             child: Container(
                               padding: const EdgeInsets.symmetric(
-                                  vertical: 8, horizontal: 16),
+                                vertical: 8,
+                                horizontal: 16,
+                              ),
                               decoration: BoxDecoration(
-                                color: Colors.orange
-                                    .withAlpha(selected == index ? 80 : 20),
+                                color: Colors.orange.withAlpha(
+                                  selected == index ? 80 : 20,
+                                ),
                                 borderRadius: BorderRadius.circular(16),
                               ),
                               child: Text(
@@ -113,6 +124,7 @@ class _CartsScreenState extends State<CartsScreen> {
                   Expanded(
                     child: _getCarts(
                       state.listCarts[state.statuses[selected].id]?.list ?? [],
+                      state.statuses[selected].id == 'done',
                     ),
                   ),
                 ],
@@ -124,7 +136,7 @@ class _CartsScreenState extends State<CartsScreen> {
     );
   }
 
-  Widget _getCarts(List<CartModel> carts) {
+  Widget _getCarts(List<CartModel> carts, bool isSuccess) {
     if (carts.isEmpty) {
       return AlertPage(
         icon: ClipRRect(
@@ -146,75 +158,45 @@ class _CartsScreenState extends State<CartsScreen> {
       );
     }
     return ListView.separated(
-      separatorBuilder: (context, index) =>
-      const Padding(
+      separatorBuilder: (context, index) => const Padding(
         padding: EdgeInsets.only(left: 16),
         child: Divider(
           height: 1,
         ),
       ),
       controller: _controller,
-      itemBuilder: (context, index) => _getCart(carts[index]),
+      itemBuilder: (context, index) => CartWidget(
+        model: carts[index],
+        onClick: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (ctx) {
+                return MultiBlocProvider(
+                  providers: [
+                    BlocProvider<CartDetailCubit>(
+                      create: (context) => CartDetailCubit(
+                        repository: RepositoryProvider.of<CartRepository>(
+                          context,
+                        ),
+                        id: carts[index].id,
+                      ),
+                    ),
+                    BlocProvider<CartsCubit>.value(
+                      value: RepositoryProvider.of<CartsCubit>(
+                        context,
+                      ),
+                    ),
+                  ],
+                  child: const CartDetailScreen(),
+                );
+              },
+            ),
+          );
+        },
+        isSuccess: isSuccess,
+      ),
       itemCount: carts.length,
-    );
-  }
-
-  Widget _getCart(CartModel cart) {
-    return ListTile(
-      contentPadding: const EdgeInsets.symmetric(
-        vertical: 4,
-        horizontal: 12,
-      ),
-      onTap: () {
-        Navigator.pushNamed(context, AppRouter.cartDetail,arguments: cart.id, );
-      },
-      leading: ClipRRect(
-        borderRadius: BorderRadius.circular(16),
-        child: Image.asset(
-          cart.categoryId.image,
-          height: 32,
-          width: 32,
-        ),
-      ),
-      title: Text(
-        cart.name,
-        style: const TextStyle(
-          fontWeight: FontWeight.w600,
-          fontSize: 14,
-        ),
-      ),
-      subtitle: Row(
-        children: [
-          Text(
-            dateToString(cart.time, 'HH:MM - dd/MM/yyyy'),
-            style: const TextStyle(fontSize: 12),
-          ),
-          const Spacer(),
-          if (cart.rate == null)
-            const Text(
-              'Chưa đánh giá',
-              style: TextStyle(fontSize: 12),
-            )
-          else ...[
-            Text(
-              cart.rate.toString(),
-              style: const TextStyle(
-                fontSize: 12,
-                color: Colors.orange,
-              ),
-            ),
-            const Icon(
-              Icons.star_rate_outlined,
-              size: 16,
-              color: Colors.orange,
-            ),
-          ],
-        ],
-      ),
-      trailing: Text(
-        numberToCurrency(cart.cost, 'đ'),
-        style: const TextStyle(fontSize: 14),
-      ),
     );
   }
 }

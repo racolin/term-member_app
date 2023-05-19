@@ -1,4 +1,5 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:member_app/data/models/cart_detail_model.dart';
 
 import 'package:member_app/data/models/response_model.dart';
 import '../../exception/app_message.dart';
@@ -33,7 +34,7 @@ class CartDetailCubit extends Cubit<CartDetailState> {
   Future<AppMessage?> review(
     String id,
     int rate,
-    String review,
+    String? review,
   ) async {
     var res = await _repository.review(
       id: id,
@@ -42,6 +43,18 @@ class CartDetailCubit extends Cubit<CartDetailState> {
     );
 
     if (res.type == ResponseModelType.success) {
+      if (state is CartDetailLoaded) {
+        emit(
+          (state as CartDetailLoaded).copyWith(
+            cart: (state as CartDetailLoaded).cart.copyWith(
+                  review: CartReviewModel(
+                    rate: rate,
+                    review: review,
+                  ),
+                ),
+          ),
+        );
+      }
       return null;
     } else {
       return res.message;

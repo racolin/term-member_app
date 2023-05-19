@@ -1,15 +1,22 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+import 'package:member_app/business_logic/cubits/cart_detail_cubit.dart';
+import 'package:member_app/presentation/dialogs/app_dialog.dart';
 import 'package:member_app/presentation/res/dimen/dimens.dart';
 
+import '../../exception/app_message.dart';
 import '../res/strings/values.dart';
 
 class CartReviewBottomSheet extends StatefulWidget {
+  final String id;
   final String type;
   final String name;
 
   const CartReviewBottomSheet({
     Key? key,
+    required this.id,
     required this.type,
     required this.name,
   }) : super(key: key);
@@ -133,13 +140,11 @@ class _CartReviewBottomSheetState extends State<CartReviewBottomSheet> {
                           switch (rate) {
                             case 0:
                               color = Colors.red;
-                              icon =
-                                  Icons.sentiment_very_dissatisfied_rounded;
+                              icon = Icons.sentiment_very_dissatisfied_rounded;
                               break;
                             case 1:
                               color = Colors.redAccent;
-                              icon =
-                                  Icons.sentiment_very_dissatisfied_rounded;
+                              icon = Icons.sentiment_very_dissatisfied_rounded;
                               break;
                             case 2:
                               color = Colors.deepOrange;
@@ -193,19 +198,71 @@ class _CartReviewBottomSheetState extends State<CartReviewBottomSheet> {
               Container(
                 color: Colors.white,
                 padding: const EdgeInsets.all(spaceMD),
-                child:
-                SizedBox(
+                child: SizedBox(
                   width: double.maxFinite,
                   height: 48,
                   child: ElevatedButton(
-                    onPressed: () {},
+                    onPressed: () async {
+                      if (rate == null) {
+                        showCupertinoDialog(
+                          context: context,
+                          builder: (context) {
+                            return AppDialog(
+                              message: AppMessage(
+                                type: AppMessageType.notify,
+                                title: txtNotifyTitle,
+                                content: 'Bạn chưa đánh giá đơn hàng!',
+                              ),
+                              actions: [
+                                CupertinoDialogAction(
+                                  child: const Text(txtConfirm),
+                                  onPressed: () {
+                                    Navigator.pop(context);
+                                  },
+                                ),
+                              ],
+                            );
+                          },
+                        );
+                      }
+                      var message =
+                          await context.read<CartDetailCubit>().review(
+                                widget.id,
+                                rate!,
+                                note,
+                              );
+                      if (mounted) {
+                        if (message == null) {
+                          Navigator.pop(
+                            context,
+                            rate,
+                          );
+                        } else {
+                          showCupertinoDialog(
+                            context: context,
+                            builder: (context) {
+                              return AppDialog(
+                                message: message,
+                                actions: [
+                                  CupertinoDialogAction(
+                                    child: const Text(txtConfirm),
+                                    onPressed: () {
+                                      Navigator.pop(context);
+                                    },
+                                  ),
+                                ],
+                              );
+                            },
+                          );
+                        }
+                      }
+                    },
                     child: Text(
                       txtSendReview,
-                      style:
-                      Theme.of(context).textTheme.titleSmall?.copyWith(
-                        fontWeight: FontWeight.w600,
-                        color: Colors.white,
-                      ),
+                      style: Theme.of(context).textTheme.titleSmall?.copyWith(
+                            fontWeight: FontWeight.w600,
+                            color: Colors.white,
+                          ),
                     ),
                   ),
                 ),

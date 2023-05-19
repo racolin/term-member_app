@@ -12,6 +12,10 @@ import '../../presentation/res/strings/values.dart';
 import '../repositories/cart_repository.dart';
 import '../states/cart_state.dart';
 
+enum CheckReorderType {
+  success, unavailable, unknown,
+}
+
 class CartCubit extends Cubit<CartState> {
   final CartRepository _repository;
   final SecureStorage _storage = SecureStorage();
@@ -224,6 +228,13 @@ class CartCubit extends Cubit<CartState> {
     }
   }
 
+  bool emptyCart() {
+    if (state is! CartLoaded) {
+      return true;
+    }
+    return (state as CartLoaded).products.isEmpty;
+  }
+
   AppMessage? setAddress(String addressName, String addressDescription) {
     if (this.state is! CartLoaded) {
       return AppMessage(
@@ -387,5 +398,9 @@ class CartCubit extends Cubit<CartState> {
       ));
       return null;
     }
+  }
+
+  Future<AppMessage?> checkReorderCart(List<CartProductModel> items, bool group) async {
+    return null;
   }
 }

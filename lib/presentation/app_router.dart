@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:member_app/business_logic/cubits/history_point_cubit.dart';
 import 'package:member_app/presentation/screens/address/address_screen.dart';
+import 'package:member_app/presentation/screens/cart_template_screen.dart';
 import 'package:member_app/presentation/screens/history_point_screen.dart';
 
 import '../business_logic/cubits/address_cubit.dart';
@@ -15,8 +16,8 @@ import '../data/repositories/api/setting_api_repository.dart';
 import '../data/repositories/api/store_api_repository.dart';
 import '../data/repositories/api/voucher_api_repository.dart';
 import 'pages/reward_screen.dart';
-import 'screens/cart_detail_screen.dart';
-import 'screens/carts_screen.dart';
+import 'screens/cart/cart_detail_screen.dart';
+import 'screens/cart/carts_screen.dart';
 import 'screens/setting_screen.dart';
 import 'screens/splash_screen.dart';
 import '../../business_logic/cubits/product_scroll_cubit.dart';
@@ -68,8 +69,8 @@ class AppRouter {
   static const String reward = '/reward';
   static const String address = '/address';
   static const String addressSearch = '/select-address';
-  static const String cartDetail = '/cart-detail';
   static const String carts = '/carts';
+  static const String cartTemplate = '/cart-temppate';
   static const String profile = '/profile';
   static const String notify = '/notify';
   static const String historyPoint = '/history_point';
@@ -231,6 +232,12 @@ class AppRouter {
             return const RewardScreen();
           },
         );
+      case cartTemplate:
+        return MaterialPageRoute(
+          builder: (context) {
+            return const CartTemplateScreen();
+          },
+        );
       case address:
         return MaterialPageRoute(
           builder: (context) {
@@ -255,23 +262,6 @@ class AppRouter {
                   repository: RepositoryProvider.of<SettingRepository>(context),
                 ),
                 child: const AddressSearchScreen(),
-              ),
-            );
-          },
-        );
-      case cartDetail:
-        return MaterialPageRoute(
-          builder: (context) {
-            return RepositoryProvider<CartRepository>(
-              create: (context) => CartApiRepository(),
-              child: BlocProvider<CartDetailCubit>(
-                create: (context) => CartDetailCubit(
-                  repository: RepositoryProvider.of<CartRepository>(
-                    context,
-                  ),
-                  id: (settings.arguments as String),
-                ),
-                child: const CartDetailScreen(),
               ),
             );
           },

@@ -1,4 +1,5 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:member_app/data/models/cart_detail_model.dart';
 
 import 'package:member_app/data/models/response_model.dart';
 import '../../business_logic/repositories/cart_template_repository.dart';
@@ -194,5 +195,9 @@ class CartTemplateCubit extends Cubit<CartTemplateState> {
     } else {
       return res.message;
     }
+  }
+
+  Future<AppMessage?> createTemplateFromCart(List<CartProductModel> items) async {
+    return null;
   }
 }

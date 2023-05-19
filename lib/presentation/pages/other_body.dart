@@ -95,14 +95,7 @@ class OtherBody extends StatelessWidget {
                   title: txtCartTemplate,
                   onClick: () {
                     if (login) {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (ctx) {
-                            return const CartTemplateScreen();
-                          },
-                        ),
-                      );
+                      Navigator.pushNamed(context, AppRouter.cartTemplate);
                     } else {
                       Navigator.pushNamed(context, AppRouter.auth);
                     }

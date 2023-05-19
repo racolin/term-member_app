@@ -463,14 +463,7 @@ class BaseActionWidget extends StatelessWidget {
             radius: 40,
             onTap: () {
               if (login) {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (ctx) {
-                      return const CartTemplateScreen();
-                    },
-                  ),
-                );
+                Navigator.pushNamed(context, AppRouter.cartTemplate);
               } else {
                 Navigator.pushNamed(context, AppRouter.auth);
               }

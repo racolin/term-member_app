@@ -13,7 +13,9 @@ import '../repositories/cart_repository.dart';
 import '../states/cart_state.dart';
 
 enum CheckReorderType {
-  success, unavailable, unknown,
+  success,
+  unavailable,
+  unknown,
 }
 
 class CartCubit extends Cubit<CartState> {
@@ -160,7 +162,9 @@ class CartCubit extends Cubit<CartState> {
     if (res.type == ResponseModelType.success) {
       var checked = res.data;
       var products = state.products.map((product) {
-        int index = checked.products.indexWhere((e) => product.id == e.id);
+        int index = checked.products.indexWhere(
+          (e) => product.id == e.id,
+        );
 
         if (index == -1) {
           return product;
@@ -400,7 +404,22 @@ class CartCubit extends Cubit<CartState> {
     }
   }
 
-  Future<AppMessage?> checkReorderCart(List<CartProductModel> items, bool group) async {
+  Future<AppMessage?> addProductToCart(List<CartProductModel> items,
+      [bool clear = true]) async {
+    if (this.state is! CartLoaded) {
+      return AppMessage(
+        type: AppMessageType.notify,
+        title: txtNotifyTitle,
+        content: 'Dữ liệu chưa được tải. Hãy thử lại!',
+      );
+    }
+    var state = this.state as CartLoaded;
+
+    if (clear) {
+      state = state.copyWith(products: []);
+      state.products.addAll(items);
+    }
+    emit(state);
     return null;
   }
 }

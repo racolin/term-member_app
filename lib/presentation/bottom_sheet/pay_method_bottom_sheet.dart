@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'pay_mothod_model.dart';
+import 'pay_method_model.dart';
 
 class PayMethodBottomSheet extends StatelessWidget {
   final PayMethod? payMethod;

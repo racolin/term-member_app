@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:member_app/business_logic/cubits/voucher_cubit.dart';
 import 'package:member_app/presentation/bottom_sheet/voucher_bottom_sheet.dart';
@@ -55,7 +56,7 @@ class _VoucherScreenState extends State<VoucherScreen> {
                     _getListTicket('Sắp hết hạn', state.getsAboutToExpire()),
                     _getListTicket('Sẵn sàng sử dụng', state.getsAvailable()),
                     _getListTicket('Từ đối tác', state.getsFromPartner()),
-                    _getListTicket('Đã sử dụng', state.used),
+                    _getListTicket('Đã sử dụng', state.used, false),
                     const SizedBox(height: dimLG),
                   ],
                 ),
@@ -67,7 +68,11 @@ class _VoucherScreenState extends State<VoucherScreen> {
     );
   }
 
-  Widget _getListTicket(String title, List<VoucherModel> vouchers) {
+  Widget _getListTicket(
+    String title,
+    List<VoucherModel> vouchers, [
+    bool notUsed = true,
+  ]) {
     if (vouchers.isEmpty) {
       return const SizedBox();
     }
@@ -97,7 +102,10 @@ class _VoucherScreenState extends State<VoucherScreen> {
                       isScrollControlled: true,
                       backgroundColor: Colors.transparent,
                       builder: (context) {
-                        return VoucherBottomSheet(voucher: voucher);
+                        return VoucherBottomSheet(
+                          voucher: voucher,
+                          notUsed: notUsed,
+                        );
                       },
                     );
                   },

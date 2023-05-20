@@ -1,4 +1,5 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:member_app/business_logic/states/cart_detail_state.dart';
 import 'package:member_app/data/models/cart_detail_model.dart';
 
 import 'package:member_app/data/models/response_model.dart';
@@ -197,7 +198,39 @@ class CartTemplateCubit extends Cubit<CartTemplateState> {
     }
   }
 
-  Future<AppMessage?> createTemplateFromCart(List<CartProductModel> items) async {
-    return null;
+  Future<AppMessage?> createTemplateFromCart(
+    String name,
+    List<CartProductModel> items,
+  ) async {
+    if (this.state is! CartTemplateLoaded) {
+      return AppMessage(
+        type: AppMessageType.notify,
+        title: txtNotifyTitle,
+        content: 'Dữ liệu chưa được tại. Hãy thử lại!',
+      );
+    }
+    var state = this.state as CartTemplateLoaded;
+    if (state.canCreate) {
+      var res = await _repository.create(
+          name: name,
+          products: items
+              .map((e) => CartTemplateProductModel(
+                    options: e.options,
+                    amount: e.amount,
+                    id: e.id,
+                  ))
+              .toList());
+      if (res.type == AppMessageType.success) {
+        return null;
+      } else {
+        return res.message;
+      }
+    } else {
+      return AppMessage(
+        type: AppMessageType.failure,
+        title: txtFailureTitle,
+        content: 'Số lượng đơn mẫu của bạn đã đạt giới hạn.',
+      );
+    }
   }
 }

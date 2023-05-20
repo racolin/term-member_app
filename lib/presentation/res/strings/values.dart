@@ -101,6 +101,8 @@ const txtSuccessTitle = 'Thành công!';
 const txtNotifyTitle = 'Thông báo!';
 const txtErrorTitle = 'Có lỗi!';
 const txtUnknownErrorTitle = 'Không xác định!';
+const txtCopyCode = 'Bạn đã copy mã thành công!';
+const txtSetVoucher = 'Áp mã thành công!';
 
 const txtUnknownHandle = 'Chưa phân tích được lỗi!';
 

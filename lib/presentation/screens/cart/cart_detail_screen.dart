@@ -6,6 +6,7 @@ import 'package:member_app/business_logic/cubits/cart_template_cubit.dart';
 import 'package:member_app/business_logic/cubits/carts_cubit.dart';
 import 'package:member_app/exception/app_message.dart';
 import 'package:member_app/presentation/app_router.dart';
+import 'package:member_app/presentation/bottom_sheet/cart_bottom_sheet.dart';
 import 'package:member_app/presentation/bottom_sheet/cart_review_bottom_sheet.dart';
 import 'package:member_app/presentation/dialogs/app_dialog.dart';
 
@@ -53,6 +54,17 @@ class _CartDetailScreenState extends State<CartDetailScreen> {
     }
   }
 
+  String getBackgroundImage(String type) {
+    if (type == 'done') {
+      return 'assets/images/done.jpeg';
+    } else if (type == 'processing') {
+      return 'assets/images/processing.png';
+    } else if (type == 'canceled') {
+      return 'assets/images/canceled.png';
+    }
+    return 'assets/images/canceled.png';
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -94,7 +106,7 @@ class _CartDetailScreenState extends State<CartDetailScreen> {
                 child: Column(
                   children: [
                     Image.asset(
-                      'assets/images/card_background_no_auth.png',
+                      getBackgroundImage(state.cart.status),
                       height: 300,
                       width: double.maxFinite,
                       fit: BoxFit.cover,
@@ -210,6 +222,7 @@ class _CartDetailScreenState extends State<CartDetailScreen> {
                 var message = await context
                     .read<CartTemplateCubit>()
                     .createTemplateFromCart(
+                      cart.name,
                       cart.products,
                     );
                 if (context.mounted) {
@@ -285,94 +298,70 @@ class _CartDetailScreenState extends State<CartDetailScreen> {
             if (cart.status != 'processing')
               ElevatedButton(
                 onPressed: () async {
-                  var group = false;
-                  var emptyCart = context.read<CartCubit>().emptyCart();
-                  if (emptyCart) {
-                  } else {}
-                  group = await showCupertinoDialog(
+                  var clear = true;
+                  clear = await showCupertinoDialog(
                     context: context,
                     builder: (context) {
                       return AppDialog(
                         message: AppMessage(
                           type: AppMessageType.notify,
                           title: txtNotifyTitle,
-                          content: 'Bạn muốn xoá đơn hiện tại để tạo '
-                              'mới hay là gộp với đơn hiện tại?',
+                          content: 'Đơn hàng hiên tại của bạn sẽ được xoá '
+                              'và sẽ được thay thế bằng đơn hàng này?',
                         ),
                         actions: [
                           CupertinoDialogAction(
-                            child: const Text('Tạo mới'),
+                            child: const Text(txtConfirm),
                             onPressed: () {
-                              Navigator.pop(context, false);
+                              Navigator.pop(context, true);
                             },
                           ),
                           CupertinoDialogAction(
-                            child: const Text('Gộp đơn'),
+                            child: const Text(txtCancel),
                             onPressed: () {
-                              Navigator.pop(context, true);
+                              Navigator.pop(context, false);
                             },
                           ),
                         ],
                       );
                     },
                   );
-                  if (context.mounted) {
-                    var message =
-                        await context.read<CartCubit>().checkReorderCart(
-                              cart.products,
-                              group,
-                            );
+                  if (clear) {
                     if (context.mounted) {
-                      if (message != null) {
-                        showCupertinoDialog(
-                          context: context,
-                          builder: (context) {
-                            return AppDialog(
-                              message: message,
-                              actions: [
-                                CupertinoDialogAction(
-                                  child: const Text(txtConfirm),
-                                  onPressed: () {
-                                    Navigator.pop(context);
-                                  },
-                                ),
-                              ],
-                            );
-                          },
-                        );
-                      } else {
-                        showCupertinoDialog(
-                          context: context,
-                          builder: (context) {
-                            return AppDialog(
-                              message: AppMessage(
-                                type: AppMessageType.success,
-                                title: txtSuccessTitle,
-                                content: 'Thêm đơn hàng mẫu thành công. '
-                                    'Bạn có muốn chuyển đến trang '
-                                    'danh sách đơn hàng mẫu không?',
-                              ),
-                              actions: [
-                                CupertinoDialogAction(
-                                  child: const Text(txtCancel),
-                                  onPressed: () {
-                                    Navigator.pop(context);
-                                  },
-                                ),
-                                CupertinoDialogAction(
-                                  child: const Text(txtConfirm),
-                                  onPressed: () {
-                                    Navigator.pop(context);
-                                    Navigator.pushNamed(
-                                      context,
-                                      AppRouter.cartTemplate,
-                                    );
-                                  },
-                                ),
-                              ],
-                            );
-                          },
-                        );
+                      //
+                      var message =
+                          await context.read<CartCubit>().addProductToCart(
+                                cart.products,
+                                clear,
+                              );
+                      if (context.mounted) {
+                        if (message != null) {
+                          showCupertinoDialog(
+                            context: context,
+                            builder: (context) {
+                              return AppDialog(
+                                message: message,
+                                actions: [
+                                  CupertinoDialogAction(
+                                    child: const Text(txtConfirm),
+                                    onPressed: () {
+                                      Navigator.pop(context);
+                                    },
+                                  ),
+                                ],
+                              );
+                            },
+                          );
+                        } else {
+                          showModalBottomSheet(
+                            context: context,
+                            isScrollControlled: true,
+                            backgroundColor: Colors.transparent,
+                            builder: (ctx) {
+                              return const CartBottomSheet();
+                            },
+                          );
+                        }
                       }
                     }
                   }
@@ -481,9 +470,11 @@ class _CartDetailScreenState extends State<CartDetailScreen> {
                 : _getInfoItem(
                     'Trạng thái thanh toán',
                     'Chưa thanh toán',
-                    const Icon(
+                    Icon(
                       Icons.info_rounded,
-                      color: Colors.red,
+                      color: cart.status == 'processing'
+                          ? Colors.orange
+                          : Colors.red,
                       size: fontLG,
                     ),
                   ),

@@ -1,5 +1,11 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:member_app/business_logic/cubits/cart_cubit.dart';
+import 'package:member_app/exception/app_message.dart';
+import 'package:member_app/presentation/dialogs/app_dialog.dart';
 import 'package:member_app/supports/extension.dart';
 
 import '../../presentation/res/dimen/dimens.dart';
@@ -10,10 +16,12 @@ import '../clippers/vertical_ticket_clipper.dart';
 
 class VoucherBottomSheet extends StatelessWidget {
   final VoucherModel voucher;
+  final bool notUsed;
 
   const VoucherBottomSheet({
     Key? key,
     required this.voucher,
+    this.notUsed = true,
   }) : super(key: key);
 
   @override
@@ -77,30 +85,69 @@ class VoucherBottomSheet extends StatelessWidget {
                         ),
                       ),
                       const SizedBox(height: spaceLG),
-                      _getQRCode(voucher.code),
+                      _getQRCode(context, voucher.code),
                       const SizedBox(height: spaceMD),
-                      ElevatedButton(
-                        onPressed: () {
-                          Navigator.pop(context, true);
-                        },
-                        style: ButtonStyle(
-                          shape: MaterialStateProperty.all(
-                            RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(spaceMD),
+                      if (notUsed)
+                        ElevatedButton(
+                          onPressed: () async {
+                            var message = await context
+                                .read<CartCubit>()
+                                .checkAndSetVoucher(
+                                  voucher,
+                                );
+                            if (context.mounted) {
+                              if (message == null) {
+                                Navigator.pop(context);
+                                showCupertinoDialog(
+                                  context: context,
+                                  builder: (context) {
+                                    return AppDialog(
+                                      message: AppMessage(
+                                        type: AppMessageType.success,
+                                        title: txtSuccessTitle,
+                                        content: txtSetVoucher,
+                                      ),
+                                    );
+                                  },
+                                );
+                              } else {
+                                showCupertinoDialog(
+                                  context: context,
+                                  builder: (context) {
+                                    return AppDialog(
+                                      message: message,
+                                      actions: [
+                                        CupertinoDialogAction(
+                                          child: const Text(txtConfirm),
+                                          onPressed: () {
+                                            Navigator.pop(context);
+                                          },
+                                        ),
+                                      ],
+                                    );
+                                  },
+                                );
+                              }
+                            }
+                          },
+                          style: ButtonStyle(
+                            shape: MaterialStateProperty.all(
+                              RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(spaceMD),
+                              ),
+                            ),
+                            backgroundColor: MaterialStateProperty.all(
+                              Colors.black,
                             ),
                           ),
-                          backgroundColor: MaterialStateProperty.all(
-                            Colors.black,
+                          child: const Text(
+                            txtOrderStarted,
+                            style: TextStyle(
+                              fontWeight: FontWeight.w700,
+                              color: Colors.white,
+                            ),
                           ),
                         ),
-                        child: const Text(
-                          txtOrderStarted,
-                          style: TextStyle(
-                            fontWeight: FontWeight.w700,
-                            color: Colors.white,
-                          ),
-                        ),
-                      ),
                       _getExpire(),
                       Padding(
                         padding: const EdgeInsets.symmetric(
@@ -146,7 +193,7 @@ class VoucherBottomSheet extends StatelessWidget {
     );
   }
 
-  Widget _getQRCode(String code) {
+  Widget _getQRCode(BuildContext context, String code) {
     return Column(
       children: [
         SvgPicture.string(
@@ -167,7 +214,16 @@ class VoucherBottomSheet extends StatelessWidget {
           height: spaceXXS,
         ),
         TextButton.icon(
-          onPressed: () {},
+          onPressed: () {
+            Clipboard.setData(ClipboardData(text: code));
+            Navigator.pop(context);
+            ScaffoldMessenger.of(context).clearSnackBars();
+            ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(
+                content: Text(txtCopyCode),
+              ),
+            );
+          },
           icon: const Icon(
             Icons.copy,
             color: Colors.orange,

@@ -15,18 +15,15 @@ class PromotionLoading extends PromotionState {}
 class PromotionLoaded extends PromotionState {
   final List<PromotionModel> promotions;
   final List<PromotionCategoryModel> categories;
-  final int threshold;
 
   PromotionLoaded({
     required this.promotions,
     required this.categories,
-    this.threshold = 0,
   });
 
   PromotionLoaded copyWith({
     List<PromotionModel>? promotions,
     List<PromotionCategoryModel>? categories,
-    int? threshold,
   }) {
     return PromotionLoaded(
       promotions: promotions ?? this.promotions,

@@ -368,7 +368,25 @@ class CartCubit extends Cubit<CartState> {
     return null;
   }
 
-  Future<AppMessage?> setCategory(int categoryId, int fee) async {
+  AppMessage? setFee(int fee) {
+    if (this.state is! CartLoaded) {
+      return AppMessage(
+        type: AppMessageType.failure,
+        title: txtFailureTitle,
+        content: txtToFast,
+      );
+    }
+
+    var state = this.state as CartLoaded;
+
+    emit(state.copyWith(
+      fee: fee,
+    ));
+
+    return null;
+  }
+
+  Future<AppMessage?> setCategory(int categoryId) async {
     if (this.state is! CartLoaded) {
       return AppMessage(
         type: AppMessageType.failure,
@@ -389,7 +407,6 @@ class CartCubit extends Cubit<CartState> {
       if (res.type == ResponseModelType.success) {
         emit(state.copyWith(
           categoryId: DeliveryType.values[categoryId],
-          fee: fee,
         ));
         return null;
       } else {

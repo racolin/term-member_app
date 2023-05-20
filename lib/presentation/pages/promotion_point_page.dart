@@ -113,10 +113,12 @@ class PromotionPointPage extends StatelessWidget {
                           child: LoadingWidget(),
                         );
                       case VoucherLoaded:
+                        var list = (state as VoucherLoaded).list;
+                        list = list.length > 8 ? list.sublist(0, 8) : list;
                         return Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
-                          children: (state as VoucherLoaded)
-                              .list
+                          children: list
+                              .sublist(0)
                               .map(
                                 (e) => Column(
                                   children: [
@@ -189,10 +191,13 @@ class PromotionPointPage extends StatelessWidget {
                           child: LoadingWidget(),
                         );
                       case PromotionLoaded:
+                        var promotions = (state as PromotionLoaded).promotions;
+                        promotions = promotions.length > 8
+                            ? promotions.sublist(0, 8)
+                            : promotions;
                         return Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
-                          children: (state as PromotionLoaded)
-                              .promotions
+                          children: promotions
                               .map(
                                 (e) => Column(
                                   mainAxisSize: MainAxisSize.min,

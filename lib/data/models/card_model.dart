@@ -14,6 +14,7 @@ class CardModel {
   final String? backgroundImage;
   final String description;
   final int color;
+  final int fee;
 
   const CardModel({
     required this.id,
@@ -28,6 +29,7 @@ class CardModel {
     this.backgroundImage,
     required this.description,
     required this.color,
+    required this.fee,
   });
 
   Map<String, dynamic> toMap() {
@@ -44,6 +46,7 @@ class CardModel {
       'backgroundImage': backgroundImage,
       'description': description,
       'color': color,
+      'fee': fee,
     };
   }
 
@@ -61,6 +64,7 @@ class CardModel {
       backgroundImage: map['backgroundImage'],
       description: map['description'] ?? txtDefault,
       color: map['color'] ?? colorDefault,
+      fee: map['fee'] ?? 0,
     );
   }
 }

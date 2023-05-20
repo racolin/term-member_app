@@ -50,7 +50,7 @@ class PromotionSmallWidget extends StatelessWidget {
           leading: ClipRRect(
             borderRadius: BorderRadius.circular(spaceXS),
             child: AppImageWidget(
-              image: promotion.partnerImage,
+              image: promotion.backgroundImage,
               assetsDefaultImage: assetDefaultImage,
               height: dimXL,
               width: dimMD,

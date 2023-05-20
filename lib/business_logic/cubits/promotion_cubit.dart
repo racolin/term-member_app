@@ -42,7 +42,6 @@ class PromotionCubit extends Cubit<PromotionState> {
           emit(PromotionLoaded(
             categories: list,
             promotions: const [],
-            threshold: 0,
           ));
         }
       } else {
@@ -86,7 +85,6 @@ class PromotionCubit extends Cubit<PromotionState> {
         emit(PromotionLoaded(
           categories: list,
           promotions: const [],
-          threshold: 0,
         ));
       }
       return null;

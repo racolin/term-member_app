@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:member_app/business_logic/cubits/cart_cubit.dart';
 import 'package:member_app/data/models/store_detail_model.dart';
 import 'package:member_app/presentation/res/strings/values.dart';
 import 'package:member_app/presentation/widgets/app_image_widget.dart';
@@ -80,7 +82,7 @@ class StoreBottomSheet extends StatelessWidget {
                       _getInformation(),
                       _getLinksInformation(),
                       _getMap(),
-                      _getButton(),
+                      _getButton(context),
                       const SizedBox(
                         height: 36,
                       ),
@@ -267,7 +269,7 @@ class StoreBottomSheet extends StatelessWidget {
     );
   }
 
-  Widget _getButton() {
+  Widget _getButton(BuildContext context) {
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
       width: double.maxFinite,
@@ -285,7 +287,10 @@ class StoreBottomSheet extends StatelessWidget {
               ),
             ),
           ),
-          onPressed: () {},
+          onPressed: () {
+            context.read<CartCubit>().setStore(store, detail);
+            context.read<CartCubit>().setCategory(1);
+          },
           child: Column(
             children: const [
               Text(
@@ -297,7 +302,7 @@ class StoreBottomSheet extends StatelessWidget {
                 ),
               ),
               Text(
-                'Tự đến lấy tại của hàng này',
+                'Tự đến lấy tại cửa hàng này',
                 style: TextStyle(
                   fontSize: 12,
                   color: Colors.white,

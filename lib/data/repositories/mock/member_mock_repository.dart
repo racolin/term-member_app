@@ -34,6 +34,7 @@ class MemberMockRepository extends MemberRepository {
     return ResponseModel<CardModel>(
       type: ResponseModelType.success,
       data: const CardModel(
+        fee: 18000,
         id: 'CARD-01',
         code: 'UMT19110475',
         name: 'Tín Phan',

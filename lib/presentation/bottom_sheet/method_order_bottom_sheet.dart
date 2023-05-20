@@ -58,16 +58,17 @@ class MethodOrderBottomSheet extends StatelessWidget {
               ),
             ],
           ),
-          const Divider(
-            height: 1,
-          ),
+          const Divider(height: 1),
           for (var method in [
             DeliveryType.delivery,
             DeliveryType.takeOut,
           ])
             Container(
-              color:
-                  type == method ? Colors.orange.withAlpha(30) : Colors.white,
+              color: type == method
+                  ? Colors.orange.withAlpha(
+                      30,
+                    )
+                  : Colors.white,
               padding: const EdgeInsets.symmetric(vertical: 4),
               child: ListTile(
                 leading: CircleAvatar(

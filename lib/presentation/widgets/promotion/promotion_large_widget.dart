@@ -50,7 +50,7 @@ class PromotionLargeWidget extends StatelessWidget {
                   top: Radius.circular(spaceXS),
                 ),
                 child: AppImageWidget(
-                  image: promotion.partnerImage,
+                  image: promotion.backgroundImage,
                   height: size,
                   width: size,
                 ),

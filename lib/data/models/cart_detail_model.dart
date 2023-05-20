@@ -59,7 +59,7 @@ class CartDetailModel extends CartModel {
       'originalFee': originalFee,
       'payType': payType,
       'phone': phone,
-      'state': status,
+      'status': status,
       'receiver': receiver,
       'voucherId': voucherId,
       'voucherDiscount': voucherDiscount,
@@ -93,7 +93,7 @@ class CartDetailModel extends CartModel {
       originalFee: map['originalFee'] ?? 18000,
       payType: map['payType'] as int,
       phone: map['phone'] as String,
-      status: map['state'] as String,
+      status: map['status'] as String,
       receiver: map['receiver'] as String,
       voucherId: map['voucherId'],
       voucherDiscount: map['voucherDiscount'] ?? 0,
@@ -201,7 +201,9 @@ class CartProductModel {
       id: map['id']!,
       name: map['name'] ?? txtUnknown,
       cost: map['cost'] ?? 0,
-      options: map['options'] ?? [],
+      options: (map['options'] is List)
+          ? (map['options'] as List).map<String>((e) => e as String).toList()
+          : <String>[],
       amount: map['amount'] ?? 0,
       note: map['note'] ?? txtNone,
     );

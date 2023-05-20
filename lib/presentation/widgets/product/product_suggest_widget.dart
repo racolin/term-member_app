@@ -19,6 +19,9 @@ class ProductSuggestWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    int costOptions = context.read<ProductCubit>().getCostDefaultOptions(
+      product.optionIds,
+    ) ?? 0;
     return Container(
       padding: const EdgeInsets.all(spaceXS),
       width: dimXXL * 1.2,
@@ -62,7 +65,7 @@ class ProductSuggestWidget extends StatelessWidget {
             const SizedBox(
               height: fontSM,
             ),
-            Text(numberToCurrency(product.cost, 'đ')),
+            Text(numberToCurrency(product.cost + costOptions, 'đ')),
             SizedBox(
               width: double.maxFinite,
               child: TextButton(

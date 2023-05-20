@@ -21,6 +21,9 @@ class ProductWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    int costOptions = context.read<ProductCubit>().getCostDefaultOptions(
+          model.optionIds,
+        ) ?? 0;
     return InkWell(
       borderRadius: BorderRadius.circular(spaceXS),
       overlayColor: MaterialStateProperty.all(
@@ -81,7 +84,7 @@ class ProductWidget extends StatelessWidget {
                           height: spaceXXS,
                         ),
                         Text(
-                          numberToCurrency(model.cost, 'đ'),
+                          numberToCurrency(model.cost + costOptions, 'đ'),
                           style: const TextStyle(fontSize: fontMD),
                         ),
                       ],

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:member_app/business_logic/repositories/store_repository.dart';
+import 'package:member_app/data/models/address_model.dart';
 import 'package:member_app/presentation/app_router.dart';
 
 import '../../business_logic/blocs/interval/interval_bloc.dart';
@@ -96,7 +97,11 @@ class MethodOrderBottomSheet extends StatelessWidget {
                       return;
                     }
                     if (method == DeliveryType.delivery) {
-                      Navigator.pushNamed(context, AppRouter.addressSearch);
+                      Navigator.pushNamed(context, AppRouter.addressSearch).then((value) {
+                        if (value == null || value is! AddressModel) {
+
+                        }
+                      });
                     } else if (method == DeliveryType.takeOut) {
                       Navigator.push(
                         context,

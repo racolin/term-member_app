@@ -249,4 +249,24 @@ class ProductCubit extends Cubit<ProductState>
     var state = this.state as ProductLoaded;
     return state.getProductOptionItemById(id);
   }
+
+  int? getCostDefaultOptions(List<String> options) {
+    if (this.state is! ProductLoaded) {
+      return null;
+    }
+    var state = this.state as ProductLoaded;
+    int result = 0;
+    for (var id in options) {
+      var model = state.getProductOptionById(id);
+      if (model != null) {
+        for (var itemDefault in model.defaultSelect) {
+          var index = model.optionItems.indexWhere((e) => e.id == itemDefault);
+          if (index != -1) {
+            result += model.optionItems[index].cost;
+          }
+        }
+      }
+    }
+      return result;
+  }
 }

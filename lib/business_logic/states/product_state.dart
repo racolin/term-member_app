@@ -70,6 +70,14 @@ class ProductLoaded extends ProductState {
     return null;
   }
 
+  ProductOptionModel? getProductOptionById(String id) {
+    int index = listOption.indexWhere((e) => e.id == id);
+    if (index != -1) {
+      return listOption[index];
+    }
+    return null;
+  }
+
   List<ProductModel> get list => _list
       .where(
         (e) => !_unavailable.contains(e.id),
@@ -77,7 +85,7 @@ class ProductLoaded extends ProductState {
       .toList();
 
   List<ProductModel> get suggestion {
-   return _list.where((e) => _suggestion.contains(e.id)).toList();
+    return _list.where((e) => _suggestion.contains(e.id)).toList();
   }
 
   List<ProductOptionModel> get listOption => _listOption
@@ -119,7 +127,9 @@ class ProductLoaded extends ProductState {
   List<ProductModel> getFavorites() {
     print(_favorites.length);
     print('sasa');
-    for (var element in _list) { print(element.id);}
+    for (var element in _list) {
+      print(element.id);
+    }
     return _list.where((e) => _favorites.contains(e.id)).toList();
   }
 

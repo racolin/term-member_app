@@ -81,9 +81,11 @@ class CartTemplateApiRepository extends CartTemplateRepository {
         },
       );
       var raw = RawSuccessModel.fromMap(res.data);
+      print(raw.data['id']);
+      print('raw.data[id]');
       return ResponseModel<String>(
         type: ResponseModelType.success,
-        data: raw.data,
+        data: raw.data['id'],
       );
     } on DioError catch (ex) {
       if (ex.error is AppMessage) {
@@ -126,7 +128,7 @@ class CartTemplateApiRepository extends CartTemplateRepository {
     required String id,
   }) async {
     try {
-      var res = await _dio.post(
+      var res = await _dio.delete(
         ApiRouter.cartTemplateDelete(id),
       );
       var raw = RawSuccessModel.fromMap(res.data);

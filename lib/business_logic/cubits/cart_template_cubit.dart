@@ -1,5 +1,4 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:member_app/business_logic/states/cart_detail_state.dart';
 import 'package:member_app/data/models/cart_detail_model.dart';
 
 import 'package:member_app/data/models/response_model.dart';
@@ -48,6 +47,24 @@ class CartTemplateCubit extends Cubit<CartTemplateState> {
     } else {
       return res.message;
     }
+  }
+
+  AppMessage? add(CartTemplateModel model) {
+    if (this.state is! CartTemplateLoaded) {
+      return AppMessage(
+        type: AppMessageType.failure,
+        title: txtFailureTitle,
+        content: txtToFast,
+      );
+    }
+    var state = this.state as CartTemplateLoaded;
+
+    var list = state.list;
+    list.add(model);
+
+    emit(state.copyWith(list: list));
+
+    return null;
   }
 
   Future<AppMessage?> editTemplate(
@@ -122,6 +139,8 @@ class CartTemplateCubit extends Cubit<CartTemplateState> {
       emit(state.copyWith(
         list: list,
       ));
+      print('sdasdasd');
+      print(list.length);
       return null;
     } else {
       return res.message;
@@ -164,6 +183,13 @@ class CartTemplateCubit extends Cubit<CartTemplateState> {
     }
   }
 
+  int get length {
+    if (state is! CartTemplateLoaded) {
+      return 0;
+    }
+    return (state as CartTemplateLoaded).list.length;
+  }
+
   Future<AppMessage?> arrangeCart(List<String> ids) async {
     if (this.state is! CartTemplateLoaded) {
       return AppMessage(
@@ -198,15 +224,18 @@ class CartTemplateCubit extends Cubit<CartTemplateState> {
     }
   }
 
-  Future<AppMessage?> createTemplateFromCart(
+  Future<ResponseModel<String>> createTemplateFromCart(
     String name,
     List<CartProductModel> items,
   ) async {
     if (this.state is! CartTemplateLoaded) {
-      return AppMessage(
-        type: AppMessageType.notify,
-        title: txtNotifyTitle,
-        content: 'Dữ liệu chưa được tại. Hãy thử lại!',
+      return ResponseModel<String>(
+        type: ResponseModelType.failure,
+        message: AppMessage(
+          type: AppMessageType.notify,
+          title: txtNotifyTitle,
+          content: 'Dữ liệu chưa được tại. Hãy thử lại!',
+        ),
       );
     }
     var state = this.state as CartTemplateLoaded;
@@ -220,16 +249,15 @@ class CartTemplateCubit extends Cubit<CartTemplateState> {
                     id: e.id,
                   ))
               .toList());
-      if (res.type == AppMessageType.success) {
-        return null;
-      } else {
-        return res.message;
-      }
+      return res;
     } else {
-      return AppMessage(
-        type: AppMessageType.failure,
-        title: txtFailureTitle,
-        content: 'Số lượng đơn mẫu của bạn đã đạt giới hạn.',
+      return ResponseModel<String>(
+        type: ResponseModelType.failure,
+        message: AppMessage(
+          type: AppMessageType.failure,
+          title: txtFailureTitle,
+          content: 'Số lượng đơn mẫu của bạn đã đạt giới hạn.',
+        ),
       );
     }
   }

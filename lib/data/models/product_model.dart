@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:member_app/presentation/res/strings/values.dart';
 
 class ProductModel {

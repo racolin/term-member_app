@@ -67,6 +67,54 @@ class AppBarCubit extends Cubit<AppBarState> {
     }
   }
 
+  void addTemplateCart(int n) {
+    if (state is! AppBarLoaded) {
+      return;
+    }
+
+    var ab = (state as AppBarLoaded).appBar;
+    var am = ab.cartTemplateAmount + n;
+    emit(
+      AppBarLoaded(
+        appBar: ab.copyWith(
+          cartTemplateAmount: am < 0 ? 0 : am,
+        ),
+      ),
+    );
+  }
+
+  void addVoucher(int n) {
+    if (state is! AppBarLoaded) {
+      return;
+    }
+
+    var v = (state as AppBarLoaded).appBar;
+
+    emit(
+      AppBarLoaded(
+        appBar: v.copyWith(
+          voucherAmount: v.voucherAmount + n,
+        ),
+      ),
+    );
+  }
+
+  void addNotify(int n) {
+    if (state is! AppBarLoaded) {
+      return;
+    }
+
+    var ntf = (state as AppBarLoaded).appBar;
+
+    emit(
+      AppBarLoaded(
+        appBar: ntf.copyWith(
+          notifyAmount: ntf.notifyAmount + n,
+        ),
+      ),
+    );
+  }
+
   // get data method: return model if state is loaded, else return null
 
   AppBarModel? get appBar {

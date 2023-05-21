@@ -102,9 +102,6 @@ class AppRouter {
                 RepositoryProvider<AccountRepository>(
                   create: (context) => AccountStorageRepository(),
                 ),
-                RepositoryProvider<MemberRepository>(
-                  create: (context) => MemberApiRepository(),
-                ),
                 // RepositoryProvider<MemberRepository>(
                 //   create: (context) => MemberMockRepository(),
                 // ),
@@ -143,13 +140,6 @@ class AppRouter {
                 providers: [
                   BlocProvider<HomeCubit>(
                     create: (context) => HomeCubit(),
-                  ),
-                  BlocProvider<AppBarCubit>(
-                    create: (context) => AppBarCubit(
-                      repository: RepositoryProvider.of<MemberRepository>(
-                        context,
-                      ),
-                    ),
                   ),
                   BlocProvider<CardCubit>(
                     create: (context) => CardCubit(
@@ -336,16 +326,13 @@ class AppRouter {
       case historyPoint:
         return MaterialPageRoute(
           builder: (context) {
-            return RepositoryProvider<MemberRepository>(
-              create: (context) => MemberApiRepository(),
-              child: BlocProvider<HistoryPointCubit>(
-                create: (context) => HistoryPointCubit(
-                  repository: RepositoryProvider.of<MemberRepository>(
-                    context,
-                  ),
+            return BlocProvider<HistoryPointCubit>(
+              create: (context) => HistoryPointCubit(
+                repository: RepositoryProvider.of<MemberRepository>(
+                  context,
                 ),
-                child: const HistoryPointScreen(),
               ),
+              child: const HistoryPointScreen(),
             );
           },
         );

@@ -108,6 +108,9 @@ const txtUnknownHandle = 'Chưa phân tích được lỗi!';
 
 const txtToFast = 'Thao tác quá nhanh, hãy đợi và thử lại!';
 
+const txtDeleteTemplate = 'Bạn đã xoá đơn hàng mẫu thành công!';
+const txtArrangeTemplate = 'Sắp xếp đơn hàng mẫu thành công!';
+
 
 // assets
 const assetDefaultIcon = 'assets/images/icon_default.png';

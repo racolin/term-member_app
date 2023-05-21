@@ -1,5 +1,7 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:member_app/presentation/dialogs/app_dialog.dart';
 import 'package:member_app/presentation/pages/initial_page.dart';
 import 'package:member_app/presentation/pages/loading_page.dart';
 import 'package:member_app/presentation/res/strings/values.dart';
@@ -36,7 +38,40 @@ class _CartTemplateScreenState extends State<CartTemplateScreen> {
         actions: [
           IconButton(
             splashRadius: spaceXL,
-            onPressed: () {},
+            onPressed: () async {
+              var message = await context.read<CartTemplateCubit>().arrangeCart(
+                    list.map((e) => e.id).toList(),
+                  );
+              if (mounted) {
+                if (message == null) {
+                  ScaffoldMessenger.of(context).clearSnackBars();
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(
+                      content: Text(
+                        txtArrangeTemplate,
+                      ),
+                    ),
+                  );
+                } else {
+                  showCupertinoDialog(
+                    context: context,
+                    builder: (context) {
+                      return AppDialog(
+                        message: message,
+                        actions: [
+                          CupertinoDialogAction(
+                            child: const Text(txtConfirm),
+                            onPressed: () {
+                              Navigator.pop(context);
+                            },
+                          ),
+                        ],
+                      );
+                    },
+                  );
+                }
+              }
+            },
             icon: const Icon(Icons.checklist_outlined),
           ),
         ],
@@ -60,7 +95,11 @@ class _CartTemplateScreenState extends State<CartTemplateScreen> {
               if (list.isEmpty) {
                 list = [...state.list];
               }
+              if (list.length != state.list.length) {
+                list = state.list;
+              }
               return ReorderableListView.builder(
+                padding: const EdgeInsets.only(bottom: dimMD),
                 itemBuilder: (context, index) {
                   return CartTemplateWidget(
                     key: ValueKey(list[index].id),

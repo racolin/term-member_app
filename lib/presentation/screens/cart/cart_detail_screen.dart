@@ -1,9 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:member_app/business_logic/cubits/app_bar_cubit.dart';
 import 'package:member_app/business_logic/cubits/cart_cubit.dart';
 import 'package:member_app/business_logic/cubits/cart_template_cubit.dart';
 import 'package:member_app/business_logic/cubits/carts_cubit.dart';
+import 'package:member_app/data/models/cart_template_model.dart';
 import 'package:member_app/exception/app_message.dart';
 import 'package:member_app/presentation/app_router.dart';
 import 'package:member_app/presentation/bottom_sheet/cart_bottom_sheet.dart';
@@ -18,6 +20,7 @@ import 'package:member_app/presentation/widgets/cart/cart_total_widget.dart';
 import '../../../business_logic/cubits/cart_detail_cubit.dart';
 import '../../../business_logic/states/cart_detail_state.dart';
 import '../../../data/models/cart_detail_model.dart';
+import '../../../data/models/response_model.dart';
 import '../../widgets/cart/cart_product_widget.dart';
 
 class CartDetailScreen extends StatefulWidget {
@@ -219,31 +222,30 @@ class _CartDetailScreenState extends State<CartDetailScreen> {
             const SizedBox(width: spaceXS),
             ElevatedButton(
               onPressed: () async {
-                var message = await context
+                var res = await context
                     .read<CartTemplateCubit>()
                     .createTemplateFromCart(
                       cart.name,
                       cart.products,
                     );
                 if (context.mounted) {
-                  if (message != null) {
-                    showCupertinoDialog(
-                      context: context,
-                      builder: (context) {
-                        return AppDialog(
-                          message: message,
-                          actions: [
-                            CupertinoDialogAction(
-                              child: const Text(txtConfirm),
-                              onPressed: () {
-                                Navigator.pop(context);
-                              },
-                            ),
-                          ],
+                  if (res.type == ResponseModelType.success) {
+                    // context.read<AppBarCubit>().reloadAppBar();
+                    context.read<AppBarCubit>().addTemplateCart(1);
+                    context.read<CartTemplateCubit>().add(
+                          CartTemplateModel(
+                            id: res.data,
+                            name: cart.name,
+                            index: context.read<CartTemplateCubit>().length,
+                            products: cart.products
+                                .map((e) => CartTemplateProductModel(
+                                      options: e.options,
+                                      amount: e.amount,
+                                      id: e.id,
+                                    ))
+                                .toList(),
+                          ),
                         );
-                      },
-                    );
-                  } else {
                     showCupertinoDialog(
                       context: context,
                       builder: (context) {
@@ -270,6 +272,23 @@ class _CartDetailScreenState extends State<CartDetailScreen> {
                                   context,
                                   AppRouter.cartTemplate,
                                 );
+                              },
+                            ),
+                          ],
+                        );
+                      },
+                    );
+                  } else {
+                    showCupertinoDialog(
+                      context: context,
+                      builder: (context) {
+                        return AppDialog(
+                          message: res.message,
+                          actions: [
+                            CupertinoDialogAction(
+                              child: const Text(txtConfirm),
+                              onPressed: () {
+                                Navigator.pop(context);
                               },
                             ),
                           ],

@@ -1,7 +1,10 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:member_app/presentation/widgets/cart_template_widget.dart';
+import 'package:member_app/business_logic/cubits/app_bar_cubit.dart';
+import 'package:member_app/business_logic/cubits/cart_template_cubit.dart';
+import 'package:member_app/presentation/dialogs/app_dialog.dart';
 import 'package:member_app/supports/extension.dart';
 
 import '../../business_logic/blocs/interval/interval_bloc.dart';
@@ -45,12 +48,48 @@ class CartTemplateBottomSheet extends StatelessWidget {
                         width: spaceSM,
                       ),
                       GestureDetector(
-                        onTap: () {
-                          Navigator.pop(context);
+                        onTap: () async {
+                          var message = await context
+                              .read<CartTemplateCubit>()
+                              .deleteCart(
+                                model.id,
+                              );
+                          if (context.mounted) {
+                            if (message == null) {
+                              Navigator.pop(context);
+                              ScaffoldMessenger.of(context).clearSnackBars();
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                const SnackBar(
+                                  content: Text(txtDeleteTemplate),
+                                ),
+                              );
+                              context.read<AppBarCubit>().addTemplateCart(-1);
+                            } else {
+                              showCupertinoDialog(
+                                context: context,
+                                builder: (context) {
+                                  return AppDialog(
+                                    message: message,
+                                    actions: [
+                                      CupertinoDialogAction(
+                                        child: const Text(txtConfirm),
+                                        onPressed: () {
+                                          Navigator.pop(context);
+                                        },
+                                      ),
+                                    ],
+                                  );
+                                },
+                              );
+                            }
+                          }
                         },
                         child: const Text(
                           'Xoá',
-                          style: TextStyle(fontSize: 14),
+                          style: TextStyle(
+                            fontSize: 14,
+                            fontWeight: FontWeight.w500,
+                          ),
                         ),
                       ),
                       Expanded(
@@ -90,11 +129,13 @@ class CartTemplateBottomSheet extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
+                    const SizedBox(height: spaceMD),
                     Center(
                       child: SvgPicture.string(
                         model.getCode().qrCode(240, 240),
                       ),
                     ),
+                    const SizedBox(height: spaceMD),
                     const SizedBox(height: spaceSM),
                     const Divider(height: 1),
                     Expanded(

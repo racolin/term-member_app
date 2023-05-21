@@ -44,7 +44,7 @@ class ProductCubit extends Cubit<ProductState>
             ]).then((resList) {
               var resSuggestion = (resList[0] as ResponseModel<List<String>>);
               var resCategory =
-              (resList[1] as ResponseModel<List<ProductCategoryModel>>);
+                  (resList[1] as ResponseModel<List<ProductCategoryModel>>);
               var resFavorite = (resList[2] as ResponseModel<List<String>>);
               List<String> suggestion = [];
               List<ProductCategoryModel> category = [];
@@ -267,6 +267,21 @@ class ProductCubit extends Cubit<ProductState>
         }
       }
     }
-      return result;
+    return result;
+  }
+
+  int? getCostOptionsItem(List<String> items) {
+    if (this.state is! ProductLoaded) {
+      return null;
+    }
+    var state = this.state as ProductLoaded;
+    int result = 0;
+    for (var id in items) {
+      var model = state.getProductOptionItemById(id);
+      if (model != null) {
+        result += model.cost;
+      }
+    }
+    return result;
   }
 }

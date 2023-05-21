@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:member_app/business_logic/cubits/app_bar_cubit.dart';
+import 'package:member_app/business_logic/repositories/member_repository.dart';
 
 import '../business_logic/cubits/internet_cubit.dart';
 import 'business_logic/cubits/cart_cubit.dart';
@@ -10,6 +12,7 @@ import 'business_logic/repositories/cart_template_repository.dart';
 import 'business_logic/repositories/product_repository.dart';
 import 'data/repositories/api/cart_api_repository.dart';
 import 'data/repositories/api/cart_template_api_repository.dart';
+import 'data/repositories/api/member_api_repository.dart';
 import 'data/repositories/api/product_api_repository.dart';
 import 'presentation/app_router.dart';
 
@@ -32,6 +35,9 @@ class MyApp extends StatelessWidget {
         ),
         RepositoryProvider<CartTemplateRepository>(
           create: (context) => CartTemplateApiRepository(),
+        ),
+        RepositoryProvider<MemberRepository>(
+          create: (context) => MemberApiRepository(),
         ),
       ],
       child: MultiBlocProvider(
@@ -58,6 +64,13 @@ class MyApp extends StatelessWidget {
             lazy: false,
             create: (context) => CartCubit(
               repository: RepositoryProvider.of<CartRepository>(
+                context,
+              ),
+            ),
+          ),
+          BlocProvider<AppBarCubit>(
+            create: (context) => AppBarCubit(
+              repository: RepositoryProvider.of<MemberRepository>(
                 context,
               ),
             ),

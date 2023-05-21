@@ -1,3 +1,5 @@
+import 'package:member_app/data/models/cart_detail_model.dart';
+
 class CartTemplateModel {
   final String id;
   final String name;

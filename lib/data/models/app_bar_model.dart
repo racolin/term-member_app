@@ -34,4 +34,20 @@ class AppBarModel {
       notifyAmount: map['notifyAmount'] ?? 0,
     );
   }
+
+  AppBarModel copyWith({
+    String? image,
+    String? greeting,
+    int? cartTemplateAmount,
+    int? voucherAmount,
+    int? notifyAmount,
+  }) {
+    return AppBarModel(
+      image: image ?? this.image,
+      greeting: greeting ?? this.greeting,
+      cartTemplateAmount: cartTemplateAmount ?? this.cartTemplateAmount,
+      voucherAmount: voucherAmount ?? this.voucherAmount,
+      notifyAmount: notifyAmount ?? this.notifyAmount,
+    );
+  }
 }

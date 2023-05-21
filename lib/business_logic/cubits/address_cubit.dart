@@ -78,8 +78,7 @@ class AddressCubit extends Cubit<AddressState> {
       var id = res.data;
       var state = this.state as AddressLoaded;
       emit(state.copyWith(
-        otherAddresses: state.otherAddresses +
-            [
+        otherAddresses: [
               AddressModel(
                 id: id,
                 name: name,
@@ -88,7 +87,8 @@ class AddressCubit extends Cubit<AddressState> {
                 receiver: receiver,
                 phone: phone,
               ),
-            ],
+            ] +
+            state.otherAddresses,
       ));
       return null;
     } else {

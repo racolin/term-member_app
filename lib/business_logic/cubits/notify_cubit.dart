@@ -39,7 +39,7 @@ class NotifyCubit extends Cubit<NotifyState> {
   }
 
   Future<AppMessage?> check(String id) async {
-    var res = await _repository.checkNotify(id: id);
+    var res = await _repository.check(id: id);
     if (res.type == ResponseModelType.success) {
       if (res.data) {
         var list = (state as NotifyLoaded).list;
@@ -48,6 +48,27 @@ class NotifyCubit extends Cubit<NotifyState> {
           emit(NotifyLoaded(list: list));
           return null;
         }
+      }
+      return null;
+    } else {
+      return res.message;
+    }
+  }
+
+  Future<AppMessage?> checkAll() async {
+    var res = await _repository.checkAll();
+    if (res.type == ResponseModelType.success) {
+      if (res.data) {
+        var list = (state as NotifyLoaded)
+            .list
+            .map(
+              (e) => e.copyWith(
+                checked: true,
+              ),
+            )
+            .toList();
+        emit(NotifyLoaded(list: list));
+        return null;
       }
       return null;
     } else {

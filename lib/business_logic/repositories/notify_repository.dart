@@ -4,7 +4,9 @@ import '../../data/models/response_model.dart';
 abstract class NotifyRepository {
   Future<ResponseModel<List<NotifyModel>>> gets();
 
-  Future<ResponseModel<bool>> checkNotify({
+  Future<ResponseModel<bool>> check({
     required String id,
   });
+
+  Future<ResponseModel<bool>> checkAll();
 }

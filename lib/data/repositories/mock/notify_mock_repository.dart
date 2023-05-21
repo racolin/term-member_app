@@ -35,7 +35,7 @@ class NotifyMockRepository extends NotifyRepository {
   ];
 
   @override
-  Future<ResponseModel<bool>> checkNotify({required String id}) async {
+  Future<ResponseModel<bool>> check({required String id}) async {
     int index = _list.indexWhere((e) => e.id == id && e.checked == false);
     if (index > -1) {
       _list[index] = _list[index].copyWith(checked: true);
@@ -68,5 +68,11 @@ class NotifyMockRepository extends NotifyRepository {
         content: 'Gặp sự cố khi lấy dan sách thông báo',
       ),
     );
+  }
+
+  @override
+  Future<ResponseModel<bool>> checkAll() {
+    // TODO: implement checkAll
+    throw UnimplementedError();
   }
 }

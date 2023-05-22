@@ -219,8 +219,8 @@ class CardWidget extends StatelessWidget {
               child: SliderRank(
                 preRankName: card.currentRankName,
                 nextRankName: card.nextRankName,
-                maxProgress: card.nextRankPoint,
-                progress: card.point,
+                nextPoint: card.nextRankPoint - card.currentRankPoint,
+                progress: card.point - card.currentRankPoint,
                 color: Color(card.color),
               ),
             ),
@@ -266,7 +266,7 @@ class CardWidget extends StatelessWidget {
             height: spaceXS,
           ),
           Text(
-            '${card != null ? card.point : '0'} $txtPointName '
+            '${card != null ? card.currentPoint : '0'} $txtPointName '
             '- ${card != null ? card.currentRankName : ''}',
             style: const TextStyle(
               color: Colors.white,
@@ -283,7 +283,7 @@ class CardWidget extends StatelessWidget {
 class SliderRank extends StatelessWidget {
   final String preRankName;
   final String nextRankName;
-  final int maxProgress;
+  final int nextPoint;
   final int progress;
   final Color color;
 
@@ -291,7 +291,7 @@ class SliderRank extends StatelessWidget {
     Key? key,
     required this.preRankName,
     required this.nextRankName,
-    required this.maxProgress,
+    required this.nextPoint,
     required this.progress,
     required this.color,
   }) : super(key: key);
@@ -321,7 +321,7 @@ class SliderRank extends StatelessWidget {
             ),
             Container(
               margin: EdgeInsets.only(
-                left: widthSlider * (progress.toDouble() / maxProgress),
+                left: widthSlider * (progress.toDouble() / nextPoint),
               ),
               height: spaceLG,
               width: spaceLG,

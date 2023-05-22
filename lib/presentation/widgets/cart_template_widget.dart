@@ -212,16 +212,3 @@ class _CartTemplateWidgetState extends State<CartTemplateWidget> {
     );
   }
 }
-
-class CartTemplateProductUIModel extends CartTemplateProductModel {
-  final String name;
-  final List<String> optionsName;
-
-  CartTemplateProductUIModel({
-    required super.id,
-    required super.amount,
-    required super.options,
-    required this.name,
-    required this.optionsName,
-  });
-}

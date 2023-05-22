@@ -10,10 +10,14 @@ import '../app_image_widget.dart';
 
 class ProductWidget extends StatelessWidget {
   final ProductModel model;
+  final VoidCallback? shortClick;
+  final bool isTemplate;
 
   const ProductWidget({
     Key? key,
     required this.model,
+    this.isTemplate = false,
+    this.shortClick,
   }) : super(key: key);
 
   final double height = 100;
@@ -39,7 +43,7 @@ class ProductWidget extends StatelessWidget {
           builder: (ctx) {
             return BlocProvider<ProductCubit>.value(
               value: BlocProvider.of<ProductCubit>(context),
-              child: ProductBottomSheet(product: model),
+              child: ProductBottomSheet(product: model, isTemplate: isTemplate),
             );
           },
         );
@@ -94,7 +98,7 @@ class ProductWidget extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.end,
                       children: [
                         IconButton(
-                          onPressed: () {},
+                          onPressed: shortClick,
                           splashRadius: spaceXL,
                           icon: const Icon(
                             Icons.add_circle_sharp,

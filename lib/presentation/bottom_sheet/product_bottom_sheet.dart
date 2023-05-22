@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:member_app/business_logic/cubits/product_cubit.dart';
 import 'package:member_app/business_logic/states/product_state.dart';
-import 'package:member_app/exception/app_message.dart';
 import 'package:member_app/presentation/dialogs/app_dialog.dart';
 
 import '../../data/models/product_option_model.dart';
@@ -14,10 +13,12 @@ import '../widgets/slide/slide_images_widget.dart';
 
 class ProductBottomSheet extends StatefulWidget {
   final ProductModel product;
+  final bool isTemplate;
 
   const ProductBottomSheet({
     Key? key,
     required this.product,
+    this.isTemplate = false,
   }) : super(key: key);
 
   @override
@@ -272,7 +273,7 @@ class _ProductBottomSheetState extends State<ProductBottomSheet> {
                       child: SizedBox(
                         width: 232,
                         child: Directionality(
-                          textDirection: TextDirection.rtl,
+                          textDirection: TextDirection.ltr,
                           child: ElevatedButton.icon(
                             icon: const Icon(
                               Icons.add_shopping_cart_outlined,
@@ -288,9 +289,16 @@ class _ProductBottomSheetState extends State<ProductBottomSheet> {
                                 ),
                               ),
                             ),
-                            onPressed: () {},
+                            onPressed: () {
+                              if (widget.isTemplate) {
+
+                              } else {
+
+                              }
+                            },
                             label: Text(
-                              numberToCurrency(amount * selected.cost, 'đ'),
+                              numberToCurrency(amount * selected.cost, 'đ') +
+                                  (widget.isTemplate ? ' (thêm mẫu)' : ''),
                               style: const TextStyle(
                                 color: Colors.white,
                                 fontSize: 16,
@@ -500,7 +508,11 @@ class _ProductBottomSheetState extends State<ProductBottomSheet> {
                         ),
                       ),
                       Text(
-                          numberToCurrency(model.optionItems[index].cost, 'đ')),
+                        numberToCurrency(
+                          model.optionItems[index].cost,
+                          'đ',
+                        ),
+                      ),
                       const SizedBox(
                         width: 8,
                       ),

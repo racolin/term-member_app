@@ -16,11 +16,13 @@ import '../widgets/product/product_widget.dart';
 class ProductSearchScreen extends StatefulWidget {
   final Function(ProductModel) onClick;
   final bool withFloatingButton;
+  final bool isTemplate;
 
   const ProductSearchScreen({
     Key? key,
     required this.onClick,
     this.withFloatingButton = true,
+    this.isTemplate = false,
   }) : super(key: key);
 
   @override
@@ -57,7 +59,7 @@ class _ProductSearchScreenState extends State<ProductSearchScreen> {
           }
           return Column(
             children: [
-              _getSearchAddress(context),
+              _getSearchBar(context),
               Expanded(
                 child: NotificationListener<ScrollNotification>(
                   onNotification: (notification) {
@@ -80,17 +82,20 @@ class _ProductSearchScreenState extends State<ProductSearchScreen> {
                     children: [
                       Expanded(
                         child: ListView.builder(
-                          padding: const EdgeInsets.only(top: spaceXXS),
+                          padding: const EdgeInsets.only(
+                              top: spaceXXS, bottom: dimMD),
                           itemBuilder: (context, index) {
                             return Padding(
                               padding: const EdgeInsets.all(spaceXS),
-                              child: ProductWidget(model: list[index]),
+                              child: ProductWidget(
+                                model: list[index],
+                                isTemplate: widget.isTemplate,
+                              ),
                             );
                           },
                           itemCount: list.length,
                         ),
                       ),
-                      const SizedBox(height: dimXXL),
                     ],
                   ),
                 ),
@@ -126,8 +131,7 @@ class _ProductSearchScreenState extends State<ProductSearchScreen> {
                                           top: Radius.circular(16),
                                         ),
                                       ),
-                                      builder: (ctx) =>
-                                          MethodOrderBottomSheet(
+                                      builder: (ctx) => MethodOrderBottomSheet(
                                         type: cartState.categoryId,
                                         addressName: cartState.addressName,
                                         login: context.read<HomeCubit>().login,
@@ -147,7 +151,7 @@ class _ProductSearchScreenState extends State<ProductSearchScreen> {
     );
   }
 
-  Widget _getSearchAddress(BuildContext context) {
+  Widget _getSearchBar(BuildContext context) {
     return Container(
       color: Colors.white,
       margin: const EdgeInsets.only(top: dimMD),

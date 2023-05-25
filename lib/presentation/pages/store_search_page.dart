@@ -5,8 +5,8 @@ import '../../business_logic/blocs/interval/interval_bloc.dart';
 import '../../presentation/res/dimen/dimens.dart';
 import '../../data/models/store_model.dart';
 import '../res/strings/values.dart';
+import '../widgets/store/store_item_widget.dart';
 import 'store_body.dart';
-import '../widgets/store/stores_widget.dart';
 
 class StoreSearchPage extends StatefulWidget {
   final Function(StoreModel) onClick;
@@ -21,7 +21,6 @@ class StoreSearchPage extends StatefulWidget {
 }
 
 class _StoreSearchPageState extends State<StoreSearchPage> {
-  // var searchKey = '';
 
   @override
   void initState() {
@@ -45,9 +44,13 @@ class _StoreSearchPageState extends State<StoreSearchPage> {
                   if (state is IntervalLoaded<StoreModel>) {
                     list = state.list;
                   }
-                  return StoresWidget(
-                    list: list,
-                    onClickItem: widget.onClick,
+                  return ListView.builder(
+                    itemBuilder: (context, index) => StoreItemWidget(
+                      store: list[index],
+                      onClick: widget.onClick,
+                    ),
+                    padding: const EdgeInsets.only(bottom: dimLG),
+                    itemCount: list.length,
                   );
                 },
               ),

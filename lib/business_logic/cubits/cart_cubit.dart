@@ -35,6 +35,9 @@ class CartCubit extends Cubit<CartState> {
     });
 
     /// Thiếu bước lưu cart local khi login thì nạp lại
+    ///
+    ///
+
   }
 
   Future<ResponseModel<bool>> saveCartLoaded() async {
@@ -216,6 +219,9 @@ class CartCubit extends Cubit<CartState> {
     }
 
     var state = this.state as CartLoaded;
+
+    print(addressName);
+    print(addressDescription);
 
     emit(state.copyWith(
       addressDescription: addressDescription,

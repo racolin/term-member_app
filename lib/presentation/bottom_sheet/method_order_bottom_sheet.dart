@@ -1,8 +1,12 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:member_app/business_logic/cubits/cart_cubit.dart';
 import 'package:member_app/business_logic/repositories/store_repository.dart';
 import 'package:member_app/data/models/address_model.dart';
+import 'package:member_app/exception/app_message.dart';
 import 'package:member_app/presentation/app_router.dart';
+import 'package:member_app/presentation/dialogs/app_dialog.dart';
 
 import '../../business_logic/blocs/interval/interval_bloc.dart';
 import '../../business_logic/cubits/store_cubit.dart';
@@ -10,6 +14,7 @@ import '../../data/models/store_model.dart';
 import '../../data/repositories/api/store_api_repository.dart';
 import '../../presentation/res/strings/values.dart';
 import '../../data/models/cart_model.dart';
+import '../../supports/convert.dart';
 import '../pages/store_search_page.dart';
 
 class MethodOrderBottomSheet extends StatelessWidget {
@@ -97,10 +102,39 @@ class MethodOrderBottomSheet extends StatelessWidget {
                       return;
                     }
                     if (method == DeliveryType.delivery) {
-                      Navigator.pushNamed(context, AppRouter.addressSearch).then((value) {
+                      Navigator.pushNamed(
+                        context,
+                        AppRouter.addressSearch,
+                      ).then((value) {
                         if (value == null || value is! AddressModel) {
-
+                          showCupertinoDialog(
+                            context: context,
+                            builder: (context) {
+                              return AppDialog(
+                                message: AppMessage(
+                                  type: AppMessageType.failure,
+                                  title: txtFailureTitle,
+                                  content: 'Không có địa chỉ nào được trả về.',
+                                ),
+                                actions: [
+                                  CupertinoDialogAction(
+                                    child: const Text(txtConfirm),
+                                    onPressed: () {
+                                      Navigator.pop(context);
+                                    },
+                                  ),
+                                ],
+                              );
+                            },
+                          );
                         }
+                        var address = value as AddressModel;
+                        context.read<CartCubit>().setCategory(2);
+                        context.read<CartCubit>().setAddress(
+                              address.address,
+                              '${address.receiver} ${address.name}',
+                            );
+                        Navigator.pop(context);
                       });
                     } else if (method == DeliveryType.takeOut) {
                       Navigator.push(
@@ -124,7 +158,13 @@ class MethodOrderBottomSheet extends StatelessWidget {
                                 ),
                               ],
                               child: StoreSearchPage(
-                                onClick: (StoreModel store) {
+                                onClick: (StoreModel store) async {
+                                  context.read<CartCubit>().setCategory(1);
+                                  context.read<CartCubit>().setAddress(
+                                        store.address,
+                                        meterToString(store.distance),
+                                      );
+                                  Navigator.pop(ctx);
                                   Navigator.pop(ctx);
                                 },
                               ),

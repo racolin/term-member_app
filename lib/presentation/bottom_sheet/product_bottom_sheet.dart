@@ -5,6 +5,10 @@ import 'package:member_app/business_logic/cubits/product_cubit.dart';
 import 'package:member_app/business_logic/states/product_state.dart';
 import 'package:member_app/presentation/dialogs/app_dialog.dart';
 
+import '../../business_logic/cubits/cart_cubit.dart';
+import '../../business_logic/cubits/cart_template_cubit.dart';
+import '../../data/models/cart_detail_model.dart';
+import '../../data/models/cart_template_model.dart';
 import '../../data/models/product_option_model.dart';
 import '../../data/models/product_model.dart';
 import '../../supports/convert.dart';
@@ -47,7 +51,7 @@ class _Selected {
                   ),
               },
             ),
-        } {}
+        };
 
   int get cost {
     return defaultCost +
@@ -111,6 +115,18 @@ class _Selected {
           0,
           (pre, e) => pre + (e.value ? 1 : 0),
         );
+  }
+
+  List<String> getOptionsId() {
+    var list = <String>[];
+    for (var i in selected.values) {
+      for (var j in i.value.keys) {
+        if (i.value[j]?.value ?? false) {
+          list.add(j);
+        }
+      }
+    }
+    return list;
   }
 }
 
@@ -223,11 +239,12 @@ class _ProductBottomSheetState extends State<ProductBottomSheet> {
                         ),
                         _getInformation(isFavorite),
                         _getOptions(selected),
-                        _getMoreRequire(
-                          'Yêu cầu khác',
-                          'Nhập những yêu cầu bạn muốn',
-                          'Thêm ghi chú',
-                        ),
+                        if (!widget.isTemplate)
+                          _getMoreRequire(
+                            'Yêu cầu khác',
+                            'Nhập những yêu cầu bạn muốn',
+                            'Thêm ghi chú',
+                          ),
                         const SizedBox(height: 100),
                       ],
                     ),
@@ -289,11 +306,100 @@ class _ProductBottomSheetState extends State<ProductBottomSheet> {
                                 ),
                               ),
                             ),
-                            onPressed: () {
+                            onPressed: () async {
+                              // var options = <String>[];
+
+                              // for (var o in widget.product.optionIds) {
+                              //   var item = context
+                              //       .read<ProductCubit>()
+                              //       .getProductOptionById(o);
+                              //   if (item != null) {
+                              //     options.addAll(item.defaultSelect);
+                              //   }
+                              // }
+
                               if (widget.isTemplate) {
-
+                                var message = context
+                                    .read<CartTemplateCubit>()
+                                    .addItemSelected(
+                                      CartTemplateProductModel(
+                                        id: widget.product.id,
+                                        amount: amount,
+                                        options: selected.getOptionsId(),
+                                        // options: options,
+                                      ),
+                                    );
+                                if (message != null) {
+                                  showCupertinoDialog(
+                                    context: context,
+                                    builder: (context) {
+                                      return AppDialog(
+                                        message: message,
+                                        actions: [
+                                          CupertinoDialogAction(
+                                            child: const Text(txtConfirm),
+                                            onPressed: () {
+                                              Navigator.pop(context);
+                                            },
+                                          ),
+                                        ],
+                                      );
+                                    },
+                                  );
+                                } else {
+                                  Navigator.pop(context);
+                                  ScaffoldMessenger.of(context)
+                                      .clearSnackBars();
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    const SnackBar(
+                                      content: Text(
+                                        'Thêm sản phẩm vào đơn hàng mẫu thành công',
+                                      ),
+                                    ),
+                                  );
+                                }
                               } else {
-
+                                var message =
+                                    context.read<CartCubit>().addProductToCart(
+                                          CartProductModel(
+                                            id: widget.product.id,
+                                            name: widget.product.name,
+                                            cost: widget.product.cost,
+                                            // options: options,
+                                            options: selected.getOptionsId(),
+                                            amount: 1,
+                                            note: '',
+                                          ),
+                                        );
+                                if (message != null) {
+                                  showCupertinoDialog(
+                                    context: context,
+                                    builder: (context) {
+                                      return AppDialog(
+                                        message: message,
+                                        actions: [
+                                          CupertinoDialogAction(
+                                            child: const Text(txtConfirm),
+                                            onPressed: () {
+                                              Navigator.pop(context);
+                                            },
+                                          ),
+                                        ],
+                                      );
+                                    },
+                                  );
+                                } else {
+                                  Navigator.pop(context);
+                                  ScaffoldMessenger.of(context)
+                                      .clearSnackBars();
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    const SnackBar(
+                                      content: Text(
+                                        'Thêm sản phẩm vào đơn hàng thành công',
+                                      ),
+                                    ),
+                                  );
+                                }
                               }
                             },
                             label: Text(

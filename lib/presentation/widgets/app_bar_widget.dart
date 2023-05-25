@@ -215,10 +215,7 @@ class _AppBarWidget extends StatelessWidget {
                                         ),
                                       ),
                                     ],
-                                    child:
-                                        ProductSearchScreen(onClick: (model) {
-                                      Navigator.pop(context);
-                                    }),
+                                    child: const ProductSearchScreen(),
                                   );
                                 },
                               ),
@@ -271,37 +268,33 @@ class _AppBarWidget extends StatelessWidget {
                               //   (message) {
                               //     Navigator.pop(context);
                               //     if (message == null) {
-                                    Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                        builder: (ctx) {
-                                          return MultiRepositoryProvider(
-                                            providers: [
-                                              BlocProvider<ProductCubit>.value(
-                                                value: BlocProvider.of<
-                                                    ProductCubit>(
-                                                  context,
-                                                ),
-                                              ),
-                                              BlocProvider<HomeCubit>.value(
-                                                value:
-                                                    BlocProvider.of<HomeCubit>(
-                                                  context,
-                                                ),
-                                              ),
-                                              BlocProvider<CartCubit>.value(
-                                                value:
-                                                    BlocProvider.of<CartCubit>(
-                                                  context,
-                                                ),
-                                              ),
-                                            ],
-                                            child:
-                                                const ProductFavoriteScreen(),
-                                          );
-                                        },
-                                      ),
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (ctx) {
+                                    return MultiRepositoryProvider(
+                                      providers: [
+                                        BlocProvider<ProductCubit>.value(
+                                          value: BlocProvider.of<ProductCubit>(
+                                            context,
+                                          ),
+                                        ),
+                                        BlocProvider<HomeCubit>.value(
+                                          value: BlocProvider.of<HomeCubit>(
+                                            context,
+                                          ),
+                                        ),
+                                        BlocProvider<CartCubit>.value(
+                                          value: BlocProvider.of<CartCubit>(
+                                            context,
+                                          ),
+                                        ),
+                                      ],
+                                      child: const ProductFavoriteScreen(),
                                     );
+                                  },
+                                ),
+                              );
                               //     } else {
                               //       showCupertinoDialog(
                               //         context: context,

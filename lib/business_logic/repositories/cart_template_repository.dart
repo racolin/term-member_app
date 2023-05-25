@@ -9,7 +9,7 @@ abstract class CartTemplateRepository {
     required List<CartTemplateProductModel> products,
   });
 
-  Future<ResponseModel<bool>> edit({
+  Future<ResponseModel<bool>> update({
     required String id,
     required String name,
     required List<CartTemplateProductModel> products,

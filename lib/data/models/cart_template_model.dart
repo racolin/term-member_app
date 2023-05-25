@@ -18,7 +18,7 @@ class CartTemplateModel {
       'id': id,
       'name': name,
       'index': index,
-      'products': products.map((e) => e.toMap()),
+      'products': products.map((e) => e.toMap()).toList(),
     };
   }
 

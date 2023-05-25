@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:member_app/business_logic/cubits/cart_template_cubit.dart';
 
 import '../../business_logic/blocs/interval/interval_bloc.dart';
 import '../../business_logic/cubits/cart_cubit.dart';
@@ -14,13 +15,11 @@ import '../widgets/floating_action_widget.dart';
 import '../widgets/product/product_widget.dart';
 
 class ProductSearchScreen extends StatefulWidget {
-  final Function(ProductModel) onClick;
   final bool withFloatingButton;
   final bool isTemplate;
 
   const ProductSearchScreen({
     Key? key,
-    required this.onClick,
     this.withFloatingButton = true,
     this.isTemplate = false,
   }) : super(key: key);

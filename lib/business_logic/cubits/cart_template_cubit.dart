@@ -67,7 +67,35 @@ class CartTemplateCubit extends Cubit<CartTemplateState> {
     return null;
   }
 
-  Future<AppMessage?> editTemplate(
+  AppMessage? addItemSelected(CartTemplateProductModel model) {
+    if (this.state is! CartTemplateLoaded) {
+      return AppMessage(
+        type: AppMessageType.failure,
+        title: txtFailureTitle,
+        content: txtToFast,
+      );
+    }
+
+    var state = this.state as CartTemplateLoaded;
+
+    var selected = state.selected;
+
+    if (selected == null) {
+      return AppMessage(
+        type: AppMessageType.failure,
+        title: txtFailureTitle,
+        content: 'Bạn chưa chọn đơn hàng mẫu để thêm sản phẩm.',
+      );
+    } else {
+      selected = selected.copyWith(products: selected.products + [model]);
+    }
+
+    emit(state.copyWith(selected: selected));
+
+    return null;
+  }
+
+  Future<AppMessage?> updateTemplate(
     String id,
     String name,
     List<CartTemplateProductModel> products,
@@ -82,7 +110,7 @@ class CartTemplateCubit extends Cubit<CartTemplateState> {
 
     var state = this.state as CartTemplateLoaded;
 
-    var res = await _repository.edit(
+    var res = await _repository.update(
       id: id,
       name: name,
       products: products,
@@ -139,12 +167,34 @@ class CartTemplateCubit extends Cubit<CartTemplateState> {
       emit(state.copyWith(
         list: list,
       ));
-      print('sdasdasd');
-      print(list.length);
       return null;
     } else {
       return res.message;
     }
+  }
+
+  AppMessage? deleteItemInCart(String id, String pId) {
+    if (this.state is! CartTemplateLoaded) {
+      return AppMessage(
+        type: AppMessageType.failure,
+        title: txtFailureTitle,
+        content: txtToFast,
+      );
+    }
+
+    var state = this.state as CartTemplateLoaded;
+
+    if (state.selected?.id == id) {
+      state.selected?.products.removeWhere((e) => e.id == pId);
+      emit(state);
+      return null;
+    }
+
+    return AppMessage(
+      type: AppMessageType.failure,
+      title: txtFailureTitle,
+      content: 'Không tìm thấy sản phẩm và đơn mẫu!',
+    );
   }
 
   Future<AppMessage?> createCart(
@@ -176,7 +226,7 @@ class CartTemplateCubit extends Cubit<CartTemplateState> {
           products: products,
         ),
       );
-      emit(CartTemplateLoaded(list: list));
+      emit(state.copyWith(list: list));
       return null;
     } else {
       return res.message;
@@ -184,10 +234,14 @@ class CartTemplateCubit extends Cubit<CartTemplateState> {
   }
 
   int get length {
+    return list.length;
+  }
+
+  List<CartTemplateModel> get list {
     if (state is! CartTemplateLoaded) {
-      return 0;
+      return [];
     }
-    return (state as CartTemplateLoaded).list.length;
+    return (state as CartTemplateLoaded).list;
   }
 
   Future<AppMessage?> arrangeCart(List<String> ids) async {
@@ -216,7 +270,7 @@ class CartTemplateCubit extends Cubit<CartTemplateState> {
         }
         list.add(state.list[index].copyWith(index: i));
       }
-      emit(CartTemplateLoaded(list: list));
+      emit(state.copyWith(list: list));
 
       return null;
     } else {
@@ -260,5 +314,37 @@ class CartTemplateCubit extends Cubit<CartTemplateState> {
         ),
       );
     }
+  }
+
+  AppMessage? select(String id) {
+    if (this.state is! CartTemplateLoaded) {
+      return AppMessage(
+        type: AppMessageType.failure,
+        title: txtFailureTitle,
+        content: txtToFast,
+      );
+    }
+
+    var state = this.state as CartTemplateLoaded;
+
+    int index = state.list.indexWhere((e) => id == e.id);
+
+    if (index == -1) {
+      return AppMessage(
+        type: AppMessageType.error,
+        title: txtFailureTitle,
+        content: 'Lỗi xảy ra khi đơn hàng mẫu không tồn tại. Hãy thử lại!',
+      );
+    }
+
+    emit(
+      state.copyWith(
+        selected: CartTemplateModel.fromMap(
+          state.list[index].toMap(),
+        ),
+      ),
+    );
+
+    return null;
   }
 }

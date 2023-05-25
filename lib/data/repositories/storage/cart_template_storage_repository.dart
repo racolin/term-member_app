@@ -25,7 +25,7 @@ class CartTemplateStorageRepository extends CartTemplateRepository {
   }
 
   @override
-  Future<ResponseModel<bool>> edit({
+  Future<ResponseModel<bool>> update({
     required String id,
     required String name,
     required List<CartTemplateProductModel> products,

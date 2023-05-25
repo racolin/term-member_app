@@ -16,6 +16,7 @@ import 'package:member_app/presentation/pages/loading_page.dart';
 import 'package:member_app/presentation/res/dimen/dimens.dart';
 import 'package:member_app/presentation/res/strings/values.dart';
 import 'package:member_app/presentation/widgets/cart/cart_total_widget.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../../../business_logic/cubits/cart_detail_cubit.dart';
 import '../../../business_logic/states/cart_detail_state.dart';
@@ -33,6 +34,7 @@ class CartDetailScreen extends StatefulWidget {
 }
 
 class _CartDetailScreenState extends State<CartDetailScreen> {
+
   Future<void> _showReview(
     String id,
     String type,
@@ -189,6 +191,19 @@ class _CartDetailScreenState extends State<CartDetailScreen> {
         ],
       ),
     );
+  }
+
+  @override
+  void initState() {
+    super.initState();
+  }
+
+  Future<void> _makePhoneCall(String phoneNumber) async {
+    final Uri launchUri = Uri(
+      scheme: 'tel',
+      path: phoneNumber,
+    );
+    await launchUrl(launchUri);
   }
 
   Widget _support(BuildContext context, CartDetailModel cart) {
@@ -349,7 +364,7 @@ class _CartDetailScreenState extends State<CartDetailScreen> {
                     if (context.mounted) {
                       //
                       var message =
-                          await context.read<CartCubit>().addProductToCart(
+                          await context.read<CartCubit>().addProductsToCart(
                                 cart.products,
                                 clear,
                               );

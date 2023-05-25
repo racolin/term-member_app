@@ -98,37 +98,57 @@ class _CartTemplateScreenState extends State<CartTemplateScreen> {
               if (list.length != state.list.length) {
                 list = state.list;
               }
-              return ReorderableListView.builder(
-                padding: const EdgeInsets.only(bottom: dimMD),
-                itemBuilder: (context, index) {
-                  return CartTemplateWidget(
-                    key: ValueKey(list[index].id),
-                    onClick: () {
-                      showModalBottomSheet(
-                        backgroundColor: Colors.transparent,
-                        context: context,
-                        isScrollControlled: true,
-                        builder: (ctx) => BlocProvider<ProductCubit>.value(
-                          value: BlocProvider.of<ProductCubit>(context),
-                          child: CartTemplateBottomSheet(
-                            model: list[index],
-                          ),
+              return Column(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: spaceSM),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text('Số lượng: ${state.list.length}/${state.limit}'),
+                        ElevatedButton(
+                          onPressed: () {
+                          },
+                          child: const Text('Tạo mới'),
                         ),
-                      );
-                    },
-                    cart: list[index],
-                  );
-                },
-                itemCount: list.length,
-                onReorder: (oldIndex, newIndex) {
-                  setState(() {
-                    var template = list.removeAt(oldIndex);
-                    if (newIndex > oldIndex) {
-                      newIndex--;
-                    }
-                    list.insert(newIndex, template);
-                  });
-                },
+                      ],
+                    ),
+                  ),
+                  Expanded(
+                    child: ReorderableListView.builder(
+                      padding: const EdgeInsets.only(bottom: dimMD),
+                      itemBuilder: (context, index) {
+                        return CartTemplateWidget(
+                          key: ValueKey(list[index].id),
+                          onClick: () {
+                            showModalBottomSheet(
+                              backgroundColor: Colors.transparent,
+                              context: context,
+                              isScrollControlled: true,
+                              builder: (ctx) =>
+                                  BlocProvider<ProductCubit>.value(
+                                value: BlocProvider.of<ProductCubit>(context),
+                                child:
+                                    CartTemplateBottomSheet(id: list[index].id),
+                              ),
+                            );
+                          },
+                          cart: list[index],
+                        );
+                      },
+                      itemCount: list.length,
+                      onReorder: (oldIndex, newIndex) {
+                        setState(() {
+                          var template = list.removeAt(oldIndex);
+                          if (newIndex > oldIndex) {
+                            newIndex--;
+                          }
+                          list.insert(newIndex, template);
+                        });
+                      },
+                    ),
+                  ),
+                ],
               );
           }
           return const LoadingPage();

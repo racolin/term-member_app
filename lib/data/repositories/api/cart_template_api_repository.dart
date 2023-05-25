@@ -81,8 +81,6 @@ class CartTemplateApiRepository extends CartTemplateRepository {
         },
       );
       var raw = RawSuccessModel.fromMap(res.data);
-      print(raw.data['id']);
-      print('raw.data[id]');
       return ResponseModel<String>(
         type: ResponseModelType.success,
         data: raw.data['id'],
@@ -173,14 +171,14 @@ class CartTemplateApiRepository extends CartTemplateRepository {
   }
 
   @override
-  Future<ResponseModel<bool>> edit({
+  Future<ResponseModel<bool>> update({
     required String id,
     required String name,
     required List<CartTemplateProductModel> products,
   }) async {
     try {
-      var res = await _dio.post(
-        ApiRouter.cartReview(id),
+      var res = await _dio.put(
+        ApiRouter.cartTemplatePut(id),
         data: {
           'name': name,
           'products': products

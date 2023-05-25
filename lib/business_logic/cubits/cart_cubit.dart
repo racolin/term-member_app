@@ -26,10 +26,7 @@ class CartCubit extends Cubit<CartState> {
     required CartRepository repository,
   })  : _repository = repository,
         super(CartInitial()) {
-    print('res.type222');
     _storage.getCartLoaded().then((res) {
-      print(res.type);
-      print('res.type');
       if (res.type == ResponseModelType.success) {
         emit(res.data);
       } else {
@@ -38,36 +35,6 @@ class CartCubit extends Cubit<CartState> {
     });
 
     /// Thiếu bước lưu cart local khi login thì nạp lại
-    // emit(CartLoaded(
-    //   products: [
-    //     CartProductModel(
-    //       id: 'id',
-    //       name: 'name',
-    //       cost: 25000,
-    //       options: ['OPTION-1-1'],
-    //       amount: 2,
-    //       note: 'note',
-    //     ),
-    //     CartProductModel(
-    //       id: 'id',
-    //       name: 'name',
-    //       cost: 25000,
-    //       options: ['OPTION-1-1'],
-    //       amount: 2,
-    //       note: 'note',
-    //     ),
-    //     CartProductModel(
-    //       id: 'id',
-    //       name: 'name',
-    //       cost: 25000,
-    //       options: ['OPTION-1-1'],
-    //       amount: 2,
-    //       note: 'note',
-    //     ),
-    //   ],
-    //   categoryId: DeliveryType.takeOut,
-    //   fee: 18000,
-    // ));
   }
 
   Future<ResponseModel<bool>> saveCartLoaded() async {
@@ -421,7 +388,8 @@ class CartCubit extends Cubit<CartState> {
     }
   }
 
-  Future<AppMessage?> addProductToCart(List<CartProductModel> items,
+  /// Chưa xử lý trường hợp sản phẩm không có trong store
+  Future<AppMessage?> addProductsToCart(List<CartProductModel> products,
       [bool clear = true]) async {
     if (this.state is! CartLoaded) {
       return AppMessage(
@@ -432,11 +400,49 @@ class CartCubit extends Cubit<CartState> {
     }
     var state = this.state as CartLoaded;
 
+    var unavailableProducts = state.storeDetail?.unavailableProducts ?? [];
+    var unavailableOptions = state.storeDetail?.unavailableOptions ?? [];
+
+    var available = true;
+    for (var product in products) {
+      if (available) {
+        if (!unavailableProducts.contains(product.id)) {
+          for (var option in product.options) {
+            if (unavailableOptions.contains(option)) {
+              available = false;
+            }
+          }
+        } else {
+          available = false;
+        }
+      }
+    }
+
     if (clear) {
       state = state.copyWith(products: []);
-      state.products.addAll(items);
+      state.products.addAll(products);
     }
+
+    if (!available) {
+      state = state.copyWith(
+        store: null,
+        storeDetail: null,
+      );
+      var map = state.toMap();
+      map['store'] = null;
+      map['storeDetail'] = null;
+      map['categoryId'] = null;
+      state = CartLoaded.fromMap(map);
+      return AppMessage(
+        type: AppMessageType.failure,
+        title: txtFailureTitle,
+        content: 'Đã bỏ chọn cửa hàng vì sản phẩm được thêm không nằm trong cửa hàng.',
+      );
+    }
+
     emit(state);
     return null;
   }
+
+  AppMessage? addProductToCart(CartProductModel model) {}
 }

@@ -6,6 +6,7 @@ import 'package:member_app/business_logic/cubits/product_cubit.dart';
 import 'package:member_app/data/models/cart_detail_model.dart';
 import 'package:member_app/data/models/product_model.dart';
 import 'package:member_app/exception/app_message.dart';
+import 'package:member_app/presentation/bottom_sheet/cart_bottom_sheet.dart';
 
 import '../dialogs/app_dialog.dart';
 import 'app_image_widget.dart';
@@ -33,7 +34,18 @@ class _CartTemplateWidgetState extends State<CartTemplateWidget> {
   List<int> costs = [];
 
   @override
+  void didUpdateWidget(covariant CartTemplateWidget oldWidget) {
+    updateModel(context);
+    super.didUpdateWidget(oldWidget);
+  }
+
+  @override
   void initState() {
+    updateModel(context);
+    super.initState();
+  }
+
+  void updateModel(BuildContext context) {
     products = [];
     costs = [];
     for (var e in widget.cart.products) {
@@ -47,7 +59,6 @@ class _CartTemplateWidgetState extends State<CartTemplateWidget> {
             ),
       );
     }
-    super.initState();
   }
 
   int getCostOptions(BuildContext context, List<String> options) {
@@ -161,7 +172,7 @@ class _CartTemplateWidgetState extends State<CartTemplateWidget> {
                       if (mounted) {
                         if (clear) {
                           var message =
-                              await context.read<CartCubit>().addProductToCart(
+                              await context.read<CartCubit>().addProductsToCart(
                                     widget.cart.products
                                         .map(
                                           (e) => CartProductModel.fromMap(
@@ -189,7 +200,14 @@ class _CartTemplateWidgetState extends State<CartTemplateWidget> {
                                 },
                               );
                             } else {
-
+                              showModalBottomSheet(
+                                context: context,
+                                isScrollControlled: true,
+                                backgroundColor: Colors.transparent,
+                                builder: (ctx) {
+                                  return const CartBottomSheet();
+                                },
+                              );
                             }
                           }
                         }

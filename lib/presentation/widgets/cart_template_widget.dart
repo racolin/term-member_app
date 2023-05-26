@@ -32,6 +32,7 @@ class CartTemplateWidget extends StatefulWidget {
 class _CartTemplateWidgetState extends State<CartTemplateWidget> {
   List<ProductModel?> products = [];
   List<int> costs = [];
+  List<int> amounts = [];
 
   @override
   void didUpdateWidget(covariant CartTemplateWidget oldWidget) {
@@ -48,15 +49,18 @@ class _CartTemplateWidgetState extends State<CartTemplateWidget> {
   void updateModel(BuildContext context) {
     products = [];
     costs = [];
+    amounts = [];
     for (var e in widget.cart.products) {
       var product = context.read<ProductCubit>().getProductById(e.id);
       products.add(product);
+      amounts.add(e.amount);
       costs.add(
-        (product?.cost ?? 0) +
-            getCostOptions(
-              context,
-              e.options,
-            ),
+        ((product?.cost ?? 0) +
+                getCostOptions(
+                  context,
+                  e.options,
+                )) *
+            e.amount,
       );
     }
   }
@@ -171,15 +175,26 @@ class _CartTemplateWidgetState extends State<CartTemplateWidget> {
                       );
                       if (mounted) {
                         if (clear) {
+                          List<CartProductModel> list = [];
+                          for (var e in widget.cart.products) {
+                            var p = context
+                                .read<ProductCubit>()
+                                .getProductById(e.id);
+                            if (p != null) {
+                              list.add(CartProductModel(
+                                id: e.id,
+                                name: p.name,
+                                cost: p.cost,
+                                options: e.options,
+                                amount: e.amount,
+                                note: '',
+                              ));
+                            }
+                          }
+
                           var message =
-                              await context.read<CartCubit>().addProductsToCart(
-                                    widget.cart.products
-                                        .map(
-                                          (e) => CartProductModel.fromMap(
-                                            e.toMap(),
-                                          ),
-                                        )
-                                        .toList(),
+                              context.read<CartCubit>().addProductsToCart(
+                                    list,
                                   );
                           if (mounted) {
                             if (message != null) {

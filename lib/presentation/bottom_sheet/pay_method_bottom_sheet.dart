@@ -24,7 +24,7 @@ class PayMethodBottomSheet extends StatelessWidget {
         name: 'Tiền mặt',
         type: PayMethodType.cash,
         image:
-        'https://uxwing.com/wp-content/themes/uxwing/download/banking-finance/cash-icon.png',
+        'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSxVK2Ldio3wbcompe76GCOvyURqeR96FG-Ow&usqp=CAU',
       ),
       PayMethod(
         name: 'ShopeePay',
@@ -55,11 +55,12 @@ class PayMethodBottomSheet extends StatelessWidget {
               color: Colors.grey.withAlpha(30),
               padding: const EdgeInsets.symmetric(vertical: 24, horizontal: 12),
               child: const Text(
-                'Vui lòng chọn phương thức thanh toán phù hợp cho đơn hàng của bạn.',
+                // 'Vui lòng chọn phương thức thanh toán phù hợp cho đơn hàng của bạn.',
+                'Hiện tại chúng tôi chỉ cho phép thanh toán bằng tiền mặt.',
                 style: TextStyle(fontSize: 16, color: Colors.black54),
               ),
             ),
-            _getMethods(context, methods, payMethod ?? methods[0]),
+            _getMethods(context, methods, payMethod ?? methods[2]),
             Container(
               color: Colors.grey.withAlpha(30),
               height: 48,

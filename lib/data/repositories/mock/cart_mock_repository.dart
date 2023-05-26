@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import '../../../business_logic/repositories/cart_repository.dart';
+import '../../models/cart_checked_model.dart';
 import '../../models/cart_detail_model.dart';
 import '../../models/cart_model.dart';
 import '../../../exception/app_message.dart';
@@ -9,15 +10,15 @@ import '../../models/response_model.dart';
 
 class CartMockRepository extends CartRepository {
   @override
-  Future<ResponseModel<CartDetailModel>> checkVoucher({
+  Future<ResponseModel<CartCheckedModel>> checkVoucher({
     required String? storeId,
     required String voucherId,
     required int categoryId,
     required List<CartProductModel> products,
   }) async {
-    return ResponseModel<CartDetailModel>(
+    return ResponseModel<CartCheckedModel>(
       type: ResponseModelType.success,
-      data: CartDetailModel.fromMap({
+      data: CartCheckedModel.fromMap({
         "fee": 18000,
         "cost": 100000,
         "voucherDiscount": 25000,
@@ -31,7 +32,7 @@ class CartMockRepository extends CartRepository {
             .toList(),
       }),
     );
-    return ResponseModel<CartDetailModel>(
+    return ResponseModel<CartCheckedModel>(
       type: ResponseModelType.failure,
       message: AppMessage(
         type: AppMessageType.error,

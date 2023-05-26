@@ -1,8 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:member_app/business_logic/cubits/cart_cubit.dart';
-import 'package:member_app/business_logic/cubits/cart_template_cubit.dart';
-import 'package:member_app/business_logic/cubits/product_cubit.dart';
 
 import '../../supports/convert.dart';
 import '../../presentation/res/strings/values.dart';
@@ -78,6 +74,9 @@ class _FloatingActionWidgetState extends State<FloatingActionWidget>
 
   @override
   Widget build(BuildContext context) {
+    print('widget.cost');
+    print(widget.cost);
+    print(widget.amount);
     return AnimatedBuilder(
       animation: animation,
       builder: (context, child) => Padding(

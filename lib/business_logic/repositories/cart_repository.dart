@@ -1,3 +1,4 @@
+import '../../data/models/cart_checked_model.dart';
 import '../../data/models/cart_detail_model.dart';
 import '../../data/models/cart_model.dart';
 import '../../data/models/cart_status_model.dart';
@@ -32,7 +33,7 @@ abstract class CartRepository {
     String? review,
   });
 
-  Future<ResponseModel<CartDetailModel>> checkVoucher({
+  Future<ResponseModel<CartCheckedModel>> checkVoucher({
     required String? storeId,
     required String voucherId,
     required int categoryId,

@@ -1,6 +1,8 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:member_app/data/models/cart_template_model.dart';
 import 'package:member_app/data/models/response_model.dart';
 
+import '../../data/models/cart_checked_model.dart';
 import '../../data/models/cart_model.dart';
 import '../../data/models/cart_detail_model.dart';
 import '../../data/models/store_detail_model.dart';
@@ -37,7 +39,6 @@ class CartCubit extends Cubit<CartState> {
     /// Thiếu bước lưu cart local khi login thì nạp lại
     ///
     ///
-
   }
 
   Future<ResponseModel<bool>> saveCartLoaded() async {
@@ -83,7 +84,7 @@ class CartCubit extends Cubit<CartState> {
 
   // base method: return response model, use to avoid repeat code.
 
-  Future<ResponseModel<CartDetailModel>> _checkVoucher(
+  Future<ResponseModel<CartCheckedModel>> _checkVoucher(
     String voucherId,
     int categoryId,
     List<CartProductModel> products,
@@ -146,6 +147,7 @@ class CartCubit extends Cubit<CartState> {
         voucher: voucher,
         voucherDiscount: checked.voucherDiscount,
         fee: checked.fee,
+        originalFee: checked.originalFee,
         products: products,
       ));
       return null;
@@ -395,8 +397,8 @@ class CartCubit extends Cubit<CartState> {
   }
 
   /// Chưa xử lý trường hợp sản phẩm không có trong store
-  Future<AppMessage?> addProductsToCart(List<CartProductModel> products,
-      [bool clear = true]) async {
+  AppMessage? addProductsToCart(List<CartProductModel> products,
+      [bool clear = true]) {
     if (this.state is! CartLoaded) {
       return AppMessage(
         type: AppMessageType.notify,
@@ -442,13 +444,65 @@ class CartCubit extends Cubit<CartState> {
       return AppMessage(
         type: AppMessageType.failure,
         title: txtFailureTitle,
-        content: 'Đã bỏ chọn cửa hàng vì sản phẩm được thêm không nằm trong cửa hàng.',
+        content:
+            'Đã bỏ chọn cửa hàng vì sản phẩm được thêm không nằm trong cửa hàng.',
       );
     }
 
+    print(products.map((e) => e.toMap()).toList());
+    print(state.products.map((e) => e.toMap()).toList());
     emit(state);
     return null;
   }
 
-  AppMessage? addProductToCart(CartProductModel model) {}
+  AppMessage? deleteProduct(CartProductModel model) {
+    if (this.state is! CartLoaded) {
+      return AppMessage(
+        type: AppMessageType.failure,
+        title: txtFailureTitle,
+        content: txtToFast,
+      );
+    }
+
+    var state = this.state as CartLoaded;
+
+    var check = state.products.remove(model);
+
+    if (check) {
+      emit(state.copyWith());
+      return null;
+    } else {
+      return AppMessage(
+        type: AppMessageType.failure,
+        title: txtFailureTitle,
+        content: 'Không tìm thấy sản phẩm trong đơn hàng!',
+      );
+    }
+  }
+
+  AppMessage? addProductToCart(CartProductModel model) {
+    if (this.state is! CartLoaded) {
+      return AppMessage(
+        type: AppMessageType.notify,
+        title: txtNotifyTitle,
+        content: 'Dữ liệu chưa được tải. Hãy thử lại!',
+      );
+    }
+    var state = this.state as CartLoaded;
+
+    var index = state.products.indexOf(model);
+
+    if (index == -1) {
+      emit(state.copyWith(products: state.products + [model]));
+    } else {
+      var m = state.products[index].copyWith(
+        amount: state.products[index].amount + model.amount,
+      );
+      var list = [...state.products];
+      list[index] = m;
+      emit(state.copyWith(products: list));
+    }
+
+    return null;
+  }
 }

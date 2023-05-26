@@ -367,7 +367,7 @@ class _ProductBottomSheetState extends State<ProductBottomSheet> {
                                             cost: widget.product.cost,
                                             // options: options,
                                             options: selected.getOptionsId(),
-                                            amount: 1,
+                                            amount: amount,
                                             note: '',
                                           ),
                                         );

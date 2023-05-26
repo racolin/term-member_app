@@ -226,6 +226,28 @@ class CartProductModel {
       note: note ?? this.note,
     );
   }
+
+  @override
+  bool operator ==(Object? other) {
+    if (other is! CartProductModel) {
+      return false;
+    }
+
+    if (other.id == id &&
+        other.note == note &&
+        other.options.length == options.length) {
+      for (var e in other.options) {
+        if (!options.contains(e)) {
+          return false;
+        }
+      }
+      return true;
+    }
+    return false;
+  }
+
+  @override
+  int get hashCode => Object.hash(id, options);
 }
 
 class CartReviewModel {

@@ -126,7 +126,7 @@ class _HomeBodyState extends State<HomeBody> {
               const DragBarWidget(margin: spaceXS),
               const DeliveryOptionsWidget(),
               if (widget.login) const SliderWidget(),
-              if (widget.login) const SuggestProductsWidget(height: 307),
+              if (widget.login) const ProductsSuggestWidget(height: 307),
               if (widget.login) const ReOrdersWidget(),
               const NewsSectionWidget(),
             ],

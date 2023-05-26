@@ -71,7 +71,7 @@ class AppRouter {
   static const String addressSearch = '/select-address';
   static const String storeSearch = '/select-store';
   static const String carts = '/carts';
-  static const String cartTemplate = '/cart-temppate';
+  static const String cartTemplate = '/cart-template';
   static const String profile = '/profile';
   static const String notify = '/notify';
   static const String historyPoint = '/history_point';

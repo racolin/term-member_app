@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:member_app/business_logic/cubits/voucher_cubit.dart';
 import 'package:member_app/presentation/bottom_sheet/voucher_bottom_sheet.dart';
@@ -12,8 +11,11 @@ import '../res/dimen/dimens.dart';
 import '../widgets/voucher_widget.dart';
 
 class VoucherScreen extends StatefulWidget {
+  final bool returnable;
+
   const VoucherScreen({
     Key? key,
+    this.returnable = false,
   }) : super(key: key);
 
   @override
@@ -97,17 +99,23 @@ class _VoucherScreenState extends State<VoucherScreen> {
                 VoucherWidget(
                   voucher: voucher,
                   onClick: () {
-                    showModalBottomSheet(
-                      context: context,
-                      isScrollControlled: true,
-                      backgroundColor: Colors.transparent,
-                      builder: (context) {
-                        return VoucherBottomSheet(
-                          voucher: voucher,
-                          notUsed: notUsed,
-                        );
-                      },
-                    );
+                    if (widget.returnable) {
+                      if (notUsed) {
+                        Navigator.pop(context, voucher);
+                      }
+                    } else {
+                      showModalBottomSheet(
+                        context: context,
+                        isScrollControlled: true,
+                        backgroundColor: Colors.transparent,
+                        builder: (context) {
+                          return VoucherBottomSheet(
+                            voucher: voucher,
+                            notUsed: notUsed,
+                          );
+                        },
+                      );
+                    }
                   },
                 ),
               ],

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:member_app/business_logic/cubits/cart_cubit.dart';
+import 'package:member_app/business_logic/cubits/product_cubit.dart';
 import 'package:member_app/business_logic/states/cart_state.dart';
 
 import '../../presentation/pages/initial_page.dart';
@@ -24,7 +25,7 @@ class HomeScreen extends StatefulWidget {
   State<HomeScreen> createState() => _HomeScreenState();
 }
 
-class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver{
+class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
   @override
   void initState() {
     WidgetsBinding.instance.addObserver(this);
@@ -39,7 +40,6 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver{
 
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
-
     switch (state) {
       case AppLifecycleState.resumed:
         context.read<CartCubit>().loadCartLoaded();
@@ -143,11 +143,22 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver{
               ? BlocBuilder<CartCubit, CartState>(
                   builder: (context, cartState) {
                     if (cartState is CartLoaded) {
+                      var cost = 0;
+                      for (var p in cartState.products) {
+                        cost += p.amount *
+                            (p.cost +
+                                (context
+                                        .read<ProductCubit>()
+                                        .getCostOptionsItem(p.options) ??
+                                    0));
+                      }
+
                       return FloatingActionWidget(
                         addressName: cartState.addressName,
                         type: cartState.categoryId,
                         amount: cartState.amount,
-                        cost: cartState.calculateCost,
+                        cost: cost,
+                        // cartState.calculateCost,
                         expanded: expanded,
                         onClick: () {
                           showModalBottomSheet(

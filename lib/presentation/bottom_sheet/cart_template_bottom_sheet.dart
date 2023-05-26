@@ -35,22 +35,26 @@ class CartTemplateBottomSheet extends StatefulWidget {
 
 class _CartTemplateBottomSheetState extends State<CartTemplateBottomSheet> {
   List<ProductModel> products = [];
+  List<int> amounts = [];
   List<int> costs = [];
   String? name;
 
   void setup(CartTemplateModel model) {
     products = [];
     costs = [];
+    amounts = [];
     for (var e in model.products) {
-      var product = context.read<ProductCubit>().getProductById(e.id);
+      var product = context.read<ProductCubit>().getProductById(e.id,);
       if (product != null) {
+        amounts.add(e.amount);
         products.add(product);
+        amounts.add(e.amount);
         costs.add(
-          (product.cost) +
+          (product.cost +
               getCostOptions(
                 context,
                 e.options,
-              ),
+              )) * e.amount,
         );
       }
     }
@@ -283,14 +287,16 @@ class _CartTemplateBottomSheetState extends State<CartTemplateBottomSheet> {
                                               RoundedRectangleBorder(
                                                 borderRadius:
                                                     BorderRadius.circular(
-                                                        spaceMD),
+                                                  spaceMD,
+                                                ),
                                               ),
                                             ),
                                           ),
                                           child: const Text(
                                             txtAdd,
                                             style: TextStyle(
-                                                fontWeight: FontWeight.w700),
+                                              fontWeight: FontWeight.w700,
+                                            ),
                                           ),
                                         ),
                                       ],
@@ -317,6 +323,9 @@ class _CartTemplateBottomSheetState extends State<CartTemplateBottomSheet> {
                                                   motion: const ScrollMotion(),
                                                   children: [
                                                     CustomSlidableAction(
+                                                      backgroundColor: Theme.of(
+                                                              context)
+                                                          .scaffoldBackgroundColor,
                                                       padding: EdgeInsets.zero,
                                                       onPressed: null,
                                                       child: Container(
@@ -364,6 +373,9 @@ class _CartTemplateBottomSheetState extends State<CartTemplateBottomSheet> {
                                                     ),
                                                     CustomSlidableAction(
                                                       padding: EdgeInsets.zero,
+                                                      backgroundColor: Theme.of(
+                                                              context)
+                                                          .scaffoldBackgroundColor,
                                                       onPressed: (context) {
                                                         context
                                                             .read<

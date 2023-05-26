@@ -4,6 +4,7 @@ import 'package:dio/dio.dart';
 
 import '../../../business_logic/repositories/cart_repository.dart';
 import '../../../presentation/res/strings/values.dart';
+import '../../models/cart_checked_model.dart';
 import '../../models/cart_detail_model.dart';
 import '../../models/cart_model.dart';
 import '../../../exception/app_message.dart';
@@ -18,7 +19,7 @@ class CartApiRepository extends CartRepository {
   final _dio = ApiClient.dioAuth;
 
   @override
-  Future<ResponseModel<CartDetailModel>> checkVoucher({
+  Future<ResponseModel<CartCheckedModel>> checkVoucher({
     required String? storeId,
     required String voucherId,
     required int categoryId,
@@ -39,13 +40,13 @@ class CartApiRepository extends CartRepository {
         },
       );
       var raw = RawSuccessModel.fromMap(res.data);
-      return ResponseModel<CartDetailModel>(
+      return ResponseModel<CartCheckedModel>(
         type: ResponseModelType.success,
-        data: CartDetailModel.fromMap(raw.data),
+        data: CartCheckedModel.fromMap(raw.data),
       );
     } on DioError catch (ex) {
       if (ex.error is AppMessage) {
-        return ResponseModel<CartDetailModel>(
+        return ResponseModel<CartCheckedModel>(
           type: ResponseModelType.failure,
           message: ex.error,
         );
@@ -57,7 +58,7 @@ class CartApiRepository extends CartRepository {
                 'message': 'Không có dữ liệu trả về!',
               },
         );
-        return ResponseModel<CartDetailModel>(
+        return ResponseModel<CartCheckedModel>(
           type: ResponseModelType.failure,
           message: AppMessage(
             type: AppMessageType.error,
@@ -67,7 +68,7 @@ class CartApiRepository extends CartRepository {
         );
       }
     } on Exception catch (ex) {
-      return ResponseModel<CartDetailModel>(
+      return ResponseModel<CartCheckedModel>(
         type: ResponseModelType.failure,
         message: AppMessage(
           title: txtErrorTitle,

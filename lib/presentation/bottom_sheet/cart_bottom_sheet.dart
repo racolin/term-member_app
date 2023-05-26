@@ -1,14 +1,27 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:member_app/business_logic/cubits/cart_cubit.dart';
+import 'package:member_app/data/models/voucher_model.dart';
+import 'package:member_app/presentation/dialogs/app_dialog.dart';
 import 'package:member_app/presentation/pages/loading_page.dart';
 import 'package:member_app/presentation/res/strings/values.dart';
 
+import '../../business_logic/blocs/interval/interval_bloc.dart';
+import '../../business_logic/cubits/product_cubit.dart';
+import '../../business_logic/cubits/voucher_cubit.dart';
+import '../../business_logic/repositories/voucher_repository.dart';
 import '../../business_logic/states/cart_state.dart';
 import '../../data/models/cart_detail_model.dart';
+import '../../data/models/product_model.dart';
+import '../../data/repositories/api/voucher_api_repository.dart';
+import '../../exception/app_message.dart';
 import '../../supports/convert.dart';
 import '../res/dimen/dimens.dart';
+import '../screens/product_search_screen.dart';
+import '../screens/voucher_screen.dart';
+import '../widgets/product/products_suggest_widget.dart';
 import 'pay_method_bottom_sheet.dart';
 
 class CartBottomSheet extends StatefulWidget {
@@ -49,16 +62,15 @@ class _CartBottomSheetState extends State<CartBottomSheet> {
                           const SizedBox(height: 8),
                           Container(
                             color: Colors.white,
-                            padding:
-                                const EdgeInsets.symmetric(horizontal: 12),
+                            padding: const EdgeInsets.symmetric(horizontal: 12),
                             child: Column(
                               children: [
                                 Row(
                                   children: [
                                     Expanded(
                                       child: _getInfoItem(
-                                        'name',
-                                        'phone',
+                                        state.receiver ?? txtUnknown,
+                                        state.phone ?? txtUnknown,
                                         () {},
                                       ),
                                     ),
@@ -87,11 +99,13 @@ class _CartBottomSheetState extends State<CartBottomSheet> {
                           _getProducts(context, state.products),
                           const SizedBox(height: 8),
                           _getTotal(
-                            state.calculateCost,
+                            costs.fold(0, (p, e) => p + e),
                             state.fee,
                             state.voucherDiscount,
                             state.voucher?.name ?? '',
                           ),
+                          const SizedBox(height: 8),
+                          const ProductsSuggestWidget(height: 307,),
                           const SizedBox(height: 8),
                           _getMethod(),
                           const SizedBox(height: 16),
@@ -102,7 +116,8 @@ class _CartBottomSheetState extends State<CartBottomSheet> {
                   _getOrderField(
                     state.categoryId?.name ?? '',
                     state.amount,
-                    state.calculateCost,
+                    costs.fold(0, (p, e) => p + e) + state.fee - state.voucherDiscount,
+                    // state.calculateCost,
                   ),
                 ],
               ),
@@ -211,6 +226,7 @@ class _CartBottomSheetState extends State<CartBottomSheet> {
     BuildContext context,
     List<CartProductModel> products,
   ) {
+    setup(products);
     return Container(
       color: Colors.white,
       child: Column(
@@ -235,7 +251,23 @@ class _CartBottomSheetState extends State<CartBottomSheet> {
                 ),
                 // padding: MaterialStateProperty.all(EdgeInsets.zero),
               ),
-              onPressed: () {},
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (ctx) {
+                      return BlocProvider<IntervalBloc<ProductModel>>(
+                        create: (ctx) => IntervalBloc<ProductModel>(
+                          submit: BlocProvider.of<ProductCubit>(ctx),
+                        ),
+                        child: const ProductSearchScreen(
+                          withFloatingButton: false,
+                        ),
+                      );
+                    },
+                  ),
+                );
+              },
               child: const Text(
                 '+ Thêm',
                 style: TextStyle(fontSize: 12),
@@ -288,7 +320,29 @@ class _CartBottomSheetState extends State<CartBottomSheet> {
                     ),
                     CustomSlidableAction(
                       padding: EdgeInsets.zero,
-                      onPressed: (context) {},
+                      onPressed: (context) {
+                        var message = context.read<CartCubit>().deleteProduct(
+                              products[i],
+                            );
+                        if (message != null) {
+                          showCupertinoDialog(
+                            context: context,
+                            builder: (context) {
+                              return AppDialog(
+                                message: message,
+                                actions: [
+                                  CupertinoDialogAction(
+                                    child: const Text(txtConfirm),
+                                    onPressed: () {
+                                      Navigator.pop(context);
+                                    },
+                                  ),
+                                ],
+                              );
+                            },
+                          );
+                        }
+                      },
                       child: Container(
                         padding: const EdgeInsets.all(2),
                         width: double.maxFinite,
@@ -325,7 +379,7 @@ class _CartBottomSheetState extends State<CartBottomSheet> {
                   padding: const EdgeInsets.symmetric(horizontal: 12.0),
                   child: Row(
                     children: [
-                      Expanded(child: _getProduct(products[i])),
+                      Expanded(child: _getProduct(products[i], costs[i])),
                       const SizedBox(width: 4),
                       const Icon(
                         Icons.keyboard_double_arrow_left,
@@ -336,6 +390,7 @@ class _CartBottomSheetState extends State<CartBottomSheet> {
                 ),
               ),
             ),
+            const SizedBox(height: spaceSM),
             const Divider(height: 1),
           ],
         ],
@@ -343,7 +398,33 @@ class _CartBottomSheetState extends State<CartBottomSheet> {
     );
   }
 
-  Widget _getProduct(CartProductModel model) {
+  List<int> costs = [];
+
+  void setup(List<CartProductModel> products) {
+    costs = [];
+    for (var e in products) {
+      var product = context.read<ProductCubit>().getProductById(e.id);
+      if (product != null) {
+        costs.add(
+          (product.cost +
+                  getCostOptions(
+                    context,
+                    e.options,
+                  )) *
+              e.amount,
+        );
+      }
+    }
+  }
+
+  int getCostOptions(BuildContext context, List<String> options) {
+    return context.read<ProductCubit>().getCostOptionsItem(
+              options,
+            ) ??
+        0;
+  }
+
+  Widget _getProduct(CartProductModel model, int cost) {
     return ListTile(
       contentPadding: EdgeInsets.zero,
       dense: true,
@@ -360,9 +441,12 @@ class _CartBottomSheetState extends State<CartBottomSheet> {
               fontSize: fontMD,
             ),
       ),
-      subtitle: Text(model.options.join(', ')),
+      subtitle: Text(model.options
+          .map((e) =>
+              context.read<ProductCubit>().getProductOptionItemById(e)?.name)
+          .join(', ')),
       trailing: Text(
-        numberToCurrency(model.cost, 'đ'),
+        numberToCurrency(cost, 'đ'),
         style: Theme.of(context).textTheme.titleSmall?.copyWith(
               fontSize: 14,
             ),
@@ -402,71 +486,118 @@ class _CartBottomSheetState extends State<CartBottomSheet> {
           const SizedBox(height: 12),
           const Divider(height: 1),
           const SizedBox(height: 12),
-          Column(
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  const Text('Phí vận chuyển'),
-                  Text(numberToCurrency(fee, 'đ'))
-                ],
-              ),
-              const SizedBox(height: 4),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    voucherName,
-                    style: const TextStyle(fontSize: 12),
-                  ),
-                  Text(
-                    numberToCurrency(voucherDiscount, 'đ'),
-                    style: const TextStyle(
-                      fontSize: 12,
-                      decoration: TextDecoration.lineThrough,
-                    ),
-                  ),
-                ],
-              ),
+              const Text('Phí vận chuyển'),
+              Text(numberToCurrency(fee, 'đ')),
             ],
           ),
           const SizedBox(height: 12),
           const Divider(height: 1),
           InkWell(
-            onTap: () {
-              // showModalBottomSheet(
-              //   backgroundColor: Colors.transparent,
-              //   context: context,
-              //   builder: (context) => const MyVouchersPage(
-              //     back: true,
-              //   ),
-              // ).then((promotionTicket) {
-              //   print((promotionTicket as PromotionTicketModel).id);
-              //   context
-              //       .read<HomeProvider>()
-              //       .checkCoupon(
-              //         context,
-              //         (promotionTicket as PromotionTicketModel).id,
-              //       )
-              //       .then((value) {
-              //     print(value);
-              //   });
-              // });
+            onTap: () async {
+              var model = await Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (ctx) {
+                    return RepositoryProvider<VoucherRepository>(
+                      create: (context) => VoucherApiRepository(),
+                      child: BlocProvider<VoucherCubit>(
+                        create: (context) => VoucherCubit(
+                          repository: RepositoryProvider.of<VoucherRepository>(
+                            context,
+                          ),
+                        ),
+                        child: const VoucherScreen(returnable: true),
+                      ),
+                    );
+                  },
+                ),
+              );
+              if (mounted) {
+                if (model != null && model is VoucherModel) {
+                  var message =
+                      await context.read<CartCubit>().checkAndSetVoucher(model);
+                  if (mounted) {
+                    if (message != null) {
+                      showCupertinoDialog(
+                        context: context,
+                        builder: (context) {
+                          return AppDialog(
+                            message: message,
+                            actions: [
+                              CupertinoDialogAction(
+                                child: const Text(txtConfirm),
+                                onPressed: () {
+                                  Navigator.pop(context);
+                                },
+                              ),
+                            ],
+                          );
+                        },
+                      );
+                    } else {
+                      showCupertinoDialog(
+                        context: context,
+                        builder: (context) {
+                          return AppDialog(
+                            message: AppMessage(
+                              type: AppMessageType.success,
+                              title: txtSuccessTitle,
+                              content: 'Áp dụng khuyến mãi thành công!',
+                            ),
+                            actions: [
+                              CupertinoDialogAction(
+                                child: const Text(txtConfirm),
+                                onPressed: () {
+                                  Navigator.pop(context);
+                                },
+                              ),
+                            ],
+                          );
+                        },
+                      );
+                    }
+                  }
+                }
+              }
             },
             child: Padding(
               padding: const EdgeInsets.symmetric(vertical: 12),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: const [
-                  Text(
-                    'Chọn khuyến mãi',
-                    style: TextStyle(color: Colors.blue),
+              child: Column(
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: const [
+                      Text(
+                        'Chọn khuyến mãi',
+                        style: TextStyle(color: Colors.blue),
+                      ),
+                      Icon(
+                        Icons.chevron_right,
+                        size: 16,
+                        color: Colors.grey,
+                      ),
+                    ],
                   ),
-                  Icon(
-                    Icons.chevron_right,
-                    size: 16,
-                    color: Colors.grey,
-                  ),
+                  const SizedBox(height: spaceXXS),
+                  if (voucherDiscount != 0)
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          voucherName,
+                          style: const TextStyle(fontSize: 12),
+                        ),
+                        Text(
+                          numberToCurrency(-voucherDiscount, 'đ'),
+                          style: const TextStyle(
+                            fontSize: 14,
+                          ),
+                        ),
+                      ],
+                    ),
                 ],
               ),
             ),
@@ -483,7 +614,7 @@ class _CartBottomSheetState extends State<CartBottomSheet> {
                 ),
               ),
               Text(
-                numberToCurrency(total + fee, 'đ'),
+                numberToCurrency(total + fee - voucherDiscount, 'đ'),
                 style: const TextStyle(
                   fontWeight: FontWeight.w700,
                 ),
@@ -503,15 +634,10 @@ class _CartBottomSheetState extends State<CartBottomSheet> {
           isScrollControlled: true,
           backgroundColor: Colors.transparent,
           context: context,
-          builder: (context) => PayMethodBottomSheet(
+          builder: (context) => const PayMethodBottomSheet(
             payMethod: null,
           ),
         );
-        // if (pay != payMethod) {
-        //   setState(() {
-        //     payMethod = pay;
-        //   });
-        // }
       },
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 12),

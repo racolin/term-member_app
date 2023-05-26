@@ -109,7 +109,7 @@ class _OrderBodyState extends State<OrderBody> {
                     if (index == 2) {
                       if (widget.login) {
                         // 18 * 1.25 + 268 + 4 * 2 + 8 = 307
-                        return const SuggestProductsWidget(height: 307);
+                        return const ProductsSuggestWidget(height: 307);
                       } else {
                         return const SizedBox();
                       }

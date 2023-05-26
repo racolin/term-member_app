@@ -192,18 +192,8 @@ class _AppBarWidget extends StatelessWidget {
                                 builder: (ctx) {
                                   return MultiRepositoryProvider(
                                     providers: [
-                                      BlocProvider<ProductCubit>.value(
-                                        value: BlocProvider.of<ProductCubit>(
-                                          context,
-                                        ),
-                                      ),
                                       BlocProvider<HomeCubit>.value(
                                         value: BlocProvider.of<HomeCubit>(
-                                          context,
-                                        ),
-                                      ),
-                                      BlocProvider<CartCubit>.value(
-                                        value: BlocProvider.of<CartCubit>(
                                           context,
                                         ),
                                       ),

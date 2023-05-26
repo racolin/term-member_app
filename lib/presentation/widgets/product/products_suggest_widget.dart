@@ -7,15 +7,15 @@ import '../../../business_logic/cubits/product_cubit.dart';
 import '../../../business_logic/states/product_state.dart';
 import 'product_suggest_widget.dart';
 
-class SuggestProductsWidget extends StatefulWidget {
+class ProductsSuggestWidget extends StatefulWidget {
   final double height;
-  const SuggestProductsWidget({Key? key, required this.height,}) : super(key: key);
+  const ProductsSuggestWidget({Key? key, required this.height,}) : super(key: key);
 
   @override
-  State<SuggestProductsWidget> createState() => _SuggestProductsWidgetState();
+  State<ProductsSuggestWidget> createState() => _ProductsSuggestWidgetState();
 }
 
-class _SuggestProductsWidgetState extends State<SuggestProductsWidget> {
+class _ProductsSuggestWidgetState extends State<ProductsSuggestWidget> {
 
  final double top = spaceXS;
  final double textHeight = 1.25;

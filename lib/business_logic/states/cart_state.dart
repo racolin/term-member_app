@@ -1,4 +1,5 @@
 import 'package:member_app/data/models/cart_model.dart';
+import 'package:member_app/data/models/product_model.dart';
 import 'package:member_app/exception/app_message.dart';
 
 import '../../data/models/cart_detail_model.dart';
@@ -26,7 +27,7 @@ class CartLoaded extends CartState {
   final List<CartProductModel> products;
   final DateTime? time;
   final int fee;
-  final int feeDiscount;
+  final int originalFee;
   final int voucherDiscount;
 
   CartLoaded({
@@ -43,17 +44,16 @@ class CartLoaded extends CartState {
     this.time,
     this.fee = 0,
     this.voucherDiscount = 0,
-    this.feeDiscount = 0,
+    this.originalFee = 0,
   });
 
-  int get calculateFee => (fee - feeDiscount) < 0 ? 0 : (fee - feeDiscount);
 
   int get calculateCost {
     int value = voucherDiscount -
-        calculateFee +
+        fee +
         products.fold(
           0,
-          (pre, e) => pre + e.cost,
+          (pre, e) => pre + e.amount * e.cost,
         );
     return value < 0 ? 0 : value;
   }
@@ -73,6 +73,7 @@ class CartLoaded extends CartState {
     List<CartProductModel>? products,
     DateTime? time,
     int? fee,
+    int? originalFee,
     int? voucherDiscount,
   }) {
     return CartLoaded(
@@ -88,6 +89,7 @@ class CartLoaded extends CartState {
       products: products ?? this.products,
       time: time ?? this.time,
       fee: fee ?? this.fee,
+      originalFee: originalFee ?? this.originalFee,
       voucherDiscount: voucherDiscount ?? this.voucherDiscount,
     );
   }
@@ -106,7 +108,7 @@ class CartLoaded extends CartState {
       'products': products.map((e) => e.toMap()),
       'time': time.toString(),
       'fee': fee,
-      'feeDiscount': feeDiscount,
+      'originalFee': originalFee,
       'voucherDiscount': voucherDiscount,
     };
   }
@@ -134,7 +136,7 @@ class CartLoaded extends CartState {
               .toList(),
       time: DateTime.tryParse(map['time'] ?? ''),
       fee: map['fee'] ?? 0,
-      feeDiscount: map['feeDiscount'] ?? 0,
+      originalFee: map['originalFee'] ?? 0,
       voucherDiscount: map['voucherDiscount'] ?? 0,
     );
   }

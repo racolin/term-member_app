@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:member_app/business_logic/cubits/cart_cubit.dart';
+import 'package:member_app/data/models/cart_model.dart';
 import 'package:member_app/data/models/voucher_model.dart';
 import 'package:member_app/presentation/dialogs/app_dialog.dart';
 import 'package:member_app/presentation/pages/loading_page.dart';
@@ -65,32 +66,38 @@ class _CartBottomSheetState extends State<CartBottomSheet> {
                             padding: const EdgeInsets.symmetric(horizontal: 12),
                             child: Column(
                               children: [
-                                Row(
-                                  children: [
-                                    Expanded(
-                                      child: _getInfoItem(
-                                        state.receiver ?? txtUnknown,
-                                        state.phone ?? txtUnknown,
-                                        () {},
+                                SizedBox(
+                                  height: 76,
+                                  child: Row(
+                                    children: [
+                                      if (state.categoryId ==
+                                          DeliveryType.delivery) ...[
+                                        Expanded(
+                                          child: _getInfoItem(
+                                            state.receiver ?? txtUnknown,
+                                            state.phone ?? txtUnknown,
+                                            () {},
+                                          ),
+                                        ),
+                                        const SizedBox(width: 12),
+                                        Container(
+                                          width: 1,
+                                          color: Colors.grey.withAlpha(100),
+                                          height: 56,
+                                        ),
+                                        const SizedBox(width: 12),
+                                      ],
+                                      Expanded(
+                                        child: _getInfoItem(
+                                          dateToString(
+                                              state.time ?? DateTime.now(),
+                                              'dd/MM'),
+                                          'Càng sớm càng tốt',
+                                          () {},
+                                        ),
                                       ),
-                                    ),
-                                    const SizedBox(width: 12),
-                                    Container(
-                                      width: 1,
-                                      color: Colors.grey.withAlpha(100),
-                                      height: 56,
-                                    ),
-                                    const SizedBox(width: 12),
-                                    Expanded(
-                                      child: _getInfoItem(
-                                        dateToString(
-                                            state.time ?? DateTime.now(),
-                                            'dd/MM'),
-                                        'sds',
-                                        () {},
-                                      ),
-                                    ),
-                                  ],
+                                    ],
+                                  ),
                                 )
                               ],
                             ),
@@ -105,7 +112,9 @@ class _CartBottomSheetState extends State<CartBottomSheet> {
                             state.voucher?.name ?? '',
                           ),
                           const SizedBox(height: 8),
-                          const ProductsSuggestWidget(height: 307,),
+                          const ProductsSuggestWidget(
+                            height: 307,
+                          ),
                           const SizedBox(height: 8),
                           _getMethod(),
                           const SizedBox(height: 16),
@@ -116,7 +125,9 @@ class _CartBottomSheetState extends State<CartBottomSheet> {
                   _getOrderField(
                     state.categoryId?.name ?? '',
                     state.amount,
-                    costs.fold(0, (p, e) => p + e) + state.fee - state.voucherDiscount,
+                    costs.fold(0, (p, e) => p + e) +
+                        state.fee -
+                        state.voucherDiscount,
                     // state.calculateCost,
                   ),
                 ],
@@ -604,22 +615,25 @@ class _CartBottomSheetState extends State<CartBottomSheet> {
           ),
           const Divider(height: 1),
           const SizedBox(height: 12),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              const Text(
-                'Số tiền thanh toán',
-                style: TextStyle(
-                  fontWeight: FontWeight.w700,
+          Padding(
+            padding: const EdgeInsets.only(bottom: spaceXS),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                const Text(
+                  'Số tiền thanh toán',
+                  style: TextStyle(
+                    fontWeight: FontWeight.w700,
+                  ),
                 ),
-              ),
-              Text(
-                numberToCurrency(total + fee - voucherDiscount, 'đ'),
-                style: const TextStyle(
-                  fontWeight: FontWeight.w700,
+                Text(
+                  numberToCurrency(total + fee - voucherDiscount, 'đ'),
+                  style: const TextStyle(
+                    fontWeight: FontWeight.w700,
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
           const SizedBox(height: 12),
         ],
@@ -707,7 +721,39 @@ class _CartBottomSheetState extends State<CartBottomSheet> {
           ),
         ),
         trailing: ElevatedButton(
-          onPressed: () {},
+          onPressed: () async {
+            var message = await context.read<CartCubit>().create();
+
+            if (mounted) {
+              if (message == null) {
+                ScaffoldMessenger.of(context).clearSnackBars();
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(
+                    content: Text(
+                      'Đặt hàng thành công!',
+                    ),
+                  ),
+                );
+              } else {
+                showCupertinoDialog(
+                  context: context,
+                  builder: (context) {
+                    return AppDialog(
+                      message: message,
+                      actions: [
+                        CupertinoDialogAction(
+                          child: const Text(txtConfirm),
+                          onPressed: () {
+                            Navigator.pop(context);
+                          },
+                        ),
+                      ],
+                    );
+                  },
+                );
+              }
+            }
+          },
           style: ButtonStyle(
             backgroundColor: MaterialStateProperty.all(Colors.white),
             shape: MaterialStateProperty.all(

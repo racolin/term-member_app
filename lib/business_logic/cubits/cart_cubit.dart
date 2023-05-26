@@ -30,7 +30,7 @@ class CartCubit extends Cubit<CartState> {
         super(CartInitial()) {
     _storage.getCartLoaded().then((res) {
       if (res.type == ResponseModelType.success) {
-        emit(res.data);
+        emit(res.data.copyWith(time: DateTime.now()));
       } else {
         emit(CartFailure(message: res.message));
       }
@@ -167,24 +167,48 @@ class CartCubit extends Cubit<CartState> {
 
     var state = this.state as CartLoaded;
 
-    if (state.store == null ||
-        state.categoryId == null ||
-        state.payType == null ||
-        state.phone == null ||
-        state.phone == '' ||
-        state.receiver == null ||
-        state.time == null ||
-        state.receiver == '') {
+    if (state.categoryId == DeliveryType.delivery) {
+      if (
+
+          // state.payType == null ||
+          state.time == null ||
+              state.phone == null ||
+              state.phone == '' ||
+              state.receiver == null ||
+              state.receiver == '') {
+        return AppMessage(
+          type: AppMessageType.failure,
+          title: txtFailureTitle,
+          content: 'Bạn chưa điền đầy đủ thông tin đơn hàng!',
+        );
+      }
+    } else if (state.categoryId == DeliveryType.takeOut) {
+      if (state.store == null ||
+          state.storeDetail == null ||
+          // state.payType == null ||
+          state.time == null ||
+          state.phone == null ||
+          state.phone == '' ||
+          state.receiver == null ||
+          state.receiver == '') {
+        return AppMessage(
+          type: AppMessageType.failure,
+          title: txtFailureTitle,
+          content: 'Bạn chưa điền đầy đủ thông tin đơn hàng!',
+        );
+      }
+    } else {
       return AppMessage(
         type: AppMessageType.failure,
         title: txtFailureTitle,
         content: 'Bạn chưa điền đầy đủ thông tin đơn hàng!',
       );
     }
+
     var res = await _repository.create(
-      storeId: state.store!.id,
+      storeId: state.store?.id,
       categoryId: state.categoryId!.index,
-      payType: state.payType!,
+      payType: state.payType ?? 0,
       phone: state.phone!,
       receiver: state.receiver!,
       receivingTime: state.time!.millisecondsSinceEpoch,
@@ -307,7 +331,7 @@ class CartCubit extends Cubit<CartState> {
     return null;
   }
 
-  AppMessage? editDateTime(DateTime time) {
+  AppMessage? setTime(DateTime time) {
     if (this.state is! CartLoaded) {
       return AppMessage(
         type: AppMessageType.failure,

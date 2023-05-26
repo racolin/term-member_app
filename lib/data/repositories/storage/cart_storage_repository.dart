@@ -18,7 +18,7 @@ class CartStorageRepository extends CartRepository {
 
   @override
   Future<ResponseModel<String>> create({
-    required String storeId,
+    required String? storeId,
     required int categoryId,
     required int payType,
     required String phone,

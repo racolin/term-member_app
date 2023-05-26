@@ -134,6 +134,12 @@ class MethodOrderBottomSheet extends StatelessWidget {
                               address.address,
                               '${address.receiver} ${address.name}',
                             );
+
+                        context.read<CartCubit>().setReceiver(
+                              address.receiver,
+                              address.phone,
+                            );
+
                         Navigator.pop(context);
                       });
                     } else if (method == DeliveryType.takeOut) {

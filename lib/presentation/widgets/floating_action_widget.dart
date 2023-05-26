@@ -74,9 +74,6 @@ class _FloatingActionWidgetState extends State<FloatingActionWidget>
 
   @override
   Widget build(BuildContext context) {
-    print('widget.cost');
-    print(widget.cost);
-    print(widget.amount);
     return AnimatedBuilder(
       animation: animation,
       builder: (context, child) => Padding(
@@ -116,7 +113,8 @@ class _FloatingActionWidgetState extends State<FloatingActionWidget>
                 ),
                 if (widget.type != null &&
                     widget.cost != null &&
-                    widget.cost != 0)
+                    widget.cost != 0 &&
+                    widget.amount != 0)
                   _getCost(widget.cost ?? 0, widget.amount ?? 0),
               ],
             ),

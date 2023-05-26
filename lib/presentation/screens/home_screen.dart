@@ -152,6 +152,7 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
                                         .getCostOptionsItem(p.options) ??
                                     0));
                       }
+                      cost += cartState.fee - cartState.voucherDiscount;
 
                       return FloatingActionWidget(
                         addressName: cartState.addressName,

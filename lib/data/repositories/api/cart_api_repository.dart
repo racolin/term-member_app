@@ -114,7 +114,7 @@ class CartApiRepository extends CartRepository {
       var raw = RawSuccessModel.fromMap(res.data);
       return ResponseModel<String>(
         type: ResponseModelType.success,
-        data: raw.data,
+        data: raw.data["id"],
       );
     } on DioError catch (ex) {
       if (ex.error is AppMessage) {

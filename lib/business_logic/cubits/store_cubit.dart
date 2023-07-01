@@ -62,6 +62,16 @@ class StoreCubit extends Cubit<StoreState>
     }
   }
 
+  Future<StoreDetailModel?> getDetailStore(String id) async {
+
+    var res = await _repository.getDetail(id: id);
+    if (res.type == ResponseModelType.success) {
+      return res.data;
+    } else {
+      return null;
+    }
+  }
+
   StoreDetailModel? get detailStore {
     if (state is! StoreLoaded) {
       return null;

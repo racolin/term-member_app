@@ -169,7 +169,6 @@ class CartCubit extends Cubit<CartState> {
 
     if (state.categoryId == DeliveryType.delivery) {
       if (
-
           // state.payType == null ||
           state.time == null ||
               state.phone == null ||
@@ -186,11 +185,13 @@ class CartCubit extends Cubit<CartState> {
       if (state.store == null ||
           state.storeDetail == null ||
           // state.payType == null ||
-          state.time == null ||
-          state.phone == null ||
-          state.phone == '' ||
-          state.receiver == null ||
-          state.receiver == '') {
+          state.time == null
+          // ||
+          // state.phone == null ||
+          // state.phone == '' ||
+          // state.receiver == null ||
+          // state.receiver == ''
+      ) {
         return AppMessage(
           type: AppMessageType.failure,
           title: txtFailureTitle,
@@ -209,8 +210,8 @@ class CartCubit extends Cubit<CartState> {
       storeId: state.store?.id,
       categoryId: state.categoryId!.index,
       payType: state.payType ?? 0,
-      phone: state.phone!,
-      receiver: state.receiver!,
+      phone: state.phone ?? '+84868754872',
+      receiver: state.receiver ?? 'Vinh',
       receivingTime: state.time!.millisecondsSinceEpoch,
       products: state.products,
       addressName: '${state.addressName}|${state.addressDescription}',
@@ -218,6 +219,7 @@ class CartCubit extends Cubit<CartState> {
     );
 
     if (res.type == ResponseModelType.success) {
+      clear();
       return AppMessage(
         type: AppMessageType.success,
         title: 'Thành công',
@@ -226,6 +228,10 @@ class CartCubit extends Cubit<CartState> {
     } else {
       return res.message;
     }
+  }
+
+  void clear() {
+    emit(CartLoaded(products: []));
   }
 
   bool emptyCart() {

@@ -218,6 +218,7 @@ class _CartBottomSheetState extends State<CartBottomSheet> {
               left: 10,
               child: GestureDetector(
                 onTap: () {
+                  context.read<CartCubit>().clear();
                   Navigator.pop(context);
                 },
                 child: const Text(
@@ -735,6 +736,7 @@ class _CartBottomSheetState extends State<CartBottomSheet> {
                   ),
                 );
               } else {
+                // Navigator.pop(context);
                 showCupertinoDialog(
                   context: context,
                   builder: (context) {

@@ -147,7 +147,7 @@ class MethodOrderBottomSheet extends StatelessWidget {
                         context,
                         MaterialPageRoute(
                           builder: (ctx) => RepositoryProvider<StoreRepository>(
-                            create: (ctx) => StoreApiRepository(),
+                            create: (ctx2) => StoreApiRepository(),
                             child: MultiBlocProvider(
                               providers: [
                                 BlocProvider<StoreCubit>(
@@ -163,15 +163,34 @@ class MethodOrderBottomSheet extends StatelessWidget {
                                   ),
                                 ),
                               ],
-                              child: StoreSearchPage(
-                                onClick: (StoreModel store) async {
-                                  context.read<CartCubit>().setCategory(1);
-                                  context.read<CartCubit>().setAddress(
-                                        store.address,
-                                        meterToString(store.distance),
-                                      );
-                                  Navigator.pop(ctx);
-                                  Navigator.pop(ctx);
+                              child: Builder(
+                                builder: (context) {
+                                  return StoreSearchPage(
+                                    onClick: (StoreModel store) async {
+                                      context.read<CartCubit>().setCategory(1);
+                                      context.read<CartCubit>().setAddress(
+                                            store.address,
+                                            meterToString(store.distance),
+                                          );
+                                      context
+                                          .read<StoreCubit>()
+                                          .getDetailStore(store.id)
+                                          .then((detail) {
+                                        if (detail != null) {
+                                          context.read<CartCubit>().setStore(
+                                                store,
+                                                detail,
+                                              );
+                                            print('23232323');
+                                        } else {
+                                          print('23232323222222');
+                                        }
+                                      });
+
+                                      Navigator.pop(ctx);
+                                      Navigator.pop(ctx);
+                                    },
+                                  );
                                 },
                               ),
                             ),

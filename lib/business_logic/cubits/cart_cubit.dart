@@ -208,7 +208,7 @@ class CartCubit extends Cubit<CartState> {
     }
 
     var res = await _repository.create(
-      storeId: state.store?.id,
+      storeId: state.store?.id ?? '641875ec7541eda7125936bf',
       categoryId: state.categoryId!.index,
       payType: state.payType ?? 0,
       phone: state.phone ?? '+84868754872',

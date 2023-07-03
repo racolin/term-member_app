@@ -29,8 +29,8 @@ class NotifyScreen extends StatelessWidget {
               .titleSmall
               ?.copyWith(fontWeight: FontWeight.w600),
         ),
-        backgroundColor: Colors.orange.withAlpha(50),
-        elevation: 0,
+        // backgroundColor: Colors.orange.withAlpha(50),
+        // elevation: 0,
         actions: [
           IconButton(
             onPressed: () {},

@@ -105,94 +105,105 @@ class ProductWidget extends StatelessWidget {
                       children: [
                         IconButton(
                           onPressed: () {
-                            var options = <String>[];
-
-                            for (var o in model.optionIds) {
-                              var item = context
-                                  .read<ProductCubit>()
-                                  .getProductOptionById(o);
-                              if (item != null) {
-                                options.addAll(item.defaultSelect);
-                              }
-                            }
-
-                            if (isTemplate) {
-                              var message = context
-                                  .read<CartTemplateCubit>()
-                                  .addItemSelected(
-                                    CartTemplateProductModel(
-                                      id: model.id,
-                                      amount: 1,
-                                      options: options,
-                                    ),
-                                  );
-                              if (message != null) {
-                                showCupertinoDialog(
-                                  context: context,
-                                  builder: (context) {
-                                    return AppDialog(
-                                      message: message,
-                                      actions: [
-                                        CupertinoDialogAction(
-                                          child: const Text(txtConfirm),
-                                          onPressed: () {
-                                            Navigator.pop(context);
-                                          },
-                                        ),
-                                      ],
-                                    );
-                                  },
+                            showModalBottomSheet(
+                              context: context,
+                              isScrollControlled: true,
+                              backgroundColor: Colors.transparent,
+                              builder: (ctx) {
+                                return BlocProvider<ProductCubit>.value(
+                                  value: BlocProvider.of<ProductCubit>(context),
+                                  child: ProductBottomSheet(product: model, isTemplate: isTemplate),
                                 );
-                              } else {
-                                ScaffoldMessenger.of(context).clearSnackBars();
-                                ScaffoldMessenger.of(context).showSnackBar(
-                                  const SnackBar(
-                                    content: Text(
-                                      'Thêm sản phẩm vào đơn hàng mẫu thành công',
-                                    ),
-                                  ),
-                                );
-                              }
-                            } else {
-                              var message =
-                              context.read<CartCubit>().addProductToCart(
-                                        CartProductModel(
-                                          id: model.id,
-                                          name: model.name,
-                                          cost: model.cost,
-                                          options: options,
-                                          amount: 1,
-                                          note: '',
-                                        ),
-                                      );
-                              if (message != null) {
-                                showCupertinoDialog(
-                                  context: context,
-                                  builder: (context) {
-                                    return AppDialog(
-                                      message: message,
-                                      actions: [
-                                        CupertinoDialogAction(
-                                          child: const Text(txtConfirm),
-                                          onPressed: () {
-                                            Navigator.pop(context);
-                                          },
-                                        ),
-                                      ],
-                                    );
-                                  },
-                                );
-                              } else {
-                                ScaffoldMessenger.of(context).clearSnackBars();
-                                ScaffoldMessenger.of(context).showSnackBar(
-                                  const SnackBar(
-                                    content: Text(
-                                      'Thêm sản phẩm vào đơn hàng thành công',
-                                    ),
-                                  ),
-                                );
-                              }
-                            }
+                              },
+                            );
+                            // var options = <String>[];
+                            //
+                            // for (var o in model.optionIds) {
+                            //   var item = context
+                            //       .read<ProductCubit>()
+                            //       .getProductOptionById(o);
+                            //   if (item != null) {
+                            //     options.addAll(item.defaultSelect);
+                            //   }
+                            // }
+                            //
+                            // if (isTemplate) {
+                            //   var message = context
+                            //       .read<CartTemplateCubit>()
+                            //       .addItemSelected(
+                            //         CartTemplateProductModel(
+                            //           id: model.id,
+                            //           amount: 1,
+                            //           options: options,
+                            //         ),
+                            //       );
+                            //   if (message != null) {
+                            //     showCupertinoDialog(
+                            //       context: context,
+                            //       builder: (context) {
+                            //         return AppDialog(
+                            //           message: message,
+                            //           actions: [
+                            //             CupertinoDialogAction(
+                            //               child: const Text(txtConfirm),
+                            //               onPressed: () {
+                            //                 Navigator.pop(context);
+                            //               },
+                            //             ),
+                            //           ],
+                            //         );
+                            //       },
+                            //     );
+                            //   } else {
+                            //     ScaffoldMessenger.of(context).clearSnackBars();
+                            //     ScaffoldMessenger.of(context).showSnackBar(
+                            //       const SnackBar(
+                            //         content: Text(
+                            //           'Thêm sản phẩm vào đơn hàng mẫu thành công',
+                            //         ),
+                            //       ),
+                            //     );
+                            //   }
+                            // } else {
+                            //   var message =
+                            //   context.read<CartCubit>().addProductToCart(
+                            //             CartProductModel(
+                            //               id: model.id,
+                            //               name: model.name,
+                            //               cost: model.cost,
+                            //               options: options,
+                            //               amount: 1,
+                            //               note: '',
+                            //             ),
+                            //           );
+                            //   if (message != null) {
+                            //     showCupertinoDialog(
+                            //       context: context,
+                            //       builder: (context) {
+                            //         return AppDialog(
+                            //           message: message,
+                            //           actions: [
+                            //             CupertinoDialogAction(
+                            //               child: const Text(txtConfirm),
+                            //               onPressed: () {
+                            //                 Navigator.pop(context);
+                            //               },
+                            //             ),
+                            //           ],
+                            //         );
+                            //       },
+                            //     );
+                            //   } else {
+                            //     ScaffoldMessenger.of(context).clearSnackBars();
+                            //     ScaffoldMessenger.of(context).showSnackBar(
+                            //       const SnackBar(
+                            //         content: Text(
+                            //           'Thêm sản phẩm vào đơn hàng thành công',
+                            //         ),
+                            //       ),
+                            //     );
+                            //   }
+                            // }
                           },
                           splashRadius: spaceXL,
                           icon: const Icon(

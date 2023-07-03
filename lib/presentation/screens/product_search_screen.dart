@@ -82,7 +82,9 @@ class _ProductSearchScreenState extends State<ProductSearchScreen> {
                       Expanded(
                         child: ListView.builder(
                           padding: const EdgeInsets.only(
-                              top: spaceXXS, bottom: dimMD),
+                            top: spaceXXS,
+                            bottom: dimXL,
+                          ),
                           itemBuilder: (context, index) {
                             return Padding(
                               padding: const EdgeInsets.all(spaceXS),

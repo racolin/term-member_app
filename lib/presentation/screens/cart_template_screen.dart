@@ -79,7 +79,7 @@ class _CartTemplateScreenState extends State<CartTemplateScreen> {
           txtCartTemplate,
           style: Theme.of(context)
               .textTheme
-              .titleSmall
+              .bodyLarge
               ?.copyWith(fontWeight: FontWeight.w600),
         ),
       ),
@@ -107,10 +107,18 @@ class _CartTemplateScreenState extends State<CartTemplateScreen> {
                       children: [
                         Text('Số lượng: ${state.list.length}/${state.limit}'),
                         ElevatedButton(
-                          onPressed: () {
-
-                          },
-                          child: const Text('Tạo mới'),
+                          onPressed: () {},
+                          style: ButtonStyle(
+                            backgroundColor: MaterialStateProperty.all(
+                              Colors.orange,
+                            ),
+                          ),
+                          child: const Text(
+                            'Tạo mới',
+                            style: TextStyle(
+                              color: Colors.white,
+                            ),
+                          ),
                         ),
                       ],
                     ),

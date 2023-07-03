@@ -38,7 +38,7 @@ class _VoucherScreenState extends State<VoucherScreen> {
           txtYourVoucher,
           style: Theme.of(context)
               .textTheme
-              .titleSmall
+              .bodyLarge
               ?.copyWith(fontWeight: FontWeight.w600),
         ),
       ),

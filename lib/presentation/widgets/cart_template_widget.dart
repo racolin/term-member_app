@@ -228,11 +228,24 @@ class _CartTemplateWidgetState extends State<CartTemplateWidget> {
                         }
                       }
                     },
+                    style: ButtonStyle(
+                      backgroundColor: MaterialStateProperty.all(
+                        Colors.orange,
+                      ),
+                    ),
                     child: Row(
                       mainAxisSize: MainAxisSize.min,
                       children: const [
-                        Text(txtOrderNow),
-                        Icon(Icons.arrow_circle_right_outlined),
+                        Text(
+                          txtOrderNow,
+                          style: TextStyle(
+                            color: Colors.white,
+                          ),
+                        ),
+                        Icon(
+                          Icons.arrow_circle_right_outlined,
+                          color: Colors.white,
+                        ),
                       ],
                     ),
                   ),

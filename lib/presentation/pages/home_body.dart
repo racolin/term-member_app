@@ -135,6 +135,7 @@ class _HomeBodyState extends State<HomeBody> {
               if (widget.login) const ReOrdersWidget(),
               if (widget.login) const ReTemplatesWidget(),
               const NewsSectionWidget(),
+              const SizedBox(height: dimMD),
             ],
           ),
         ),

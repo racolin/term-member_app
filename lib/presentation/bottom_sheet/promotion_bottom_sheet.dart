@@ -205,7 +205,7 @@ class PromotionBottomSheet extends StatelessWidget {
                       children: [
                         Expanded(
                           child: Text(
-                            'Đổi ${promotion.point} $txtPointName \nlấy promotion này',
+                            'Đổi ${promotion.point} $txtPointName \nlấy ưu đãi này',
                             maxLines: 2,
                             style: const TextStyle(
                               color: Colors.white,

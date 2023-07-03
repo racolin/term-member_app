@@ -22,7 +22,7 @@ class RewardScreen extends StatelessWidget {
           txtReward,
           style: Theme.of(context)
               .textTheme
-              .titleSmall
+              .bodyLarge
               ?.copyWith(fontWeight: FontWeight.w600),
         ),
       ),
@@ -57,7 +57,8 @@ class RewardScreen extends StatelessWidget {
                     ),
                     const SizedBox(height: spaceMD),
                     const Text(
-                      'Với $txtReward',
+                      txtReward,
+                      textAlign: TextAlign.center,
                       style: TextStyle(
                         fontWeight: FontWeight.w700,
                         fontSize: fontLG,

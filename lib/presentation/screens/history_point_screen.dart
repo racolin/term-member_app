@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:member_app/presentation/pages/loading_page.dart';
+import 'package:member_app/presentation/res/dimen/dimens.dart';
 import 'package:member_app/presentation/res/strings/values.dart';
 
 import '../../business_logic/cubits/history_point_cubit.dart';
@@ -45,11 +46,11 @@ class _HistoryPointScreenState extends State<HistoryPointScreen> {
     return Scaffold(
       appBar: AppBar(
         title: const Text(
-          'Lịch sửa $txtPointName',
+          'Lịch sử $txtPointName',
           style: TextStyle(fontSize: 16),
         ),
-        backgroundColor: Colors.orange.withAlpha(50),
-        elevation: 0,
+        // backgroundColor: Colors.orange.withAlpha(50),
+        // elevation: 0,
         leading: IconButton(
           splashRadius: 28,
           onPressed: () {
@@ -69,7 +70,7 @@ class _HistoryPointScreenState extends State<HistoryPointScreen> {
               var list = (state as HistoryPointLoaded).paging.list;
               return ListView.builder(
                 controller: _controller,
-                padding: const EdgeInsets.symmetric(vertical: 16),
+                padding: const EdgeInsets.only(top: spaceMD, bottom: dimMD),
                 itemBuilder: (context, index) => _getHistoryItem(list[index]),
                 itemCount: list.length,
               );

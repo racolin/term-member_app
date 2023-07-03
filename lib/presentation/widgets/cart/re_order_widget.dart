@@ -55,10 +55,10 @@ class _ReOrderWidgetState extends State<ReOrderWidget> {
       amounts.add(e.amount);
       costs.add(
         ((product?.cost ?? 0) +
-            getCostOptions(
-              context,
-              e.options,
-            )) *
+                getCostOptions(
+                  context,
+                  e.options,
+                )) *
             e.amount,
       );
     }
@@ -66,8 +66,8 @@ class _ReOrderWidgetState extends State<ReOrderWidget> {
 
   int getCostOptions(BuildContext context, List<String> options) {
     return context.read<ProductCubit>().getCostOptionsItem(
-      options,
-    ) ??
+              options,
+            ) ??
         0;
   }
 
@@ -94,9 +94,9 @@ class _ReOrderWidgetState extends State<ReOrderWidget> {
               Text(
                 widget.cart.name,
                 style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                  fontWeight: FontWeight.w500,
-                  fontSize: 18,
-                ),
+                      fontWeight: FontWeight.w500,
+                      fontSize: 18,
+                    ),
               ),
               const SizedBox(
                 height: spaceXS,
@@ -127,9 +127,9 @@ class _ReOrderWidgetState extends State<ReOrderWidget> {
                     overflow: TextOverflow.ellipsis,
                     widget.cart.products[i].options
                         .map((e) => context
-                        .read<ProductCubit>()
-                        .getProductOptionItemById(e)
-                        ?.name)
+                            .read<ProductCubit>()
+                            .getProductOptionItemById(e)
+                            ?.name)
                         .join(', '),
                   ),
                 ),
@@ -138,9 +138,9 @@ class _ReOrderWidgetState extends State<ReOrderWidget> {
                   Text(
                     '$txtTotalCost: ${numberToCurrency(costs.fold(0, (pre, e) => pre + e), 'đ')}',
                     style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                      fontWeight: FontWeight.w500,
-                      fontSize: 16,
-                    ),
+                          fontWeight: FontWeight.w500,
+                          fontSize: 16,
+                        ),
                   ),
                   const Spacer(),
                   ElevatedButton(
@@ -192,9 +192,9 @@ class _ReOrderWidgetState extends State<ReOrderWidget> {
                           }
 
                           var message =
-                          context.read<CartCubit>().addProductsToCart(
-                            list,
-                          );
+                              context.read<CartCubit>().addProductsToCart(
+                                    list,
+                                  );
                           if (mounted) {
                             if (message != null) {
                               showCupertinoDialog(
@@ -227,11 +227,22 @@ class _ReOrderWidgetState extends State<ReOrderWidget> {
                         }
                       }
                     },
+                    style: ButtonStyle(
+                      backgroundColor: MaterialStateProperty.all(
+                        Colors.orange,
+                      ),
+                    ),
                     child: Row(
                       mainAxisSize: MainAxisSize.min,
                       children: const [
-                        Text(txtOrderNow),
-                        Icon(Icons.arrow_circle_right_outlined),
+                        Text(
+                          txtReOrder,
+                          style: TextStyle(color: Colors.white),
+                        ),
+                        Icon(
+                          Icons.arrow_circle_right_outlined,
+                          color: Colors.white,
+                        ),
                       ],
                     ),
                   ),

@@ -32,10 +32,9 @@ class AddressScreen extends StatelessWidget {
         ),
         title: Text(
           txtSavedAddress,
-          style: TextStyle(
-            fontSize: fontLG,
-            color: Colors.black.withAlpha(200),
-          ),
+          style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                fontWeight: FontWeight.w600,
+              ),
         ),
       ),
       body: BlocBuilder<AddressCubit, AddressState>(

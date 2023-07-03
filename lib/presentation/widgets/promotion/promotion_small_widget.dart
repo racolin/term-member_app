@@ -71,7 +71,7 @@ class PromotionSmallWidget extends StatelessWidget {
           ),
           subtitle: Text(
             promotion.name,
-            maxLines: 2,
+            maxLines: 1,
             overflow: TextOverflow.ellipsis,
             style: const TextStyle(
               fontSize: fontSM,

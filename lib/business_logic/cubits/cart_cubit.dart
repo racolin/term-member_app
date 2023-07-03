@@ -167,10 +167,11 @@ class CartCubit extends Cubit<CartState> {
 
     var state = this.state as CartLoaded;
 
+    print(state.toMap());
     if (state.categoryId == DeliveryType.delivery) {
       if (
           // state.payType == null ||
-          state.time == null ||
+          // state.time == null ||
               state.phone == null ||
               state.phone == '' ||
               state.receiver == null ||
@@ -183,9 +184,9 @@ class CartCubit extends Cubit<CartState> {
       }
     } else if (state.categoryId == DeliveryType.takeOut) {
       if (state.store == null ||
-          state.storeDetail == null ||
+          state.storeDetail == null
           // state.payType == null ||
-          state.time == null
+          // state.time == null
           // ||
           // state.phone == null ||
           // state.phone == '' ||
@@ -212,7 +213,7 @@ class CartCubit extends Cubit<CartState> {
       payType: state.payType ?? 0,
       phone: state.phone ?? '+84868754872',
       receiver: state.receiver ?? 'Vinh',
-      receivingTime: state.time!.millisecondsSinceEpoch,
+      receivingTime: state.time?.millisecondsSinceEpoch ?? DateTime.now().millisecondsSinceEpoch,
       products: state.products,
       addressName: '${state.addressName}|${state.addressDescription}',
       voucherId: state.voucher?.id,
@@ -534,5 +535,18 @@ class CartCubit extends Cubit<CartState> {
     }
 
     return null;
+  }
+
+  Future<List<CartDetailModel>> getDetails(List<String> ids) async {
+    var reses = await Future.wait(ids.map((id) => _repository.getDetailById(id: id)), eagerError: true);
+
+    var rs = <CartDetailModel>[];
+
+    for (var i = 0; i < ids.length; i++) {
+      if (reses[i].type == ResponseModelType.success) {
+        rs.add(reses[i].data);
+      }
+    }
+    return rs;
   }
 }

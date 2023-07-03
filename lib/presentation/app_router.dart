@@ -260,17 +260,7 @@ class AppRouter {
       case carts:
         return MaterialPageRoute(
           builder: (context) {
-            return RepositoryProvider<CartRepository>(
-              create: (context) => CartApiRepository(),
-              child: BlocProvider<CartsCubit>(
-                create: (context) => CartsCubit(
-                  repository: RepositoryProvider.of<CartRepository>(
-                    context,
-                  ),
-                ),
-                child: const CartsScreen(),
-              ),
-            );
+            return const CartsScreen();
           },
         );
       case profile:

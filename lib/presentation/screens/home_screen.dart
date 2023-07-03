@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:member_app/business_logic/cubits/app_bar_cubit.dart';
 import 'package:member_app/business_logic/cubits/cart_cubit.dart';
 import 'package:member_app/business_logic/cubits/product_cubit.dart';
 import 'package:member_app/business_logic/states/cart_state.dart';
@@ -29,6 +30,7 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
   @override
   void initState() {
     WidgetsBinding.instance.addObserver(this);
+    context.read<AppBarCubit>().init();
     super.initState();
   }
 

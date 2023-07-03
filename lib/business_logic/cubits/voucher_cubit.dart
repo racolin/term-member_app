@@ -1,5 +1,6 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:member_app/data/models/response_model.dart';
+import 'package:member_app/data/models/voucher_model.dart';
 
 import '../../exception/app_message.dart';
 import '../../business_logic/states/voucher_state.dart';
@@ -79,6 +80,20 @@ class VoucherCubit extends Cubit<VoucherState> {
 // action method, change state and return AppMessage?, null when success
 
 // get data method: return model if state is loaded, else return null
+
+  List<VoucherModel>? getListSlider() {
+    if (state is VoucherLoaded) {
+      return (state as VoucherLoaded).listSlider;
+    }
+    return null;
+  }
+
+  bool get listSliderAvailable {
+    if (state is VoucherLoaded) {
+      return (state as VoucherLoaded).listSliderAvailable;
+    }
+    return false;
+  }
 
   Future<AppMessage?> loadAvailableVouchers() async {
     var res = await _repository.getsAvailable();

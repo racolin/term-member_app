@@ -6,6 +6,7 @@ import 'package:member_app/business_logic/repositories/member_repository.dart';
 import '../business_logic/cubits/internet_cubit.dart';
 import 'business_logic/cubits/cart_cubit.dart';
 import 'business_logic/cubits/cart_template_cubit.dart';
+import 'business_logic/cubits/carts_cubit.dart';
 import 'business_logic/cubits/product_cubit.dart';
 import 'business_logic/repositories/cart_repository.dart';
 import 'business_logic/repositories/cart_template_repository.dart';
@@ -39,6 +40,9 @@ class MyApp extends StatelessWidget {
         RepositoryProvider<MemberRepository>(
           create: (context) => MemberApiRepository(),
         ),
+        RepositoryProvider<CartRepository>(
+          create: (context) => CartApiRepository(),
+        ),
       ],
       child: MultiBlocProvider(
         providers: [
@@ -71,6 +75,13 @@ class MyApp extends StatelessWidget {
           BlocProvider<AppBarCubit>(
             create: (context) => AppBarCubit(
               repository: RepositoryProvider.of<MemberRepository>(
+                context,
+              ),
+            ),
+          ),
+          BlocProvider<CartsCubit>(
+            create: (context) => CartsCubit(
+              repository: RepositoryProvider.of<CartRepository>(
                 context,
               ),
             ),

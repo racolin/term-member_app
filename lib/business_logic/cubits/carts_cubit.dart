@@ -21,7 +21,7 @@ class CartsCubit extends Cubit<CartsState> {
         var statuses = res.data;
         if (statuses.isNotEmpty) {
           _repository
-              .getsByStatusId(statusId: statuses[0].id, page: 1, limit: 20)
+              .getsByStatusId(statusId: statuses[1].id, page: 1, limit: 20)
               .then((res) {
             if (res.type == ResponseModelType.success) {
               Map<String, PagingModel<CartModel>> listCarts = {};
@@ -32,7 +32,7 @@ class CartsCubit extends Cubit<CartsState> {
                   list: [],
                 );
               }
-              listCarts[statuses[0].id]?.next(res.data.value, res.data.key);
+              listCarts[statuses[1].id]?.next(res.data.value, res.data.key);
 
               emit(
                 CartsLoaded(

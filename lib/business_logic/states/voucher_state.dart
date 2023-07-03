@@ -33,6 +33,10 @@ class VoucherLoaded extends VoucherState {
   List<VoucherModel> get listSlider =>
       list.where((e) => e.sliderImage != null).toList();
 
+  bool get listSliderAvailable {
+    return listSlider.isNotEmpty;
+  }
+
   List<VoucherModel> getsAboutToExpire() {
     return list
         .where(

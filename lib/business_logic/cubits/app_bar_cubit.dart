@@ -17,6 +17,10 @@ class AppBarCubit extends Cubit<AppBarState> {
     required MemberRepository repository,
   })  : _repository = repository,
         super(AppBarInitial()) {
+    init();
+  }
+
+  void init() {
     emit(AppBarLoading());
     var model = const AppBarModel(
       greeting: 'Xin chào!',

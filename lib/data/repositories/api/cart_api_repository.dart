@@ -161,9 +161,10 @@ class CartApiRepository extends CartRepository {
         ApiRouter.cartGet(id),
       );
       var raw = RawSuccessModel.fromMap(res.data);
+      var data = CartDetailModel.fromMap(raw.data);
       return ResponseModel<CartDetailModel>(
         type: ResponseModelType.success,
-        data: CartDetailModel.fromMap(raw.data),
+        data: data,
       );
     } on DioError catch (ex) {
       if (ex.error is AppMessage) {

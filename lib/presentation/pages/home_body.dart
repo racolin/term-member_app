@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:member_app/business_logic/cubits/voucher_cubit.dart';
 
 import '../widgets/card_home_widget.dart';
 import '../res/strings/values.dart';
@@ -10,6 +12,7 @@ import '../widgets/card_widget.dart';
 import '../widgets/delivery/delivery_options_widget.dart';
 import '../widgets/drag_bar_widget.dart';
 import '../widgets/re_orders_widget.dart';
+import '../widgets/re_templates_widget.dart';
 import '../widgets/slide/slider_widget.dart';
 
 class HomeBody extends StatefulWidget {
@@ -125,9 +128,12 @@ class _HomeBodyState extends State<HomeBody> {
             children: [
               const DragBarWidget(margin: spaceXS),
               const DeliveryOptionsWidget(),
-              if (widget.login) const SliderWidget(),
+              if (widget.login &&
+                  context.read<VoucherCubit>().listSliderAvailable)
+                const SliderWidget(),
               if (widget.login) const ProductsSuggestWidget(height: 307),
               if (widget.login) const ReOrdersWidget(),
+              if (widget.login) const ReTemplatesWidget(),
               const NewsSectionWidget(),
             ],
           ),

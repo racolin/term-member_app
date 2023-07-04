@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:member_app/data/models/cart_model.dart';
-import 'package:member_app/presentation/app_router.dart';
 import 'package:member_app/presentation/res/dimen/dimens.dart';
 import 'package:member_app/presentation/widgets/cart/cart_widget.dart';
 
@@ -20,7 +19,7 @@ class CartsScreen extends StatefulWidget {
 }
 
 class _CartsScreenState extends State<CartsScreen> {
-  var selected = 0;
+  var selected = 1;
   final ScrollController _controller = ScrollController();
   final listPosition = <double>[0, 0, 0];
 

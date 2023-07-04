@@ -100,6 +100,7 @@ class CartTemplateCubit extends Cubit<CartTemplateState> {
     String name,
     List<CartTemplateProductModel> products,
   ) async {
+
     if (this.state is! CartTemplateLoaded) {
       return AppMessage(
         type: AppMessageType.failure,
@@ -110,6 +111,23 @@ class CartTemplateCubit extends Cubit<CartTemplateState> {
 
     var state = this.state as CartTemplateLoaded;
 
+    if (id == '') {
+      var res = await _repository.create(
+        name: name,
+        products: products,
+      );
+
+      if (res.type == ResponseModelType.success) {
+        var list = state.list;
+        list.last = list.last.copyWith(id: res.data, name: name, products: products);
+
+        emit(state.copyWith(list: list));
+
+        return null;
+      } else {
+        return res.message;
+      }
+    }
     var res = await _repository.update(
       id: id,
       name: name,
@@ -130,11 +148,24 @@ class CartTemplateCubit extends Cubit<CartTemplateState> {
         products: products,
         name: name,
       );
+
       emit(state.copyWith(list: list));
 
       return null;
     } else {
       return res.message;
+    }
+  }
+
+  void createLocalTemplate() {
+    if (state is CartTemplateLoaded) {
+
+      var state = this.state as CartTemplateLoaded;
+      var length = state.list.length;
+
+      var selected = CartTemplateModel(id: '', name: '', index: length, products: []);
+
+      emit(state.copyWith(list: state.list + [selected]));
     }
   }
 
@@ -186,7 +217,7 @@ class CartTemplateCubit extends Cubit<CartTemplateState> {
 
     if (state.selected?.id == id) {
       state.selected?.products.removeWhere((e) => e.id == pId);
-      emit(state);
+      emit(state.copyWith());
       return null;
     }
 

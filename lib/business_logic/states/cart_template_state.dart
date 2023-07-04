@@ -1,7 +1,9 @@
+import 'package:flutter/foundation.dart';
 import 'package:member_app/exception/app_message.dart';
-
+import 'package:equatable/equatable.dart';
 import '../../data/models/cart_template_model.dart';
 
+@immutable
 abstract class CartTemplateState {}
 
 class CartTemplateInitial extends CartTemplateState {}

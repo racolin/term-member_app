@@ -538,7 +538,7 @@ class CartCubit extends Cubit<CartState> {
   }
 
   Future<List<CartDetailModel>> getDetails(List<String> ids) async {
-    var reses = await Future.wait(ids.map((id) => _repository.getDetailById(id: id)), eagerError: true);
+    var reses = await Future.wait(ids.map((id) => _repository.getDetailById(id: id)));
 
     var rs = <CartDetailModel>[];
 

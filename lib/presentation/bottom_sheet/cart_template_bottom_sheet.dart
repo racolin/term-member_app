@@ -548,6 +548,9 @@ class _CartTemplateBottomSheetState extends State<CartTemplateBottomSheet> {
                                               'Cập nhật đơn hàng mẫu thành công!'),
                                         ),
                                       );
+                                      context
+                                          .read<AppBarCubit>()
+                                          .addTemplateCart(1);
                                     } else {
                                       showCupertinoDialog(
                                         context: context,

@@ -92,6 +92,7 @@ class _CartTemplateScreenState extends State<CartTemplateScreen> {
               return const LoadingPage();
             case CartTemplateLoaded:
               state as CartTemplateLoaded;
+              list = state.list;
               if (list.isEmpty) {
                 list = [...state.list];
               }
@@ -107,7 +108,21 @@ class _CartTemplateScreenState extends State<CartTemplateScreen> {
                       children: [
                         Text('Số lượng: ${state.list.length}/${state.limit}'),
                         ElevatedButton(
-                          onPressed: () {},
+                          onPressed: () {
+                            context.read<CartTemplateCubit>().createLocalTemplate();
+                            showModalBottomSheet(
+                              backgroundColor: Colors.transparent,
+                              context: context,
+                              isScrollControlled: true,
+                              builder: (ctx) =>
+                              BlocProvider<ProductCubit>.value(
+                                value: BlocProvider.of<ProductCubit>(context),
+                                child: const CartTemplateBottomSheet(
+                                  id: '',
+                                ),
+                              ),
+                            );
+                          },
                           style: ButtonStyle(
                             backgroundColor: MaterialStateProperty.all(
                               Colors.orange,
@@ -137,8 +152,9 @@ class _CartTemplateScreenState extends State<CartTemplateScreen> {
                               builder: (ctx) =>
                                   BlocProvider<ProductCubit>.value(
                                 value: BlocProvider.of<ProductCubit>(context),
-                                child:
-                                    CartTemplateBottomSheet(id: list[index].id),
+                                child: CartTemplateBottomSheet(
+                                  id: list[index].id,
+                                ),
                               ),
                             );
                           },

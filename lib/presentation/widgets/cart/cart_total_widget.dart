@@ -137,7 +137,7 @@ class CartTotalWidget extends StatelessWidget {
                       ),
                 ),
                 Text(
-                  numberToCurrency(total - voucherDiscount + fee, 'đ'),
+                  numberToCurrency(total - voucherDiscount + originalFee, 'đ'),
                   style: const TextStyle(
                     fontWeight: FontWeight.w700,
                   ),

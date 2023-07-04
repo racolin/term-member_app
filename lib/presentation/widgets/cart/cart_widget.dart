@@ -41,7 +41,7 @@ class CartWidget extends StatelessWidget {
       subtitle: Row(
         children: [
           Text(
-            dateToString(model.time, 'HH:MM - dd/MM/yyyy'),
+            dateToString(model.time, 'HH:mm - dd/MM/yyyy'),
             style: const TextStyle(fontSize: 12),
           ),
           const Spacer(),

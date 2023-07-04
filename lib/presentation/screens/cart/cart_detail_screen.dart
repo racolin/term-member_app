@@ -581,7 +581,7 @@ class _CartDetailScreenState extends State<CartDetailScreen> {
               amount: products[index].amount,
               name: products[index].name,
               note: products[index].note,
-              cost: products[index].cost,
+              cost: products[index].cost * products[index].amount,
             ),
             physics: const NeverScrollableScrollPhysics(),
             itemCount: products.length,

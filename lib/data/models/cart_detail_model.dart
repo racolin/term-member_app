@@ -18,7 +18,7 @@ class CartDetailModel extends CartModel {
   final CartReviewModel? review;
   final int? point;
 
-  int get total => products.fold(0, (pre, e) => pre + e.cost);
+  int get total => products.fold(0, (pre, e) => pre + e.cost * e.amount);
 
   const CartDetailModel({
     required super.id,

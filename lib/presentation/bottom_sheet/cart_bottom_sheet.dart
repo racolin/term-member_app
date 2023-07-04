@@ -107,7 +107,7 @@ class _CartBottomSheetState extends State<CartBottomSheet> {
                           const SizedBox(height: 8),
                           _getTotal(
                             costs.fold(0, (p, e) => p + e),
-                            state.fee,
+                            (state.categoryId == DeliveryType.takeOut) ? 0 : state.fee,
                             state.voucherDiscount,
                             state.voucher?.name ?? '',
                           ),

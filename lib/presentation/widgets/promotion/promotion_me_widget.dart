@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:member_app/business_logic/cubits/promotion_cubit.dart';
 import 'package:member_app/presentation/res/strings/values.dart';
 
+import '../../../business_logic/cubits/voucher_cubit.dart';
 import '../../../data/models/promotion_model.dart';
 import '../../bottom_sheet/promotion_bottom_sheet.dart';
 import '../../res/dimen/dimens.dart';
@@ -32,6 +33,9 @@ class PromotionMeWidget extends StatelessWidget {
                 return context.read<PromotionCubit>().exchange(
                   promotion.id,
                 );
+              },
+              updateVoucher: () {
+                context.read<VoucherCubit>().loadAvailableVouchers();
               },
             );
           },

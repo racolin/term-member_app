@@ -5,6 +5,7 @@ import 'package:member_app/presentation/res/strings/values.dart';
 import 'package:member_app/presentation/widgets/app_image_widget.dart';
 
 import '../../../business_logic/cubits/promotion_cubit.dart';
+import '../../../business_logic/cubits/voucher_cubit.dart';
 import '../../../data/models/promotion_model.dart';
 import '../../bottom_sheet/promotion_bottom_sheet.dart';
 
@@ -35,6 +36,9 @@ class PromotionSmallWidget extends StatelessWidget {
                 return context.read<PromotionCubit>().exchange(
                       promotion.id,
                     );
+              },
+              updateVoucher: () {
+                context.read<VoucherCubit>().loadAvailableVouchers();
               },
             );
           },

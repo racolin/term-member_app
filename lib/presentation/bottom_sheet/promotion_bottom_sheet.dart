@@ -1,5 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:member_app/business_logic/cubits/app_bar_cubit.dart';
+import 'package:member_app/business_logic/cubits/voucher_cubit.dart';
 import 'package:member_app/exception/app_message.dart';
 import 'package:member_app/presentation/dialogs/app_dialog.dart';
 import 'package:member_app/presentation/res/dimen/dimens.dart';
@@ -13,11 +16,13 @@ import '../widgets/app_image_widget.dart';
 class PromotionBottomSheet extends StatelessWidget {
   final PromotionModel promotion;
   final Future<AppMessage?> Function() exchange;
+  final VoidCallback updateVoucher;
 
   const PromotionBottomSheet({
     Key? key,
     required this.promotion,
     required this.exchange,
+    required this.updateVoucher,
   }) : super(key: key);
 
   @override
@@ -114,11 +119,12 @@ class PromotionBottomSheet extends StatelessWidget {
                                         ),
                                       ),
                                       Text(
-                                        promotion.to == null ? 'Không giới hạn' :
-                                        dateToString(
-                                          promotion.to!,
-                                          'dd/MM/yyyy',
-                                        ),
+                                        promotion.to == null
+                                            ? 'Không giới hạn'
+                                            : dateToString(
+                                                promotion.to!,
+                                                'dd/MM/yyyy',
+                                              ),
                                         style: const TextStyle(
                                           fontSize: 16,
                                           fontWeight: FontWeight.w700,
@@ -219,6 +225,8 @@ class PromotionBottomSheet extends StatelessWidget {
                             exchange().then(
                               (message) {
                                 if (message == null) {
+                                  context.read<AppBarCubit>().addVoucher(1);
+                                  updateVoucher();
                                   showCupertinoDialog(
                                     context: context,
                                     builder: (context) => AppDialog(
@@ -230,10 +238,11 @@ class PromotionBottomSheet extends StatelessWidget {
                                       ),
                                       actions: [
                                         CupertinoDialogAction(
-                                            child: const Text(txtConfirm),
-                                            onPressed: () {
-                                              Navigator.pop(context);
-                                            }),
+                                          child: const Text(txtConfirm),
+                                          onPressed: () {
+                                            Navigator.pop(context);
+                                          },
+                                        ),
                                       ],
                                     ),
                                   );

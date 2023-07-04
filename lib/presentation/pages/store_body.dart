@@ -11,7 +11,7 @@ import 'package:member_app/presentation/res/strings/values.dart';
 import '../../business_logic/blocs/interval/interval_bloc.dart';
 import '../../data/models/store_model.dart';
 import '../widgets/store/stores_main_widget.dart';
-import 'store_search_page.dart';
+import '../screens/store_search_screen.dart';
 
 class StoreBody extends StatelessWidget {
   static const String searchTag = 'Search';
@@ -131,7 +131,7 @@ class StoreBody extends StatelessWidget {
                           create: (ctx) => IntervalBloc<StoreModel>(
                             submit: BlocProvider.of<StoreCubit>(context),
                           ),
-                          child: StoreSearchPage(
+                          child: StoreSearchScreen(
                             onClick: (StoreModel model) {
                               context
                                   .read<StoreCubit>()

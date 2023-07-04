@@ -10,7 +10,7 @@ import '../../../business_logic/repositories/store_repository.dart';
 import '../../../business_logic/states/home_state.dart';
 import '../../../data/repositories/api/store_api_repository.dart';
 import '../../../data/repositories/mock/store_mock_repository.dart';
-import '../../../presentation/pages/store_search_page.dart';
+import '../../screens/store_search_screen.dart';
 import '../../app_router.dart';
 import '../../bottom_sheet/method_order_bottom_sheet.dart';
 import 'delivery_option_widget.dart';
@@ -63,7 +63,7 @@ class DeliveryOptionsWidget extends StatelessWidget {
                                   ),
                                 ),
                               ],
-                              child: StoreSearchPage(
+                              child: StoreSearchScreen(
                                 onClick: (StoreModel store) {
                                   Navigator.pop(ctx);
                                 },

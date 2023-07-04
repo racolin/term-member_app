@@ -15,7 +15,7 @@ import '../../data/repositories/api/store_api_repository.dart';
 import '../../presentation/res/strings/values.dart';
 import '../../data/models/cart_model.dart';
 import '../../supports/convert.dart';
-import '../pages/store_search_page.dart';
+import '../screens/store_search_screen.dart';
 
 class MethodOrderBottomSheet extends StatelessWidget {
   final DeliveryType? type;
@@ -165,7 +165,7 @@ class MethodOrderBottomSheet extends StatelessWidget {
                               ],
                               child: Builder(
                                 builder: (context) {
-                                  return StoreSearchPage(
+                                  return StoreSearchScreen(
                                     onClick: (StoreModel store) async {
                                       context.read<CartCubit>().setCategory(1);
                                       context.read<CartCubit>().setAddress(

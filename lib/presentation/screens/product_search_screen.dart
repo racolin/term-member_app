@@ -1,6 +1,8 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:member_app/business_logic/cubits/cart_template_cubit.dart';
+import 'package:member_app/presentation/pages/loading_page.dart';
 
 import '../../business_logic/blocs/interval/interval_bloc.dart';
 import '../../business_logic/cubits/cart_cubit.dart';
@@ -58,7 +60,7 @@ class _ProductSearchScreenState extends State<ProductSearchScreen> {
           }
           return Column(
             children: [
-              _getSearchBar(context),
+              _getSearchBar(context, state),
               Expanded(
                 child: NotificationListener<ScrollNotification>(
                   onNotification: (notification) {
@@ -152,7 +154,7 @@ class _ProductSearchScreenState extends State<ProductSearchScreen> {
     );
   }
 
-  Widget _getSearchBar(BuildContext context) {
+  Widget _getSearchBar(BuildContext context, IntervalState state) {
     return Container(
       color: Colors.white,
       margin: const EdgeInsets.only(top: dimMD),
@@ -168,6 +170,9 @@ class _ProductSearchScreenState extends State<ProductSearchScreen> {
                   borderRadius: BorderRadius.circular(spaceXS),
                 ),
                 prefixIcon: const Icon(Icons.search),
+                suffixIcon: (state is IntervalLoaded && state.reload)
+                    ? const CupertinoActivityIndicator()
+                    : null,
               ),
               style: Theme.of(context).textTheme.bodyLarge,
               onChanged: (value) {

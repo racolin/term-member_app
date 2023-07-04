@@ -44,7 +44,12 @@ class IntervalBloc<T> extends Bloc<IntervalEvent, IntervalState<T>> {
   }) {
     return (events, mapper) => events
         .debounce(
-          (event) => TimerStream(true, duration),
+          (event) {
+            if (state is IntervalLoaded) {
+              emit((state as IntervalLoaded<T>).copyWith(reload: true));
+            }
+            return TimerStream(true, duration);
+          },
         )
         .switchMap(mapper);
   }

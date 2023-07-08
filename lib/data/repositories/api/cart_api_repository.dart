@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:math';
 
 import 'package:dio/dio.dart';
@@ -26,6 +27,17 @@ class CartApiRepository extends CartRepository {
     required List<CartProductModel> products,
   }) async {
     try {
+      print(jsonEncode({
+        'storeId': storeId,
+        'voucherId': voucherId,
+        'categoryId': categoryId,
+        'products': products
+            .map(
+              (e) => e.toMapCheck(),
+        )
+            .toList(),
+      }));
+      print('object');
       var res = await _dio.post(
         ApiRouter.cartCheckVoucher,
         data: {
@@ -93,6 +105,21 @@ class CartApiRepository extends CartRepository {
     required List<CartProductModel> products,
   }) async {
     try {
+      print(jsonEncode({
+        'storeId': storeId,
+        'categoryId': categoryId,
+        'payType': payType,
+        'phone': phone,
+        'receiver': receiver,
+        'voucherId': voucherId,
+        // 'receivingTime': receivingTime,
+        'addressName': addressName,
+        'products': products
+            .map(
+              (e) => e.toMapCheck(),
+        )
+            .toList(),
+      }));
       var res = await _dio.post(
         ApiRouter.cartCreate,
         data: {

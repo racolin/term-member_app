@@ -16,12 +16,12 @@ class HistoryPointCubit extends Cubit<HistoryPointState> {
   })  : _repository = repository,
         super(HistoryPointInitial()) {
     emit(HistoryPointLoading());
-    _repository.getHistoryPoint(page: 1, limit: 20).then((res) {
+    _repository.getHistoryPoint(page: 1, limit: 10).then((res) {
       if (res.type == ResponseModelType.success) {
         var mapEntry = res.data;
         emit(HistoryPointLoaded(
           paging: PagingModel<HistoryPointModel>(
-            limit: 20,
+            limit: 10,
             list: mapEntry.value,
             maxCount: mapEntry.key,
             page: 2,
@@ -49,14 +49,14 @@ class HistoryPointCubit extends Cubit<HistoryPointState> {
 
   // Action data
   Future<AppMessage?> reloadHistoryPoint() async {
-    var res = await _repository.getHistoryPoint(page: 1, limit: 20);
+    var res = await _repository.getHistoryPoint(page: 1, limit: 10);
 
     if (res.type == ResponseModelType.success) {
       var mapEntry = res.data;
 
       emit(HistoryPointLoaded(
         paging: PagingModel<HistoryPointModel>(
-          limit: 20,
+          limit: 10,
           page: 1,
           maxCount: mapEntry.key,
           list: mapEntry.value,

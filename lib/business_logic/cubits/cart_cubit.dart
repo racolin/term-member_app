@@ -1,5 +1,4 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:member_app/data/models/cart_template_model.dart';
 import 'package:member_app/data/models/response_model.dart';
 
 import '../../data/models/cart_checked_model.dart';
@@ -92,7 +91,7 @@ class CartCubit extends Cubit<CartState> {
     var storeId =
         (state is! CartLoaded) ? null : (state as CartLoaded).store?.id;
     var res = await _repository.checkVoucher(
-      storeId: storeId,
+      storeId: storeId ?? '641875ec7541eda7125936bf',
       voucherId: voucherId,
       categoryId: categoryId,
       products: products,
@@ -172,7 +171,7 @@ class CartCubit extends Cubit<CartState> {
       if (
           // state.payType == null ||
           // state.time == null ||
-              state.phone == null ||
+          state.phone == null ||
               state.phone == '' ||
               state.receiver == null ||
               state.receiver == '') {
@@ -183,8 +182,7 @@ class CartCubit extends Cubit<CartState> {
         );
       }
     } else if (state.categoryId == DeliveryType.takeOut) {
-      if (state.store == null ||
-          state.storeDetail == null
+      if (state.store == null || state.storeDetail == null
           // state.payType == null ||
           // state.time == null
           // ||
@@ -192,7 +190,7 @@ class CartCubit extends Cubit<CartState> {
           // state.phone == '' ||
           // state.receiver == null ||
           // state.receiver == ''
-      ) {
+          ) {
         return AppMessage(
           type: AppMessageType.failure,
           title: txtFailureTitle,
@@ -213,7 +211,8 @@ class CartCubit extends Cubit<CartState> {
       payType: state.payType ?? 0,
       phone: state.phone ?? '+84868754872',
       receiver: state.receiver ?? 'Vinh',
-      receivingTime: state.time?.millisecondsSinceEpoch ?? DateTime.now().millisecondsSinceEpoch,
+      receivingTime: state.time?.millisecondsSinceEpoch ??
+          DateTime.now().millisecondsSinceEpoch,
       products: state.products,
       addressName: '${state.addressName}|${state.addressDescription}',
       voucherId: state.voucher?.id,
@@ -428,8 +427,9 @@ class CartCubit extends Cubit<CartState> {
   }
 
   /// Chưa xử lý trường hợp sản phẩm không có trong store
-  AppMessage? addProductsToCart(List<CartProductModel> products,
-      [bool clear = true]) {
+  Future<AppMessage?> addProductsToCart(List<CartProductModel> products,
+      [bool clear = true]) async {
+    print(products.map((e) => e.toMap()));
     if (this.state is! CartLoaded) {
       return AppMessage(
         type: AppMessageType.notify,
@@ -480,13 +480,21 @@ class CartCubit extends Cubit<CartState> {
       );
     }
 
+    if (state.voucher != null) {
+      var mes = await checkAndSetVoucher(state.voucher!);
+      if (mes != null) {
+        emit(state.clearVoucher());
+        // return mes;
+      }
+    }
+
     print(products.map((e) => e.toMap()).toList());
     print(state.products.map((e) => e.toMap()).toList());
     emit(state);
     return null;
   }
 
-  AppMessage? deleteProduct(CartProductModel model) {
+  Future<AppMessage?> deleteProduct(CartProductModel model) async {
     if (this.state is! CartLoaded) {
       return AppMessage(
         type: AppMessageType.failure,
@@ -501,6 +509,13 @@ class CartCubit extends Cubit<CartState> {
 
     if (check) {
       emit(state.copyWith());
+      if (state.voucher != null) {
+        var mes = await checkAndSetVoucher(state.voucher!);
+        if (mes != null) {
+          emit(state.clearVoucher());
+          // return mes;
+        }
+      }
       return null;
     } else {
       return AppMessage(
@@ -511,7 +526,7 @@ class CartCubit extends Cubit<CartState> {
     }
   }
 
-  AppMessage? addProductToCart(CartProductModel model) {
+  Future<AppMessage?> addProductToCart(CartProductModel model) async {
     if (this.state is! CartLoaded) {
       return AppMessage(
         type: AppMessageType.notify,
@@ -534,11 +549,20 @@ class CartCubit extends Cubit<CartState> {
       emit(state.copyWith(products: list));
     }
 
+    if (state.voucher != null) {
+      var mes = await checkAndSetVoucher(state.voucher!);
+      if (mes != null) {
+        emit(state.clearVoucher());
+        // return mes;
+      }
+    }
+
     return null;
   }
 
   Future<List<CartDetailModel>> getDetails(List<String> ids) async {
-    var reses = await Future.wait(ids.map((id) => _repository.getDetailById(id: id)));
+    var reses =
+        await Future.wait(ids.map((id) => _repository.getDetailById(id: id)));
 
     var rs = <CartDetailModel>[];
 

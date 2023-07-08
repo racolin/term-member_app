@@ -89,6 +89,10 @@ class AppRouter {
         );
       case home:
         return MaterialPageRoute(
+          settings: RouteSettings(
+            name: AppRouter.home,
+            arguments: settings.arguments,
+          ),
           builder: (context) {
             // Sửa provider khi có hoặc ko có mạng ở ngay đây
             // Ví dụ: RepositoryProvider<MemberRepository>(
@@ -317,13 +321,34 @@ class AppRouter {
       case historyPoint:
         return MaterialPageRoute(
           builder: (context) {
-            return BlocProvider<HistoryPointCubit>(
-              create: (context) => HistoryPointCubit(
-                repository: RepositoryProvider.of<MemberRepository>(
-                  context,
+            return RepositoryProvider<VoucherRepository>(
+              create: (context) => VoucherApiRepository(),
+              child: MultiBlocProvider(
+                providers: [
+                  BlocProvider<HistoryPointCubit>(
+                    create: (context) => HistoryPointCubit(
+                      repository: RepositoryProvider.of<MemberRepository>(
+                        context,
+                      ),
+                    ),
+                  ),
+                  BlocProvider<VoucherCubit>(
+                    create: (context) => VoucherCubit(
+                      repository: RepositoryProvider.of<VoucherRepository>(
+                        context,
+                      ),
+                    ),
+                  ),
+                ],
+                child: BlocProvider<HistoryPointCubit>(
+                  create: (context) => HistoryPointCubit(
+                    repository: RepositoryProvider.of<MemberRepository>(
+                      context,
+                    ),
+                  ),
+                  child: const HistoryPointScreen(),
                 ),
               ),
-              child: const HistoryPointScreen(),
             );
           },
         );

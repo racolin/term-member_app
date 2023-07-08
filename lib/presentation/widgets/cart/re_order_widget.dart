@@ -183,7 +183,7 @@ class _ReOrderWidgetState extends State<ReOrderWidget> {
                               list.add(CartProductModel(
                                 id: e.id,
                                 name: p.name,
-                                cost: p.cost,
+                                cost: e.cost,
                                 options: e.options,
                                 amount: e.amount,
                                 note: '',
@@ -191,7 +191,7 @@ class _ReOrderWidgetState extends State<ReOrderWidget> {
                             }
                           }
 
-                          var message =
+                          var message = await
                               context.read<CartCubit>().addProductsToCart(
                                     list,
                                   );

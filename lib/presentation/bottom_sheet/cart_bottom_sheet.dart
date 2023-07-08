@@ -332,27 +332,29 @@ class _CartBottomSheetState extends State<CartBottomSheet> {
                     ),
                     CustomSlidableAction(
                       padding: EdgeInsets.zero,
-                      onPressed: (context) {
-                        var message = context.read<CartCubit>().deleteProduct(
+                      onPressed: (context) async {
+                        var message = await context.read<CartCubit>().deleteProduct(
                               products[i],
                             );
-                        if (message != null) {
-                          showCupertinoDialog(
-                            context: context,
-                            builder: (context) {
-                              return AppDialog(
-                                message: message,
-                                actions: [
-                                  CupertinoDialogAction(
-                                    child: const Text(txtConfirm),
-                                    onPressed: () {
-                                      Navigator.pop(context);
-                                    },
-                                  ),
-                                ],
-                              );
-                            },
-                          );
+                        if (mounted) {
+                          if (message != null) {
+                            showCupertinoDialog(
+                              context: context,
+                              builder: (context) {
+                                return AppDialog(
+                                  message: message,
+                                  actions: [
+                                    CupertinoDialogAction(
+                                      child: const Text(txtConfirm),
+                                      onPressed: () {
+                                        Navigator.pop(context);
+                                      },
+                                    ),
+                                  ],
+                                );
+                              },
+                            );
+                          }
                         }
                       },
                       child: Container(
@@ -727,6 +729,7 @@ class _CartBottomSheetState extends State<CartBottomSheet> {
 
             if (mounted) {
               if (message == null) {
+                Navigator.pop(context);
                 ScaffoldMessenger.of(context).clearSnackBars();
                 ScaffoldMessenger.of(context).showSnackBar(
                   const SnackBar(
@@ -736,7 +739,7 @@ class _CartBottomSheetState extends State<CartBottomSheet> {
                   ),
                 );
               } else {
-                // Navigator.pop(context);
+                Navigator.pop(context);
                 showCupertinoDialog(
                   context: context,
                   builder: (context) {

@@ -24,8 +24,9 @@ class ProductSuggestWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     int costOptions = context.read<ProductCubit>().getCostDefaultOptions(
-      product.optionIds,
-    ) ?? 0;
+              product.optionIds,
+            ) ??
+        0;
     return Container(
       padding: const EdgeInsets.all(spaceXS),
       width: dimXXL * 1.2,
@@ -73,54 +74,55 @@ class ProductSuggestWidget extends StatelessWidget {
             SizedBox(
               width: double.maxFinite,
               child: TextButton(
-                onPressed: () {
+                onPressed: () async {
                   var options = <String>[];
 
                   for (var o in product.optionIds) {
-                    var item = context
-                        .read<ProductCubit>()
-                        .getProductOptionById(o);
+                    var item =
+                        context.read<ProductCubit>().getProductOptionById(o);
                     if (item != null) {
                       options.addAll(item.defaultSelect);
                     }
                   }
                   var message =
-                  context.read<CartCubit>().addProductToCart(
-                    CartProductModel(
-                      id: product.id,
-                      name: product.name,
-                      cost: product.cost,
-                      options: options,
-                      amount: 1,
-                      note: '',
-                    ),
-                  );
-                  if (message != null) {
-                    showCupertinoDialog(
-                      context: context,
-                      builder: (context) {
-                        return AppDialog(
-                          message: message,
-                          actions: [
-                            CupertinoDialogAction(
-                              child: const Text(txtConfirm),
-                              onPressed: () {
-                                Navigator.pop(context);
-                              },
+                      await context.read<CartCubit>().addProductToCart(
+                            CartProductModel(
+                              id: product.id,
+                              name: product.name,
+                              cost: product.cost,
+                              options: options,
+                              amount: 1,
+                              note: '',
                             ),
-                          ],
-                        );
-                      },
-                    );
-                  } else {
-                    ScaffoldMessenger.of(context).clearSnackBars();
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(
-                        content: Text(
-                          'Thêm sản phẩm vào đơn hàng thành công',
+                          );
+                  if (context.mounted) {
+                    if (message != null) {
+                      showCupertinoDialog(
+                        context: context,
+                        builder: (context) {
+                          return AppDialog(
+                            message: message,
+                            actions: [
+                              CupertinoDialogAction(
+                                child: const Text(txtConfirm),
+                                onPressed: () {
+                                  Navigator.pop(context);
+                                },
+                              ),
+                            ],
+                          );
+                        },
+                      );
+                    } else {
+                      ScaffoldMessenger.of(context).clearSnackBars();
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(
+                          content: Text(
+                            'Thêm sản phẩm vào đơn hàng thành công',
+                          ),
                         ),
-                      ),
-                    );
+                      );
+                    }
                   }
                 },
                 style: ButtonStyle(

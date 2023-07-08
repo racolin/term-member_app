@@ -49,12 +49,30 @@ class CartLoaded extends CartState {
 
 
   int get calculateCost {
-    int value = voucherDiscount -
+    int value = - voucherDiscount +
         fee +
         products.fold(
           0,
-          (pre, e) => pre + e.amount * e.cost,
+          (pre, e)  {
+            print(pre);
+
+            print(e.toMap());
+            return pre + e.amount * e.cost;
+          },
         );
+    print(fee);
+    print(voucherDiscount);
+    var x = products.fold(
+      0,
+          (pre, e) {
+        print(pre);
+
+        print(e.toMap());
+        return pre + e.amount * e.cost;
+          },
+    );
+    print(x);
+
     return value < 0 ? 0 : value;
   }
 
@@ -91,6 +109,25 @@ class CartLoaded extends CartState {
       fee: fee ?? this.fee,
       originalFee: originalFee ?? this.originalFee,
       voucherDiscount: voucherDiscount ?? this.voucherDiscount,
+    );
+  }
+
+  CartLoaded clearVoucher() {
+    return CartLoaded(
+      store: store,
+      storeDetail: storeDetail,
+      addressName: addressName,
+      addressDescription: addressDescription,
+      categoryId: categoryId,
+      payType: payType,
+      phone: phone,
+      receiver: receiver,
+      voucher: null,
+      products: products,
+      time: time,
+      fee: originalFee,
+      originalFee: originalFee,
+      voucherDiscount: 0,
     );
   }
 

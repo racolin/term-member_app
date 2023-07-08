@@ -360,7 +360,7 @@ class _ProductBottomSheetState extends State<ProductBottomSheet> {
                                 }
                               } else {
                                 var message =
-                                    context.read<CartCubit>().addProductToCart(
+                                    await context.read<CartCubit>().addProductToCart(
                                           CartProductModel(
                                             id: widget.product.id,
                                             name: widget.product.name,
@@ -371,34 +371,36 @@ class _ProductBottomSheetState extends State<ProductBottomSheet> {
                                             note: '',
                                           ),
                                         );
-                                if (message != null) {
-                                  showCupertinoDialog(
-                                    context: context,
-                                    builder: (context) {
-                                      return AppDialog(
-                                        message: message,
-                                        actions: [
-                                          CupertinoDialogAction(
-                                            child: const Text(txtConfirm),
-                                            onPressed: () {
-                                              Navigator.pop(context);
-                                            },
-                                          ),
-                                        ],
-                                      );
-                                    },
-                                  );
-                                } else {
-                                  Navigator.pop(context);
-                                  ScaffoldMessenger.of(context)
-                                      .clearSnackBars();
-                                  ScaffoldMessenger.of(context).showSnackBar(
-                                    const SnackBar(
-                                      content: Text(
-                                        'Thêm sản phẩm vào đơn hàng thành công',
+                                if (mounted) {
+                                  if (message != null) {
+                                    showCupertinoDialog(
+                                      context: context,
+                                      builder: (context) {
+                                        return AppDialog(
+                                          message: message,
+                                          actions: [
+                                            CupertinoDialogAction(
+                                              child: const Text(txtConfirm),
+                                              onPressed: () {
+                                                Navigator.pop(context);
+                                              },
+                                            ),
+                                          ],
+                                        );
+                                      },
+                                    );
+                                  } else {
+                                    Navigator.pop(context);
+                                    ScaffoldMessenger.of(context)
+                                        .clearSnackBars();
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      const SnackBar(
+                                        content: Text(
+                                          'Thêm sản phẩm vào đơn hàng thành công',
+                                        ),
                                       ),
-                                    ),
-                                  );
+                                    );
+                                  }
                                 }
                               }
                             },

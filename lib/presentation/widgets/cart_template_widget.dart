@@ -192,7 +192,7 @@ class _CartTemplateWidgetState extends State<CartTemplateWidget> {
                             }
                           }
 
-                          var message =
+                          var message = await
                               context.read<CartCubit>().addProductsToCart(
                                     list,
                                   );

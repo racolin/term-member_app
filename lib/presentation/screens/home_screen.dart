@@ -146,15 +146,7 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
                   builder: (context, cartState) {
                     if (cartState is CartLoaded) {
                       var cost = 0;
-                      for (var p in cartState.products) {
-                        cost += p.amount *
-                            (p.cost +
-                                (context
-                                        .read<ProductCubit>()
-                                        .getCostOptionsItem(p.options) ??
-                                    0));
-                      }
-                      cost += cartState.fee - cartState.voucherDiscount;
+                      cost = cartState.calculateCost;
 
                       return FloatingActionWidget(
                         addressName: cartState.addressName,

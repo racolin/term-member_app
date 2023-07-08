@@ -21,14 +21,14 @@ class CartsCubit extends Cubit<CartsState> {
         var statuses = res.data;
         if (statuses.isNotEmpty) {
           _repository
-              .getsByStatusId(statusId: statuses[1].id, page: 1, limit: 20)
+              .getsByStatusId(statusId: statuses[1].id, page: 1, limit: 10)
               .then((res) {
             if (res.type == ResponseModelType.success) {
               Map<String, PagingModel<CartModel>> listCarts = {};
               for (var e in statuses) {
                 listCarts[e.id] = PagingModel<CartModel>(
                   page: 1,
-                  limit: 20,
+                  limit: 10,
                   list: [],
                 );
               }

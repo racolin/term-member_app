@@ -2,10 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:member_app/business_logic/cubits/cart_cubit.dart';
 import 'package:member_app/data/models/store_detail_model.dart';
+import 'package:member_app/presentation/app_router.dart';
 import 'package:member_app/presentation/res/strings/values.dart';
 import 'package:member_app/presentation/widgets/app_image_widget.dart';
 
 import '../../data/models/store_model.dart';
+import '../../supports/convert.dart';
 import '../widgets/slide/slide_images_widget.dart';
 
 class StoreBottomSheet extends StatelessWidget {
@@ -290,6 +292,18 @@ class StoreBottomSheet extends StatelessWidget {
           onPressed: () {
             context.read<CartCubit>().setStore(store, detail);
             context.read<CartCubit>().setCategory(1);
+            context
+                .read<CartCubit>()
+                .setAddress(store.address, meterToString(store.distance));
+            Navigator.popUntil(context, ModalRoute.withName(AppRouter.home));
+            ScaffoldMessenger.of(context).clearSnackBars();
+            ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(
+                content: Text(
+                  'Chọn cửa hàng thành công, hãy chuyển sang đặt hàng.',
+                ),
+              ),
+            );
           },
           child: Column(
             children: const [

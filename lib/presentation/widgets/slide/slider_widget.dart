@@ -33,6 +33,38 @@ class _SliderWidgetState extends State<SliderWidget> {
           case VoucherLoaded:
             state as VoucherLoaded;
             var length = state.listSlider.length;
+            if (length == 1) {
+              return Container(
+                padding: const EdgeInsets.all(spaceXS),
+                height: 200,
+                width: double.maxFinite,
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(spaceSM),
+                  child: GestureDetector(
+                    onTap: () {
+                      showModalBottomSheet(
+                        backgroundColor: Colors.transparent,
+                        isScrollControlled: true,
+                        context: context,
+                        builder: (context) {
+                          return VoucherBottomSheet(voucher: state.listSlider[0]);
+                        },
+                      ).then((type) {
+                        // if (type != null &&
+                        //     type is HomeBodyType) {
+                        //   context.read<HomeCubit>().setBody(type);
+                        // }
+                      });
+                    },
+                    child: AppImageWidget(
+                      image: state.listSlider[0].sliderImage,
+                      borderRadius: BorderRadius.zero,
+                    ),
+                  ),
+                ),
+              );
+            }
+
             var list = state.listSlider.sublist(0, length < 6 ? length : 6);
             final double widthTotal = spaceLG * (list.length + spaceXXS / 4);
             return Container(
@@ -45,37 +77,37 @@ class _SliderWidgetState extends State<SliderWidget> {
                       items: list
                           .map(
                             (e) => ClipRRect(
-                              borderRadius: BorderRadius.circular(spaceSM),
-                              child: GestureDetector(
-                                onTap: () {
-                                  showModalBottomSheet(
-                                    backgroundColor: Colors.transparent,
-                                    isScrollControlled: true,
-                                    context: context,
-                                    builder: (context) {
-                                      return VoucherBottomSheet(voucher: e);
-                                    },
-                                  ).then((type) {
-                                    // if (type != null &&
-                                    //     type is HomeBodyType) {
-                                    //   context.read<HomeCubit>().setBody(type);
-                                    // }
-                                  });
+                          borderRadius: BorderRadius.circular(spaceSM),
+                          child: GestureDetector(
+                            onTap: () {
+                              showModalBottomSheet(
+                                backgroundColor: Colors.transparent,
+                                isScrollControlled: true,
+                                context: context,
+                                builder: (context) {
+                                  return VoucherBottomSheet(voucher: e);
                                 },
-                                child: AppImageWidget(
-                                  image: e.sliderImage,
-                                  borderRadius: BorderRadius.zero,
-                                ),
-                              ),
+                              ).then((type) {
+                                // if (type != null &&
+                                //     type is HomeBodyType) {
+                                //   context.read<HomeCubit>().setBody(type);
+                                // }
+                              });
+                            },
+                            child: AppImageWidget(
+                              image: e.sliderImage,
+                              borderRadius: BorderRadius.zero,
                             ),
-                          )
+                          ),
+                        ),
+                      )
                           .toList(),
                       options: CarouselOptions(
                         onScrolled: (value) {
                           if (value != null) {
                             var v = (value - 10000).floor() % list.length;
                             var space = (widthTotal - list.length * spaceLG) /
-                                    (list.length - 1) +
+                                (list.length - 1) +
                                 spaceLG;
                             setState(() {
                               if (v == list.length - 1) {
@@ -83,6 +115,7 @@ class _SliderWidgetState extends State<SliderWidget> {
                                     space *
                                     (1 - value + value.floor());
                               } else {
+                                ///
                                 _left =
                                     v * space + (value - value.floor()) * space;
                               }
@@ -91,7 +124,7 @@ class _SliderWidgetState extends State<SliderWidget> {
                         },
                         autoPlay: true,
                         autoPlayAnimationDuration:
-                            const Duration(milliseconds: 300),
+                        const Duration(milliseconds: 300),
                         autoPlayCurve: Curves.easeInOut,
                         autoPlayInterval: const Duration(seconds: 7),
                         aspectRatio: 2,
@@ -122,13 +155,13 @@ class _SliderWidgetState extends State<SliderWidget> {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: List.generate(
                             list.length,
-                            (index) => Container(
+                                (index) => Container(
                               width: spaceLG,
                               height: 2,
                               decoration: BoxDecoration(
                                 color: Colors.black.withOpacity(0.2),
                                 borderRadius:
-                                    BorderRadius.circular(spaceXXS / 2),
+                                BorderRadius.circular(spaceXXS / 2),
                               ),
                             ),
                           ),

@@ -1,4 +1,3 @@
-import 'package:dio/dio.dart';
 import 'package:member_app/data/models/response_model.dart';
 
 import '../../../business_logic/repositories/news_repository.dart';

@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/services.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:jwt_decoder/jwt_decoder.dart';
+import 'package:latlong2/latlong.dart';
 import 'package:member_app/data/models/token_model.dart';
 import 'package:member_app/presentation/res/strings/values.dart';
 
@@ -23,6 +24,7 @@ class SecureStorage {
   static const _accessTokenKey = 'ACCESS_TOKEN';
   static const _refreshTokenKey = 'REFRESH_TOKEN';
   static const _cartLoaded = 'CART_LOADED';
+  static const _latLng = 'LATLNG';
   TokenModel? _token;
 
   Future<ResponseModel<bool>> persistCartLoaded(CartLoaded cart) async {
@@ -108,6 +110,109 @@ class SecureStorage {
       );
     } on Exception catch (ex) {
       return ResponseModel<CartLoaded>(
+        type: ResponseModelType.failure,
+        message: AppMessage(
+          title: txtUnknownErrorTitle,
+          type: AppMessageType.failure,
+          content: txtUnknownHandle,
+          description: ex.toString(),
+        ),
+      );
+    }
+  }
+
+  Future<ResponseModel<bool>> persistLatLng(LatLng latLng) async {
+    try {
+      await _storage.write(
+        key: _latLng,
+        value: jsonEncode(latLng.toJson()),
+      );
+      return ResponseModel<bool>(
+        type: ResponseModelType.success,
+        data: true,
+      );
+    } on PlatformException catch (ex) {
+      return ResponseModel<bool>(
+        type: ResponseModelType.failure,
+        message: AppMessage(
+          title: txtErrorTitle,
+          type: AppMessageType.failure,
+          content: 'Có lỗi xảy ra khi lưu tạo độ hiện tại',
+          description: ex.message,
+        ),
+      );
+    } on Exception catch (ex) {
+      return ResponseModel<bool>(
+        type: ResponseModelType.failure,
+        message: AppMessage(
+          type: AppMessageType.failure,
+          title: txtUnknownErrorTitle,
+          content: txtUnknownHandle,
+          description: ex.toString(),
+        ),
+      );
+    }
+  }
+
+  Future<ResponseModel<bool>> deleteLatLng() async {
+    try {
+      await _storage.delete(key: _latLng);
+      return ResponseModel<bool>(
+        type: ResponseModelType.success,
+        data: true,
+      );
+    } on PlatformException catch (ex) {
+      return ResponseModel<bool>(
+        type: ResponseModelType.failure,
+        message: AppMessage(
+          title: txtErrorTitle,
+          type: AppMessageType.error,
+          content: 'Gặp sự cố khi xoá toạ độ.',
+          description: ex.message,
+        ),
+      );
+    } on Exception catch (ex) {
+      return ResponseModel<bool>(
+        type: ResponseModelType.failure,
+        message: AppMessage(
+          title: txtUnknownErrorTitle,
+          type: AppMessageType.failure,
+          content: txtUnknownHandle,
+          description: ex.toString(),
+        ),
+      );
+    }
+  }
+
+  Future<ResponseModel<LatLng>> getLatLng() async {
+    try {
+      String? latLng = await _storage.read(key: _latLng);
+      if (latLng == null) {
+        return ResponseModel<LatLng>(
+          type: ResponseModelType.failure,
+          message: AppMessage(
+            type: AppMessageType.none,
+            title: 'Dữ liệu trống',
+            content: 'Không có dữ liệu toạ độ! Hãy cập nhật!',
+          ),
+        );
+      }
+      return ResponseModel<LatLng>(
+        type: ResponseModelType.success,
+        data: LatLng.fromJson(jsonDecode(latLng)),
+      );
+    } on PlatformException catch (ex) {
+      return ResponseModel<LatLng>(
+        type: ResponseModelType.failure,
+        message: AppMessage(
+          type: AppMessageType.error,
+          title: txtErrorTitle,
+          content: 'Có lỗi xảy ra khi tải lại toạ độ!\nHãy thử lại',
+          description: ex.message,
+        ),
+      );
+    } on Exception catch (ex) {
+      return ResponseModel<LatLng>(
         type: ResponseModelType.failure,
         message: AppMessage(
           title: txtUnknownErrorTitle,

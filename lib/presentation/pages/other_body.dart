@@ -9,11 +9,8 @@ import 'package:member_app/presentation/res/strings/values.dart';
 import 'package:member_app/presentation/widgets/feature_card_widget.dart';
 import 'package:member_app/presentation/widgets/group_item_widget.dart';
 
-import '../../business_logic/cubits/cart_template_cubit.dart';
-import '../../business_logic/cubits/product_cubit.dart';
 import '../../business_logic/cubits/voucher_cubit.dart';
 import '../res/dimen/dimens.dart';
-import '../screens/cart_template_screen.dart';
 import '../screens/voucher_screen.dart';
 
 class OtherBody extends StatelessWidget {
@@ -26,14 +23,18 @@ class OtherBody extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      child: Column(
-        children: [
-          _getMedias(context),
-          _getSupports(context),
-          _getAccounts(context),
-          const SizedBox(height: dimLG),
-        ],
+    return RefreshIndicator(
+      onRefresh: () async {},
+      child: SingleChildScrollView(
+        physics: const ClampingScrollPhysics(),
+        child: Column(
+          children: [
+            _getMedias(context),
+            _getSupports(context),
+            _getAccounts(context),
+            const SizedBox(height: dimLG),
+          ],
+        ),
       ),
     );
   }

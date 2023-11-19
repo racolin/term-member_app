@@ -60,6 +60,7 @@ class ApiClient {
       ),
       LogInterceptor(
         responseBody: true,
+        requestBody: true,
       ),
     });
 

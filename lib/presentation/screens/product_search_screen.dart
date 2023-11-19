@@ -1,8 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:member_app/business_logic/cubits/cart_template_cubit.dart';
-import 'package:member_app/presentation/pages/loading_page.dart';
+import 'package:member_app/presentation/animation/typing_animation.dart';
 
 import '../../business_logic/blocs/interval/interval_bloc.dart';
 import '../../business_logic/cubits/cart_cubit.dart';
@@ -14,7 +13,7 @@ import '../res/dimen/dimens.dart';
 import '../bottom_sheet/method_order_bottom_sheet.dart';
 import '../res/strings/values.dart';
 import '../widgets/floating_action_widget.dart';
-import '../widgets/product/product_widget.dart';
+import '../widgets/product/product_horizontal_widget.dart';
 
 class ProductSearchScreen extends StatefulWidget {
   final bool withFloatingButton;
@@ -90,7 +89,7 @@ class _ProductSearchScreenState extends State<ProductSearchScreen> {
                           itemBuilder: (context, index) {
                             return Padding(
                               padding: const EdgeInsets.all(spaceXS),
-                              child: ProductWidget(
+                              child: ProductHorizontalWidget(
                                 model: list[index],
                                 isTemplate: widget.isTemplate,
                               ),
@@ -171,7 +170,11 @@ class _ProductSearchScreenState extends State<ProductSearchScreen> {
                 ),
                 prefixIcon: const Icon(Icons.search),
                 suffixIcon: (state is IntervalLoaded && state.reload)
-                    ? const CupertinoActivityIndicator()
+                    ? TypingAnimation(
+                        backgroundColor: Colors.grey.shade100,
+                        color: Colors.grey.shade400,
+                        activeColor: Colors.orange.shade500,
+                      )
                     : null,
               ),
               style: Theme.of(context).textTheme.bodyLarge,

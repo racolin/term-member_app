@@ -84,26 +84,29 @@ class PromotionSwapPage extends StatelessWidget {
                       ),
                     ],
                   ),
-                  SingleChildScrollView(
-                    scrollDirection: Axis.horizontal,
-                    child: Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: state
-                          .getOutStanding()
-                          .map(
-                            (e) => Row(
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                PromotionLargeWidget(
-                                  promotion: e,
-                                ),
-                                const SizedBox(
-                                  width: spaceXS,
-                                ),
-                              ],
-                            ),
-                          )
-                          .toList(),
+                  RefreshIndicator(
+                    onRefresh: () async {},
+                    child: SingleChildScrollView(
+                      scrollDirection: Axis.horizontal,
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: state
+                            .getOutStanding()
+                            .map(
+                              (e) => Row(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  PromotionLargeWidget(
+                                    promotion: e,
+                                  ),
+                                  const SizedBox(
+                                    width: spaceXS,
+                                  ),
+                                ],
+                              ),
+                            )
+                            .toList(),
+                      ),
                     ),
                   ),
                   const SizedBox(

@@ -33,6 +33,7 @@ class SlideImagesWidget extends StatelessWidget {
                 borderRadius: borderRadius,
               )
             : ListView.separated(
+              physics: const ClampingScrollPhysics(),
                 separatorBuilder: (context, index) => SizedBox(
                   width: separator,
                 ),

@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:member_app/business_logic/cubits/geolocator_cubit.dart';
 
 import '../../../data/models/store_model.dart';
 import '../../../supports/convert.dart';

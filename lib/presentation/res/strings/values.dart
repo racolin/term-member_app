@@ -44,6 +44,7 @@ const txtCancel = "Huỷ";
 const txtStoreNear = "Các cửa hàng gần đây";
 const txtOtherStore = "Các cửa hàng khác";
 const txtMap = "Bản đồ";
+const txtList = "Danh sách";
 const txtContactTile = "Liên hệ và góp ý";
 const txtReviewOrder = "Đánh giá đơn hàng";
 const txtSupport = "Hỗ trợ";
@@ -59,15 +60,18 @@ const txtRegister = "Đăng ký";
 const txtMedia = "Tiện ích";
 const txtHistoryOrder = "Lịch sử đơn hàng";
 const txtCartTemplate = "Đơn hàng mẫu";
+const txtCart = "Đơn hàng";
 const txtRules = "Điều khoản";
 const txtOutStanding = "Nổi bật";
 const txtPromotionSwap = "Đổi ưu đãi";
+const txtSwap = "Đổi";
 const txtAchievement = "Đua thành tích";
 const txtYourVoucher = "Voucher của bạn";
 const txtFromMe = "Từ chúng tôi";
 const txtFromPartner = "Từ đối tác";
 const txtTypePromotion = "Các loại ưu đãi";
 const txtSeeAll = "Xem tất cả";
+const txtSearch = "Tìm kiếm";
 const txtAdd = "Thêm";
 const txtReward = "Phần thưởng từ The Chillin' Coffee";
 const txtWelcome = "Chào mừng bạn đến với";
@@ -75,6 +79,7 @@ const txtRequireLogin1 = "Sử dụng app để tích điểm và đổi những
 const txtRequireLogin2 = "Hãy đăng nhập để xem các ưu đãi dành riêng cho thành viên của Nhà nhé";
 const txtHistory = "Lịch sử";
 const txtYourRight = "Quyền lợi của bạn";
+const txtRightOfMember = "Quyền lợi thành viên";
 const txtPromotionPoint = "Tích điểm";
 const txtExpired = "Ngày hết hạn";
 const txtCopy = "Sao chép";
@@ -112,10 +117,15 @@ const txtToFast = 'Thao tác quá nhanh, hãy đợi và thử lại!';
 const txtDeleteTemplate = 'Bạn đã xoá đơn hàng mẫu thành công!';
 const txtArrangeTemplate = 'Sắp xếp đơn hàng mẫu thành công!';
 
+const txtSlider = 'Chương trình ưu đãi';
+const txtSeeMore = 'Xem thêm';
+
 
 // assets
 const assetDefaultIcon = 'assets/images/icon_default.png';
 const assetDefaultImage = 'assets/images/image_default.png';
 const assetDeliveryImage = 'assets/images/image_delivery.jpeg';
+const assetExchangeImage = 'assets/images/exchange.jpg';
 const assetTakeAwayImage = 'assets/images/image_take_away.png';
+const assetMyOrderImage = 'assets/images/my-order.jpeg';
 

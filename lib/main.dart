@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:member_app/business_logic/cubits/app_bar_cubit.dart';
+import 'package:member_app/business_logic/cubits/geolocator_cubit.dart';
 import 'package:member_app/business_logic/repositories/member_repository.dart';
 
 import '../business_logic/cubits/internet_cubit.dart';
@@ -48,6 +49,10 @@ class MyApp extends StatelessWidget {
         providers: [
           BlocProvider<InternetCubit>(
             create: (context) => InternetCubit(),
+          ),
+          BlocProvider<GeolocatorCubit>(
+            create: (context) => GeolocatorCubit(),
+            lazy: false,
           ),
           BlocProvider<ProductCubit>(
             lazy: false,

@@ -31,7 +31,7 @@ class VoucherWidget extends StatelessWidget {
         ),
         child: Container(
           height: height,
-          color: Colors.white70,
+          color: Colors.white,
           child: Row(
             children: [
               Expanded(

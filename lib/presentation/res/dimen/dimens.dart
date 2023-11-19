@@ -28,9 +28,9 @@ const opHigh = 0.8;
 const double fontXS = 10;
 const double fontSM = 12;
 const double fontMD = 14;
-const double fontLG = 18;
-const double fontXL = 24;
-const double fontXXL = 28;
+const double fontLG = 16;
+const double fontXL = 20;
+const double fontXXL = 24;
 
 // Định nghĩa space
 const double spaceXXS = 4;

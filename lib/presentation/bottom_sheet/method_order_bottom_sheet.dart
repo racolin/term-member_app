@@ -9,6 +9,7 @@ import 'package:member_app/presentation/app_router.dart';
 import 'package:member_app/presentation/dialogs/app_dialog.dart';
 
 import '../../business_logic/blocs/interval/interval_bloc.dart';
+import '../../business_logic/cubits/geolocator_cubit.dart';
 import '../../business_logic/cubits/store_cubit.dart';
 import '../../data/models/store_model.dart';
 import '../../data/repositories/api/store_api_repository.dart';
@@ -170,7 +171,12 @@ class MethodOrderBottomSheet extends StatelessWidget {
                                       context.read<CartCubit>().setCategory(1);
                                       context.read<CartCubit>().setAddress(
                                             store.address,
-                                            meterToString(store.distance),
+                                            positionToDistanceString(
+                                              store.lat,
+                                              store.lng,
+                                              context.read<GeolocatorCubit>().state.latLng.latitude,
+                                              context.read<GeolocatorCubit>().state.latLng.longitude,
+                                            ),
                                           );
                                       context
                                           .read<StoreCubit>()
@@ -181,7 +187,7 @@ class MethodOrderBottomSheet extends StatelessWidget {
                                                 store,
                                                 detail,
                                               );
-                                            print('23232323');
+                                          print('23232323');
                                         } else {
                                           print('23232323222222');
                                         }

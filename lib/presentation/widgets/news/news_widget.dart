@@ -20,13 +20,12 @@ class NewsWidget extends StatelessWidget {
       gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
         crossAxisCount: 2,
         childAspectRatio: 4 / 5,
-        mainAxisSpacing: spaceSM,
         crossAxisSpacing: spaceSM,
       ),
       itemBuilder: (context, index) {
         return NewsItemWidget(
           newsItem: newsList[index],
-          onClick: () {},
+          imageHeight: 160,
         );
       },
       itemCount: newsList.length,

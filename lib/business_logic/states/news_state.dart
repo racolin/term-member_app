@@ -19,6 +19,14 @@ class NewsLoaded extends NewsState {
     required this.index,
   });
 
+  List<NewsItemModel> getsAll() {
+    return list.fold(<NewsItemModel>[], (pre, e) => pre += e.news).toList();
+  }
+
+  List<NewsItemModel> get() {
+    return [...list[index].news];
+  }
+
   NewsLoaded copyWith({
     List<NewsModel>? list,
     int? index,

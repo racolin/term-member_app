@@ -14,7 +14,7 @@ class StoreMockRepository extends StoreRepository {
       name: '175A Lý Chính Thắng',
       image:
           'https://file.hstatic.net/1000075078/file/grandview5_35ccc48004574095b53e1de3b86a9eb5_master.jpg',
-      distance: 100 * index * index,
+      lat: 10, lng: 100,
       isFavorite: false,
     ),
   );

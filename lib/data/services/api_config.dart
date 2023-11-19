@@ -21,8 +21,8 @@ class Environment {
 
   static Environment get _dev {
     _devInstance ??= Environment._(
-      base: 'api/v1/',
-      url: 'http://127.0.0.1/',
+      base: 'api/v2/',
+      url: 'http://127.0.0.1:82/',
       // baseImage: 'file/',
     );
     return _devInstance!;
@@ -67,6 +67,10 @@ class ApiRouter {
 
   static String promotionExchange(String id) =>
       '/member/promotion/$id/exchange';
+
+
+  // Member slider
+  static const String memberSliders = '/member/slide';
 
   // Member data
   static const String memberDataPointHistory = '/member-data/point-history';

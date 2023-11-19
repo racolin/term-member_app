@@ -15,19 +15,23 @@ class StoreLoading extends StoreState {}
 class StoreLoaded extends StoreState {
   final List<StoreModel> list;
   final StoreDetailModel? detail;
+  final bool isMap;
 
   StoreLoaded({
     required this.list,
     this.detail,
+    this.isMap = false,
   });
 
   StoreLoaded copyWith({
     List<StoreModel>? list,
     StoreDetailModel? detail,
+    bool? isMap,
   }) {
     return StoreLoaded(
       list: list ?? this.list,
       detail: detail ?? this.detail,
+      isMap: isMap ?? this.isMap,
     );
   }
 }

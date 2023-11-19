@@ -3,9 +3,11 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:member_app/business_logic/cubits/cart_cubit.dart';
 import 'package:member_app/data/models/store_detail_model.dart';
 import 'package:member_app/presentation/app_router.dart';
+import 'package:member_app/presentation/res/dimen/dimens.dart';
 import 'package:member_app/presentation/res/strings/values.dart';
 import 'package:member_app/presentation/widgets/app_image_widget.dart';
 
+import '../../business_logic/cubits/geolocator_cubit.dart';
 import '../../data/models/store_model.dart';
 import '../../supports/convert.dart';
 import '../widgets/slide/slide_images_widget.dart';
@@ -13,11 +15,13 @@ import '../widgets/slide/slide_images_widget.dart';
 class StoreBottomSheet extends StatelessWidget {
   final StoreModel store;
   final StoreDetailModel detail;
+  final bool login;
 
   const StoreBottomSheet({
     Key? key,
     required this.store,
     required this.detail,
+    required this.login,
   }) : super(key: key);
 
   @override
@@ -37,6 +41,7 @@ class StoreBottomSheet extends StatelessWidget {
             children: [
               Expanded(
                 child: SingleChildScrollView(
+                  physics: const ClampingScrollPhysics(),
                   child: Column(
                     children: [
                       Stack(
@@ -276,54 +281,65 @@ class StoreBottomSheet extends StatelessWidget {
       margin: const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
       width: double.maxFinite,
       child: TextButton(
-          style: ButtonStyle(
-            padding: MaterialStateProperty.all(
-              const EdgeInsets.all(12),
-            ),
-            backgroundColor: MaterialStateProperty.all(
-              Colors.orange,
-            ),
-            shape: MaterialStateProperty.all(
-              RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(8),
-              ),
+        style: ButtonStyle(
+          padding: MaterialStateProperty.all(
+            const EdgeInsets.all(12),
+          ),
+          backgroundColor: MaterialStateProperty.all(
+            Colors.orange,
+          ),
+          shape: MaterialStateProperty.all(
+            RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(8),
             ),
           ),
-          onPressed: () {
-            context.read<CartCubit>().setStore(store, detail);
-            context.read<CartCubit>().setCategory(1);
-            context
-                .read<CartCubit>()
-                .setAddress(store.address, meterToString(store.distance));
-            Navigator.popUntil(context, ModalRoute.withName(AppRouter.home));
-            ScaffoldMessenger.of(context).clearSnackBars();
-            ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(
-                content: Text(
-                  'Chọn cửa hàng thành công, hãy chuyển sang đặt hàng.',
+        ),
+        onPressed: () {
+          if (!login) {
+            Navigator.pushNamed(context, AppRouter.auth);
+            return;
+          }
+          context.read<CartCubit>().setStore(store, detail);
+          context.read<CartCubit>().setCategory(1);
+          context.read<CartCubit>().setAddress(
+                store.address,
+                positionToDistanceString(
+                  store.lat,
+                  store.lng,
+                  context.read<GeolocatorCubit>().state.latLng.latitude,
+                  context.read<GeolocatorCubit>().state.latLng.longitude,
                 ),
+              );
+          Navigator.popUntil(context, ModalRoute.withName(AppRouter.home));
+          ScaffoldMessenger.of(context).clearSnackBars();
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text(
+                'Chọn cửa hàng thành công, hãy chuyển sang đặt hàng.',
               ),
-            );
-          },
-          child: Column(
-            children: const [
-              Text(
-                'Đặt sản phẩm',
-                style: TextStyle(
-                  fontWeight: FontWeight.w700,
-                  fontSize: 15,
-                  color: Colors.white,
-                ),
+            ),
+          );
+        },
+        child: Column(
+          children: const [
+            Text(
+              'Đặt sản phẩm',
+              style: TextStyle(
+                fontWeight: FontWeight.w700,
+                fontSize: 15,
+                color: Colors.white,
               ),
-              Text(
-                'Tự đến lấy tại cửa hàng này',
-                style: TextStyle(
-                  fontSize: 12,
-                  color: Colors.white,
-                ),
+            ),
+            Text(
+              'Tự đến lấy tại cửa hàng này',
+              style: TextStyle(
+                fontSize: 12,
+                color: Colors.white,
               ),
-            ],
-          )),
+            ),
+          ],
+        ),
+      ),
     );
   }
 }

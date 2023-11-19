@@ -43,6 +43,7 @@ class VoucherBottomSheet extends StatelessWidget {
             alignment: AlignmentDirectional.topCenter,
             children: [
               SingleChildScrollView(
+                physics: const ClampingScrollPhysics(),
                 child: Container(
                   decoration: BoxDecoration(
                     color: Colors.white,

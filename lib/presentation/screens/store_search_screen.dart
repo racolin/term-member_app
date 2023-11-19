@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../business_logic/blocs/interval/interval_bloc.dart';
+import '../animation/typing_animation.dart';
 import '../res/dimen/dimens.dart';
 import '../../data/models/store_model.dart';
 import '../res/strings/values.dart';
@@ -45,6 +46,7 @@ class _StoreSearchScreenState extends State<StoreSearchScreen> {
                   color: Colors.grey.withAlpha(50),
                   padding: const EdgeInsets.all(spaceXS),
                   child: ListView.builder(
+                    physics: const ClampingScrollPhysics(),
                     itemBuilder: (context, index) => StoreItemWidget(
                       store: list[index],
                       onClick: widget.onClick,
@@ -82,7 +84,11 @@ class _StoreSearchScreenState extends State<StoreSearchScreen> {
                     ),
                     prefixIcon: const Icon(Icons.search),
                     suffixIcon: (state is IntervalLoaded && state.reload)
-                        ? const CupertinoActivityIndicator()
+                        ? TypingAnimation(
+                            backgroundColor: Colors.grey.shade100,
+                            color: Colors.grey.shade400,
+                            activeColor: Colors.orange.shade500,
+                          )
                         : null,
                   ),
                   style: Theme.of(context).textTheme.bodyLarge,

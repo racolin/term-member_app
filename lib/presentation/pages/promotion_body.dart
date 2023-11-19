@@ -52,8 +52,11 @@ class _PromotionBodyState extends State<PromotionBody> {
       children: [
         _getOptions(),
         Expanded(
-          child: SingleChildScrollView(
-            child: _body,
+          child: RefreshIndicator(
+            onRefresh: () async {},
+            child: SingleChildScrollView(
+              child: _body,
+            ),
           ),
         ),
       ],
@@ -68,7 +71,11 @@ class _PromotionBodyState extends State<PromotionBody> {
 
     return Container(
       color: Colors.white,
-      padding: const EdgeInsets.all(spaceXS),
+      padding: const EdgeInsets.only(
+        bottom: spaceXS,
+        left: spaceXS,
+        right: spaceXS,
+      ),
       child: Row(
         children: [
           for (int i = 0; i < options.length; i++)

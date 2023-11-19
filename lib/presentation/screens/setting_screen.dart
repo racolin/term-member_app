@@ -1,7 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:member_app/presentation/res/strings/values.dart';
-import 'package:member_app/presentation/widgets/feature_card_widget.dart';
 import 'package:member_app/presentation/widgets/group_item_widget.dart';
 
 import '../res/dimen/dimens.dart';
@@ -34,6 +33,7 @@ class _SettingScreenState extends State<SettingScreen> {
         ),
       ),
       body: SingleChildScrollView(
+        physics: const ClampingScrollPhysics(),
         child: _getSettings(context),
       ),
     );

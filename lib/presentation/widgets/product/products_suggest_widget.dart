@@ -60,7 +60,7 @@ class _ProductsSuggestWidgetState extends State<ProductsSuggestWidget> {
                       itemCount: state.suggestion.length,
                       itemBuilder: (context, index) {
                         return ProductSuggestWidget(
-                          product: state.suggestion[index],
+                          model: state.suggestion[index],
                         );
                       },
                       scrollDirection: Axis.horizontal,

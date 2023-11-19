@@ -1,10 +1,13 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../business_logic/cubits/store_cubit.dart';
 import '../../../business_logic/states/store_state.dart';
 import '../../../data/models/store_model.dart';
+import '../../dialogs/app_dialog.dart';
 import '../../res/dimen/dimens.dart';
+import '../../res/strings/values.dart';
 import 'store_item_widget.dart';
 
 class StoresMainWidget extends StatelessWidget {
@@ -28,13 +31,41 @@ class StoresMainWidget extends StatelessWidget {
             return const SizedBox();
           case StoreLoaded:
             state as StoreLoaded;
-            return ListView.builder(
-              itemBuilder: (context, index) => StoreItemWidget(
-                store: state.list[index],
-                onClick: onClickItem,
+            return RefreshIndicator(
+              onRefresh: () async {
+                // var message = await context.read<Geog>().reloadLatLng();
+                var message = await context.read<StoreCubit>().reloadStores();
+                if (context.mounted) {
+                  if (message != null) {
+                    showCupertinoDialog(
+                      context: context,
+                      builder: (context) {
+                        return AppDialog(
+                          message: message,
+                          actions: [
+                            CupertinoDialogAction(
+                              child: const Text(txtYes),
+                              onPressed: () {
+                                Navigator.pop(context);
+                              },
+                            ),
+                          ],
+                        );
+                      },
+                    );
+                  } else {
+
+                  }
+                }
+              },
+              child: ListView.builder(
+                itemBuilder: (context, index) => StoreItemWidget(
+                  store: state.list[index],
+                  onClick: onClickItem,
+                ),
+                padding: const EdgeInsets.only(bottom: dimLG),
+                itemCount: state.list.length,
               ),
-              padding: const EdgeInsets.only(bottom: dimLG),
-              itemCount: state.list.length,
             );
         }
         return const SizedBox();

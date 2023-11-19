@@ -44,6 +44,14 @@ class StoreCubit extends Cubit<StoreState>
     }
   }
 
+  void changeIsMap() {
+    print(111);
+    if (state is StoreLoaded) {
+      print(111);
+      emit((state as StoreLoaded).copyWith(isMap: !(state as StoreLoaded).isMap));
+    }
+  }
+
   Future<AppMessage?> loadDetailStore(String id) async {
     if (state is! StoreLoaded) {
       return AppMessage(
@@ -77,6 +85,13 @@ class StoreCubit extends Cubit<StoreState>
       return null;
     }
     return (state as StoreLoaded).detail;
+  }
+
+  bool get isMap {
+    if (state is! StoreLoaded) {
+      return false;
+    }
+    return (state as StoreLoaded).isMap;
   }
 
   // Action UI

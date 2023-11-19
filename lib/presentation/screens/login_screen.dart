@@ -41,25 +41,8 @@ class _LoginScreenState extends State<LoginScreen> {
                   Positioned(
                     top: 12,
                     right: 12,
-                    child: Container(
-                      height: 24,
-                      width: 24,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(12),
-                        color: Colors.white,
-                      ),
-                    ),
-                  ),
-                  Positioned(
-                    top: 0,
-                    right: 0,
-                    child: IconButton(
-                      style: ButtonStyle(
-                        backgroundColor: MaterialStateProperty.all(
-                          Colors.white,
-                        ),
-                      ),
-                      onPressed: () {
+                    child: GestureDetector(
+                      onTap: () {
                         if (Navigator.canPop(context)) {
                           Navigator.pop(context);
                         } else {
@@ -70,7 +53,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           );
                         }
                       },
-                      icon: const Icon(
+                      child: const Icon(
                         Icons.cancel,
                         color: Colors.grey,
                         size: 32,

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:member_app/presentation/pages/alert_page.dart';
 
 import '../../business_logic/cubits/product_cubit.dart';
 import '../../business_logic/states/product_state.dart';
@@ -10,7 +9,7 @@ import '../../business_logic/cubits/product_scroll_cubit.dart';
 import '../../business_logic/states/product_scroll_state.dart';
 import '../../data/models/product_model.dart';
 import '../widgets/product/product_categories_widget.dart';
-import '../widgets/product/product_widget.dart';
+import '../widgets/product/product_horizontal_widget.dart';
 
 class OrderBody extends StatefulWidget {
   final VoidCallback onScroll;
@@ -93,41 +92,45 @@ class _OrderBodyState extends State<OrderBody> {
                   }
                   return true;
                 },
-                child: ListView.builder(
-                  controller: _scrollController,
-                  padding: EdgeInsets.zero,
-                  itemBuilder: (context, index) {
-                    if (index == 0) {
-                      // height: 90 + 2 * spaceSM
-                      return ProductCategoriesWidget(
-                        maxItem: 8,
-                        scrollTo: (index) {
-                          context.read<ProductScrollCubit>().setIndex(index);
-                        },
-                      );
-                    }
-                    if (index == 2) {
-                      if (widget.login) {
-                        // 18 * 1.25 + 268 + 4 * 2 + 8 = 307
-                        return const ProductsSuggestWidget(height: 307);
-                      } else {
-                        return const SizedBox();
+                child: RefreshIndicator(
+                  onRefresh: () async {},
+                  child: ListView.builder(
+                    physics: const ClampingScrollPhysics(),
+                    controller: _scrollController,
+                    padding: EdgeInsets.zero,
+                    itemBuilder: (context, index) {
+                      if (index == 0) {
+                        // height: 90 + 2 * spaceSM
+                        return ProductCategoriesWidget(
+                          maxItem: 8,
+                          scrollTo: (index) {
+                            context.read<ProductScrollCubit>().setIndex(index);
+                          },
+                        );
                       }
-                    }
-                    if (index == listType.length + 2) {
-                      return const SizedBox(
-                        height: dimLG,
+                      if (index == 2) {
+                        if (widget.login) {
+                          // 18 * 1.25 + 268 + 4 * 2 + 8 = 307
+                          return const ProductsSuggestWidget(height: 307);
+                        } else {
+                          return const SizedBox();
+                        }
+                      }
+                      if (index == listType.length + 2) {
+                        return const SizedBox(
+                          height: dimLG,
+                        );
+                      }
+                      // height: 43 + 116 * n
+                      return _getListProduct(
+                        listType[index - (index > 2 ? 2 : 1)].name,
+                        state.getProductsByCategoryId(
+                          listType[index - (index > 2 ? 2 : 1)].id,
+                        ),
                       );
-                    }
-                    // height: 43 + 116 * n
-                    return _getListProduct(
-                      listType[index - (index > 2 ? 2 : 1)].name,
-                      state.getProductsByCategoryId(
-                        listType[index - (index > 2 ? 2 : 1)].id,
-                      ),
-                    );
-                  },
-                  itemCount: listType.length + 3,
+                    },
+                    itemCount: listType.length + 3,
+                  ),
                 ),
               );
           }
@@ -169,7 +172,7 @@ class _OrderBodyState extends State<OrderBody> {
           itemBuilder: (context, index) => Padding(
             // height: 116
             padding: const EdgeInsets.all(spaceXS),
-            child: ProductWidget(
+            child: ProductHorizontalWidget(
               // height: 100
               model: shortProducts[index],
             ),

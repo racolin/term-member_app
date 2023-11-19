@@ -9,46 +9,41 @@ class CardHomeWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
-      margin: EdgeInsets.zero,
+      margin: const EdgeInsets.all(spaceXS),
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(spaceSM),
+        borderRadius: BorderRadius.circular(spaceXS),
       ),
       child: Column(
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           const SizedBox(
-            height: spaceSM,
+            height: spaceXS,
           ),
           Text(
-            txtLogIn,
-            style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                  fontWeight: FontWeight.w600,
+            txtRightOfMember,
+            style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                  fontWeight: FontWeight.w700,
                 ),
           ),
           const SizedBox(
-            height: spaceSM,
+            height: spaceXXS,
           ),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: spaceMD),
             child: Text(
               txtRequireLogin1,
-              style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+              style: Theme.of(context).textTheme.bodySmall?.copyWith(
                     fontWeight: FontWeight.w400,
                   ),
               textAlign: TextAlign.center,
             ),
           ),
-          const SizedBox(
-            height: spaceSM,
-          ),
-          const Spacer(),
           Container(
-            padding: EdgeInsets.zero,
-            margin: EdgeInsets.zero,
             decoration: const BoxDecoration(
-              borderRadius:
-                  BorderRadius.vertical(bottom: Radius.circular(spaceSM)),
+              borderRadius: BorderRadius.vertical(
+                bottom: Radius.circular(spaceSM),
+              ),
               image: DecorationImage(
                 fit: BoxFit.cover,
                 image: AssetImage(
@@ -56,10 +51,9 @@ class CardHomeWidget extends StatelessWidget {
                 ),
               ),
             ),
-            height: dimXXL,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              mainAxisSize: MainAxisSize.min,
               children: [
                 SizedBox(
                   width: 168,
@@ -74,11 +68,18 @@ class CardHomeWidget extends StatelessWidget {
                   ),
                 ),
                 Card(
-                  margin: const EdgeInsets.all(spaceSM),
+                  margin: const EdgeInsets.only(
+                    bottom: 6,
+                    left: spaceXS,
+                    right: spaceXS,
+                  ),
                   shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(spaceXS),
+                    borderRadius: BorderRadius.circular(spaceXXS),
                   ),
                   child: ListTile(
+                    dense: true,
+                    visualDensity: VisualDensity.comfortable,
+                    contentPadding: const EdgeInsets.symmetric(horizontal: spaceSM),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(spaceXS),
                     ),
@@ -87,7 +88,7 @@ class CardHomeWidget extends StatelessWidget {
                     },
                     title: Text(
                       txtReward,
-                      style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                      style: Theme.of(context).textTheme.bodySmall?.copyWith(
                             fontWeight: FontWeight.w400,
                           ),
                     ),

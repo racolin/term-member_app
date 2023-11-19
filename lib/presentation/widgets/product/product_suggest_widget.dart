@@ -14,17 +14,17 @@ import '../../bottom_sheet/product_bottom_sheet.dart';
 import '../../dialogs/app_dialog.dart';
 
 class ProductSuggestWidget extends StatelessWidget {
-  final ProductModel product;
+  final ProductModel model;
 
   const ProductSuggestWidget({
     Key? key,
-    required this.product,
+    required this.model,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     int costOptions = context.read<ProductCubit>().getCostDefaultOptions(
-              product.optionIds,
+              model.optionIds,
             ) ??
         0;
     return Container(
@@ -40,7 +40,7 @@ class ProductSuggestWidget extends StatelessWidget {
             builder: (ctx) {
               return BlocProvider<ProductCubit>.value(
                 value: BlocProvider.of<ProductCubit>(context),
-                child: ProductBottomSheet(product: product),
+                child: ProductBottomSheet(product: model),
               );
             },
           );
@@ -51,7 +51,7 @@ class ProductSuggestWidget extends StatelessWidget {
             ClipRRect(
               borderRadius: BorderRadius.circular(spaceXS),
               child: AppImageWidget(
-                image: product.image,
+                image: model.image,
                 width: 150,
                 height: 150,
               ),
@@ -60,7 +60,7 @@ class ProductSuggestWidget extends StatelessWidget {
               height: spaceXS,
             ),
             Text(
-              product.name,
+              model.name,
               style: const TextStyle(
                 fontWeight: FontWeight.w700,
                 overflow: TextOverflow.ellipsis,
@@ -70,14 +70,14 @@ class ProductSuggestWidget extends StatelessWidget {
             const SizedBox(
               height: fontSM,
             ),
-            Text(numberToCurrency(product.cost + costOptions, 'đ')),
+            Text(numberToCurrency(model.cost + costOptions, 'đ')),
             SizedBox(
               width: double.maxFinite,
               child: TextButton(
                 onPressed: () async {
                   var options = <String>[];
 
-                  for (var o in product.optionIds) {
+                  for (var o in model.optionIds) {
                     var item =
                         context.read<ProductCubit>().getProductOptionById(o);
                     if (item != null) {
@@ -87,9 +87,9 @@ class ProductSuggestWidget extends StatelessWidget {
                   var message =
                       await context.read<CartCubit>().addProductToCart(
                             CartProductModel(
-                              id: product.id,
-                              name: product.name,
-                              cost: product.cost,
+                              id: model.id,
+                              name: model.name,
+                              cost: model.cost,
                               options: options,
                               amount: 1,
                               note: '',

@@ -8,7 +8,7 @@ import 'package:member_app/presentation/res/strings/values.dart';
 import '../../business_logic/cubits/cart_cubit.dart';
 import '../../business_logic/states/cart_state.dart';
 import '../../business_logic/states/home_state.dart';
-import '../../presentation/widgets/product/product_widget.dart';
+import '../../presentation/widgets/product/product_horizontal_widget.dart';
 import '../../business_logic/cubits/product_cubit.dart';
 import '../../business_logic/states/product_state.dart';
 import '../bottom_sheet/method_order_bottom_sheet.dart';
@@ -92,7 +92,7 @@ class _ProductFavoriteScreenState extends State<ProductFavoriteScreen> {
                   itemBuilder: (context, index) {
                     return Padding(
                       padding: const EdgeInsets.all(spaceXS),
-                      child: ProductWidget(model: list[index]),
+                      child: ProductHorizontalWidget(model: list[index]),
                     );
                   },
                   itemCount: list.length,

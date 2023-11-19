@@ -191,6 +191,7 @@ class _ProductBottomSheetState extends State<ProductBottomSheet> {
                     bottom: MediaQuery.of(context).viewInsets.bottom,
                   ),
                   child: SingleChildScrollView(
+                    physics: const ClampingScrollPhysics(),
                     child: Column(
                       children: [
                         Stack(

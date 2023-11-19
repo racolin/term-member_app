@@ -33,7 +33,10 @@ class DeliveryOptionWidget extends StatelessWidget {
                 fit: BoxFit.cover,
               ),
             ),
-            Text(name),
+            Text(
+              name,
+              style: Theme.of(context).textTheme.bodySmall?.copyWith(),
+            ),
           ],
         ),
       ),

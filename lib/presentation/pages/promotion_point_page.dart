@@ -33,18 +33,10 @@ class PromotionPointPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return !login
         ? Column(
-            children: [
-              Container(
-                padding: const EdgeInsets.only(
-                  top: spaceSM,
-                  left: spaceXS,
-                  right: spaceXS,
-                ),
-                height: 236,
-                child: const CardHomeWidget(),
-              ),
-              const SizedBox(height: spaceSM),
-              const CardTypeWidget(),
+            children: const [
+              CardHomeWidget(),
+              SizedBox(height: spaceXS),
+              CardTypeWidget(),
             ],
           )
         : Padding(

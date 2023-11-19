@@ -2,7 +2,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:member_app/business_logic/cubits/app_bar_cubit.dart';
-import 'package:member_app/business_logic/cubits/voucher_cubit.dart';
 import 'package:member_app/exception/app_message.dart';
 import 'package:member_app/presentation/dialogs/app_dialog.dart';
 import 'package:member_app/presentation/res/dimen/dimens.dart';
@@ -44,6 +43,7 @@ class PromotionBottomSheet extends StatelessWidget {
               ClipRRect(
                 borderRadius: BorderRadius.circular(spaceLG),
                 child: SingleChildScrollView(
+                  physics: const ClampingScrollPhysics(),
                   child: Stack(
                     alignment: AlignmentDirectional.center,
                     children: [

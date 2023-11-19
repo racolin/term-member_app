@@ -1,11 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:member_app/business_logic/cubits/history_point_cubit.dart';
+import 'package:member_app/business_logic/repositories/slider_repository.dart';
+import 'package:member_app/data/repositories/api/slider_api_repository.dart';
 import 'package:member_app/presentation/screens/address/address_screen.dart';
 import 'package:member_app/presentation/screens/cart_template_screen.dart';
 import 'package:member_app/presentation/screens/history_point_screen.dart';
+import 'package:member_app/presentation/screens/news_screen.dart';
 
 import '../business_logic/cubits/address_cubit.dart';
+import '../business_logic/cubits/slider_cubit.dart';
 import '../data/repositories/api/auth_api_repository.dart';
 import '../data/repositories/api/cart_api_repository.dart';
 import '../data/repositories/api/member_api_repository.dart';
@@ -137,6 +141,9 @@ class AppRouter {
                 RepositoryProvider<VoucherRepository>(
                   create: (context) => VoucherApiRepository(),
                 ),
+                RepositoryProvider<SliderRepository>(
+                  create: (context) => SliderApiRepository(),
+                ),
                 // RepositoryProvider<VoucherRepository>(
                 //   create: (context) => VoucherMockRepository(),
                 // ),
@@ -180,6 +187,13 @@ class AppRouter {
                   BlocProvider<NewsCubit>(
                     create: (context) => NewsCubit(
                       repository: RepositoryProvider.of<NewsRepository>(
+                        context,
+                      ),
+                    ),
+                  ),
+                  BlocProvider<SliderCubit>(
+                    create: (context) => SliderCubit(
+                      repository: RepositoryProvider.of<SliderRepository>(
                         context,
                       ),
                     ),

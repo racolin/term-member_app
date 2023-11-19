@@ -1,3 +1,5 @@
+import 'package:flutter/material.dart';
+
 import '../../presentation/res/colors/colors.dart';
 import '../../presentation/res/strings/values.dart';
 
@@ -63,7 +65,7 @@ class CardModel {
       nextRankPoint: map['nextRankPoint'] ?? 10000,
       backgroundImage: map['backgroundImage'],
       description: map['description'] ?? txtDefault,
-      color: map['color'] ?? colorDefault,
+      color: /*map['color'] ?? colorDefault*/Colors.orange.value,
       fee: map['fee'] ?? 0,
     );
   }

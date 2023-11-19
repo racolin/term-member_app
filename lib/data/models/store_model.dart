@@ -5,17 +5,24 @@ class StoreModel {
   final String? image;
   final String name;
   final String address;
-  final int distance;
+  final double lat;
+  final double lng;
+  int? _distance;
   final bool isFavorite;
 
-  const StoreModel({
+  StoreModel({
     required this.id,
     this.image,
     required this.name,
     required this.address,
-    required this.distance,
+    required this.lat,
+    required this.lng,
     required this.isFavorite,
   });
+
+  int get distance => _distance ?? 0;
+
+  set distance(int distance) => _distance = distance;
 
   Map<String, dynamic> toMap() {
     return {
@@ -23,7 +30,8 @@ class StoreModel {
       'image': image,
       'name': name,
       'address': address,
-      'distance': distance,
+      'lng': lng,
+      'lat': lat,
       'isFavorite': isFavorite,
     };
   }
@@ -34,7 +42,8 @@ class StoreModel {
       image: map['image'],
       name: map['name'] ?? txtUnknown,
       address: map['address'] ?? txtUnknown,
-      distance: map['distance'] ?? 0,
+      lng: map['lng'] ?? 0,
+      lat: map['lat'] ?? 0,
       isFavorite: map['isFavorite'] ?? false,
     );
   }

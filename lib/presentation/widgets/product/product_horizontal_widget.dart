@@ -1,25 +1,18 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:member_app/business_logic/cubits/cart_cubit.dart';
-import 'package:member_app/business_logic/cubits/cart_template_cubit.dart';
-import 'package:member_app/data/models/cart_template_model.dart';
 import 'package:member_app/presentation/bottom_sheet/product_bottom_sheet.dart';
-import 'package:member_app/presentation/dialogs/app_dialog.dart';
-import 'package:member_app/presentation/res/strings/values.dart';
 
 import '../../../business_logic/cubits/product_cubit.dart';
-import '../../../data/models/cart_detail_model.dart';
 import '../../../data/models/product_model.dart';
 import '../../../supports/convert.dart';
 import '../../res/dimen/dimens.dart';
 import '../app_image_widget.dart';
 
-class ProductWidget extends StatelessWidget {
+class ProductHorizontalWidget extends StatelessWidget {
   final ProductModel model;
   final bool isTemplate;
 
-  const ProductWidget({
+  const ProductHorizontalWidget({
     Key? key,
     required this.model,
     this.isTemplate = false,

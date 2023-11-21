@@ -23,7 +23,7 @@ class SlideImagesWidget extends StatelessWidget {
     return SizedBox(
       height: height,
       child: ClipRRect(
-        borderRadius: borderRadius,
+        borderRadius: borderRadius ?? BorderRadius.zero,
         // height: 300,
         child: images.length < 2
             ? AppImageWidget(

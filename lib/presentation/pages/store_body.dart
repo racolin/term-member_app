@@ -47,6 +47,50 @@ class StoreBody extends StatelessWidget {
                       ? _getMapStore(context, state.list)
                       : _getListStore(context, state.list),
                 ),
+                InkWell(
+                  splashColor: Colors.green,
+                  onTap: () async {
+                    var message =
+                    await context.read<GeolocatorCubit>().uploadPosition();
+                    if (context.mounted && message != null) {
+                      showCupertinoDialog(
+                        context: context,
+                        builder: (context) {
+                          return AppDialog(
+                            message: message,
+                            actions: [
+                              CupertinoDialogAction(
+                                child: const Text(txtConfirm),
+                                onPressed: () {
+                                  Navigator.pop(context);
+                                },
+                              ),
+                            ],
+                          );
+                        },
+                      );
+                    }
+                  },
+                  child: Ink(
+                    width: double.maxFinite,
+                    height: dimXS,
+                    color: Colors.orange,
+                    child: const Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Icon(Icons.my_location, size: fontXL, color: Colors.white),
+                        SizedBox(width: spaceXS),
+                        Text(
+                          'Cập nhật vị trí',
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontWeight: FontWeight.w700,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
               ],
             );
         }
@@ -218,58 +262,15 @@ class StoreBody extends StatelessWidget {
           } else {}
         }
       },
-      child: Column(
-        children: [
-          Expanded(
-            child: ListView.builder(
-              itemBuilder: (context, index) => StoreItemWidget(
-                store: list[index],
-                onClick: (model) {
-                  _onClickStore(context, model);
-                },
-              ),
-              padding: const EdgeInsets.only(bottom: dimLG),
-              itemCount: list.length,
-            ),
-          ),
-          InkWell(
-            splashColor: Colors.green,
-            onTap: () async {
-              var message =
-                  await context.read<GeolocatorCubit>().uploadPosition();
-              if (context.mounted && message != null) {
-                showCupertinoDialog(
-                  context: context,
-                  builder: (context) {
-                    return AppDialog(
-                      message: message,
-                      actions: [
-                        CupertinoDialogAction(
-                          child: const Text(txtConfirm),
-                          onPressed: () {
-                            Navigator.pop(context);
-                          },
-                        ),
-                      ],
-                    );
-                  },
-                );
-              }
-            },
-            child: Ink(
-              width: double.maxFinite,
-              height: dimXS,
-              color: Colors.orange,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: const [
-                  Icon(Icons.sync_rounded, size: fontXXL),
-                  Text('Cập nhật toạ độ của bản'),
-                ],
-              ),
-            ),
-          ),
-        ],
+      child: ListView.builder(
+        itemBuilder: (context, index) => StoreItemWidget(
+          store: list[index],
+          onClick: (model) {
+            _onClickStore(context, model);
+          },
+        ),
+        padding: const EdgeInsets.only(bottom: dimLG),
+        itemCount: list.length,
       ),
     );
   }

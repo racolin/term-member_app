@@ -20,7 +20,6 @@ import '../../presentation/res/dimen/dimens.dart';
 import '../../business_logic/cubits/app_bar_cubit.dart';
 import '../../business_logic/states/app_bar_state.dart';
 import '../res/strings/values.dart';
-import '../screens/cart_template_screen.dart';
 import 'product/product_categories_widget.dart';
 import 'drag_bar_widget.dart';
 

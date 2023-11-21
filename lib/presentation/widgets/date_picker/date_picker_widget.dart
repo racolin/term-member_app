@@ -75,8 +75,8 @@ class CupertinoMultiLocalizations implements CupertinoLocalizations {
   @override
   String datePickerMonth(int monthIndex) => _months[monthIndex - 1];
 
-  @override
-  String datePickerDayOfMonth(int dayIndex) => dayIndex.toString();
+  // @override
+  // String datePickerDayOfMonth(int dayIndex) => dayIndex.toString();
 
   @override
   String datePickerHour(int hour) => hour.toString();
@@ -187,4 +187,35 @@ class CupertinoMultiLocalizations implements CupertinoLocalizations {
   @override
   // TODO: implement todayLabel
   String get todayLabel => dateToString(DateTime.now(), 'dd/MM/yyyy');
+
+  @override
+  String datePickerStandaloneMonth(int monthIndex) {
+    // TODO: implement datePickerStandaloneMonth
+    throw UnimplementedError();
+  }
+
+  @override
+  // TODO: implement lookUpButtonLabel
+  String get lookUpButtonLabel => throw UnimplementedError();
+
+  @override
+  // TODO: implement menuDismissLabel
+  String get menuDismissLabel => throw UnimplementedError();
+
+  @override
+  // TODO: implement noSpellCheckReplacementsLabel
+  String get noSpellCheckReplacementsLabel => throw UnimplementedError();
+
+  @override
+  // TODO: implement searchWebButtonLabel
+  String get searchWebButtonLabel => throw UnimplementedError();
+
+  @override
+  // TODO: implement shareButtonLabel
+  String get shareButtonLabel => throw UnimplementedError();
+
+  @override
+  String datePickerDayOfMonth(int dayIndex, [int? weekDay]) {
+    return dayIndex.toString().padLeft(2, '0');
+  }
 }

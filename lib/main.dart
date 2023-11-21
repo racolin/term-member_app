@@ -99,6 +99,7 @@ class MyApp extends StatelessWidget {
               // localizationsDelegates: [LocalizationsDelegate],
               title: 'Member App',
               theme: ThemeData(
+                useMaterial3: false,
                 scaffoldBackgroundColor: const Color.fromRGBO(244, 244, 244, 1),
                 textTheme: const TextTheme(
                   titleLarge: TextStyle(

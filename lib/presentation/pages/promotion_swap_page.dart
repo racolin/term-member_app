@@ -36,7 +36,7 @@ class PromotionSwapPage extends StatelessWidget {
             var list = (state as PromotionLoaded).categories;
             return Container(
               padding: const EdgeInsets.only(
-                top: spaceSM,
+                top: spaceXS,
                 left: spaceXS,
                 right: spaceXS,
               ),
@@ -84,33 +84,30 @@ class PromotionSwapPage extends StatelessWidget {
                       ),
                     ],
                   ),
-                  RefreshIndicator(
-                    onRefresh: () async {},
-                    child: SingleChildScrollView(
-                      scrollDirection: Axis.horizontal,
-                      child: Row(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: state
-                            .getOutStanding()
-                            .map(
-                              (e) => Row(
-                                mainAxisSize: MainAxisSize.min,
-                                children: [
-                                  PromotionLargeWidget(
-                                    promotion: e,
-                                  ),
-                                  const SizedBox(
-                                    width: spaceXS,
-                                  ),
-                                ],
-                              ),
-                            )
-                            .toList(),
-                      ),
+                  SingleChildScrollView(
+                    scrollDirection: Axis.horizontal,
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: state
+                          .getOutStanding()
+                          .map(
+                            (e) => Row(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                PromotionLargeWidget(
+                                  promotion: e,
+                                ),
+                                const SizedBox(
+                                  width: spaceSM,
+                                ),
+                              ],
+                            ),
+                          )
+                          .toList(),
                     ),
                   ),
                   const SizedBox(
-                    height: spaceMD,
+                    height: spaceXS,
                   ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -167,7 +164,7 @@ class PromotionSwapPage extends StatelessWidget {
                                   promotion: e,
                                 ),
                                 const SizedBox(
-                                  width: spaceXS,
+                                  width: spaceSM,
                                 ),
                               ],
                             ),

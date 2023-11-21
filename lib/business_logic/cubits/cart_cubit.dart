@@ -40,6 +40,13 @@ class CartCubit extends Cubit<CartState> {
     ///
   }
 
+  DeliveryType? get categoryId {
+    if (state is! CartLoaded) {
+      return null;
+    }
+    return (state as CartLoaded).categoryId;
+  }
+
   Future<ResponseModel<bool>> saveCartLoaded() async {
     if (state is! CartLoaded) {
       return ResponseModel<bool>(

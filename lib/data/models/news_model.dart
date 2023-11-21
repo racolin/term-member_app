@@ -37,6 +37,7 @@ class NewsModel {
 class NewsItemModel {
   final String id;
   final String name;
+  final String content;
   final String image;
   final DateTime time;
   final String url;
@@ -44,6 +45,7 @@ class NewsItemModel {
   NewsItemModel({
     required this.id,
     required this.name,
+    required this.content,
     required this.image,
     required this.time,
     required this.url,
@@ -53,6 +55,7 @@ class NewsItemModel {
     return {
       'id': id,
       'name': name,
+      'content': content,
       'image': image,
       'time': time.millisecondsSinceEpoch,
       'url': url,
@@ -63,6 +66,7 @@ class NewsItemModel {
     return NewsItemModel(
       id: map['id']!,
       name: map['name'] ?? txtUnknown,
+      content: map['content'] ?? txtUnknown,
       image: map['image'],
       time: map['time'] == null
           ? DateTime.now()

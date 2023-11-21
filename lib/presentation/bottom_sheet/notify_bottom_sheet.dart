@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_widget_from_html/flutter_widget_from_html.dart';
 import 'package:member_app/presentation/res/strings/values.dart';
 import 'package:member_app/presentation/widgets/app_image_widget.dart';
 
 import '../../data/models/notify_model.dart';
+import '../res/dimen/dimens.dart';
 
 class NotifyBottomSheet extends StatelessWidget {
   final NotifyModel notify;
@@ -40,6 +42,13 @@ class NotifyBottomSheet extends StatelessWidget {
                       ),
                     ),
                     const SizedBox(height: 16),
+                    HtmlWidget(
+                      notify.content,
+                      textStyle: const TextStyle(
+                        fontSize: fontMD,
+                      ),
+                      factoryBuilder: () => WidgetFactory(),
+                    ),
                     Text(
                       notify.description,
                       style: const TextStyle(height: 1.5),

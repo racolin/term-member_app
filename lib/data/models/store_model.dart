@@ -36,6 +36,7 @@ class StoreModel {
     };
   }
 
+
   factory StoreModel.fromMap(Map<String, dynamic> map) {
     return StoreModel(
       id: map['id']!,
@@ -45,6 +46,26 @@ class StoreModel {
       lng: map['lng'] ?? 0,
       lat: map['lat'] ?? 0,
       isFavorite: map['isFavorite'] ?? false,
+    );
+  }
+
+  StoreModel copyWith({
+    String? id,
+    String? image,
+    String? name,
+    String? address,
+    double? lat,
+    double? lng,
+    bool? isFavorite,
+  }) {
+    return StoreModel(
+      id: id ?? this.id,
+      image: image ?? this.image,
+      name: name ?? this.name,
+      address: address ?? this.address,
+      lat: lat ?? this.lat,
+      lng: lng ?? this.lng,
+      isFavorite: isFavorite ?? this.isFavorite,
     );
   }
 }

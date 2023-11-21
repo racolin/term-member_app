@@ -17,6 +17,7 @@ import '../../business_logic/states/promotion_state.dart';
 import '../../business_logic/states/voucher_state.dart';
 import '../app_router.dart';
 import '../bottom_sheet/voucher_bottom_sheet.dart';
+import '../screens/promotion_screen.dart';
 import '../screens/voucher_screen.dart';
 import '../widgets/feature_card_widget.dart';
 import '../widgets/promotion/promotion_small_widget.dart';
@@ -51,50 +52,7 @@ class PromotionPointPage extends StatelessWidget {
                   isDetail: true,
                 ),
                 _getFeatures(context),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    const Text(
-                      txtYourVoucher,
-                      style: TextStyle(
-                        fontWeight: FontWeight.w700,
-                        fontSize: fontLG,
-                      ),
-                    ),
-                    TextButton(
-                      onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (ctx) {
-                              return BlocProvider<VoucherCubit>.value(
-                                value: BlocProvider.of<VoucherCubit>(context),
-                                child: const VoucherScreen(),
-                              );
-                            },
-                          ),
-                        );
-                      },
-                      style: ButtonStyle(
-                        overlayColor: MaterialStateProperty.all(
-                          Colors.orange.withOpacity(opaXS),
-                        ),
-                        backgroundColor: MaterialStateProperty.all(
-                          Colors.orange.withAlpha(20),
-                        ),
-                        shape: MaterialStateProperty.all(
-                          RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(spaceLG),
-                          ),
-                        ),
-                      ),
-                      child: const Text(
-                        txtSeeAll,
-                        style: TextStyle(fontWeight: FontWeight.w700),
-                      ),
-                    ),
-                  ],
-                ),
+                const SizedBox(height: spaceXS),
                 BlocBuilder<VoucherCubit, VoucherState>(
                   builder: (context, state) {
                     switch (state.runtimeType) {
@@ -107,72 +65,88 @@ class PromotionPointPage extends StatelessWidget {
                       case VoucherLoaded:
                         var list = (state as VoucherLoaded).list;
                         list = list.length > 8 ? list.sublist(0, 8) : list;
+                        if (list.isEmpty) {
+                          return const SizedBox();
+                        }
                         return Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
-                          children: list
-                              .sublist(0)
-                              .map(
-                                (e) => Column(
-                                  children: [
-                                    VoucherWidget(
-                                      voucher: e,
-                                      onClick: () {
-                                        showModalBottomSheet(
-                                          context: context,
-                                          isScrollControlled: true,
-                                          backgroundColor: Colors.transparent,
-                                          builder: (context) {
-                                            return VoucherBottomSheet(
-                                              voucher: e,
-                                            );
-                                          },
-                                        );
-                                      },
-                                    ),
-                                    const SizedBox(
-                                      height: spaceXS,
-                                    ),
-                                  ],
+                          children: [
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                const Text(
+                                  txtYourVoucher,
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.w700,
+                                    fontSize: fontLG,
+                                  ),
                                 ),
-                              )
-                              .toList(),
+                                TextButton(
+                                  onPressed: () {
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (ctx) {
+                                          return BlocProvider<
+                                              VoucherCubit>.value(
+                                            value:
+                                                BlocProvider.of<VoucherCubit>(
+                                                    context),
+                                            child: const VoucherScreen(),
+                                          );
+                                        },
+                                      ),
+                                    );
+                                  },
+                                  style: ButtonStyle(
+                                    overlayColor: MaterialStateProperty.all(
+                                      Colors.orange.withOpacity(opaXS),
+                                    ),
+                                    backgroundColor: MaterialStateProperty.all(
+                                      Colors.orange.withAlpha(20),
+                                    ),
+                                    shape: MaterialStateProperty.all(
+                                      RoundedRectangleBorder(
+                                        borderRadius:
+                                            BorderRadius.circular(spaceLG),
+                                      ),
+                                    ),
+                                  ),
+                                  child: const Text(
+                                    txtSeeAll,
+                                    style:
+                                        TextStyle(fontWeight: FontWeight.w700),
+                                  ),
+                                ),
+                              ],
+                            ),
+                            for (var e in list)
+                              Column(
+                                children: [
+                                  VoucherWidget(
+                                    voucher: e,
+                                    onClick: () {
+                                      showModalBottomSheet(
+                                        context: context,
+                                        isScrollControlled: true,
+                                        backgroundColor: Colors.transparent,
+                                        builder: (context) {
+                                          return VoucherBottomSheet(
+                                            voucher: e,
+                                          );
+                                        },
+                                      );
+                                    },
+                                  ),
+                                ],
+                              ),
+                          ],
                         );
                     }
                     return const SizedBox();
                   },
                 ),
-                const SizedBox(
-                  height: spaceMD,
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    const Text(
-                      txtPromotionSwap,
-                      style: TextStyle(
-                        fontWeight: FontWeight.w700,
-                        fontSize: fontLG,
-                      ),
-                    ),
-                    TextButton(
-                      onPressed: () {},
-                      style: ButtonStyle(
-                        backgroundColor: MaterialStateProperty.all(
-                          Colors.orange.withAlpha(20),
-                        ),
-                        shape: MaterialStateProperty.all(
-                          RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(spaceMD),
-                          ),
-                        ),
-                      ),
-                      child: const Text(
-                        txtSeeAll,
-                        style: TextStyle(fontWeight: FontWeight.w700),
-                      ),
-                    ),
-                  ],
-                ),
+                const SizedBox(height: spaceXS),
                 BlocBuilder<PromotionCubit, PromotionState>(
                   builder: (context, state) {
                     switch (state.runtimeType) {
@@ -189,21 +163,63 @@ class PromotionPointPage extends StatelessWidget {
                             : promotions;
                         return Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
-                          children: promotions
-                              .map(
-                                (e) => Column(
-                                  mainAxisSize: MainAxisSize.min,
-                                  children: [
-                                    PromotionSmallWidget(
-                                      promotion: e,
-                                    ),
-                                    const SizedBox(
-                                      height: spaceXS,
-                                    ),
-                                  ],
+                          children: [
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                const Text(
+                                  txtPromotionSwap,
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.w700,
+                                    fontSize: fontLG,
+                                  ),
                                 ),
-                              )
-                              .toList(),
+                                TextButton(
+                                  onPressed: () {
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) {
+                                          return PromotionScreen(
+                                            promotions: state.promotions,
+                                            name: 'Tất cả',
+                                          );
+                                        },
+                                      ),
+                                    );
+                                  },
+                                  style: ButtonStyle(
+                                    backgroundColor: MaterialStateProperty.all(
+                                      Colors.orange.withAlpha(20),
+                                    ),
+                                    shape: MaterialStateProperty.all(
+                                      RoundedRectangleBorder(
+                                        borderRadius:
+                                            BorderRadius.circular(spaceMD),
+                                      ),
+                                    ),
+                                  ),
+                                  child: const Text(
+                                    txtSeeAll,
+                                    style:
+                                        TextStyle(fontWeight: FontWeight.w700),
+                                  ),
+                                ),
+                              ],
+                            ),
+                            for (var e in promotions)
+                              Column(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  PromotionSmallWidget(
+                                    promotion: e,
+                                  ),
+                                  const SizedBox(
+                                    height: spaceXS,
+                                  ),
+                                ],
+                              ),
+                          ],
                         );
                     }
                     return const SizedBox();
@@ -218,91 +234,88 @@ class PromotionPointPage extends StatelessWidget {
   }
 
   Widget _getFeatures(BuildContext context) {
-    return Container(
-      margin: const EdgeInsets.only(top: spaceXXS, bottom: spaceMD),
-      child: Column(
-        children: [
-          const SizedBox(
-            height: spaceMD,
-          ),
-          Row(
-            children: [
-              Expanded(
-                child: FeatureCardWidget(
-                  iconColor: Colors.green,
-                  icon: Icons.energy_savings_leaf_outlined,
-                  title: txtAchievement,
-                  onClick: () {
-                    showCupertinoDialog(
-                      context: context,
-                      builder: (context) => AppDialog(
-                        message: AppMessage(
-                          type: AppMessageType.notify,
-                          title: txtNotify,
-                          content: txtDeveloping,
+    return Column(
+      children: [
+        const SizedBox(
+          height: spaceMD,
+        ),
+        Row(
+          children: [
+            Expanded(
+              child: FeatureCardWidget(
+                iconColor: Colors.green,
+                icon: Icons.energy_savings_leaf_outlined,
+                title: txtAchievement,
+                onClick: () {
+                  showCupertinoDialog(
+                    context: context,
+                    builder: (context) => AppDialog(
+                      message: AppMessage(
+                        type: AppMessageType.notify,
+                        title: txtNotify,
+                        content: txtDeveloping,
+                      ),
+                      actions: [
+                        CupertinoDialogAction(
+                          child: const Text(txtConfirm),
+                          onPressed: () {
+                            Navigator.pop(context);
+                          },
                         ),
-                        actions: [
-                          CupertinoDialogAction(
-                            child: const Text(txtConfirm),
-                            onPressed: () {
-                              Navigator.pop(context);
-                            },
-                          ),
-                        ],
-                      ),
-                    );
-                  },
-                ),
+                      ],
+                    ),
+                  );
+                },
               ),
-              const SizedBox(width: spaceXS),
-              Expanded(
-                child: FeatureCardWidget(
-                  iconColor: Colors.orange,
-                  icon: Icons.confirmation_number_outlined,
-                  title: txtYourVoucher,
-                  onClick: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (ctx) {
-                          return BlocProvider<VoucherCubit>.value(
-                            value: BlocProvider.of<VoucherCubit>(context),
-                            child: const VoucherScreen(),
-                          );
-                        },
-                      ),
-                    );
-                  },
-                ),
+            ),
+            const SizedBox(width: spaceXS),
+            Expanded(
+              child: FeatureCardWidget(
+                iconColor: Colors.orange,
+                icon: Icons.confirmation_number_outlined,
+                title: txtYourVoucher,
+                onClick: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (ctx) {
+                        return BlocProvider<VoucherCubit>.value(
+                          value: BlocProvider.of<VoucherCubit>(context),
+                          child: const VoucherScreen(),
+                        );
+                      },
+                    ),
+                  );
+                },
               ),
-            ],
-          ),
-          const SizedBox(height: spaceXS),
-          Row(
-            children: [
-              Expanded(
-                child: FeatureCardWidget(
-                  iconColor: Colors.amber,
-                  icon: Icons.history_edu,
-                  title: '$txtHistory $txtPointName',
-                  onClick: () {
-                    Navigator.pushNamed(context, AppRouter.historyPoint);
-                  },
-                ),
+            ),
+          ],
+        ),
+        const SizedBox(height: spaceXS),
+        Row(
+          children: [
+            Expanded(
+              child: FeatureCardWidget(
+                iconColor: Colors.amber,
+                icon: Icons.history_edu,
+                title: '$txtHistory $txtPointName',
+                onClick: () {
+                  Navigator.pushNamed(context, AppRouter.historyPoint);
+                },
               ),
-              const SizedBox(width: spaceXS),
-              Expanded(
-                child: FeatureCardWidget(
-                  iconColor: Colors.blue,
-                  icon: Icons.admin_panel_settings_outlined,
-                  title: txtYourRight,
-                  onClick: () {},
-                ),
+            ),
+            const SizedBox(width: spaceXS),
+            Expanded(
+              child: FeatureCardWidget(
+                iconColor: Colors.blue,
+                icon: Icons.admin_panel_settings_outlined,
+                title: txtYourRight,
+                onClick: () {},
               ),
-            ],
-          ),
-        ],
-      ),
+            ),
+          ],
+        ),
+      ],
     );
   }
 }

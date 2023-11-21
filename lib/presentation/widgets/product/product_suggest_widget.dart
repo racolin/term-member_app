@@ -1,15 +1,18 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:member_app/exception/app_message.dart';
 import 'package:member_app/presentation/res/dimen/dimens.dart';
 import 'package:member_app/presentation/res/strings/values.dart';
 import 'package:member_app/presentation/widgets/app_image_widget.dart';
 
 import '../../../business_logic/cubits/cart_cubit.dart';
+import '../../../business_logic/cubits/home_cubit.dart';
 import '../../../business_logic/cubits/product_cubit.dart';
 import '../../../data/models/cart_detail_model.dart';
 import '../../../data/models/product_model.dart';
 import '../../../supports/convert.dart';
+import '../../bottom_sheet/method_order_bottom_sheet.dart';
 import '../../bottom_sheet/product_bottom_sheet.dart';
 import '../../dialogs/app_dialog.dart';
 
@@ -31,7 +34,7 @@ class ProductSuggestWidget extends StatelessWidget {
       padding: const EdgeInsets.all(spaceXS),
       width: dimXXL * 1.2,
       height: 268,
-      child: GestureDetector(
+      child: InkWell(
         onTap: () {
           showModalBottomSheet(
             context: context,
@@ -68,13 +71,29 @@ class ProductSuggestWidget extends StatelessWidget {
               maxLines: 1,
             ),
             const SizedBox(
-              height: fontSM,
+              height: spaceXXS,
             ),
             Text(numberToCurrency(model.cost + costOptions, 'đ')),
             SizedBox(
               width: double.maxFinite,
               child: TextButton(
                 onPressed: () async {
+                  if (context.read<CartCubit>().categoryId == null) {
+                    showModalBottomSheet(
+                      context: context,
+                      shape: const RoundedRectangleBorder(
+                        borderRadius: BorderRadius.vertical(
+                          top: Radius.circular(16),
+                        ),
+                      ),
+                      builder: (ctx) => MethodOrderBottomSheet(
+                        type: null,
+                        addressName: null,
+                        login: context.read<HomeCubit>().login,
+                      ),
+                    );
+                    return;
+                  }
                   var options = <String>[];
 
                   for (var o in model.optionIds) {

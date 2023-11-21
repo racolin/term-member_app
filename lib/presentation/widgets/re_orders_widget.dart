@@ -26,7 +26,7 @@ class _ReOrdersWidgetState extends State<ReOrdersWidget> {
       builder: (context, state) {
         switch (state.runtimeType) {
           case CartsInitial:
-            return const LoadingPage();
+            return const SizedBox();
           case CartsLoading:
             return const LoadingPage();
           case CartsLoaded:
@@ -36,6 +36,9 @@ class _ReOrdersWidgetState extends State<ReOrdersWidget> {
                 .expand((e) => e)
                 .toList();
             list = list.length > 3 ? list.sublist(0, 3) : list;
+            if (list.isEmpty) {
+              return const SizedBox();
+            }
             return FutureBuilder(
               future: context
                   .read<CartCubit>()

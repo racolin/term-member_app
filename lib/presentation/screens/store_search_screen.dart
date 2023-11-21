@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../business_logic/blocs/interval/interval_bloc.dart';
+import '../../business_logic/cubits/geolocator_cubit.dart';
+import '../../supports/convert.dart';
 import '../animation/typing_animation.dart';
 import '../res/dimen/dimens.dart';
 import '../../data/models/store_model.dart';
@@ -36,7 +38,18 @@ class _StoreSearchScreenState extends State<StoreSearchScreen> {
         builder: (context, state) {
           var list = <StoreModel>[];
           if (state is IntervalLoaded<StoreModel>) {
-            list = state.list;
+
+            for (var i = 0; i < state.list.length; i++) {
+              list.add(state.list[i].copyWith());
+              list[i].distance = positionToDistance(
+                context.read<GeolocatorCubit>().state.latLng.latitude,
+                context.read<GeolocatorCubit>().state.latLng.longitude,
+                list[i].lat,
+                list[i].lng,
+              );
+            }
+
+            list.sort((a, b) => a.distance - b.distance);
           }
           return Column(
             children: [

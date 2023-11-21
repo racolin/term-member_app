@@ -70,7 +70,10 @@ class _HomeBodyState extends State<HomeBody> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               widget.login
-                  ? const CardWidget(isDetail: false)
+                  ? Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: const CardWidget(isDetail: false),
+                  )
                   : const CardHomeWidget(),
               DeliveryOptionsWidget(login: widget.login),
               const SliderWidget(),

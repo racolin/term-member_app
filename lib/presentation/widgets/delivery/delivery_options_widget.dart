@@ -18,7 +18,8 @@ import '../../res/dimen/dimens.dart';
 import '../../res/strings/values.dart';
 
 class DeliveryOptionsWidget extends StatelessWidget {
-  const DeliveryOptionsWidget({Key? key, required this.login}) : super(key: key);
+  const DeliveryOptionsWidget({Key? key, required this.login})
+      : super(key: key);
   final double height = dimLG;
   final bool login;
 
@@ -36,20 +37,20 @@ class DeliveryOptionsWidget extends StatelessWidget {
         children: [
           Expanded(
             child: DeliveryOptionWidget(
-                onClick: () {
-                  if (!login) {
-                    Navigator.pushNamed(context, AppRouter.auth);
-                    return;
+              onClick: () {
+                if (!login) {
+                  Navigator.pushNamed(context, AppRouter.auth);
+                  return;
+                }
+                var state = context.read<CartCubit>().state;
+                if (state is CartLoaded) {
+                  if (state.categoryId == DeliveryType.delivery) {
+                    context.read<HomeCubit>().setBody(HomeBodyType.order);
+                  } else {
+                    Navigator.pushNamed(context, AppRouter.addressSearch);
                   }
-                  var state = context.read<CartCubit>().state;
-                  if (state is CartLoaded) {
-                    if (state.categoryId == DeliveryType.delivery) {
-                      context.read<HomeCubit>().setBody(HomeBodyType.order);
-                    } else {
-                      Navigator.pushNamed(context, AppRouter.addressSearch);
-                    }
-                  }
-                },
+                }
+              },
               name: txtOptionDelivery,
               image: assetDeliveryImage,
               height: height,
@@ -64,7 +65,9 @@ class DeliveryOptionsWidget extends StatelessWidget {
                 }
                 var state = context.read<CartCubit>().state;
                 if (state is CartLoaded) {
-                  if (state.categoryId == DeliveryType.delivery) {
+                  if (state.categoryId == DeliveryType.takeOut) {
+                    context.read<HomeCubit>().setBody(HomeBodyType.order);
+                  } else {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
@@ -74,13 +77,14 @@ class DeliveryOptionsWidget extends StatelessWidget {
                             providers: [
                               BlocProvider<StoreCubit>(
                                 create: (ctx) => StoreCubit(
-                                  repository: RepositoryProvider.of<StoreRepository>(ctx),
+                                  repository:
+                                      RepositoryProvider.of<StoreRepository>(
+                                          ctx),
                                 ),
                               ),
                               BlocProvider<IntervalBloc<StoreModel>>(
                                 create: (ctx) => IntervalBloc<StoreModel>(
-                                  submit:
-                                  BlocProvider.of<StoreCubit>(ctx),
+                                  submit: BlocProvider.of<StoreCubit>(ctx),
                                 ),
                               ),
                             ],
@@ -93,8 +97,6 @@ class DeliveryOptionsWidget extends StatelessWidget {
                         ),
                       ),
                     );
-                  } else {
-                    context.read<HomeCubit>().setBody(HomeBodyType.order);
                   }
                 }
               },

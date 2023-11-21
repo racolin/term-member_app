@@ -9,7 +9,9 @@ import 'product_suggest_widget.dart';
 
 class ProductsSuggestWidget extends StatefulWidget {
   final double height;
-  const ProductsSuggestWidget({Key? key, required this.height,}) : super(key: key);
+
+  const ProductsSuggestWidget({Key? key, required this.height,})
+      : super(key: key);
 
   @override
   State<ProductsSuggestWidget> createState() => _ProductsSuggestWidgetState();
@@ -17,10 +19,10 @@ class ProductsSuggestWidget extends StatefulWidget {
 
 class _ProductsSuggestWidgetState extends State<ProductsSuggestWidget> {
 
- final double top = spaceXS;
- final double textHeight = 1.25;
- final double textFont = fontLG;
- final double textSpaceVertical = spaceXXS;
+  final double top = spaceXS;
+  final double textHeight = 1.25;
+  final double textFont = fontLG;
+  final double textSpaceVertical = spaceXXS;
 
   @override
   Widget build(BuildContext context) {
@@ -33,6 +35,9 @@ class _ProductsSuggestWidgetState extends State<ProductsSuggestWidget> {
             return const SizedBox();
           case ProductLoaded:
             state as ProductLoaded;
+            if (state.suggestion.isEmpty) {
+              return const SizedBox();
+            }
             return IntrinsicHeight(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -55,7 +60,8 @@ class _ProductsSuggestWidgetState extends State<ProductsSuggestWidget> {
                     ),
                   ),
                   SizedBox(
-                    height: widget.height - top - textHeight * textFont - textSpaceVertical * 2,
+                    height: widget.height - top - textHeight * textFont -
+                        textSpaceVertical * 2,
                     child: ListView.builder(
                       itemCount: state.suggestion.length,
                       itemBuilder: (context, index) {

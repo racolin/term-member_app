@@ -27,17 +27,6 @@ class CartApiRepository extends CartRepository {
     required List<CartProductModel> products,
   }) async {
     try {
-      print(jsonEncode({
-        'storeId': storeId,
-        'voucherId': voucherId,
-        'categoryId': categoryId,
-        'products': products
-            .map(
-              (e) => e.toMapCheck(),
-        )
-            .toList(),
-      }));
-      print('object');
       var res = await _dio.post(
         ApiRouter.cartCheckVoucher,
         data: {

@@ -44,6 +44,7 @@ class PromotionLargeWidget extends StatelessWidget {
       child: SizedBox(
         width: size,
         child: Card(
+          margin: const EdgeInsets.symmetric(vertical: spaceXXS),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(spaceXS),
           ),

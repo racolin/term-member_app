@@ -30,6 +30,7 @@ class GroupItemWidget extends StatelessWidget {
       ),
       onTap: onClick,
       child: ListTile(
+        dense: true,
         leading: icon,
         title: Text(
           title,

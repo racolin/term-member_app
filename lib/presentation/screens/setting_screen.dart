@@ -55,7 +55,7 @@ class _SettingScreenState extends State<SettingScreen> {
                     context,
                     const Icon(
                       Icons.notifications_outlined,
-                      size: 22,
+                      size: fontLG,
                       color: Colors.black,
                     ),
                     'Nhận thông báo',
@@ -81,7 +81,7 @@ class _SettingScreenState extends State<SettingScreen> {
                 ),
                 GroupItemWidget(
                   icon: const Icon(
-                    Icons.add_link_outlined,
+                    Icons.info_outline_rounded,
                     size: fontLG,
                     color: Colors.black,
                   ),

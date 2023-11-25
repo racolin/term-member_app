@@ -139,6 +139,10 @@ class MyApp extends StatelessWidget {
                     height: 1.25,
                   ),
                 ),
+                appBarTheme: const AppBarTheme(
+                  backgroundColor: Colors.white,
+                  elevation: 1,
+                ),
                 primarySwatch: const MaterialColor(
                   0xFFFFC375,
                   {

@@ -116,16 +116,19 @@ const txtToFast = 'Thao tác quá nhanh, hãy đợi và thử lại!';
 
 const txtDeleteTemplate = 'Bạn đã xoá đơn hàng mẫu thành công!';
 const txtArrangeTemplate = 'Sắp xếp đơn hàng mẫu thành công!';
+const txtNotCorrectPlace = 'Không lấy được địa điểm. Hãy thử lại!';
 
 const txtSlider = 'Chương trình ưu đãi';
 const txtSeeMore = 'Xem thêm';
 
 
 // assets
+const assetCurrentLocationIcon = 'assets/images/current_location.png';
+const assetPickerIcon = 'assets/images/picker.png';
+const assetMarkerIcon = 'assets/images/marker.png';
 const assetDefaultIcon = 'assets/images/icon_default.png';
 const assetDefaultImage = 'assets/images/image_default.png';
 const assetDeliveryImage = 'assets/images/image_delivery.jpeg';
 const assetExchangeImage = 'assets/images/exchange.jpg';
 const assetTakeAwayImage = 'assets/images/image_take_away.png';
 const assetMyOrderImage = 'assets/images/my-order.jpeg';
-

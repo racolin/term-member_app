@@ -1,5 +1,5 @@
-import 'package:dio/dio.dart';
-import 'package:flutter/material.dart';
+import 'package:google_maps_webservice/places.dart';
+import 'package:member_app/business_logic/cubits/address_cubit.dart';
 import 'package:member_app/data/models/response_model.dart';
 
 import '../../models/address_model.dart';
@@ -260,5 +260,23 @@ class SettingMockRepository extends SettingRepository {
       type: ResponseModelType.success,
       data: true,
     );
+  }
+
+  @override
+  Future<ResponseModel<List<AddressEntity>>> searchAddressesByLocation({required Location location, required double radius}) {
+    // TODO: implement searchAddressesByLocation
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<ResponseModel<AddressEntity>> searchPlaceById({required String id}) {
+    // TODO: implement searchPlaceById
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<ResponseModel<List<AddressEntity>>> searchAddressesByText({required String address, Location? origin}) {
+    // TODO: implement searchAddressesByText
+    throw UnimplementedError();
   }
 }

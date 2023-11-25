@@ -1,10 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:member_app/data/models/cart_model.dart';
 
 import '../../data/models/pay_method_model.dart';
 
 class PayMethodBottomSheet extends StatelessWidget {
-  final PayMethod? payMethod;
-  const PayMethodBottomSheet({Key? key, required this.payMethod}) : super(key: key);
+  final DeliveryType? deliveryType;
+  final PayMethodType selected;
+
+  const PayMethodBottomSheet({
+    Key? key,
+    required this.deliveryType,
+    required this.selected,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -12,30 +19,13 @@ class PayMethodBottomSheet extends StatelessWidget {
       PayMethod(
         name: 'Momo',
         type: PayMethodType.momo,
-        image: 'https://static.mservice.io/img/logo-momo.png',
-      ),
-      PayMethod(
-        name: 'Thẻ ngân hàng',
-        type: PayMethodType.bank,
-        image:
-        'https://www.pngitem.com/pimgs/m/13-130625_credit-card-rewards-star-ratings-payment-icon-credit.png',
+        image: 'https://upload.wikimedia.org/wikipedia/vi/f/fe/MoMo_Logo.png',
       ),
       PayMethod(
         name: 'Tiền mặt',
         type: PayMethodType.cash,
         image:
-        'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSxVK2Ldio3wbcompe76GCOvyURqeR96FG-Ow&usqp=CAU',
-      ),
-      PayMethod(
-        name: 'ShopeePay',
-        type: PayMethodType.shopee,
-        image: 'https://www.siampay.com/en/images/shopeepay-img1.png',
-      ),
-      PayMethod(
-        name: 'ZaloPay',
-        type: PayMethodType.zalo,
-        image:
-        'https://sosanhdienthoai.net/wp-content/uploads/2022/04/thanh-toan-zalo-pay-la-gi-huong-dan-cach-thanh-toan-zalopay-thumb.jpg',
+            'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSxVK2Ldio3wbcompe76GCOvyURqeR96FG-Ow&usqp=CAU',
       ),
     ];
 
@@ -60,7 +50,7 @@ class PayMethodBottomSheet extends StatelessWidget {
                 style: TextStyle(fontSize: 16, color: Colors.black54),
               ),
             ),
-            _getMethods(context, methods, payMethod ?? methods[2]),
+            _getMethods(context, methods, deliveryType, selected),
             Container(
               color: Colors.grey.withAlpha(30),
               height: 48,
@@ -109,13 +99,32 @@ class PayMethodBottomSheet extends StatelessWidget {
     );
   }
 
-  Widget _getMethods(BuildContext context, List<PayMethod> methods, PayMethod selected) {
+  Widget _getMethods(
+    BuildContext context,
+    List<PayMethod> methods,
+    DeliveryType? deliveryType,
+    PayMethodType? selected,
+  ) {
     return Column(
-      children: methods.map((method) => _getMethod(context, method, selected)).toList(),
+      children: methods
+          .map((method) => _getMethod(
+                context,
+                method,
+                methods[selected == PayMethodType.cash ? 1 : 0],
+                deliveryType == DeliveryType.takeOut
+                    ? false
+                    : method.type == PayMethodType.cash,
+              ))
+          .toList(),
     );
   }
 
-  Widget _getMethod(BuildContext context, PayMethod method, PayMethod selected) {
+  Widget _getMethod(
+    BuildContext context,
+    PayMethod method,
+    PayMethod selected,
+    bool isDisabled,
+  ) {
     return Column(
       children: [
         Row(
@@ -126,7 +135,7 @@ class PayMethodBottomSheet extends StatelessWidget {
               child: Radio(
                 value: method.type,
                 groupValue: selected.type,
-                onChanged: (type) {
+                onChanged: isDisabled ? null : (type) {
                   Navigator.pop(context, method);
                 },
               ),

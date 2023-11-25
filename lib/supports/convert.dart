@@ -1,7 +1,23 @@
 import 'dart:math';
+import 'dart:typed_data';
+import 'package:flutter/services.dart' show rootBundle;
+import 'dart:ui' as ui;
 
 import 'package:barcode/barcode.dart';
 import 'package:intl/intl.dart';
+
+Future<Uint8List?> getBytesFromAsset({
+  required String path,
+  required int width,
+}) async {
+  ByteData data = await rootBundle.load(path);
+  ui.Codec codec = await ui.instantiateImageCodec(data.buffer.asUint8List(),
+      targetWidth: width);
+  ui.FrameInfo fi = await codec.getNextFrame();
+  return (await fi.image.toByteData(format: ui.ImageByteFormat.png))
+      ?.buffer
+      .asUint8List();
+}
 
 String numberToCurrency(num x, String symbol) {
   return '${NumberFormat.currency(locale: 'en_US', symbol: '', decimalDigits: 0).format(x)}$symbol';
@@ -27,9 +43,9 @@ String secondToTime(int count) {
 
 String meterToString(int meter) {
   if (meter < 300) {
-    return '${meter} m';
+    return '$meter m';
   } else {
-    return '${(meter / 1000).toStringAsPrecision(2)} km';
+    return '${meter ~/ 100 / 10} km';
   }
 }
 
@@ -57,27 +73,9 @@ String positionToDistanceString(
   double lat,
   double lng,
 ) {
-  curLat = _toRadians(curLat);
-  curLng = _toRadians(curLng);
-  lat = _toRadians(lat);
-  lng = _toRadians(lng);
+  var ans = positionToDistance(curLat, curLng, lat, lng);
 
-  double ln = lng - curLng;
-  double lt = lat - curLat;
-
-  double ans =
-      pow(sin(lt / 2), 2) + cos(curLat) * cos(lat) * pow(sin(ln / 2), 2);
-
-  ans = 2 * asin(sqrt(ans));
-
-  double R = 6371;
-
-  ans = ans * R;
-
-  if (ans >= 1) {
-    return '${ans.toInt()} km';
-  }
-  return '${(ans * 1000).toInt()} m';
+  return meterToString(ans);
 }
 
 int positionToDistance(
@@ -86,6 +84,7 @@ int positionToDistance(
   double lat,
   double lng,
 ) {
+
   curLat = _toRadians(curLat);
   curLng = _toRadians(curLng);
   lat = _toRadians(lat);

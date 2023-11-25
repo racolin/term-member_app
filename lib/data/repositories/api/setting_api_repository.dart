@@ -1,4 +1,7 @@
 import 'package:dio/dio.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:google_maps_webservice/places.dart';
+import 'package:member_app/business_logic/cubits/address_cubit.dart';
 
 import '../../models/response_model.dart';
 import '../../services/api_client.dart';
@@ -362,6 +365,131 @@ class SettingApiRepository extends SettingRepository {
       }
     } on Exception catch (ex) {
       return ResponseModel<bool>(
+        type: ResponseModelType.failure,
+        message: AppMessage(
+          title: txtErrorTitle,
+          type: AppMessageType.error,
+          content: 'Chưa phân tích được lỗi',
+          description: ex.toString(),
+        ),
+      );
+    }
+  }
+
+  @override
+  Future<ResponseModel<List<AddressEntity>>> searchAddressesByText({
+    required String address,
+    Location? origin,
+  }) async {
+    try {
+      final places = GoogleMapsPlaces(apiKey: ApiRouter.googlePlacesApiKey);
+      final result = await places.autocomplete(
+        address,
+        language: 'vi',
+        origin: origin,
+        components: [Component('country', 'vn')],
+      );
+      if (result.status == "OK") {
+        return ResponseModel<List<AddressEntity>>(
+          type: ResponseModelType.success,
+          data: result.predictions
+              .map((e) => AddressEntity(
+                    id: e.placeId,
+                    name: e.structuredFormatting?.mainText ?? txtUnknown,
+                    address: e.description,
+                    meters: e.distanceMeters ?? 0,
+                  ))
+              .toList(),
+        );
+      } else {
+        throw Exception(result.errorMessage);
+      }
+    } on Exception catch (ex) {
+      return ResponseModel<List<AddressEntity>>(
+        type: ResponseModelType.failure,
+        message: AppMessage(
+          title: txtErrorTitle,
+          type: AppMessageType.error,
+          content: 'Chưa phân tích được lỗi',
+          description: ex.toString(),
+        ),
+      );
+    }
+  }
+
+  @override
+  Future<ResponseModel<List<AddressEntity>>> searchAddressesByLocation({
+    required Location location,
+    required double radius,
+  }) async {
+    try {
+      final places = GoogleMapsPlaces(apiKey: ApiRouter.googlePlacesApiKey);
+      final result = await places.searchNearbyWithRadius(
+        location,
+        radius,
+        language: 'vi',
+      );
+      for (var e in result.results) {
+        print(e.toJson());
+      }
+      if (result.status == "OK") {
+        return ResponseModel<List<AddressEntity>>(
+          type: ResponseModelType.success,
+          data: result.results
+              .where(
+                (e) =>
+                    !e.types.contains("locality") && !e.types.contains("route"),
+              )
+              .map((e) => AddressEntity(
+                    id: e.placeId,
+                    icon: e.icon,
+                    name: e.name,
+                    address: e.formattedAddress,
+                    lat: e.geometry?.location.lat ?? 10.45,
+                    lng: e.geometry?.location.lng ?? 106.7,
+                  ))
+              .toList(),
+        );
+      } else {
+        throw Exception(result.errorMessage);
+      }
+    } on Exception catch (ex) {
+      return ResponseModel<List<AddressEntity>>(
+        type: ResponseModelType.failure,
+        message: AppMessage(
+          title: txtErrorTitle,
+          type: AppMessageType.error,
+          content: 'Chưa phân tích được lỗi',
+          description: ex.toString(),
+        ),
+      );
+    }
+  }
+
+  @override
+  Future<ResponseModel<AddressEntity>> searchPlaceById(
+      {required String id}) async {
+    try {
+      final places = GoogleMapsPlaces(apiKey: ApiRouter.googlePlacesApiKey);
+      final result = await places.getDetailsByPlaceId(id, language: 'vi');
+      if (result.status == "OK") {
+        var e = result.result;
+        return ResponseModel<AddressEntity>(
+          type: ResponseModelType.success,
+          data: AddressEntity(
+            id: e.placeId,
+            icon: e.icon,
+            name: e.name,
+            address: e.formattedAddress,
+            lat: e.geometry?.location.lat ?? 10.45,
+            lng: e.geometry?.location.lng ?? 106.7,
+          ),
+        );
+      } else {
+        throw Exception(result.errorMessage);
+      }
+    } on Exception catch (ex) {
+      return ResponseModel<AddressEntity>(
         type: ResponseModelType.failure,
         message: AppMessage(
           title: txtErrorTitle,

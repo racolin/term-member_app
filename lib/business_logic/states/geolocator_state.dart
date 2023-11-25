@@ -13,7 +13,7 @@ class GeolocatorState {
     );
   }
 
-  LatLng get latLng => _latLng ?? LatLng(10.762622, 106.660172);
+  LatLng get latLng => _latLng ?? const LatLng(10.762622, 106.660172);
 
   const GeolocatorState({
     LatLng? latLng,

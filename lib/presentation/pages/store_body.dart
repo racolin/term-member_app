@@ -1,7 +1,11 @@
+import 'dart:typed_data';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_map/flutter_map.dart';
+import 'dart:ui' as ui;
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:member_app/business_logic/cubits/geolocator_cubit.dart';
 import 'package:member_app/business_logic/cubits/store_cubit.dart';
 import 'package:member_app/exception/app_message.dart';
@@ -9,17 +13,15 @@ import 'package:member_app/presentation/bottom_sheet/store_bottom_sheet.dart';
 import 'package:member_app/presentation/dialogs/app_dialog.dart';
 import 'package:member_app/presentation/res/dimen/dimens.dart';
 import 'package:member_app/presentation/res/strings/values.dart';
-import 'package:member_app/presentation/widgets/app_image_widget.dart';
 import 'package:member_app/supports/convert.dart';
 
 import '../../business_logic/blocs/interval/interval_bloc.dart';
 import '../../business_logic/states/store_state.dart';
 import '../../data/models/store_model.dart';
 import '../widgets/store/store_item_widget.dart';
-import 'package:latlong2/latlong.dart';
 import '../screens/store_search_screen.dart';
 
-class StoreBody extends StatelessWidget {
+class StoreBody extends StatefulWidget {
   static const String searchTag = 'Search';
   final bool login;
 
@@ -27,6 +29,39 @@ class StoreBody extends StatelessWidget {
     Key? key,
     this.login = false,
   }) : super(key: key);
+
+  @override
+  State<StoreBody> createState() => _StoreBodyState();
+}
+
+class _StoreBodyState extends State<StoreBody> {
+  BitmapDescriptor markerIcon = BitmapDescriptor.defaultMarker;
+
+  @override
+  void initState() {
+    setIcon();
+    super.initState();
+  }
+
+  void setIcon() {
+    getBytesFromAsset(assetMarkerIcon, 96).then((value) {
+      if (value != null) {
+        setState(() {
+          markerIcon = BitmapDescriptor.fromBytes(value);
+        });
+      }
+    });
+  }
+
+  Future<Uint8List?> getBytesFromAsset(String path, int width) async {
+    ByteData data = await rootBundle.load(path);
+    ui.Codec codec = await ui.instantiateImageCodec(data.buffer.asUint8List(),
+        targetWidth: width);
+    ui.FrameInfo fi = await codec.getNextFrame();
+    return (await fi.image.toByteData(format: ui.ImageByteFormat.png))
+        ?.buffer
+        .asUint8List();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -44,14 +79,14 @@ class StoreBody extends StatelessWidget {
                 _getSearchAddress(context, state.isMap),
                 Expanded(
                   child: state.isMap
-                      ? _getMapStore(context, state.list)
+                      ? _getMapStore(context, state.list, markerIcon)
                       : _getListStore(context, state.list),
                 ),
                 InkWell(
                   splashColor: Colors.green,
                   onTap: () async {
                     var message =
-                    await context.read<GeolocatorCubit>().uploadPosition();
+                        await context.read<GeolocatorCubit>().uploadPosition();
                     if (context.mounted && message != null) {
                       showCupertinoDialog(
                         context: context,
@@ -78,10 +113,11 @@ class StoreBody extends StatelessWidget {
                     child: const Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Icon(Icons.my_location, size: fontXL, color: Colors.white),
+                        Icon(Icons.my_location,
+                            size: fontXL, color: Colors.white),
                         SizedBox(width: spaceXS),
                         Text(
-                          'Cập nhật vị trí',
+                          'Cập nhật vị trí để tính khoảng cách',
                           style: TextStyle(
                             color: Colors.white,
                             fontWeight: FontWeight.w700,
@@ -99,46 +135,21 @@ class StoreBody extends StatelessWidget {
     );
   }
 
-  List<Marker> _getMarkers(BuildContext context, List<StoreModel> list) {
+  Set<Marker> _getMarkers(
+      BuildContext context, List<StoreModel> list, BitmapDescriptor mIc) {
     var lst = list
         .map((e) => Marker(
-              height: dimXS,
-              width: dimXS,
-              rotate: true,
-              point: LatLng(e.lat, e.lng),
-              builder: (context) => GestureDetector(
-                onTap: () {
-                  _onClickStore(context, e);
-                },
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(dimXS),
-                  child: const ColorFiltered(
-                    colorFilter: ColorFilter.mode(
-                      Colors.orange,
-                      BlendMode.color,
-                    ),
-                    child: AppImageWidget(
-                      image: assetDefaultIcon,
-                      assetsDefaultImage: assetDefaultIcon,
-                      width: dimXS,
-                      height: dimXS,
-                    ),
-                  ),
-                ),
-              ),
+              markerId: MarkerId(e.id),
+              position: LatLng(e.lat, e.lng),
+              onTap: () => _onClickStore(context, e),
+              icon: mIc,
             ))
-        .toList();
+        .toSet();
     lst.add(
       Marker(
-        height: dimXS,
-        width: dimXS,
-        rotate: true,
-        point: context.read<GeolocatorCubit>().state.latLng,
-        builder: (context) => const Icon(
-          Icons.location_on_rounded,
-          color: Colors.red,
-          size: dimXS,
-        ),
+        position: context.read<GeolocatorCubit>().state.latLng,
+        markerId: const MarkerId("_current"),
+        icon: BitmapDescriptor.defaultMarker,
       ),
     );
     return lst;
@@ -195,7 +206,7 @@ class StoreBody extends StatelessWidget {
               return StoreBottomSheet(
                 store: model,
                 detail: detail,
-                login: login,
+                login: widget.login,
               );
             },
           );
@@ -204,25 +215,19 @@ class StoreBody extends StatelessWidget {
     });
   }
 
-  Widget _getMapStore(BuildContext context, List<StoreModel> list) {
-    return FlutterMap(
-      options: MapOptions(
-        center: context.read<GeolocatorCubit>().state.latLng,
+  Widget _getMapStore(
+    BuildContext context,
+    List<StoreModel> list,
+    BitmapDescriptor mIc,
+  ) {
+    return GoogleMap(
+      initialCameraPosition: CameraPosition(
+        target: context.read<GeolocatorCubit>().state.latLng,
         zoom: 15,
-        maxZoom: 18,
-        minZoom: 12,
-        keepAlive: true,
       ),
-      children: [
-        TileLayer(
-          urlTemplate: 'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
-          subdomains: const ['a', 'b', 'c'],
-          userAgentPackageName: 'com.example.app',
-        ),
-        MarkerLayer(
-          markers: _getMarkers(context, list),
-        ),
-      ],
+      myLocationEnabled: false,
+      myLocationButtonEnabled: false,
+      markers: _getMarkers(context, list, mIc),
     );
   }
 
@@ -277,7 +282,7 @@ class StoreBody extends StatelessWidget {
 
   Widget _getSearchAddress(BuildContext context, bool isMap) {
     return Hero(
-      tag: searchTag,
+      tag: StoreBody.searchTag,
       child: Material(
         child: Container(
           color: Colors.white,
@@ -357,7 +362,7 @@ class StoreBody extends StatelessWidget {
                                         return StoreBottomSheet(
                                           store: model,
                                           detail: detail,
-                                          login: login,
+                                          login: widget.login,
                                         );
                                       },
                                     );
@@ -394,8 +399,8 @@ class StoreBody extends StatelessWidget {
                     borderRadius: BorderRadius.circular(spaceXS),
                   ),
                   child: isMap
-                      ? Row(
-                          children: const [
+                      ? const Row(
+                          children: [
                             Icon(Icons.list, size: fontLG),
                             SizedBox(
                               width: spaceXXS,
@@ -409,8 +414,8 @@ class StoreBody extends StatelessWidget {
                             ),
                           ],
                         )
-                      : Row(
-                          children: const [
+                      : const Row(
+                          children: [
                             Icon(Icons.map_outlined, size: fontLG),
                             SizedBox(
                               width: spaceXXS,

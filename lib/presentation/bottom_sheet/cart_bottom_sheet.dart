@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:member_app/business_logic/cubits/cart_cubit.dart';
 import 'package:member_app/data/models/cart_model.dart';
+import 'package:member_app/data/models/pay_method_model.dart';
 import 'package:member_app/data/models/voucher_model.dart';
 import 'package:member_app/presentation/dialogs/app_dialog.dart';
 import 'package:member_app/presentation/pages/loading_page.dart';
@@ -116,7 +117,7 @@ class _CartBottomSheetState extends State<CartBottomSheet> {
                             height: 307,
                           ),
                           const SizedBox(height: 8),
-                          _getMethod(),
+                          _getMethod(state.categoryId),
                           const SizedBox(height: 16),
                         ],
                       ),
@@ -310,9 +311,9 @@ class _CartBottomSheetState extends State<CartBottomSheet> {
                           color: Colors.grey,
                           borderRadius: BorderRadius.circular(8),
                         ),
-                        child: Column(
+                        child: const Column(
                           mainAxisAlignment: MainAxisAlignment.center,
-                          children: const [
+                          children: [
                             Icon(
                               Icons.edit_note_outlined,
                               color: Colors.white,
@@ -581,9 +582,9 @@ class _CartBottomSheetState extends State<CartBottomSheet> {
               padding: const EdgeInsets.symmetric(vertical: 12),
               child: Column(
                 children: [
-                  Row(
+                  const Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: const [
+                    children: [
                       Text(
                         'Chọn khuyến mãi',
                         style: TextStyle(color: Colors.blue),
@@ -644,17 +645,28 @@ class _CartBottomSheetState extends State<CartBottomSheet> {
     );
   }
 
-  Widget _getMethod() {
+  late PayMethod _pay = PayMethod(
+    name: 'Momo',
+    type: PayMethodType.momo,
+    image: 'https://upload.wikimedia.org/wikipedia/vi/f/fe/MoMo_Logo.png',
+  );
+
+  Widget _getMethod(DeliveryType? type) {
     return InkWell(
       onTap: () async {
         var pay = await showModalBottomSheet(
           isScrollControlled: true,
           backgroundColor: Colors.transparent,
           context: context,
-          builder: (context) => const PayMethodBottomSheet(
-            payMethod: null,
+          builder: (context) => PayMethodBottomSheet(
+            deliveryType: type,selected: _pay.type,
           ),
         );
+        if (pay is PayMethod) {
+          setState(() {
+            _pay = pay;
+          });
+        }
       },
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 12),
@@ -675,14 +687,14 @@ class _CartBottomSheetState extends State<CartBottomSheet> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Image.asset(
-                  'assets/images/cash.png',
+                Image.network(
+                  _pay.image,
                   height: 20,
                   width: 20,
                   fit: BoxFit.contain,
                 ),
                 const SizedBox(width: 8),
-                const Text('Tiền mặt'),
+                Text(_pay.name),
                 const Spacer(),
                 const Icon(
                   Icons.chevron_right,

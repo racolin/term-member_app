@@ -30,7 +30,7 @@ class AddressWidget extends StatelessWidget {
         ],
       ),
       title: Container(
-        padding: const EdgeInsets.symmetric(vertical: spaceSM),
+        padding: const EdgeInsets.symmetric(vertical: spaceXS),
         decoration: const BoxDecoration(
           border: Border(
             bottom: BorderSide(color: Colors.black26, width: 0.5),
@@ -46,20 +46,29 @@ class AddressWidget extends StatelessWidget {
                     fontWeight: FontWeight.w700,
                   ),
             ),
-            const SizedBox(
-              height: spaceXS,
-            ),
-            Text(
-              model.address,
-              style: const TextStyle(fontWeight: FontWeight.w400),
-            ),
-            const SizedBox(
-              height: spaceXXS,
-            ),
-            Text(
-              '${model.receiver} ${model.phone}',
-              style: const TextStyle(fontWeight: FontWeight.w300),
-            ),
+            if (model.address.isNotEmpty) ...[
+              const SizedBox(
+                height: spaceXXS,
+              ),
+              Text(
+                model.address.split('||').first,
+                style: const TextStyle(
+                    fontWeight: FontWeight.w500, fontSize: fontMD),
+              ),
+              Text(
+                model.address.split('||').last,
+                style: const TextStyle(fontWeight: FontWeight.w400),
+              ),
+            ],
+            if (model.receiver.isNotEmpty && model.phone.isNotEmpty) ...[
+              const SizedBox(
+                height: spaceXXS,
+              ),
+              Text(
+                '${model.receiver} ${model.phone}',
+                style: const TextStyle(fontWeight: FontWeight.w300),
+              ),
+            ]
           ],
         ),
       ),

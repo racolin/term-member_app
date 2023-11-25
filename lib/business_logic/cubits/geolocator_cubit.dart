@@ -1,8 +1,8 @@
 import 'dart:async';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:latlong2/latlong.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:member_app/data/models/response_model.dart';
 import 'package:member_app/exception/app_message.dart';
 
@@ -30,7 +30,6 @@ class GeolocatorCubit extends Cubit<GeolocatorState> {
     // Test if location services are enabled.
     serviceEnabled = await Geolocator.isLocationServiceEnabled();
     if (!serviceEnabled) {
-      print('pos.toJson13()');
       // Location services are not enabled don't continue
       // accessing the position and request users of the
       // App to enable the location services.
@@ -46,7 +45,6 @@ class GeolocatorCubit extends Cubit<GeolocatorState> {
 
     permission = await Geolocator.checkPermission();
     if (permission == LocationPermission.denied) {
-      print('pos.toJson1`()');
       permission = await Geolocator.requestPermission();
       if (permission == LocationPermission.denied) {
         // Permissions are denied, next time you could try
@@ -66,7 +64,6 @@ class GeolocatorCubit extends Cubit<GeolocatorState> {
     }
 
     if (permission == LocationPermission.deniedForever) {
-      print('pos.toJson12()');
       // Permissions are denied forever, handle appropriately.
       return AppMessage(
         type: AppMessageType.error,

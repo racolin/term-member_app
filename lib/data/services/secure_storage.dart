@@ -2,8 +2,8 @@ import 'dart:convert';
 
 import 'package:flutter/services.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:jwt_decoder/jwt_decoder.dart';
-import 'package:latlong2/latlong.dart';
 import 'package:member_app/data/models/token_model.dart';
 import 'package:member_app/presentation/res/strings/values.dart';
 

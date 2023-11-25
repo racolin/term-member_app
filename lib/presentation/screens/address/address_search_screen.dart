@@ -4,9 +4,7 @@ import 'package:member_app/data/models/address_model.dart';
 import 'package:member_app/presentation/widgets/address/address_add_widget.dart';
 
 import '../../../business_logic/cubits/address_cubit.dart';
-import '../../../business_logic/repositories/setting_repository.dart';
 import '../../../business_logic/states/address_state.dart';
-import '../../../data/repositories/api/setting_api_repository.dart';
 import '../../res/strings/values.dart';
 import '../../pages/loading_page.dart';
 import '../../res/dimen/dimens.dart';

@@ -45,6 +45,8 @@ class AppConfig {
 }
 
 class ApiRouter {
+  // Google Places API Key
+    static const String googlePlacesApiKey = 'AIzaSyBA-mmMQIJZu59xSv_gtjD_ZKHqaKLuAmE';
   // Auth
   static const String authLogin = '/member/auth/login';
   static const String authRegister = '/member/auth/register';

@@ -6,10 +6,13 @@ import 'package:member_app/exception/app_message.dart';
 import 'package:member_app/presentation/dialogs/app_dialog.dart';
 import 'package:member_app/presentation/res/dimen/dimens.dart';
 import 'package:member_app/presentation/res/strings/values.dart';
+import 'package:member_app/presentation/screens/address/address_picker_screen.dart';
 import 'package:member_app/presentation/widgets/address/address_field.dart';
 
+import '../../../business_logic/blocs/interval/interval_bloc.dart';
 import '../../../data/models/address_model.dart';
 import '../../../supports/check.dart';
+import '../../widgets/address/address_fake_field.dart';
 
 class AddressDetailScreen extends StatefulWidget {
   final AddressModel? model;
@@ -29,6 +32,8 @@ class _AddressDetailScreenState extends State<AddressDetailScreen> {
   String? name;
   String? address;
   String? note;
+  double? lat;
+  double? lng;
   String? receiver;
   String? phone;
 
@@ -37,6 +42,8 @@ class _AddressDetailScreenState extends State<AddressDetailScreen> {
     name = widget.model?.name;
     address = widget.model?.address;
     note = widget.model?.note;
+    lat = widget.model?.lat;
+    lng = widget.model?.lng;
     receiver = widget.model?.receiver;
     phone = widget.model?.phone;
     super.initState();
@@ -88,15 +95,67 @@ class _AddressDetailScreenState extends State<AddressDetailScreen> {
                             },
                             enable: !widget.isDefault,
                           ),
-                          AddressField(
-                            title: 'Địa chỉ',
-                            value: address,
-                            hint: 'Nhập địa chỉ',
-                            isForce: true,
-                            onChanged: (value) {
-                              address = value;
+                          GestureDetector(
+                            onTap: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (ctx) {
+                                    return MultiRepositoryProvider(
+                                      providers: [
+                                        BlocProvider<AddressCubit>.value(
+                                          value: BlocProvider.of<AddressCubit>(
+                                            context,
+                                          ),
+                                        ),
+                                        BlocProvider<
+                                            IntervalBloc<AddressEntity>>(
+                                          create: (ctx) =>
+                                              IntervalBloc<AddressEntity>(
+                                            submit:
+                                                BlocProvider.of<AddressCubit>(
+                                                    context),
+                                          ),
+                                        ),
+                                      ],
+                                      child: const AddressPickerScreen(),
+                                    );
+                                  },
+                                ),
+                              ).then((model) {
+                                if (model != null && model is AddressEntity) {
+                                    if (model.id == null) {
+                                      ScaffoldMessenger.of(context).clearSnackBars();
+                                      ScaffoldMessenger.of(context).showSnackBar(
+                                        const SnackBar(
+                                          content: Text(
+                                            txtNotCorrectPlace,
+                                          ),
+                                        ),
+                                      );
+                                    } else {
+                                      context.read<AddressCubit>().searchPlaceById(model.id!).then((value) {
+                                        if (value != null) {
+                                          setState(() {
+                                            name = (name == null || name!.isEmpty) ? value.name : name;
+                                            address = '${value.name}||${value.address}';
+                                            lat = value.lat;
+                                            lng = value.lng;
+                                          });
+                                        }
+                                      });
+                                    }
+                                } else {
+
+                                }
+                              });
                             },
-                            maxLines: null,
+                            child: AddressFakeField(
+                              title: 'Địa chỉ',
+                              value: address,
+                              hint: 'Chọn địa chỉ',
+                              isForce: true,
+                            ),
                           ),
                           AddressField(
                             title:
@@ -179,10 +238,10 @@ class _AddressDetailScreenState extends State<AddressDetailScreen> {
                         },
                         child: Ink(
                           color: Colors.white,
-                          child: Padding(
-                            padding: const EdgeInsets.all(spaceSM),
+                          child: const Padding(
+                            padding: EdgeInsets.all(spaceSM),
                             child: Row(
-                              children: const [
+                              children: [
                                 Icon(
                                   Icons.delete,
                                   color: Colors.red,
@@ -233,6 +292,8 @@ class _AddressDetailScreenState extends State<AddressDetailScreen> {
                                   note: note,
                                   receiver: receiver!,
                                   phone: phone!,
+                                  lng: lng,
+                                  lat: lat,
                                 );
                       } else {
                         message =
@@ -243,6 +304,8 @@ class _AddressDetailScreenState extends State<AddressDetailScreen> {
                                     note: note,
                                     receiver: receiver!,
                                     phone: phone!,
+                                    lng: lng,
+                                    lat: lat,
                                   ),
                                 );
                       }

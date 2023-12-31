@@ -57,6 +57,7 @@ class _ReOrderWidgetState extends State<ReOrderWidget> {
         ((product?.cost ?? 0) +
                 getCostOptions(
                   context,
+                  product!.id,
                   e.options,
                 )) *
             e.amount,
@@ -64,8 +65,8 @@ class _ReOrderWidgetState extends State<ReOrderWidget> {
     }
   }
 
-  int getCostOptions(BuildContext context, List<String> options) {
-    return context.read<ProductCubit>().getCostOptionsItem(
+  int getCostOptions(BuildContext context, String productId, List<String> options) {
+    return context.read<ProductCubit>().getCostOptionsItem(productId,
               options,
             ) ??
         0;
@@ -128,7 +129,7 @@ class _ReOrderWidgetState extends State<ReOrderWidget> {
                     widget.cart.products[i].options
                         .map((e) => context
                             .read<ProductCubit>()
-                            .getProductOptionItemById(e)
+                            .getProductOptionItemById(widget.cart.products[i].id, e)
                             ?.name)
                         .join(', '),
                   ),

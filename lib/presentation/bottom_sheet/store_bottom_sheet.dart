@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:member_app/business_logic/cubits/cart_cubit.dart';
+import 'package:member_app/business_logic/cubits/product_cubit.dart';
 import 'package:member_app/data/models/store_detail_model.dart';
 import 'package:member_app/presentation/app_router.dart';
-import 'package:member_app/presentation/res/dimen/dimens.dart';
 import 'package:member_app/presentation/res/strings/values.dart';
 import 'package:member_app/presentation/widgets/app_image_widget.dart';
 
@@ -299,8 +299,18 @@ class StoreBottomSheet extends StatelessWidget {
             Navigator.pushNamed(context, AppRouter.auth);
             return;
           }
-          context.read<CartCubit>().setStore(store, detail);
+          context.read<CartCubit>().setStore(
+                store,
+                detail,
+                context.read<ProductCubit>().categories,
+              );
+          context.read<ProductCubit>().updateUnavailable(
+                categories: detail.unavailableCategories,
+                products: detail.unavailableProducts,
+                options: detail.unavailableOptions,
+              );
           context.read<CartCubit>().setCategory(1);
+          context.read<CartCubit>().setPayType(1);
           context.read<CartCubit>().setAddress(
                 store.address,
                 positionToDistanceString(
@@ -309,6 +319,8 @@ class StoreBottomSheet extends StatelessWidget {
                   context.read<GeolocatorCubit>().state.latLng.latitude,
                   context.read<GeolocatorCubit>().state.latLng.longitude,
                 ),
+                store.lat,
+                store.lng,
               );
           Navigator.popUntil(context, ModalRoute.withName(AppRouter.home));
           ScaffoldMessenger.of(context).clearSnackBars();
@@ -320,8 +332,8 @@ class StoreBottomSheet extends StatelessWidget {
             ),
           );
         },
-        child: Column(
-          children: const [
+        child: const Column(
+          children: [
             Text(
               'Đặt sản phẩm',
               style: TextStyle(

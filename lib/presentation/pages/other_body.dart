@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:member_app/business_logic/cubits/cart_cubit.dart';
 import 'package:member_app/business_logic/cubits/home_cubit.dart';
 import 'package:member_app/exception/app_message.dart';
 import 'package:member_app/presentation/app_router.dart';
@@ -235,6 +236,7 @@ class OtherBody extends StatelessWidget {
                                 // clear data here
                                 if (context.mounted) {
                                   if (message == null) {
+                                    context.read<CartCubit>().clear();
                                     Navigator.pushNamedAndRemoveUntil(
                                       context,
                                       AppRouter.auth,

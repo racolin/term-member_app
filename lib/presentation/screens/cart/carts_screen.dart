@@ -19,12 +19,13 @@ class CartsScreen extends StatefulWidget {
 }
 
 class _CartsScreenState extends State<CartsScreen> {
-  var selected = 1;
+  var selected = 0;
   final ScrollController _controller = ScrollController();
   final listPosition = <double>[0, 0, 0];
 
   @override
   void initState() {
+    context.read<CartsCubit>().reload();
     _controller.addListener(() {
       listPosition[selected] = _controller.position.pixels;
       if (_controller.position.atEdge) {

@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:member_app/business_logic/cubits/product_cubit.dart';
 import 'package:member_app/business_logic/states/product_state.dart';
 import 'package:member_app/presentation/dialogs/app_dialog.dart';
+import 'package:member_app/presentation/res/dimen/dimens.dart';
 
 import '../../business_logic/cubits/cart_cubit.dart';
 import '../../business_logic/cubits/cart_template_cubit.dart';
@@ -15,18 +16,14 @@ import '../../supports/convert.dart';
 import '../res/strings/values.dart';
 import '../widgets/slide/slide_images_widget.dart';
 
-class ProductBottomSheet extends StatefulWidget {
-  final ProductModel product;
-  final bool isTemplate;
+class ProductEditBottomSheet extends StatefulWidget {
+  final CartProductModel product;
 
-  const ProductBottomSheet({
-    Key? key,
-    required this.product,
-    this.isTemplate = false,
-  }) : super(key: key);
+  const ProductEditBottomSheet({Key? key, required this.product})
+      : super(key: key);
 
   @override
-  State<ProductBottomSheet> createState() => _ProductBottomSheetState();
+  State<ProductEditBottomSheet> createState() => _ProductEditBottomSheetState();
 }
 
 class _Selected {
@@ -35,6 +32,7 @@ class _Selected {
   Map<String, MapEntry<int, Map<String, MapEntry<int, bool>>>> selected;
 
   _Selected({
+    List<String>? optionIds,
     required this.options,
     required this.defaultCost,
   }) : selected = {
@@ -45,9 +43,11 @@ class _Selected {
                 for (var j = 0; j < options[i].optionItems.length; j++)
                   options[i].optionItems[j].id: MapEntry(
                     j,
-                    options[i].defaultSelect.contains(
-                          options[i].optionItems[j].id,
-                        ),
+                    optionIds != null
+                        ? optionIds.contains(options[i].optionItems[j].id)
+                        : options[i].defaultSelect.contains(
+                              options[i].optionItems[j].id,
+                            ),
                   ),
               },
             ),
@@ -130,26 +130,36 @@ class _Selected {
   }
 }
 
-class _ProductBottomSheetState extends State<ProductBottomSheet> {
+class _ProductEditBottomSheetState extends State<ProductEditBottomSheet> {
   late _Selected selected;
   int amount = 1;
   String? note;
   bool isFavorite = false;
+  ProductModel? product;
 
   @override
   void initState() {
+    product = context.read<ProductCubit>().getProductById(widget.product.id);
+    amount = widget.product.amount;
+
+    if (product == null) {
+      Navigator.pop(context, null);
+    }
+
     if (context.read<ProductCubit>().state is ProductLoaded) {
       var state = context.read<ProductCubit>().state as ProductLoaded;
       loadFavorite();
       selected = _Selected(
-        defaultCost: widget.product.cost,
+        defaultCost: product!.cost,
         options: state.listOption
-            .where(
-              (e) => widget.product.optionIds.contains(e.id),
-            )
+            .where((e) => product!.optionIds.contains(e.id))
             .toList(),
+        optionIds: widget.product.options,
       );
     }
+
+    note = widget.product.note;
+
     super.initState();
   }
 
@@ -203,7 +213,7 @@ class _ProductBottomSheetState extends State<ProductBottomSheet> {
                               borderRadius: const BorderRadius.vertical(
                                 top: Radius.circular(10),
                               ),
-                              images: widget.product.images,
+                              images: product?.images ?? [],
                             ),
                             Positioned(
                               top: 12,
@@ -240,12 +250,11 @@ class _ProductBottomSheetState extends State<ProductBottomSheet> {
                         ),
                         _getInformation(isFavorite),
                         _getOptions(selected),
-                        if (!widget.isTemplate)
-                          _getMoreRequire(
-                            'Yêu cầu khác',
-                            'Nhập những yêu cầu bạn muốn',
-                            'Thêm ghi chú',
-                          ),
+                        _getMoreRequire(
+                          'Yêu cầu khác',
+                          'Nhập những yêu cầu bạn muốn',
+                          'Thêm ghi chú',
+                        ),
                         const SizedBox(height: 100),
                       ],
                     ),
@@ -308,28 +317,28 @@ class _ProductBottomSheetState extends State<ProductBottomSheet> {
                               ),
                             ),
                             onPressed: () async {
-                              // var options = <String>[];
-
-                              // for (var o in widget.product.optionIds) {
-                              //   var item = context
-                              //       .read<ProductCubit>()
-                              //       .getProductOptionById(o);
-                              //   if (item != null) {
-                              //     options.addAll(item.defaultSelect);
-                              //   }
-                              // }
-
-                              if (widget.isTemplate) {
-                                var message = context
-                                    .read<CartTemplateCubit>()
-                                    .addItemSelected(
-                                      CartTemplateProductModel(
-                                        id: widget.product.id,
-                                        amount: amount,
-                                        options: selected.getOptionsId(),
-                                        // options: options,
-                                      ),
-                                    );
+                              var message = await context
+                                  .read<CartCubit>()
+                                  .updateProductToCart(
+                                    widget.product,
+                                    CartProductModel(
+                                      id: widget.product.id,
+                                      name: widget.product.name,
+                                      cost: amount * (product!.cost +
+                                          (context
+                                                  .read<ProductCubit>()
+                                                  .getCostOptionsItem(
+                                                      product!.id,
+                                                      selected
+                                                          .getOptionsId()) ??
+                                              0)),
+                                      // options: options,
+                                      options: selected.getOptionsId(),
+                                      amount: amount,
+                                      note: note ?? '',
+                                    ),
+                                  );
+                              if (mounted) {
                                 if (message != null) {
                                   showCupertinoDialog(
                                     context: context,
@@ -349,69 +358,11 @@ class _ProductBottomSheetState extends State<ProductBottomSheet> {
                                   );
                                 } else {
                                   Navigator.pop(context);
-                                  ScaffoldMessenger.of(context)
-                                      .clearSnackBars();
-                                  ScaffoldMessenger.of(context).showSnackBar(
-                                    const SnackBar(
-                                      content: Text(
-                                        'Thêm sản phẩm vào đơn hàng mẫu thành công',
-                                      ),
-                                    ),
-                                  );
-                                }
-                              } else {
-                                var message =
-                                    await context.read<CartCubit>().addProductToCart(
-                                          CartProductModel(
-                                            id: widget.product.id,
-                                            name: widget.product.name,
-                                            cost: amount * (widget.product.cost + (context
-                                                    .read<ProductCubit>()
-                                                    .getCostOptionsItem(widget.product.id, selected
-                                                        .getOptionsId()) ??
-                                                0)),
-                                            // options: options,
-                                            options: selected.getOptionsId(),
-                                            amount: amount,
-                                            note: note ?? '',
-                                          ),
-                                        );
-                                if (mounted) {
-                                  if (message != null) {
-                                    showCupertinoDialog(
-                                      context: context,
-                                      builder: (context) {
-                                        return AppDialog(
-                                          message: message,
-                                          actions: [
-                                            CupertinoDialogAction(
-                                              child: const Text(txtConfirm),
-                                              onPressed: () {
-                                                Navigator.pop(context);
-                                              },
-                                            ),
-                                          ],
-                                        );
-                                      },
-                                    );
-                                  } else {
-                                    Navigator.pop(context);
-                                    ScaffoldMessenger.of(context)
-                                        .clearSnackBars();
-                                    ScaffoldMessenger.of(context).showSnackBar(
-                                      const SnackBar(
-                                        content: Text(
-                                          'Thêm sản phẩm vào đơn hàng thành công',
-                                        ),
-                                      ),
-                                    );
-                                  }
                                 }
                               }
                             },
                             label: Text(
-                              numberToCurrency(amount * selected.cost, 'đ') +
-                                  (widget.isTemplate ? ' (thêm mẫu)' : ''),
+                              numberToCurrency(amount * selected.cost, 'đ'),
                               style: const TextStyle(
                                 color: Colors.white,
                                 fontSize: 16,
@@ -496,7 +447,7 @@ class _ProductBottomSheetState extends State<ProductBottomSheet> {
             height: 4,
           ),
           Text(
-            numberToCurrency(widget.product.cost, 'đ'),
+            numberToCurrency(product!.cost, 'đ'),
             style: const TextStyle(
               fontSize: 18,
               color: Colors.black87,
@@ -506,7 +457,7 @@ class _ProductBottomSheetState extends State<ProductBottomSheet> {
             height: 16,
           ),
           Text(
-            widget.product.description,
+            product?.description ?? '',
             style: const TextStyle(
               fontSize: 14,
               color: Colors.black87,
@@ -675,12 +626,13 @@ class _ProductBottomSheetState extends State<ProductBottomSheet> {
         const SizedBox(height: 4),
         Padding(
           padding: const EdgeInsets.all(12.0),
-          child: TextField(
+          child: TextFormField(
             style: const TextStyle(
               fontSize: 14,
               fontWeight: FontWeight.w400,
             ),
             maxLines: null,
+            initialValue: note,
             onChanged: (value) {
               note = value;
             },

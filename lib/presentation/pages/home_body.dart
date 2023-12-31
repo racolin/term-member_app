@@ -1,17 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:member_app/business_logic/cubits/voucher_cubit.dart';
 
 import '../widgets/card_home_widget.dart';
-import '../res/strings/values.dart';
-import '../widgets/app_image_widget.dart';
 import '../res/dimen/dimens.dart';
 import '../widgets/news/news_section_widget.dart';
 import '../widgets/product/product_section_widget.dart';
 import '../widgets/product/products_suggest_widget.dart';
 import '../widgets/card_widget.dart';
 import '../widgets/delivery/delivery_options_widget.dart';
-import '../widgets/drag_bar_widget.dart';
 import '../widgets/re_orders_widget.dart';
 import '../widgets/re_templates_widget.dart';
 import '../widgets/slider/slider_widget.dart';
@@ -70,9 +65,9 @@ class _HomeBodyState extends State<HomeBody> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               widget.login
-                  ? Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: const CardWidget(isDetail: false),
+                  ? const Padding(
+                    padding: EdgeInsets.all(8.0),
+                    child: CardWidget(isDetail: false),
                   )
                   : const CardHomeWidget(),
               DeliveryOptionsWidget(login: widget.login),

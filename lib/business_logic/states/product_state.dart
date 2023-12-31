@@ -60,14 +60,26 @@ class ProductLoaded extends ProductState {
     return _list[index];
   }
 
-  ProductOptionItemModel? getProductOptionItemById(String id) {
-    for (var i in _listOption) {
+  ProductOptionItemModel? getProductOptionItemById(String productId, String id) {
+    var lOps = _list.firstWhere((e) => e.id == productId).optionIds;
+    var list = _listOption.where((e) => lOps.contains(e.id));
+    for (var i in list) {
       int index = i.optionItems.indexWhere((e) => e.id == id);
       if (index != -1) {
         return i.optionItems[index];
       }
     }
     return null;
+  }
+
+  int getCostOptionsItem(String productId, List<String> items) {
+    var lOps = _list.firstWhere((e) => e.id == productId).optionIds;
+    var list = _listOption.where((e) => lOps.contains(e.id));
+    int cost = 0;
+    for (var i in list) {
+      cost += i.optionItems.fold(0, (pre, e) => pre + (items.contains(e.id) ? e.cost: 0));
+    }
+    return cost;
   }
 
   ProductOptionModel? getProductOptionById(String id) {
@@ -85,7 +97,7 @@ class ProductLoaded extends ProductState {
       .toList();
 
   List<ProductModel> get suggestion {
-    return _list.where((e) => _suggestion.contains(e.id)).toList();
+    return list.where((e) => _suggestion.contains(e.id)).toList();
   }
 
   List<ProductOptionModel> get listOption => _listOption
@@ -109,28 +121,21 @@ class ProductLoaded extends ProductState {
       return [];
     }
 
-    var index = _listType.indexWhere((e) => e.id == categoryId);
+    var index = listType.indexWhere((e) => e.id == categoryId);
 
     if (index == -1) {
       return [];
     }
 
-    return _list
+    return list
         .where(
-          (e) =>
-              !_unavailable.contains(e.id) &&
-              _listType[index].productIds.contains(e.id),
+          (e) => listType[index].productIds.contains(e.id),
         )
         .toList();
   }
 
   List<ProductModel> getFavorites() {
-    print(_favorites.length);
-    print('sasa');
-    for (var element in _list) {
-      print(element.id);
-    }
-    return _list.where((e) => _favorites.contains(e.id)).toList();
+    return list.where((e) => _favorites.contains(e.id)).toList();
   }
 
   List<String> get favorites => _favorites;

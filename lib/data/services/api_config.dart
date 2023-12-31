@@ -1,3 +1,5 @@
+import 'dart:io';
+
 class Environment {
   final String _base;
   final String _url;
@@ -22,7 +24,8 @@ class Environment {
   static Environment get _dev {
     _devInstance ??= Environment._(
       base: 'api/v2/',
-      url: 'http://127.0.0.1:82/',
+      url: Platform.isAndroid ? 'http://192.168.2.8:82/' : 'http://127.0.0.1:82/',
+      // url: Platform.isAndroid ? 'http://172.16.32.35:82/' : 'http://127.0.0.1:82/',
       // baseImage: 'file/',
     );
     return _devInstance!;
@@ -46,7 +49,7 @@ class AppConfig {
 
 class ApiRouter {
   // Google Places API Key
-    static const String googlePlacesApiKey = 'AIzaSyBA-mmMQIJZu59xSv_gtjD_ZKHqaKLuAmE';
+    static const String googlePlacesApiKey = 'AIzaSyA2OnrwDHyQSkj1z0Oy5gA1Z0ic-jwKQnM';
   // Auth
   static const String authLogin = '/member/auth/login';
   static const String authRegister = '/member/auth/register';
@@ -90,9 +93,13 @@ class ApiRouter {
   // Cart
   static String cartStatusGet(String id) => '/cart-status/$id';
   static const String cartStatusAll = '/cart-status/all';
+  static String cartCreatePayment(String orderId) => '/momo/$orderId/create-payment';
+  static String cartTransactionStatus(String orderId) => '/momo/$orderId/transaction-status';
 
   static String cartGet(String id) => 'member/cart/$id';
 
+  static String cartCancelOrder(String id) => '/member/cart/$id/cancel';
+  static String cartReviewShipper(String id) => '/member/cart/$id/review-shipper';
   static String cartReview(String id) => '/member/cart/$id/review';
   static const String cartCheckVoucher = '/member/cart/check-voucher';
   static const String cartCreate = '/member/cart/create';

@@ -45,8 +45,8 @@ class PayMethodBottomSheet extends StatelessWidget {
               color: Colors.grey.withAlpha(30),
               padding: const EdgeInsets.symmetric(vertical: 24, horizontal: 12),
               child: const Text(
-                // 'Vui lòng chọn phương thức thanh toán phù hợp cho đơn hàng của bạn.',
-                'Hiện tại chúng tôi chỉ cho phép thanh toán bằng tiền mặt.',
+                'Vui lòng chọn phương thức thanh toán phù hợp cho đơn hàng của bạn.',
+                // 'Hiện tại chúng tôi chỉ cho phép thanh toán bằng tiền mặt.',
                 style: TextStyle(fontSize: 16, color: Colors.black54),
               ),
             ),

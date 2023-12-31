@@ -42,21 +42,21 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
 
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
-    switch (state) {
-      case AppLifecycleState.resumed:
-        context.read<CartCubit>().loadCartLoaded();
-        break;
-      case AppLifecycleState.inactive:
-        print('deb-inactive');
-        break;
-      case AppLifecycleState.paused:
-        context.read<CartCubit>().saveCartLoaded();
-        print('deb-paused');
-        break;
-      case AppLifecycleState.detached:
-        print('deb-detached');
-        break;
-    }
+    // switch (state) {
+    //   case AppLifecycleState.resumed:
+    //     context.read<CartCubit>().loadCartLoaded();
+    //     break;
+    //   case AppLifecycleState.inactive:
+    //     print('deb-inactive');
+    //     break;
+    //   case AppLifecycleState.paused:
+    //     context.read<CartCubit>().saveCartLoaded();
+    //     print('deb-paused');
+    //     break;
+    //   case AppLifecycleState.detached:
+    //     print('deb-detached');
+    //     break;
+    // }
     super.didChangeAppLifecycleState(state);
   }
 
@@ -147,7 +147,6 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
                     if (cartState is CartLoaded) {
                       var cost = 0;
                       cost = cartState.calculateCost;
-
                       return FloatingActionWidget(
                         addressName: cartState.addressName,
                         type: cartState.categoryId,

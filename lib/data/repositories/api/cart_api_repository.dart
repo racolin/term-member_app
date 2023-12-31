@@ -1,7 +1,5 @@
-import 'dart:convert';
-import 'dart:math';
-
 import 'package:dio/dio.dart';
+import 'package:member_app/data/models/momo_result_model.dart';
 
 import '../../../business_logic/repositories/cart_repository.dart';
 import '../../../presentation/res/strings/values.dart';
@@ -13,6 +11,7 @@ import '../../models/cart_status_model.dart';
 import '../../models/raw_failure_model.dart';
 import '../../models/raw_success_model.dart';
 import '../../models/response_model.dart';
+import '../../models/transaction_status_model.dart';
 import '../../services/api_client.dart';
 import '../../services/api_config.dart';
 
@@ -92,23 +91,25 @@ class CartApiRepository extends CartRepository {
     required int receivingTime,
     String? addressName,
     required List<CartProductModel> products,
+    double? addressLat,
+    double? addressLng,
   }) async {
     try {
-      print(jsonEncode({
-        'storeId': storeId,
-        'categoryId': categoryId,
-        'payType': payType,
-        'phone': phone,
-        'receiver': receiver,
-        'voucherId': voucherId,
-        // 'receivingTime': receivingTime,
-        'addressName': addressName,
-        'products': products
-            .map(
-              (e) => e.toMapCheck(),
-        )
-            .toList(),
-      }));
+      // print(jsonEncode({
+      //   'storeId': storeId,
+      //   'categoryId': categoryId,
+      //   'payType': payType,
+      //   'phone': phone,
+      //   'receiver': receiver,
+      //   'voucherId': voucherId,
+      //   // 'receivingTime': receivingTime,
+      //   'addressName': addressName,
+      //   'products': products
+      //       .map(
+      //         (e) => e.toMapCheck(),
+      //   )
+      //       .toList(),
+      // }));
       var res = await _dio.post(
         ApiRouter.cartCreate,
         data: {
@@ -120,6 +121,8 @@ class CartApiRepository extends CartRepository {
           'voucherId': voucherId,
           'receivingTime': receivingTime,
           'addressName': addressName,
+          'addressLat': addressLat,
+          'addressLng': addressLng,
           'products': products
               .map(
                 (e) => e.toMapCheck(),
@@ -227,9 +230,11 @@ class CartApiRepository extends CartRepository {
       var raw = RawSuccessModel.fromMap(res.data);
       return ResponseModel<List<CartStatusModel>>(
         type: ResponseModelType.success,
-        data: (raw.data as List).map(
+        data: (raw.data as List)
+            .map(
               (e) => CartStatusModel.fromMap(e),
-        ).toList(),
+            )
+            .toList(),
       );
     } on DioError catch (ex) {
       if (ex.error is AppMessage) {
@@ -287,9 +292,7 @@ class CartApiRepository extends CartRepository {
         type: ResponseModelType.success,
         data: MapEntry<int, List<CartModel>>(
           raw.data['maxCount'] ?? 0,
-          (raw.data['carts'] as List)
-              .map((e) => CartModel.fromMap(e))
-              .toList(),
+          (raw.data['carts'] as List).map((e) => CartModel.fromMap(e)).toList(),
         ),
       );
     } on DioError catch (ex) {
@@ -333,10 +336,114 @@ class CartApiRepository extends CartRepository {
     required String id,
     required int rate,
     String? review,
+    required List<String> like,
+    required List<String> dislike,
   }) async {
     try {
       var res = await _dio.post(
         ApiRouter.cartReview(id),
+        data: {
+          'rate': rate,
+          'review': review,
+          'like': like,
+          'dislike': dislike,
+        },
+      );
+      var raw = RawSuccessModel.fromMap(res.data);
+      return ResponseModel<bool>(
+        type: ResponseModelType.success,
+        data: raw.success ?? false,
+      );
+    } on DioError catch (ex) {
+      if (ex.error is AppMessage) {
+        return ResponseModel<bool>(
+          type: ResponseModelType.failure,
+          message: ex.error,
+        );
+      } else {
+        var raw = RawFailureModel.fromMap(
+          ex.response?.data ??
+              {
+                'statusCode': 444,
+                'message': 'Không có dữ liệu trả về!',
+              },
+        );
+        return ResponseModel<bool>(
+          type: ResponseModelType.failure,
+          message: AppMessage(
+            type: AppMessageType.error,
+            title: raw.error ?? txtErrorTitle,
+            content: raw.message ?? 'Không có dữ liệu trả về!',
+          ),
+        );
+      }
+    } on Exception catch (ex) {
+      return ResponseModel<bool>(
+        type: ResponseModelType.failure,
+        message: AppMessage(
+          title: txtErrorTitle,
+          type: AppMessageType.error,
+          content: 'Chưa phân tích được lỗi',
+          description: ex.toString(),
+        ),
+      );
+    }
+  }
+
+  @override
+  Future<ResponseModel<bool>> cancelOrder({required String id}) async {
+    try {
+      var res = await _dio.patch(ApiRouter.cartCancelOrder(id));
+      var raw = RawSuccessModel.fromMap(res.data);
+      return ResponseModel<bool>(
+        type: ResponseModelType.success,
+        data: raw.success ?? false,
+      );
+    } on DioError catch (ex) {
+      if (ex.error is AppMessage) {
+        return ResponseModel<bool>(
+          type: ResponseModelType.failure,
+          message: ex.error,
+        );
+      } else {
+        var raw = RawFailureModel.fromMap(
+          ex.response?.data ??
+              {
+                'statusCode': 444,
+                'message': 'Không có dữ liệu trả về!',
+              },
+        );
+        return ResponseModel<bool>(
+          type: ResponseModelType.failure,
+          message: AppMessage(
+            type: AppMessageType.error,
+            title: raw.error ?? txtErrorTitle,
+            content: raw.message ?? 'Không có dữ liệu trả về!',
+          ),
+        );
+      }
+    } on Exception catch (ex) {
+      return ResponseModel<bool>(
+        type: ResponseModelType.failure,
+        message: AppMessage(
+          title: txtErrorTitle,
+          type: AppMessageType.error,
+          content: 'Chưa phân tích được lỗi',
+          description: ex.toString(),
+        ),
+      );
+    }
+  }
+
+  @override
+  Future<ResponseModel<bool>> reviewShipper({
+    required String id,
+    required int rate,
+    String? review,
+  }) async {
+    try {
+      var res = await _dio.post(
+        ApiRouter.cartReviewShipper(id),
         data: {
           'rate': rate,
           'review': review,
@@ -372,6 +479,114 @@ class CartApiRepository extends CartRepository {
       }
     } on Exception catch (ex) {
       return ResponseModel<bool>(
+        type: ResponseModelType.failure,
+        message: AppMessage(
+          title: txtErrorTitle,
+          type: AppMessageType.error,
+          content: 'Chưa phân tích được lỗi',
+          description: ex.toString(),
+        ),
+      );
+    }
+  }
+
+  @override
+  Future<ResponseModel<MomoResultModel>> createPayment({
+    required String orderId,
+    required String lang,
+    required String redirectUrl,
+  }) async {
+    try {
+      var res = await _dio.post(
+        ApiRouter.cartCreatePayment(orderId),
+        data: {
+          'lang': lang,
+          'redirectUrl': redirectUrl,
+        },
+      );
+      var raw = RawSuccessModel.fromMap(res.data);
+      return ResponseModel<MomoResultModel>(
+        type: ResponseModelType.success,
+        data: MomoResultModel.fromMap(raw.data),
+      );
+    } on DioError catch (ex) {
+      if (ex.error is AppMessage) {
+        return ResponseModel<MomoResultModel>(
+          type: ResponseModelType.failure,
+          message: ex.error,
+        );
+      } else {
+        var raw = RawFailureModel.fromMap(
+          ex.response?.data ??
+              {
+                'statusCode': 444,
+                'message': 'Không có dữ liệu trả về!',
+              },
+        );
+        return ResponseModel<MomoResultModel>(
+          type: ResponseModelType.failure,
+          message: AppMessage(
+            type: AppMessageType.error,
+            title: raw.error ?? txtErrorTitle,
+            content: raw.message ?? 'Không có dữ liệu trả về!',
+          ),
+        );
+      }
+    } on Exception catch (ex) {
+      return ResponseModel<MomoResultModel>(
+        type: ResponseModelType.failure,
+        message: AppMessage(
+          title: txtErrorTitle,
+          type: AppMessageType.error,
+          content: 'Chưa phân tích được lỗi',
+          description: ex.toString(),
+        ),
+      );
+    }
+  }
+
+  @override
+  Future<ResponseModel<TransactionStatusModel>> transactionStatus({
+    required String lang,
+    required String orderId,
+  }) async {
+    try {
+      var res = await _dio.post(
+        ApiRouter.cartTransactionStatus(orderId),
+        data: {
+          'lang': lang,
+        },
+      );
+      var raw = RawSuccessModel.fromMap(res.data);
+      return ResponseModel<TransactionStatusModel>(
+        type: ResponseModelType.success,
+        data: TransactionStatusModel.fromMap(raw.data),
+      );
+    } on DioError catch (ex) {
+      if (ex.error is AppMessage) {
+        return ResponseModel<TransactionStatusModel>(
+          type: ResponseModelType.failure,
+          message: ex.error,
+        );
+      } else {
+        var raw = RawFailureModel.fromMap(
+          ex.response?.data ??
+              {
+                'statusCode': 444,
+                'message': 'Không có dữ liệu trả về!',
+              },
+        );
+        return ResponseModel<TransactionStatusModel>(
+          type: ResponseModelType.failure,
+          message: AppMessage(
+            type: AppMessageType.error,
+            title: raw.error ?? txtErrorTitle,
+            content: raw.message ?? 'Không có dữ liệu trả về!',
+          ),
+        );
+      }
+    } on Exception catch (ex) {
+      return ResponseModel<TransactionStatusModel>(
         type: ResponseModelType.failure,
         message: AppMessage(
           title: txtErrorTitle,

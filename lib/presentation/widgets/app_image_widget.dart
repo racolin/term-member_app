@@ -29,6 +29,8 @@ class AppImageWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var img = image == null ? null : image!.contains('http') ? image : 'http://$image';
+    img = img?.replaceAll('localhost', '192.168.2.8');
+    img = img?.replaceAll('127.0.0.1', '192.168.2.8');
     return ClipRRect(
       borderRadius: borderRadius ?? BorderRadius.zero,
       child: img == null ? Image.asset(

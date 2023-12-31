@@ -19,12 +19,12 @@ import '../../data/models/cart_model.dart';
 import '../../supports/convert.dart';
 import '../screens/store_search_screen.dart';
 
-class MethodOrderBottomSheet extends StatelessWidget {
+class ConfirmOrderBottomSheet extends StatelessWidget {
   final DeliveryType? type;
   final String? addressName;
   final bool login;
 
-  const MethodOrderBottomSheet({
+  const ConfirmOrderBottomSheet({
     Key? key,
     required this.type,
     required this.addressName,

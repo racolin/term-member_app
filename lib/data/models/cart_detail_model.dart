@@ -7,6 +7,7 @@ class CartDetailModel extends CartModel {
   final int fee;
   final int originalFee;
   final int payType;
+  final bool? isPaid;
   final String status;
   final String phone;
   final String receiver;
@@ -16,7 +17,11 @@ class CartDetailModel extends CartModel {
   final String addressName;
   final List<CartProductModel> products;
   final CartReviewModel? review;
+  final CartReviewShipperModel? reviewShipper;
   final int? point;
+  final int? reviewPoint;
+  final int? reviewShipperPoint;
+  final List<CartTimeLog>? timeLog;
 
   int get total => products.fold(0, (pre, e) => pre + e.cost * e.amount);
 
@@ -26,6 +31,7 @@ class CartDetailModel extends CartModel {
     required super.categoryId,
     required super.cost,
     required super.time,
+    this.isPaid,
     super.rate,
     required this.code,
     required this.statusId,
@@ -41,7 +47,11 @@ class CartDetailModel extends CartModel {
     required this.addressName,
     required this.products,
     this.review,
+    this.reviewShipper,
     required this.point,
+    required this.reviewPoint,
+    required this.reviewShipperPoint,
+    required this.timeLog,
   });
 
   @override
@@ -58,6 +68,7 @@ class CartDetailModel extends CartModel {
       'fee': fee,
       'originalFee': originalFee,
       'payType': payType,
+      'isPaid': isPaid,
       'phone': phone,
       'status': status,
       'receiver': receiver,
@@ -67,7 +78,11 @@ class CartDetailModel extends CartModel {
       'addressName': addressName,
       'products': products.map((e) => e.toMap()),
       'review': review?.toMap(),
+      'reviewShipper': reviewShipper?.toMap(),
       'point': point,
+      'reviewShipperPoint': reviewShipperPoint,
+      'reviewPoint': reviewPoint,
+      'timeLog': timeLog?.map((e) => e.toMap())
     };
   }
 
@@ -77,6 +92,18 @@ class CartDetailModel extends CartModel {
       review = CartReviewModel.fromMap(
         map['review'],
       );
+    }
+    CartReviewShipperModel? reviewShipper;
+    if (map['reviewShipper'] != null &&
+        (map['reviewShipper']! as Map).isNotEmpty) {
+      reviewShipper = CartReviewShipperModel.fromMap(
+        map['reviewShipper'],
+      );
+    }
+    List<CartTimeLog>? timeLog;
+    if (map['timeLog'] != null && (map['timeLog']! as List).isNotEmpty) {
+      timeLog =
+          (map['timeLog'] as List).map((e) => CartTimeLog.fromMap(e)).toList();
     }
     return CartDetailModel(
       id: map['id']!,
@@ -92,6 +119,7 @@ class CartDetailModel extends CartModel {
       fee: map['fee'] as int,
       originalFee: map['originalFee'] ?? 18000,
       payType: map['payType'] as int,
+      isPaid: map['isPaid'],
       phone: map['phone'] ?? '',
       status: map['status'] as String,
       receiver: map['receiver'] ?? '',
@@ -105,6 +133,10 @@ class CartDetailModel extends CartModel {
               .map((e) => CartProductModel.fromMap(e))
               .toList(),
       review: review,
+      reviewShipper: reviewShipper,
+      reviewPoint: map['reviewPoint'],
+      reviewShipperPoint: map['reviewShipperPoint'],
+      timeLog: timeLog,
       point: map['point'] as int,
     );
   }
@@ -117,6 +149,7 @@ class CartDetailModel extends CartModel {
     int? cost,
     DateTime? time,
     int? rate,
+    bool? isPaid,
     String? code,
     String? statusId,
     int? fee,
@@ -131,7 +164,11 @@ class CartDetailModel extends CartModel {
     String? addressName,
     List<CartProductModel>? products,
     CartReviewModel? review,
+    CartReviewShipperModel? reviewShipper,
+    List<CartTimeLog>? timeLog,
     int? point,
+    int? reviewPoint,
+    int? reviewShipperPoint,
   }) {
     return CartDetailModel(
       id: id ?? this.id,
@@ -145,6 +182,7 @@ class CartDetailModel extends CartModel {
       fee: fee ?? this.fee,
       originalFee: originalFee ?? this.originalFee,
       payType: payType ?? this.payType,
+      isPaid: isPaid ?? this.isPaid,
       status: status ?? this.status,
       phone: phone ?? this.phone,
       receiver: receiver ?? this.receiver,
@@ -155,6 +193,10 @@ class CartDetailModel extends CartModel {
       products: products ?? this.products,
       review: review ?? this.review,
       point: point ?? this.point,
+      reviewShipper: reviewShipper ?? this.reviewShipper,
+      reviewShipperPoint: reviewShipperPoint ?? this.reviewShipperPoint,
+      reviewPoint: reviewPoint ?? this.reviewPoint,
+      timeLog: timeLog ?? this.timeLog,
     );
   }
 }
@@ -253,8 +295,40 @@ class CartProductModel {
 class CartReviewModel {
   final int rate;
   final String? review;
+  final List<String> likeItems;
+  final List<String> dislikeItems;
 
   const CartReviewModel({
+    required this.rate,
+    required this.review,
+    required this.likeItems,
+    required this.dislikeItems,
+  });
+
+  Map<String, dynamic> toMap() {
+    return {
+      'rate': rate,
+      'review': review,
+      'likeItems': likeItems,
+      'dislikeItems': dislikeItems,
+    };
+  }
+
+  factory CartReviewModel.fromMap(Map<String, dynamic> map) {
+    return CartReviewModel(
+      rate: map['rate'] ?? 0,
+      review: map['review'] ?? txtNone,
+      likeItems: map['likeItems'] ?? [],
+      dislikeItems: map['dislikeItems'] ?? [],
+    );
+  }
+}
+
+class CartReviewShipperModel {
+  final int rate;
+  final String? review;
+
+  const CartReviewShipperModel({
     required this.rate,
     required this.review,
   });
@@ -266,10 +340,38 @@ class CartReviewModel {
     };
   }
 
-  factory CartReviewModel.fromMap(Map<String, dynamic> map) {
-    return CartReviewModel(
+  factory CartReviewShipperModel.fromMap(Map<String, dynamic> map) {
+    return CartReviewShipperModel(
       rate: map['rate'] ?? 0,
       review: map['review'] ?? txtNone,
+    );
+  }
+}
+
+class CartTimeLog {
+  final DateTime time;
+  final String title;
+  final String description;
+
+  const CartTimeLog({
+    required this.time,
+    required this.title,
+    required this.description,
+  });
+
+  Map<String, dynamic> toMap() {
+    return {
+      'time': time.millisecondsSinceEpoch,
+      'title': title,
+      'description': description,
+    };
+  }
+
+  factory CartTimeLog.fromMap(Map<String, dynamic> map) {
+    return CartTimeLog(
+      time: DateTime.fromMillisecondsSinceEpoch(map['time'] as int),
+      title: map['title'] as String,
+      description: map['description'] ?? '',
     );
   }
 }

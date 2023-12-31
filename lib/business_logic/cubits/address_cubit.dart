@@ -136,8 +136,6 @@ class AddressCubit extends Cubit<AddressState>
   }
 
   Future<AppMessage?> updateAddress(AddressModel model) async {
-    print('update=');
-    print(model.toMap());
     if (this.state is! AddressLoaded) {
       return AppMessage(
         type: AppMessageType.failure,

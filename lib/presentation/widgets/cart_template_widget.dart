@@ -58,6 +58,7 @@ class _CartTemplateWidgetState extends State<CartTemplateWidget> {
         ((product?.cost ?? 0) +
                 getCostOptions(
                   context,
+                  product!.id,
                   e.options,
                 )) *
             e.amount,
@@ -65,8 +66,8 @@ class _CartTemplateWidgetState extends State<CartTemplateWidget> {
     }
   }
 
-  int getCostOptions(BuildContext context, List<String> options) {
-    return context.read<ProductCubit>().getCostOptionsItem(
+  int getCostOptions(BuildContext context, String productId, List<String> options) {
+    return context.read<ProductCubit>().getCostOptionsItem(productId,
               options,
             ) ??
         0;
@@ -129,7 +130,7 @@ class _CartTemplateWidgetState extends State<CartTemplateWidget> {
                     widget.cart.products[i].options
                         .map((e) => context
                             .read<ProductCubit>()
-                            .getProductOptionItemById(e)
+                            .getProductOptionItemById(widget.cart.products[i].id, e)
                             ?.name)
                         .join(', '),
                   ),
@@ -233,9 +234,9 @@ class _CartTemplateWidgetState extends State<CartTemplateWidget> {
                         Colors.orange,
                       ),
                     ),
-                    child: Row(
+                    child: const Row(
                       mainAxisSize: MainAxisSize.min,
-                      children: const [
+                      children: [
                         Text(
                           txtOrderNow,
                           style: TextStyle(

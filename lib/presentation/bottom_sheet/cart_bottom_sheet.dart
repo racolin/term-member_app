@@ -2,28 +2,45 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
+import 'package:member_app/business_logic/cubits/app_bar_cubit.dart';
 import 'package:member_app/business_logic/cubits/cart_cubit.dart';
 import 'package:member_app/data/models/cart_model.dart';
 import 'package:member_app/data/models/pay_method_model.dart';
 import 'package:member_app/data/models/voucher_model.dart';
+import 'package:member_app/presentation/bottom_sheet/product_edit_bottom_sheet.dart';
+import 'package:member_app/presentation/bottom_sheet/receiver_bottom_sheet.dart';
 import 'package:member_app/presentation/dialogs/app_dialog.dart';
 import 'package:member_app/presentation/pages/loading_page.dart';
 import 'package:member_app/presentation/res/strings/values.dart';
 
 import '../../business_logic/blocs/interval/interval_bloc.dart';
+import '../../business_logic/cubits/cart_detail_cubit.dart';
+import '../../business_logic/cubits/carts_cubit.dart';
+import '../../business_logic/cubits/geolocator_cubit.dart';
 import '../../business_logic/cubits/product_cubit.dart';
+import '../../business_logic/cubits/store_cubit.dart';
 import '../../business_logic/cubits/voucher_cubit.dart';
+import '../../business_logic/repositories/cart_repository.dart';
+import '../../business_logic/repositories/store_repository.dart';
 import '../../business_logic/repositories/voucher_repository.dart';
 import '../../business_logic/states/cart_state.dart';
+import '../../data/models/address_model.dart';
 import '../../data/models/cart_detail_model.dart';
 import '../../data/models/product_model.dart';
+import '../../data/models/response_model.dart';
+import '../../data/models/store_model.dart';
+import '../../data/repositories/api/store_api_repository.dart';
 import '../../data/repositories/api/voucher_api_repository.dart';
 import '../../exception/app_message.dart';
 import '../../supports/convert.dart';
+import '../app_router.dart';
 import '../res/dimen/dimens.dart';
+import '../screens/cart/cart_detail_screen.dart';
 import '../screens/product_search_screen.dart';
+import '../screens/store_search_screen.dart';
 import '../screens/voucher_screen.dart';
 import '../widgets/product/products_suggest_widget.dart';
+import 'method_order_bottom_sheet.dart';
 import 'pay_method_bottom_sheet.dart';
 
 class CartBottomSheet extends StatefulWidget {
@@ -59,6 +76,7 @@ class _CartBottomSheetState extends State<CartBottomSheet> {
                   _getTitle(context),
                   Expanded(
                     child: SingleChildScrollView(
+                      physics: const ClampingScrollPhysics(),
                       child: Column(
                         children: [
                           const SizedBox(height: 8),
@@ -67,6 +85,238 @@ class _CartBottomSheetState extends State<CartBottomSheet> {
                             padding: const EdgeInsets.symmetric(horizontal: 12),
                             child: Column(
                               children: [
+                                Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Text(
+                                      'Loại đơn: ${state.categoryId == DeliveryType.takeOut ? txtOptionTake : txtOptionDelivery}',
+                                      style: const TextStyle(
+                                        fontSize: 17,
+                                        fontWeight: FontWeight.w600,
+                                      ),
+                                    ),
+                                    TextButton(
+                                      style: ButtonStyle(
+                                        backgroundColor:
+                                            MaterialStateProperty.all(
+                                          Colors.orange.withAlpha(30),
+                                        ),
+                                        shape: MaterialStateProperty.all(
+                                          RoundedRectangleBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(16),
+                                          ),
+                                        ),
+                                        // padding: MaterialStateProperty.all(EdgeInsets.zero),
+                                      ),
+                                      onPressed: () {
+                                        showModalBottomSheet(
+                                          context: context,
+                                          shape: const RoundedRectangleBorder(
+                                            borderRadius: BorderRadius.vertical(
+                                              top: Radius.circular(16),
+                                            ),
+                                          ),
+                                          builder: (ctx) =>
+                                              MethodOrderBottomSheet(
+                                            type: state.categoryId,
+                                            addressName: state.addressName,
+                                            login: true,
+                                          ),
+                                        );
+                                      },
+                                      child: const Text(
+                                        'Thay đổi',
+                                        style: TextStyle(fontSize: 12),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                ListTile(
+                                  onTap: () {
+                                    if (state.categoryId ==
+                                        DeliveryType.delivery) {
+                                      Navigator.pushNamed(
+                                        context,
+                                        AppRouter.addressSearch,
+                                      ).then((value) {
+                                        if (value == null ||
+                                            value is! AddressModel) {
+                                          showCupertinoDialog(
+                                            context: context,
+                                            builder: (context) {
+                                              return AppDialog(
+                                                message: AppMessage(
+                                                  type: AppMessageType.failure,
+                                                  title: txtFailureTitle,
+                                                  content:
+                                                      'Không có địa chỉ nào được trả về.',
+                                                ),
+                                                actions: [
+                                                  CupertinoDialogAction(
+                                                    child:
+                                                        const Text(txtConfirm),
+                                                    onPressed: () {
+                                                      Navigator.pop(context);
+                                                    },
+                                                  ),
+                                                ],
+                                              );
+                                            },
+                                          );
+                                          return;
+                                        }
+                                        var address = value;
+                                        context
+                                            .read<CartCubit>()
+                                            .setCategory(2);
+                                        context
+                                            .read<ProductCubit>()
+                                            .clearUnavailable();
+                                        context.read<CartCubit>().setPayType(1);
+                                        context.read<CartCubit>().setReceiver(
+                                              address.receiver,
+                                              address.phone,
+                                            );
+                                        context.read<CartCubit>().setAddress(
+                                              address.address.split('||').last,
+                                              '${address.receiver} ${address.name}',
+                                              address.lat ?? 10.45,
+                                              address.lng ?? 106.7,
+                                            );
+                                      });
+                                    } else if (state.categoryId ==
+                                        DeliveryType.takeOut) {
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (ctx) => RepositoryProvider<
+                                              StoreRepository>(
+                                            create: (ctx2) =>
+                                                StoreApiRepository(),
+                                            child: MultiBlocProvider(
+                                              providers: [
+                                                BlocProvider<StoreCubit>(
+                                                  create: (ctx) => StoreCubit(
+                                                    repository:
+                                                        RepositoryProvider.of<
+                                                                StoreRepository>(
+                                                            ctx),
+                                                  ),
+                                                ),
+                                                BlocProvider<
+                                                    IntervalBloc<StoreModel>>(
+                                                  create: (ctx) =>
+                                                      IntervalBloc<StoreModel>(
+                                                    submit: BlocProvider.of<
+                                                        StoreCubit>(ctx),
+                                                  ),
+                                                ),
+                                              ],
+                                              child: Builder(
+                                                builder: (context) {
+                                                  return StoreSearchScreen(
+                                                    onClick: (StoreModel
+                                                        store) async {
+                                                      context
+                                                          .read<StoreCubit>()
+                                                          .getDetailStore(
+                                                              store.id)
+                                                          .then((detail) {
+                                                        if (detail != null) {
+                                                          context
+                                                              .read<CartCubit>()
+                                                              .setStore(
+                                                                store,
+                                                                detail,
+                                                                context
+                                                                    .read<
+                                                                        ProductCubit>()
+                                                                    .categories,
+                                                              );
+                                                          context
+                                                              .read<
+                                                                  ProductCubit>()
+                                                              .updateUnavailable(
+                                                                categories: detail
+                                                                    .unavailableCategories,
+                                                                products: detail
+                                                                    .unavailableProducts,
+                                                                options: detail
+                                                                    .unavailableOptions,
+                                                              );
+                                                          context
+                                                              .read<CartCubit>()
+                                                              .setCategory(1);
+                                                          context
+                                                              .read<CartCubit>()
+                                                              .setPayType(1);
+                                                          context
+                                                              .read<CartCubit>()
+                                                              .setAddress(
+                                                                store.address,
+                                                                positionToDistanceString(
+                                                                  store.lat,
+                                                                  store.lng,
+                                                                  context
+                                                                      .read<
+                                                                          GeolocatorCubit>()
+                                                                      .state
+                                                                      .latLng
+                                                                      .latitude,
+                                                                  context
+                                                                      .read<
+                                                                          GeolocatorCubit>()
+                                                                      .state
+                                                                      .latLng
+                                                                      .longitude,
+                                                                ),
+                                                                store.lat,
+                                                                store.lng,
+                                                              );
+                                                        } else {
+                                                          ScaffoldMessenger.of(
+                                                                  context)
+                                                              .clearSnackBars();
+                                                          ScaffoldMessenger.of(
+                                                                  context)
+                                                              .showSnackBar(
+                                                            const SnackBar(
+                                                              content: Text(
+                                                                'Không tìm thấy cửa hàng. Hãy thử lại!',
+                                                              ),
+                                                            ),
+                                                          );
+                                                        }
+                                                      });
+                                                      Navigator.pop(ctx);
+                                                    },
+                                                  );
+                                                },
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                      );
+                                    }
+                                  },
+                                  leading: const Icon(
+                                    Icons.location_on_rounded,
+                                    color: Colors.red,
+                                  ),
+                                  title: Text(
+                                    '${state.addressName}',
+                                    style: const TextStyle(
+                                      fontSize: fontSM,
+                                      fontWeight: FontWeight.w300,
+                                    ),
+                                  ),
+                                  trailing: const Icon(Icons.chevron_right),
+                                  contentPadding: EdgeInsets.zero,
+                                  horizontalTitleGap: 0,
+                                ),
+                                const Divider(height: 4, thickness: spaceXXS),
                                 SizedBox(
                                   height: 76,
                                   child: Row(
@@ -77,7 +327,25 @@ class _CartBottomSheetState extends State<CartBottomSheet> {
                                           child: _getInfoItem(
                                             state.receiver ?? txtUnknown,
                                             state.phone ?? txtUnknown,
-                                            () {},
+                                            () {
+                                              showModalBottomSheet(
+                                                context: context,
+                                                backgroundColor: Colors.white,
+                                                shape:
+                                                    const RoundedRectangleBorder(
+                                                  borderRadius:
+                                                      BorderRadius.vertical(
+                                                    top: Radius.circular(16),
+                                                  ),
+                                                ),
+                                                builder: (context) {
+                                                  return ReceiverBottomSheet(
+                                                    name: state.receiver,
+                                                    phone: state.phone,
+                                                  );
+                                                },
+                                              );
+                                            },
                                           ),
                                         ),
                                         const SizedBox(width: 12),
@@ -89,12 +357,8 @@ class _CartBottomSheetState extends State<CartBottomSheet> {
                                         const SizedBox(width: 12),
                                       ],
                                       Expanded(
-                                        child: _getInfoItem(
-                                          dateToString(
-                                              state.time ?? DateTime.now(),
-                                              'dd/MM'),
-                                          'Càng sớm càng tốt',
-                                          () {},
+                                        child: _getInfoItemTime(
+                                          state.receivingTime,
                                         ),
                                       ),
                                     ],
@@ -108,16 +372,35 @@ class _CartBottomSheetState extends State<CartBottomSheet> {
                           const SizedBox(height: 8),
                           _getTotal(
                             costs.fold(0, (p, e) => p + e),
-                            (state.categoryId == DeliveryType.takeOut) ? 0 : state.fee,
+                            (state.categoryId == DeliveryType.takeOut)
+                                ? 0
+                                : state.fee,
                             state.voucherDiscount,
                             state.voucher?.name ?? '',
                           ),
                           const SizedBox(height: 8),
-                          const ProductsSuggestWidget(
-                            height: 307,
+                          Container(
+                            margin: const EdgeInsets.all(4.0),
+                            child: const ProductsSuggestWidget(
+                              height: 307,
+                            ),
                           ),
                           const SizedBox(height: 8),
-                          _getMethod(state.categoryId),
+                          _getMethod(
+                              state.categoryId,
+                              state.payType == 0
+                                  ? PayMethod(
+                                      name: 'Tiền mặt',
+                                      type: PayMethodType.cash,
+                                      image:
+                                          'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSxVK2Ldio3wbcompe76GCOvyURqeR96FG-Ow&usqp=CAU',
+                                    )
+                                  : PayMethod(
+                                      name: 'Momo',
+                                      type: PayMethodType.momo,
+                                      image:
+                                          'https://upload.wikimedia.org/wikipedia/vi/f/fe/MoMo_Logo.png',
+                                    )),
                           const SizedBox(height: 16),
                         ],
                       ),
@@ -126,9 +409,7 @@ class _CartBottomSheetState extends State<CartBottomSheet> {
                   _getOrderField(
                     state.categoryId?.name ?? '',
                     state.amount,
-                    costs.fold(0, (p, e) => p + e) +
-                        state.fee -
-                        state.voucherDiscount,
+                    state.calculateCost,
                     // state.calculateCost,
                   ),
                 ],
@@ -181,6 +462,136 @@ class _CartBottomSheetState extends State<CartBottomSheet> {
       );
     }
     return item;
+  }
+
+  Widget _getInfoItemTime(DateTime? receivingTime) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Text(
+          dateToString(DateTime.now(), 'dd/MM'),
+          style: const TextStyle(
+            fontSize: fontSM,
+            color: Colors.black54,
+          ),
+        ),
+        const SizedBox(height: spaceXXS),
+        const Text(
+          'Càng sớm càng tốt',
+          style: TextStyle(
+            fontSize: fontMD,
+            color: Colors.black,
+          ),
+        ),
+      ],
+    );
+    // var now = DateTime.now();
+    // if (now.hour > 21) {
+    //   return Column(
+    //     crossAxisAlignment: CrossAxisAlignment.start,
+    //     mainAxisSize: MainAxisSize.min,
+    //     children: [
+    //       Text(
+    //         dateToString(now.add(const Duration(days: 1)), 'dd/MM'),
+    //         style: const TextStyle(
+    //           fontSize: fontSM,
+    //           color: Colors.black54,
+    //         ),
+    //       ),
+    //       const SizedBox(height: spaceXXS),
+    //       const Row(
+    //         mainAxisSize: MainAxisSize.min,
+    //         children: [
+    //           Text(
+    //             '07:30',
+    //             style: TextStyle(
+    //               fontSize: fontMD,
+    //               color: Colors.black,
+    //             ),
+    //           ),
+    //         ],
+    //       ),
+    //     ],
+    //   );
+    // } else if (now.hour < 7) {
+    //   return Column(
+    //     crossAxisAlignment: CrossAxisAlignment.start,
+    //     mainAxisSize: MainAxisSize.min,
+    //     children: [
+    //       Text(
+    //         dateToString(now, 'dd/MM'),
+    //         style: const TextStyle(
+    //           fontSize: fontSM,
+    //           color: Colors.black54,
+    //         ),
+    //       ),
+    //       const SizedBox(height: spaceXXS),
+    //       const Row(
+    //         mainAxisSize: MainAxisSize.min,
+    //         children: [
+    //           Text(
+    //             '07:00',
+    //             style: TextStyle(
+    //               fontSize: fontMD,
+    //               color: Colors.black,
+    //             ),
+    //           ),
+    //         ],
+    //       ),
+    //     ],
+    //   );
+    // }
+    // return InkWell(
+    //   onTap: () {
+    //     showModalBottomSheet(
+    //       context: context,
+    //       backgroundColor: Colors.white,
+    //       shape: const RoundedRectangleBorder(
+    //         borderRadius: BorderRadius.vertical(
+    //           top: Radius.circular(16),
+    //         ),
+    //       ),
+    //       builder: (context) {
+    //         return TimePickerBottomSheet(
+    //           current: receivingTime,
+    //         );
+    //       },
+    //     ).then((value) {
+    //       context.read<CartCubit>().setReceivingTime(value);
+    //     });
+    //   },
+    //   child: Ink(
+    //     child: Column(
+    //       crossAxisAlignment: CrossAxisAlignment.start,
+    //       mainAxisSize: MainAxisSize.min,
+    //       children: [
+    //         Text(
+    //           dateToString(now, 'dd/MM'),
+    //           style: const TextStyle(
+    //             fontSize: fontSM,
+    //             color: Colors.black54,
+    //           ),
+    //         ),
+    //         const SizedBox(height: spaceXXS),
+    //         Row(
+    //           mainAxisSize: MainAxisSize.min,
+    //           children: [
+    //             Text(
+    //               receivingTime == null
+    //                   ? "Càng sớm càng tốt"
+    //                   : dateToString(receivingTime, 'HH:mm'),
+    //               style: const TextStyle(
+    //                 fontSize: fontMD,
+    //                 color: Colors.black,
+    //               ),
+    //             ),
+    //           ],
+    //         ),
+    //       ],
+    //     ),
+    //   ),
+    // );
   }
 
   Widget _getTitle(BuildContext context) {
@@ -245,6 +656,10 @@ class _CartBottomSheetState extends State<CartBottomSheet> {
       child: Column(
         children: [
           ListTile(
+            contentPadding: const EdgeInsets.symmetric(
+              vertical: spaceXS,
+              horizontal: spaceSM,
+            ),
             title: const Text(
               'Sản phẩm đã chọn',
               style: TextStyle(
@@ -298,7 +713,20 @@ class _CartBottomSheetState extends State<CartBottomSheet> {
                   children: [
                     CustomSlidableAction(
                       padding: EdgeInsets.zero,
-                      onPressed: null,
+                      onPressed: (ctx) {
+                        showModalBottomSheet(
+                          context: context,
+                          isScrollControlled: true,
+                          backgroundColor: Colors.transparent,
+                          builder: (ctx) {
+                            return BlocProvider<ProductCubit>.value(
+                              value: BlocProvider.of<ProductCubit>(context),
+                              child:
+                                  ProductEditBottomSheet(product: products[i]),
+                            );
+                          },
+                        );
+                      },
                       child: Container(
                         margin: const EdgeInsets.only(
                           left: 12,
@@ -334,9 +762,10 @@ class _CartBottomSheetState extends State<CartBottomSheet> {
                     CustomSlidableAction(
                       padding: EdgeInsets.zero,
                       onPressed: (context) async {
-                        var message = await context.read<CartCubit>().deleteProduct(
-                              products[i],
-                            );
+                        var message =
+                            await context.read<CartCubit>().deleteProduct(
+                                  products[i],
+                                );
                         if (mounted) {
                           if (message != null) {
                             showCupertinoDialog(
@@ -367,9 +796,9 @@ class _CartBottomSheetState extends State<CartBottomSheet> {
                             color: Colors.red,
                             borderRadius: BorderRadius.circular(8),
                           ),
-                          child: Column(
+                          child: const Column(
                             mainAxisAlignment: MainAxisAlignment.center,
-                            children: const [
+                            children: [
                               Icon(
                                 Icons.delete_forever,
                                 color: Colors.white,
@@ -424,6 +853,7 @@ class _CartBottomSheetState extends State<CartBottomSheet> {
           (product.cost +
                   getCostOptions(
                     context,
+                    product.id,
                     e.options,
                   )) *
               e.amount,
@@ -432,8 +862,13 @@ class _CartBottomSheetState extends State<CartBottomSheet> {
     }
   }
 
-  int getCostOptions(BuildContext context, List<String> options) {
+  int getCostOptions(
+    BuildContext context,
+    String productId,
+    List<String> options,
+  ) {
     return context.read<ProductCubit>().getCostOptionsItem(
+              productId,
               options,
             ) ??
         0;
@@ -456,10 +891,20 @@ class _CartBottomSheetState extends State<CartBottomSheet> {
               fontSize: fontMD,
             ),
       ),
-      subtitle: Text(model.options
-          .map((e) =>
-              context.read<ProductCubit>().getProductOptionItemById(e)?.name)
-          .join(', ')),
+      subtitle: Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: [
+          Text(model.options
+              .map((e) => context
+                  .read<ProductCubit>()
+                  .getProductOptionItemById(model.id, e)
+                  ?.name)
+              .join(', ')),
+          if (model.note.isNotEmpty) Text('Ghi chú: ${model.note}'),
+        ],
+      ),
       trailing: Text(
         numberToCurrency(cost, 'đ'),
         style: Theme.of(context).textTheme.titleSmall?.copyWith(
@@ -645,13 +1090,7 @@ class _CartBottomSheetState extends State<CartBottomSheet> {
     );
   }
 
-  late PayMethod _pay = PayMethod(
-    name: 'Momo',
-    type: PayMethodType.momo,
-    image: 'https://upload.wikimedia.org/wikipedia/vi/f/fe/MoMo_Logo.png',
-  );
-
-  Widget _getMethod(DeliveryType? type) {
+  Widget _getMethod(DeliveryType? type, PayMethod _pay) {
     return InkWell(
       onTap: () async {
         var pay = await showModalBottomSheet(
@@ -659,9 +1098,15 @@ class _CartBottomSheetState extends State<CartBottomSheet> {
           backgroundColor: Colors.transparent,
           context: context,
           builder: (context) => PayMethodBottomSheet(
-            deliveryType: type,selected: _pay.type,
+            deliveryType: type,
+            selected: _pay.type,
           ),
         );
+        if (mounted) {
+          context
+              .read<CartCubit>()
+              .setPayType(pay.type == PayMethodType.cash ? 0 : 1);
+        }
         if (pay is PayMethod) {
           setState(() {
             _pay = pay;
@@ -737,7 +1182,17 @@ class _CartBottomSheetState extends State<CartBottomSheet> {
         ),
         trailing: ElevatedButton(
           onPressed: () async {
-            var message = await context.read<CartCubit>().create();
+            var res = await context.read<CartCubit>().create();
+
+            String? id;
+
+            AppMessage? message;
+
+            if (res.type == ResponseModelType.success) {
+              id = res.data;
+            } else {
+              message = res.message;
+            }
 
             if (mounted) {
               if (message == null) {
@@ -750,13 +1205,41 @@ class _CartBottomSheetState extends State<CartBottomSheet> {
                     ),
                   ),
                 );
+
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (ctx) {
+                      return MultiBlocProvider(
+                        providers: [
+                          BlocProvider<CartDetailCubit>(
+                            create: (context) => CartDetailCubit(
+                              repository: RepositoryProvider.of<CartRepository>(
+                                context,
+                              ),
+                              id: id!,
+                            ),
+                          ),
+                          BlocProvider<CartsCubit>.value(
+                            value: RepositoryProvider.of<CartsCubit>(
+                              context,
+                            ),
+                          ),
+                        ],
+                        child: const CartDetailScreen(),
+                      );
+                    },
+                  ),
+                );
+
+                context.read<AppBarCubit>().reloadAppBar();
               } else {
                 Navigator.pop(context);
                 showCupertinoDialog(
                   context: context,
                   builder: (context) {
                     return AppDialog(
-                      message: message,
+                      message: message!,
                       actions: [
                         CupertinoDialogAction(
                           child: const Text(txtConfirm),

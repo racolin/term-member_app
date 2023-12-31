@@ -10,44 +10,34 @@ import 'package:member_app/presentation/res/dimen/dimens.dart';
 import '../../exception/app_message.dart';
 import '../res/strings/values.dart';
 
-class CartReviewBottomSheet extends StatefulWidget {
+class CartReviewShipperBottomSheet extends StatefulWidget {
   final String id;
   final String type;
   final String name;
-  final List<CartProductModel> products;
 
-  const CartReviewBottomSheet({
+  const CartReviewShipperBottomSheet({
     Key? key,
     required this.id,
     required this.type,
     required this.name,
-    required this.products,
   }) : super(key: key);
 
   @override
-  State<CartReviewBottomSheet> createState() => _CartReviewBottomSheetState();
+  State<CartReviewShipperBottomSheet> createState() =>
+      _CartReviewShipperBottomSheetState();
 }
 
-class _CartReviewBottomSheetState extends State<CartReviewBottomSheet> {
+class _CartReviewShipperBottomSheetState
+    extends State<CartReviewShipperBottomSheet> {
   String rateName = '';
   int? rate;
   String? note;
   Color? color;
   IconData? icon;
-  var likes = <String>[];
 
   @override
   void initState() {
-    likes = widget.products.map((e) => e.id).toList();
     super.initState();
-  }
-
-  void swap(String id) {
-    setState(() {
-      if (!likes.remove(id)) {
-        likes.add(id);
-      }
-    });
   }
 
   @override
@@ -78,7 +68,7 @@ class _CartReviewBottomSheetState extends State<CartReviewBottomSheet> {
                     ),
                     alignment: Alignment.center,
                     child: const Text(
-                      'Đánh giá đơn hàng',
+                      'Đánh giá Shipper',
                       style: TextStyle(
                         fontSize: 18,
                         fontWeight: FontWeight.w700,
@@ -192,47 +182,6 @@ class _CartReviewBottomSheetState extends State<CartReviewBottomSheet> {
               Container(
                 color: Colors.white,
                 padding: const EdgeInsets.all(spaceMD),
-                child: Column(
-                  children: widget.products
-                      .map((e) => Padding(
-                        padding: const EdgeInsets.symmetric(vertical: spaceXS),
-                        child: Row(
-                              children: [
-                                Expanded(
-                                  child: Text(
-                                    e.name,
-                                    style: const TextStyle(
-                                      fontSize: fontLG,
-                                      fontWeight: FontWeight.w600
-                                    ),
-                                    maxLines: 1,
-                                    overflow: TextOverflow.ellipsis,
-                                  ),
-                                ),
-                                GestureDetector(
-                                  onTap: () {
-                                    swap(e.id);
-                                  },
-                                  child: likes.contains(e.id) ? const Icon(
-                                    Icons.thumb_up,
-                                    color: Colors.green,
-                                    size: fontXXL,
-                                  ) : const Icon(
-                                    Icons.thumb_up_alt_outlined,
-                                    color: Colors.grey,
-                                    size: fontXXL,
-                                  ),
-                                ),
-                              ],
-                            ),
-                      ))
-                      .toList(),
-                ),
-              ),
-              const SizedBox(height: spaceXS),
-              Container(
-                color: Colors.white,
-                padding: const EdgeInsets.all(spaceMD),
                 child: TextField(
                   style: Theme.of(context).textTheme.bodyMedium,
                   maxLines: null,
@@ -252,7 +201,7 @@ class _CartReviewBottomSheetState extends State<CartReviewBottomSheet> {
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(spaceXS),
                     ),
-                    labelText: 'Chia sẻ trải nghiệm của bạn',
+                    labelText: 'Chia sẻ trải nghiệm của bạn về Shipper',
                     labelStyle: Theme.of(context).textTheme.bodyMedium,
                   ),
                 ),
@@ -274,7 +223,7 @@ class _CartReviewBottomSheetState extends State<CartReviewBottomSheet> {
                               message: AppMessage(
                                 type: AppMessageType.notify,
                                 title: txtNotifyTitle,
-                                content: 'Bạn chưa đánh giá đơn hàng!',
+                                content: 'Bạn chưa đánh giá Shipper!',
                               ),
                               actions: [
                                 CupertinoDialogAction(
@@ -288,15 +237,17 @@ class _CartReviewBottomSheetState extends State<CartReviewBottomSheet> {
                           },
                         );
                       }
-                      var dislikes = widget.products.where((e) => !likes.contains(e.id)).map((e) => e.id).toList();
                       var message = await context
                           .read<CartDetailCubit>()
-                          .review(widget.id, rate!, note, likes, dislikes);
+                          .reviewShipper(widget.id, rate!, note);
                       if (mounted) {
                         if (message == null) {
                           Navigator.pop(
                             context,
-                            rate,
+                            CartReviewShipperModel(
+                              rate: rate!,
+                              review: note,
+                            ),
                           );
                         } else {
                           showCupertinoDialog(

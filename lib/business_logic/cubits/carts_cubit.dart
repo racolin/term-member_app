@@ -15,13 +15,17 @@ class CartsCubit extends Cubit<CartsState> {
   CartsCubit({required CartRepository repository})
       : _repository = repository,
         super(CartsInitial()) {
+    reload(index: 0);
+  }
+
+  void reload({int index = 0}) {
     emit(CartsLoading());
     _repository.getStatuses().then((res) {
       if (res.type == ResponseModelType.success) {
         var statuses = res.data;
         if (statuses.isNotEmpty) {
           _repository
-              .getsByStatusId(statusId: statuses[1].id, page: 1, limit: 10)
+              .getsByStatusId(statusId: statuses[index].id, page: 1, limit: 10)
               .then((res) {
             if (res.type == ResponseModelType.success) {
               Map<String, PagingModel<CartModel>> listCarts = {};
@@ -32,7 +36,7 @@ class CartsCubit extends Cubit<CartsState> {
                   list: [],
                 );
               }
-              listCarts[statuses[1].id]?.next(res.data.value, res.data.key);
+              listCarts[statuses[index].id]?.next(res.data.value, res.data.key);
 
               emit(
                 CartsLoaded(
@@ -69,7 +73,7 @@ class CartsCubit extends Cubit<CartsState> {
 
   void setReview(String id, int rate) {
     if (this.state is! CartsLoaded) {
-
+      return;
     }
 
     var state = this.state as CartsLoaded;
@@ -120,6 +124,16 @@ class CartsCubit extends Cubit<CartsState> {
       return state.listCarts[id]?.hasNext() ?? false;
     }
     return false;
+  }
+
+  Future<AppMessage?> cancelOrder(String id) async {
+    var res = await _repository.cancelOrder(id: id);
+    if (res.type == ResponseModelType.success) {
+      reload();
+      return null;
+    } else {
+      return res.message;
+    }
   }
 
   Future<AppMessage?> tap(String id) async {

@@ -1,11 +1,12 @@
+import '../../data/models/momo_result_model.dart';
 import '../../data/models/cart_checked_model.dart';
 import '../../data/models/cart_detail_model.dart';
 import '../../data/models/cart_model.dart';
 import '../../data/models/cart_status_model.dart';
 import '../../data/models/response_model.dart';
+import '../../data/models/transaction_status_model.dart';
 
 abstract class CartRepository {
-
   ///
   /// Success: data is [ResponseModel<MapEntry<int, List<CartModel>>>], message = null
   ///
@@ -31,6 +32,18 @@ abstract class CartRepository {
     required String id,
     required int rate,
     String? review,
+    required List<String> like,
+    required List<String> dislike,
+  });
+
+  Future<ResponseModel<bool>> reviewShipper({
+    required String id,
+    required int rate,
+    String? review,
+  });
+
+  Future<ResponseModel<bool>> cancelOrder({
+    required String id,
   });
 
   Future<ResponseModel<CartCheckedModel>> checkVoucher({
@@ -50,5 +63,18 @@ abstract class CartRepository {
     String? voucherId,
     required String addressName,
     required List<CartProductModel> products,
+    double? addressLat,
+    double? addressLng,
+  });
+
+  Future<ResponseModel<MomoResultModel>> createPayment({
+    required String orderId,
+    required String lang,
+    required String redirectUrl,
+  });
+
+  Future<ResponseModel<TransactionStatusModel>> transactionStatus({
+    required String orderId,
+    required String lang,
   });
 }

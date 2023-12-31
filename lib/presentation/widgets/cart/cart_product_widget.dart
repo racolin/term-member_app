@@ -34,6 +34,7 @@ class CartProductWidget extends StatelessWidget {
           const SizedBox(width: spaceMD),
           Expanded(
             child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(

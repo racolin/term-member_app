@@ -76,6 +76,33 @@ class ProductCubit extends Cubit<ProductState>
     });
   }
 
+  AppMessage? updateUnavailable({
+    required List<String> categories,
+    required List<String> products,
+    required List<String> options,
+  }) {
+    if (state is! ProductLoaded) {
+      return AppMessage(
+        type: AppMessageType.failure,
+        title: txtFailureTitle,
+        content: txtToFast,
+      );
+    }
+
+    emit(
+      (state as ProductLoaded).copyWith(
+        unavailableList: products,
+        unavailableListOption: options,
+        unavailableListType: categories,
+      ),
+    );
+    return null;
+  }
+
+  void clearUnavailable() async {
+
+  }
+
   Future<AppMessage?> reloadData() async {
     var resListOption = await _repository.getOptions();
     var resList = await _repository.gets();
@@ -140,29 +167,6 @@ class ProductCubit extends Cubit<ProductState>
     }
   }
 
-  AppMessage? setUnavailable({
-    required List<String> products,
-    required List<String> categories,
-    required List<String> options,
-  }) {
-    if (state is! ProductLoaded) {
-      return AppMessage(
-        type: AppMessageType.failure,
-        title: txtFailureTitle,
-        content: txtToFast,
-      );
-    }
-
-    emit(
-      (state as ProductLoaded).copyWith(
-        unavailableList: products,
-        unavailableListOption: options,
-        unavailableListType: categories,
-      ),
-    );
-    return null;
-  }
-
   @override
   Future<List<ProductModel>> submit([String? key]) async {
     if (state is ProductLoaded) {
@@ -192,6 +196,14 @@ class ProductCubit extends Cubit<ProductState>
     }
     var state = this.state as ProductLoaded;
     return state.suggestion;
+  }
+
+  List<ProductCategoryModel> get categories {
+    if (this.state is! ProductLoaded) {
+      return [];
+    }
+    var state = this.state as ProductLoaded;
+    return state.listType;
   }
 
   List<ProductOptionModel> get listOption {
@@ -242,12 +254,12 @@ class ProductCubit extends Cubit<ProductState>
     return state.getProductById(id);
   }
 
-  ProductOptionItemModel? getProductOptionItemById(String id) {
+  ProductOptionItemModel? getProductOptionItemById(String productId, String id) {
     if (this.state is! ProductLoaded) {
       return null;
     }
     var state = this.state as ProductLoaded;
-    return state.getProductOptionItemById(id);
+    return state.getProductOptionItemById(productId, id);
   }
 
   int? getCostDefaultOptions(List<String> options) {
@@ -278,18 +290,25 @@ class ProductCubit extends Cubit<ProductState>
     return state.getProductOptionById(id);
   }
 
-  int? getCostOptionsItem(List<String> items) {
+  // int? getCostOptionsItem(String productId, List<String> items) {
+  //   if (this.state is! ProductLoaded) {
+  //     return null;
+  //   }
+  //   var state = this.state as ProductLoaded;
+  //   int result = 0;
+  //   for (var id in items) {
+  //     var model = state.getProductOptionItemById(productId, id);
+  //     if (model != null) {
+  //       result += model.cost;
+  //     }
+  //   }
+  //   return result;
+  // }
+  int? getCostOptionsItem(String productId, List<String> items) {
     if (this.state is! ProductLoaded) {
       return null;
     }
     var state = this.state as ProductLoaded;
-    int result = 0;
-    for (var id in items) {
-      var model = state.getProductOptionItemById(id);
-      if (model != null) {
-        result += model.cost;
-      }
-    }
-    return result;
+    return state.getCostOptionsItem(productId, items);
   }
 }

@@ -53,6 +53,7 @@ class _CartTemplateBottomSheetState extends State<CartTemplateBottomSheet> {
           (product.cost +
               getCostOptions(
                 context,
+                product.id,
                 e.options,
               )) * e.amount,
         );
@@ -84,8 +85,8 @@ class _CartTemplateBottomSheetState extends State<CartTemplateBottomSheet> {
     super.initState();
   }
 
-  int getCostOptions(BuildContext context, List<String> options) {
-    return context.read<ProductCubit>().getCostOptionsItem(
+  int getCostOptions(BuildContext context, String productId, List<String> options) {
+    return context.read<ProductCubit>().getCostOptionsItem(productId,
               options,
             ) ??
         0;
@@ -344,11 +345,11 @@ class _CartTemplateBottomSheetState extends State<CartTemplateBottomSheet> {
                                                               BorderRadius
                                                                   .circular(8),
                                                         ),
-                                                        child: Column(
+                                                        child: const Column(
                                                           mainAxisAlignment:
                                                               MainAxisAlignment
                                                                   .center,
-                                                          children: const [
+                                                          children: [
                                                             Icon(
                                                               Icons
                                                                   .edit_note_outlined,
@@ -404,11 +405,11 @@ class _CartTemplateBottomSheetState extends State<CartTemplateBottomSheet> {
                                                                     .circular(
                                                                         8),
                                                           ),
-                                                          child: Column(
+                                                          child: const Column(
                                                             mainAxisAlignment:
                                                                 MainAxisAlignment
                                                                     .center,
-                                                            children: const [
+                                                            children: [
                                                               Icon(
                                                                 Icons
                                                                     .delete_forever,
@@ -485,7 +486,7 @@ class _CartTemplateBottomSheetState extends State<CartTemplateBottomSheet> {
                                                         .map((e) => context
                                                             .read<
                                                                 ProductCubit>()
-                                                            .getProductOptionItemById(
+                                                            .getProductOptionItemById(products[i].id,
                                                                 e)
                                                             ?.name)
                                                         .join(', '),

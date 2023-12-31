@@ -4,6 +4,7 @@ import 'package:member_app/data/models/response_model.dart';
 import '../../data/models/cart_checked_model.dart';
 import '../../data/models/cart_model.dart';
 import '../../data/models/cart_detail_model.dart';
+import '../../data/models/product_category_model.dart';
 import '../../data/models/store_detail_model.dart';
 import '../../data/models/store_model.dart';
 import '../../data/models/voucher_model.dart';
@@ -29,7 +30,7 @@ class CartCubit extends Cubit<CartState> {
         super(CartInitial()) {
     _storage.getCartLoaded().then((res) {
       if (res.type == ResponseModelType.success) {
-        emit(res.data.copyWith(time: DateTime.now()));
+        emit(res.data.copyWith(receivingTime: null));
       } else {
         emit(CartFailure(message: res.message));
       }
@@ -98,7 +99,8 @@ class CartCubit extends Cubit<CartState> {
     var storeId =
         (state is! CartLoaded) ? null : (state as CartLoaded).store?.id;
     var res = await _repository.checkVoucher(
-      storeId: storeId ?? '641875ec7541eda7125936bf',
+      // storeId: storeId ?? '641875ec7541eda7125936bf',
+      storeId: storeId,
       voucherId: voucherId,
       categoryId: categoryId,
       products: products,
@@ -110,6 +112,267 @@ class CartCubit extends Cubit<CartState> {
   // action method, change state and return AppMessage?, null when success
 
   // get data method: return model if state is loaded, else return null
+
+  Future<ResponseModel<String>> create() async {
+    if (this.state is! CartLoaded) {
+      return ResponseModel<String>(
+        type: ResponseModelType.failure,
+        message: AppMessage(
+          type: AppMessageType.failure,
+          title: txtFailureTitle,
+          content: txtToFast,
+        ),
+      );
+    }
+
+    var state = this.state as CartLoaded;
+
+    if (state.categoryId == DeliveryType.delivery) {
+      if (
+          // state.payType == null ||
+          // state.time == null ||
+          state.phone == null ||
+              state.phone == '' ||
+              state.receiver == null ||
+              state.receiver == '') {
+        return ResponseModel<String>(
+          type: ResponseModelType.failure,
+          message: AppMessage(
+            type: AppMessageType.failure,
+            title: txtFailureTitle,
+            content: 'Bạn chưa điền đầy đủ thông tin đơn hàng!',
+          ),
+        );
+      }
+    } else if (state.categoryId == DeliveryType.takeOut) {
+      if (state.store == null || state.storeDetail == null
+          // state.payType == null ||
+          // state.time == null
+          // ||
+          // state.phone == null ||
+          // state.phone == '' ||
+          // state.receiver == null ||
+          // state.receiver == ''
+          ) {
+        return ResponseModel<String>(
+          type: ResponseModelType.failure,
+          message: AppMessage(
+            type: AppMessageType.failure,
+            title: txtFailureTitle,
+            content: 'Bạn chưa điền đầy đủ thông tin đơn hàng!',
+          ),
+        );
+      }
+    } else {
+      return ResponseModel<String>(
+        type: ResponseModelType.failure,
+        message: AppMessage(
+          type: AppMessageType.failure,
+          title: txtFailureTitle,
+          content: 'Bạn chưa điền đầy đủ thông tin đơn hàng!',
+        ),
+      );
+    }
+
+    var res = await _repository.create(
+      storeId: state.store?.id ?? '641875ec7541eda7125936bf',
+      categoryId: state.categoryId!.index,
+      payType: state.payType ?? 0,
+      phone: state.phone ?? '+84868754872',
+      receiver: state.receiver ?? 'Vinh',
+      receivingTime: state.receivingTime?.millisecondsSinceEpoch ??
+          DateTime.now().millisecondsSinceEpoch,
+      products: state.products,
+      addressName: '${state.addressName}',
+      voucherId: state.voucher?.id,
+      addressLat: state.addressLat,
+      addressLng: state.addressLng,
+    );
+
+    clear();
+    return res;
+  }
+
+  Future<AppMessage?> cancelOrder(String id) async {
+    var res = await _repository.cancelOrder(id: id);
+
+    if (res.type == ResponseModelType.success) {
+      clear();
+      return AppMessage(
+        type: AppMessageType.success,
+        title: 'Thành công',
+        content: 'Bạn đã huỷ đơn thành công!',
+      );
+    } else {
+      return res.message;
+    }
+  }
+
+  void clear() {
+    emit(CartLoaded(products: []));
+  }
+
+  bool emptyCart() {
+    if (state is! CartLoaded) {
+      return true;
+    }
+    return (state as CartLoaded).products.isEmpty;
+  }
+
+  AppMessage? setStore(
+    StoreModel store,
+    StoreDetailModel storeDetail,
+    List<ProductCategoryModel> categories,
+  ) {
+    if (this.state is! CartLoaded) {
+      return AppMessage(
+        type: AppMessageType.failure,
+        title: txtFailureTitle,
+        content: txtToFast,
+      );
+    }
+
+    var state = this.state as CartLoaded;
+    var uO = storeDetail.unavailableOptions;
+    var uP = storeDetail.unavailableProducts;
+    var uC = storeDetail.unavailableCategories;
+
+    for (var category in categories) {
+      if (uC.contains(category.id)) {
+        uP += category.productIds;
+      }
+    }
+
+    /// Xoá những sản phẩm, topping không có
+    var products = state.products.where((e) => !uP.contains(e.id)).toList();
+
+    for (var product in products) {
+      product.copyWith(
+          options: product.options.where((o) => !uO.contains(o)).toList());
+    }
+
+    emit(state.copyWith(
+      store: store,
+      storeDetail: storeDetail,
+      products: products,
+    ));
+
+    return null;
+  }
+
+  Future<AppMessage?> setCategory(int categoryId) async {
+    if (this.state is! CartLoaded) {
+      return AppMessage(
+        type: AppMessageType.failure,
+        title: txtFailureTitle,
+        content: txtToFast,
+      );
+    }
+
+    var state = this.state as CartLoaded;
+
+    if (state.voucher != null) {
+      var res = await _checkVoucher(
+        state.voucher!.id,
+        categoryId,
+        state.products,
+      );
+
+      if (res.type == ResponseModelType.success) {
+        emit(state.copyWith(
+          categoryId: DeliveryType.values[categoryId],
+        ));
+        return null;
+      } else {
+        emit(state.copyWith(
+          categoryId: DeliveryType.values[categoryId],
+          voucher: null,
+          voucherDiscount: null,
+        ));
+        return res.message;
+      }
+    } else {
+      emit(state.copyWith(
+        categoryId: DeliveryType.values[categoryId],
+        // fee: fee,
+      ));
+      return null;
+    }
+  }
+
+  AppMessage? setPayType(int payType) {
+    if (this.state is! CartLoaded) {
+      return AppMessage(
+        type: AppMessageType.failure,
+        title: txtFailureTitle,
+        content: txtToFast,
+      );
+    }
+
+    var state = this.state as CartLoaded;
+    print(payType);
+    print('payType');
+    emit(state.copyWith(
+      payType: payType,
+    ));
+
+    return null;
+  }
+
+  AppMessage? setPhone(String phone) {
+    if (this.state is! CartLoaded) {
+      return AppMessage(
+        type: AppMessageType.failure,
+        title: txtFailureTitle,
+        content: txtToFast,
+      );
+    }
+
+    var state = this.state as CartLoaded;
+
+    emit(state.copyWith(
+      phone: phone,
+    ));
+
+    return null;
+  }
+
+  AppMessage? setReceiverName(String receiver) {
+    if (this.state is! CartLoaded) {
+      return AppMessage(
+        type: AppMessageType.failure,
+        title: txtFailureTitle,
+        content: txtToFast,
+      );
+    }
+
+    var state = this.state as CartLoaded;
+
+    emit(state.copyWith(
+      receiver: receiver,
+    ));
+
+    return null;
+  }
+
+  AppMessage? setReceiver(String receiver, String phone) {
+    if (this.state is! CartLoaded) {
+      return AppMessage(
+        type: AppMessageType.failure,
+        title: txtFailureTitle,
+        content: txtToFast,
+      );
+    }
+
+    var state = this.state as CartLoaded;
+
+    emit(state.copyWith(
+      receiver: receiver,
+      phone: phone,
+    ));
+
+    return null;
+  }
 
   Future<AppMessage?> checkAndSetVoucher(VoucherModel voucher) async {
     if (this.state is! CartLoaded) {
@@ -162,7 +425,7 @@ class CartCubit extends Cubit<CartState> {
     }
   }
 
-  Future<AppMessage?> create() async {
+  AppMessage? setReceivingTime(DateTime? receivingTime) {
     if (this.state is! CartLoaded) {
       return AppMessage(
         type: AppMessageType.failure,
@@ -172,271 +435,44 @@ class CartCubit extends Cubit<CartState> {
     }
 
     var state = this.state as CartLoaded;
-
-    print(state.toMap());
-    if (state.categoryId == DeliveryType.delivery) {
-      if (
-          // state.payType == null ||
-          // state.time == null ||
-          state.phone == null ||
-              state.phone == '' ||
-              state.receiver == null ||
-              state.receiver == '') {
-        return AppMessage(
-          type: AppMessageType.failure,
-          title: txtFailureTitle,
-          content: 'Bạn chưa điền đầy đủ thông tin đơn hàng!',
-        );
-      }
-    } else if (state.categoryId == DeliveryType.takeOut) {
-      if (state.store == null || state.storeDetail == null
-          // state.payType == null ||
-          // state.time == null
-          // ||
-          // state.phone == null ||
-          // state.phone == '' ||
-          // state.receiver == null ||
-          // state.receiver == ''
-          ) {
-        return AppMessage(
-          type: AppMessageType.failure,
-          title: txtFailureTitle,
-          content: 'Bạn chưa điền đầy đủ thông tin đơn hàng!',
-        );
-      }
-    } else {
-      return AppMessage(
-        type: AppMessageType.failure,
-        title: txtFailureTitle,
-        content: 'Bạn chưa điền đầy đủ thông tin đơn hàng!',
-      );
-    }
-
-    var res = await _repository.create(
-      storeId: state.store?.id ?? '641875ec7541eda7125936bf',
-      categoryId: state.categoryId!.index,
-      payType: state.payType ?? 0,
-      phone: state.phone ?? '+84868754872',
-      receiver: state.receiver ?? 'Vinh',
-      receivingTime: state.time?.millisecondsSinceEpoch ??
-          DateTime.now().millisecondsSinceEpoch,
-      products: state.products,
-      addressName: '${state.addressName}|${state.addressDescription}',
-      voucherId: state.voucher?.id,
-    );
-
-    if (res.type == ResponseModelType.success) {
-      clear();
-      return AppMessage(
-        type: AppMessageType.success,
-        title: 'Thành công',
-        content: 'Bạn đã đặt hàng thành công!',
-      );
-    } else {
-      return res.message;
-    }
-  }
-
-  void clear() {
-    emit(CartLoaded(products: []));
-  }
-
-  bool emptyCart() {
-    if (state is! CartLoaded) {
-      return true;
-    }
-    return (state as CartLoaded).products.isEmpty;
-  }
-
-  AppMessage? setAddress(String addressName, String addressDescription) {
-    if (this.state is! CartLoaded) {
-      return AppMessage(
-        type: AppMessageType.failure,
-        title: txtFailureTitle,
-        content: txtToFast,
-      );
-    }
-
-    var state = this.state as CartLoaded;
-
-    print(addressName);
-    print(addressDescription);
 
     emit(state.copyWith(
-      addressDescription: addressDescription,
+      receivingTime: receivingTime,
+    ));
+
+    return null;
+  }
+
+  AppMessage? setAddress(
+    String addressName,
+    String distanceString,
+    double lat,
+    double lng,
+  ) {
+    if (this.state is! CartLoaded) {
+      return AppMessage(
+        type: AppMessageType.failure,
+        title: txtFailureTitle,
+        content: txtToFast,
+      );
+    }
+
+    var state = this.state as CartLoaded;
+
+    emit(state.copyWith(
+      distanceString: distanceString,
       addressName: addressName,
+      addressLat: lat,
+      addressLng: lng,
     ));
 
     return null;
   }
 
-  AppMessage? setStore(StoreModel store, StoreDetailModel storeDetail) {
-    if (this.state is! CartLoaded) {
-      return AppMessage(
-        type: AppMessageType.failure,
-        title: txtFailureTitle,
-        content: txtToFast,
-      );
-    }
-
-    var state = this.state as CartLoaded;
-
-    emit(state.copyWith(
-      store: store,
-      storeDetail: storeDetail,
-    ));
-
-    return null;
-  }
-
-  AppMessage? setReceiver(String receiver, String phone) {
-    if (this.state is! CartLoaded) {
-      return AppMessage(
-        type: AppMessageType.failure,
-        title: txtFailureTitle,
-        content: txtToFast,
-      );
-    }
-
-    var state = this.state as CartLoaded;
-
-    emit(state.copyWith(
-      receiver: receiver,
-      phone: phone,
-    ));
-
-    return null;
-  }
-
-  AppMessage? setReceiverName(String receiver) {
-    if (this.state is! CartLoaded) {
-      return AppMessage(
-        type: AppMessageType.failure,
-        title: txtFailureTitle,
-        content: txtToFast,
-      );
-    }
-
-    var state = this.state as CartLoaded;
-
-    emit(state.copyWith(
-      receiver: receiver,
-    ));
-
-    return null;
-  }
-
-  AppMessage? setPhone(String phone) {
-    if (this.state is! CartLoaded) {
-      return AppMessage(
-        type: AppMessageType.failure,
-        title: txtFailureTitle,
-        content: txtToFast,
-      );
-    }
-
-    var state = this.state as CartLoaded;
-
-    emit(state.copyWith(
-      phone: phone,
-    ));
-
-    return null;
-  }
-
-  AppMessage? setTime(DateTime time) {
-    if (this.state is! CartLoaded) {
-      return AppMessage(
-        type: AppMessageType.failure,
-        title: txtFailureTitle,
-        content: txtToFast,
-      );
-    }
-
-    var state = this.state as CartLoaded;
-
-    emit(state.copyWith(
-      time: time,
-    ));
-
-    return null;
-  }
-
-  AppMessage? setPayType(int payType) {
-    if (this.state is! CartLoaded) {
-      return AppMessage(
-        type: AppMessageType.failure,
-        title: txtFailureTitle,
-        content: txtToFast,
-      );
-    }
-
-    var state = this.state as CartLoaded;
-
-    emit(state.copyWith(
-      payType: payType,
-    ));
-
-    return null;
-  }
-
-  AppMessage? setFee(int fee) {
-    if (this.state is! CartLoaded) {
-      return AppMessage(
-        type: AppMessageType.failure,
-        title: txtFailureTitle,
-        content: txtToFast,
-      );
-    }
-
-    var state = this.state as CartLoaded;
-
-    emit(state.copyWith(
-      fee: fee,
-    ));
-
-    return null;
-  }
-
-  Future<AppMessage?> setCategory(int categoryId) async {
-    if (this.state is! CartLoaded) {
-      return AppMessage(
-        type: AppMessageType.failure,
-        title: txtFailureTitle,
-        content: txtToFast,
-      );
-    }
-
-    var state = this.state as CartLoaded;
-
-    if (state.voucher != null) {
-      var res = await _checkVoucher(
-        state.voucher!.id,
-        categoryId,
-        state.products,
-      );
-
-      if (res.type == ResponseModelType.success) {
-        emit(state.copyWith(
-          categoryId: DeliveryType.values[categoryId],
-        ));
-        return null;
-      } else {
-        return res.message;
-      }
-    } else {
-      emit(state.copyWith(
-        categoryId: DeliveryType.values[categoryId],
-        // fee: fee,
-      ));
-      return null;
-    }
-  }
-
-  /// Chưa xử lý trường hợp sản phẩm không có trong store
-  Future<AppMessage?> addProductsToCart(List<CartProductModel> products,
-      [bool clear = true]) async {
-    print(products.map((e) => e.toMap()));
+  Future<AppMessage?> addProductsToCart(
+    List<CartProductModel> products, [
+    bool clear = true,
+  ]) async {
     if (this.state is! CartLoaded) {
       return AppMessage(
         type: AppMessageType.notify,
@@ -563,6 +599,60 @@ class CartCubit extends Cubit<CartState> {
         // return mes;
       }
     }
+
+    return null;
+  }
+
+  Future<AppMessage?> updateProductToCart(
+      CartProductModel oModel, CartProductModel nModel) async {
+    if (this.state is! CartLoaded) {
+      return AppMessage(
+        type: AppMessageType.notify,
+        title: txtNotifyTitle,
+        content: 'Dữ liệu chưa được tải. Hãy thử lại!',
+      );
+    }
+    var state = this.state as CartLoaded;
+
+    var index = state.products.indexOf(oModel);
+
+    if (index == -1) {
+      return AppMessage(
+        type: AppMessageType.notify,
+        title: txtNotifyTitle,
+        content: 'Dữ liệu chưa được tải. Hãy thử lại!',
+      );
+    } else {
+      var list = [...state.products];
+      list[index] = nModel;
+      emit(state.copyWith(products: list));
+    }
+
+    if (state.voucher != null) {
+      var mes = await checkAndSetVoucher(state.voucher!);
+      if (mes != null) {
+        emit(state.clearVoucher());
+        // return mes;
+      }
+    }
+
+    return null;
+  }
+
+  AppMessage? setFee(int fee) {
+    if (this.state is! CartLoaded) {
+      return AppMessage(
+        type: AppMessageType.failure,
+        title: txtFailureTitle,
+        content: txtToFast,
+      );
+    }
+
+    var state = this.state as CartLoaded;
+
+    emit(state.copyWith(
+      fee: fee,
+    ));
 
     return null;
   }

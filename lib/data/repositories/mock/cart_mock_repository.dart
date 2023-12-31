@@ -1,6 +1,9 @@
 import 'dart:math';
 
+import 'package:member_app/data/models/transaction_status_model.dart';
+
 import '../../../business_logic/repositories/cart_repository.dart';
+import '../../models/momo_result_model.dart';
 import '../../models/cart_checked_model.dart';
 import '../../models/cart_detail_model.dart';
 import '../../models/cart_model.dart';
@@ -53,6 +56,8 @@ class CartMockRepository extends CartRepository {
     String? voucherId,
     String? addressName,
     required List<CartProductModel> products,
+    double? addressLat,
+    double? addressLng,
   }) async {
     return ResponseModel<String>(
       type: ResponseModelType.success,
@@ -128,6 +133,9 @@ class CartMockRepository extends CartRepository {
           }),
         ],
         point: 56,
+        reviewPoint: 6,
+        reviewShipperPoint: null,
+        timeLog: null,
       ),
     );
     return ResponseModel<CartDetailModel>(
@@ -169,21 +177,23 @@ class CartMockRepository extends CartRepository {
   }) async {
     return ResponseModel<MapEntry<int, List<CartModel>>>(
       type: ResponseModelType.success,
-      data: statusId == 'STT-01' ? const MapEntry(0, []) : MapEntry(
-        43,
-        List.generate(
-          20,
-              (index) => CartModel(
-            id: 'CART-01',
-            name:
-            'Đường Đen Marble Latte, Hi-Tea Yuzu Trần Châu +2 sản phẩm khác',
-            categoryId: DeliveryType.values[Random().nextInt(3)],
-            cost: 114000,
-            time: DateTime(2023, 4, 11, 14, 14, 56),
-            rate: Random().nextInt(5),
-          ),
-        ),
-      ),
+      data: statusId == 'STT-01'
+          ? const MapEntry(0, [])
+          : MapEntry(
+              43,
+              List.generate(
+                20,
+                (index) => CartModel(
+                  id: 'CART-01',
+                  name:
+                      'Đường Đen Marble Latte, Hi-Tea Yuzu Trần Châu +2 sản phẩm khác',
+                  categoryId: DeliveryType.values[Random().nextInt(3)],
+                  cost: 114000,
+                  time: DateTime(2023, 4, 11, 14, 14, 56),
+                  rate: Random().nextInt(5),
+                ),
+              ),
+            ),
       // data: false,
     );
     return ResponseModel<MapEntry<int, List<CartModel>>>(
@@ -200,6 +210,8 @@ class CartMockRepository extends CartRepository {
   Future<ResponseModel<bool>> review({
     required String id,
     required int rate,
+    required List<String> dislike,
+    required List<String> like,
     String? review,
   }) async {
     return ResponseModel<bool>(
@@ -215,5 +227,37 @@ class CartMockRepository extends CartRepository {
         content: 'Gặp sự cố khi đánh giá đơn hàng',
       ),
     );
+  }
+
+  @override
+  Future<ResponseModel<bool>> cancelOrder({required String id}) {
+    // TODO: implement cancelOrder
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<ResponseModel<bool>> reviewShipper(
+      {required String id, required int rate, String? review}) {
+    // TODO: implement reviewShipper
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<ResponseModel<MomoResultModel>> createPayment({
+    required String lang,
+    required String redirectUrl,
+    required String orderId,
+  }) {
+    // TODO: implement createPayment
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<ResponseModel<TransactionStatusModel>> transactionStatus({
+    required String lang,
+    required String orderId,
+  }) {
+    // TODO: implement transactionStatus
+    throw UnimplementedError();
   }
 }

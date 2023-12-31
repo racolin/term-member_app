@@ -36,117 +36,119 @@ class _AddressPickerScreenState extends State<AddressPickerScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: BlocBuilder<IntervalBloc<AddressEntity>, IntervalState>(
-        builder: (context, state) {
-          var list = <AddressEntity>[];
-          if (state is IntervalLoaded<AddressEntity>) {
-            list = state.list;
-          }
-          return Column(
-            children: [
-              _getSearchAddress(context, state),
-              const Divider(height: 1),
-              ListTile(
-                tileColor: Colors.white,
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (ctx) {
-                        return BlocProvider<AddressCubit>.value(
-                          value: BlocProvider.of<AddressCubit>(context),
-                          child: const MapPickerScreen(),
-                        );
-                      },
-                    ),
-                  ).then((model) {
-                    if (model != null && model is AddressEntity) {
-                      Navigator.pop(context, model);
-                    }
-                  });
-                },
-                leading: const Icon(
-                  Icons.map_outlined,
-                  color: Colors.black,
-                ),
-                title: const Text(
-                  'Chọn từ bản đồ',
-                  style: TextStyle(fontSize: fontLG),
-                ),
-                trailing: const Icon(
-                  Icons.chevron_right,
-                  color: Colors.black,
-                ),
-              ),
-              const Divider(height: 1),
-              Expanded(
-                child: Container(
-                  color: Colors.white,
-                  child: ListView.separated(
-                    separatorBuilder: (context, index) =>
-                        const Divider(height: 1),
-                    physics: const ClampingScrollPhysics(),
-                    itemBuilder: (context, index) => LocationWidget(
-                      model: list[index],
-                      onClick: () {
-                        Navigator.pop(context, list[index]);
-                      },
-                    ),
-                    padding: const EdgeInsets.only(bottom: dimLG),
-                    itemCount: list.length,
-                  ),
-                ),
-              ),
-              InkWell(
-                splashColor: Colors.green,
-                onTap: () async {
-                  var message =
-                  await context.read<GeolocatorCubit>().uploadPosition();
-                  if (context.mounted && message != null) {
-                    showCupertinoDialog(
-                      context: context,
-                      builder: (context) {
-                        return AppDialog(
-                          message: message,
-                          actions: [
-                            CupertinoDialogAction(
-                              child: const Text(txtConfirm),
-                              onPressed: () {
-                                Navigator.pop(context);
-                              },
-                            ),
-                          ],
-                        );
-                      },
-                    );
-                  }
-                },
-                child: Ink(
-                  width: double.maxFinite,
-                  height: dimLG,
-                  color: Colors.orange,
-                  padding: const EdgeInsets.only(top: dimXXS),
-                  child: const Row(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Icon(Icons.my_location,
-                          size: fontXL, color: Colors.white),
-                      SizedBox(width: spaceXS),
-                      Text(
-                        'Cập nhật vị trí để tính khoảng cách',
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontWeight: FontWeight.w700,
-                        ),
+      body: SafeArea(
+        bottom: true,
+        top: false,
+        child: BlocBuilder<IntervalBloc<AddressEntity>, IntervalState>(
+          builder: (context, state) {
+            var list = <AddressEntity>[];
+            if (state is IntervalLoaded<AddressEntity>) {
+              list = state.list;
+            }
+            return Column(
+              children: [
+                _getSearchAddress(context, state),
+                const Divider(height: 1),
+                ListTile(
+                  tileColor: Colors.white,
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (ctx) {
+                          return BlocProvider<AddressCubit>.value(
+                            value: BlocProvider.of<AddressCubit>(context),
+                            child: const MapPickerScreen(),
+                          );
+                        },
                       ),
-                    ],
+                    ).then((model) {
+                      if (model != null && model is AddressEntity) {
+                        Navigator.pop(context, model);
+                      }
+                    });
+                  },
+                  leading: const Icon(
+                    Icons.map_outlined,
+                    color: Colors.black,
+                  ),
+                  title: const Text(
+                    'Chọn từ bản đồ',
+                    style: TextStyle(fontSize: fontLG),
+                  ),
+                  trailing: const Icon(
+                    Icons.chevron_right,
+                    color: Colors.black,
                   ),
                 ),
-              ),
-            ],
-          );
-        },
+                const Divider(height: 1),
+                Expanded(
+                  child: Container(
+                    color: Colors.white,
+                    child: ListView.separated(
+                      separatorBuilder: (context, index) =>
+                          const Divider(height: 1),
+                      physics: const ClampingScrollPhysics(),
+                      itemBuilder: (context, index) => LocationWidget(
+                        model: list[index],
+                        onClick: () {
+                          Navigator.pop(context, list[index]);
+                        },
+                      ),
+                      padding: const EdgeInsets.only(bottom: dimLG),
+                      itemCount: list.length,
+                    ),
+                  ),
+                ),
+                InkWell(
+                  splashColor: Colors.green,
+                  onTap: () async {
+                    var message =
+                        await context.read<GeolocatorCubit>().uploadPosition();
+                    if (context.mounted && message != null) {
+                      showCupertinoDialog(
+                        context: context,
+                        builder: (context) {
+                          return AppDialog(
+                            message: message,
+                            actions: [
+                              CupertinoDialogAction(
+                                child: const Text(txtConfirm),
+                                onPressed: () {
+                                  Navigator.pop(context);
+                                },
+                              ),
+                            ],
+                          );
+                        },
+                      );
+                    }
+                  },
+                  child: Ink(
+                    width: double.maxFinite,
+                    height: dimXS,
+                    color: Colors.orange,
+                    child: const Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Icon(Icons.my_location,
+                            size: fontXL, color: Colors.white),
+                        SizedBox(width: spaceXS),
+                        Text(
+                          'Cập nhật vị trí để tính khoảng cách',
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontWeight: FontWeight.w700,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ],
+            );
+          },
+        ),
       ),
     );
   }

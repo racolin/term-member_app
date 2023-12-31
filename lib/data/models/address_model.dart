@@ -24,7 +24,6 @@ class AddressModel {
   });
 
   int get iconInt {
-    print('0x${icon ?? 'f02e'}');
     return int.parse(icon ?? 'f02e', radix: 16);
   }
 
@@ -49,8 +48,8 @@ class AddressModel {
       address: map['address'] ?? txtNone,
       note: map['note'] ?? txtNone,
       icon: map['icon'],
-      lat: map['lat'] ?? 0,
-      lng: map['lng'] ?? 0,
+      lat: map['lat'] == null ? 0 : map['lat'] is int ? (map['lat'] as int).toDouble() : map['lat'],
+      lng: map['lng'] == null ? 0 : map['lng'] is int ? (map['lng'] as int).toDouble() : map['lng'],
       receiver: map['receiver'] ?? txtNone,
       phone: map['phone'] ?? txtNone,
     );

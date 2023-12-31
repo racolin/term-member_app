@@ -9,8 +9,7 @@ import '../../presentation/res/strings/values.dart';
 import '../repositories/store_repository.dart';
 import '../states/store_state.dart';
 
-class StoreCubit extends Cubit<StoreState>
-    implements IntervalSubmit<StoreModel> {
+class StoreCubit extends Cubit<StoreState> implements IntervalSubmit<StoreModel> {
   final StoreRepository _repository;
 
   /// Nếu offline thì cần phải xử lý logic chỗ selectedId
@@ -71,7 +70,6 @@ class StoreCubit extends Cubit<StoreState>
   }
 
   Future<StoreDetailModel?> getDetailStore(String id) async {
-
     var res = await _repository.getDetail(id: id);
     if (res.type == ResponseModelType.success) {
       return res.data;

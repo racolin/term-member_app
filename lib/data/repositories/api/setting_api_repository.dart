@@ -1,5 +1,4 @@
 import 'package:dio/dio.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:google_maps_webservice/places.dart';
 import 'package:member_app/business_logic/cubits/address_cubit.dart';
 
@@ -389,6 +388,7 @@ class SettingApiRepository extends SettingRepository {
         origin: origin,
         components: [Component('country', 'vn')],
       );
+      print(result.predictions.map((e) => e.toJson()));
       if (result.status == "OK") {
         return ResponseModel<List<AddressEntity>>(
           type: ResponseModelType.success,

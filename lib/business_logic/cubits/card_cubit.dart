@@ -15,6 +15,7 @@ class CardCubit extends Cubit<CardState> {
     emit(CardLoading());
     _repository.getCard().then((res) {
       if (res.type == ResponseModelType.success) {
+        res.data.fee;
         emit(CardLoaded(card: res.data));
       } else {
         emit(CardFailure(message: res.message));

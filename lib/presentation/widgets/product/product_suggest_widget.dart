@@ -78,71 +78,82 @@ class ProductSuggestWidget extends StatelessWidget {
               width: double.maxFinite,
               child: TextButton(
                 onPressed: () async {
-                  if (context.read<CartCubit>().categoryId == null) {
-                    showModalBottomSheet(
-                      context: context,
-                      shape: const RoundedRectangleBorder(
-                        borderRadius: BorderRadius.vertical(
-                          top: Radius.circular(16),
-                        ),
-                      ),
-                      builder: (ctx) => MethodOrderBottomSheet(
-                        type: null,
-                        addressName: null,
-                        login: context.read<HomeCubit>().login,
-                      ),
-                    );
-                    return;
-                  }
-                  var options = <String>[];
-
-                  for (var o in model.optionIds) {
-                    var item =
-                        context.read<ProductCubit>().getProductOptionById(o);
-                    if (item != null) {
-                      options.addAll(item.defaultSelect);
-                    }
-                  }
-                  var message =
-                      await context.read<CartCubit>().addProductToCart(
-                            CartProductModel(
-                              id: model.id,
-                              name: model.name,
-                              cost: model.cost,
-                              options: options,
-                              amount: 1,
-                              note: '',
-                            ),
-                          );
-                  if (context.mounted) {
-                    if (message != null) {
-                      showCupertinoDialog(
-                        context: context,
-                        builder: (context) {
-                          return AppDialog(
-                            message: message,
-                            actions: [
-                              CupertinoDialogAction(
-                                child: const Text(txtConfirm),
-                                onPressed: () {
-                                  Navigator.pop(context);
-                                },
-                              ),
-                            ],
-                          );
-                        },
+                  // if (context.read<CartCubit>().categoryId == null) {
+                  //   showModalBottomSheet(
+                  //     context: context,
+                  //     shape: const RoundedRectangleBorder(
+                  //       borderRadius: BorderRadius.vertical(
+                  //         top: Radius.circular(16),
+                  //       ),
+                  //     ),
+                  //     builder: (ctx) => MethodOrderBottomSheet(
+                  //       type: null,
+                  //       addressName: null,
+                  //       login: context.read<HomeCubit>().login,
+                  //     ),
+                  //   );
+                  //   return;
+                  // }
+                  // var options = <String>[];
+                  //
+                  // for (var o in model.optionIds) {
+                  //   var item =
+                  //       context.read<ProductCubit>().getProductOptionById(o);
+                  //   if (item != null) {
+                  //     options.addAll(item.defaultSelect);
+                  //   }
+                  // }
+                  // var message =
+                  //     await context.read<CartCubit>().addProductToCart(
+                  //           CartProductModel(
+                  //             id: model.id,
+                  //             name: model.name,
+                  //             cost: model.cost,
+                  //             options: options,
+                  //             amount: 1,
+                  //             note: '',
+                  //           ),
+                  //         );
+                  // if (context.mounted) {
+                  //   if (message != null) {
+                  //     showCupertinoDialog(
+                  //       context: context,
+                  //       builder: (context) {
+                  //         return AppDialog(
+                  //           message: message,
+                  //           actions: [
+                  //             CupertinoDialogAction(
+                  //               child: const Text(txtConfirm),
+                  //               onPressed: () {
+                  //                 Navigator.pop(context);
+                  //               },
+                  //             ),
+                  //           ],
+                  //         );
+                  //       },
+                  //     );
+                  //   } else {
+                  //     ScaffoldMessenger.of(context).clearSnackBars();
+                  //     ScaffoldMessenger.of(context).showSnackBar(
+                  //       const SnackBar(
+                  //         content: Text(
+                  //           'Thêm sản phẩm vào đơn hàng thành công',
+                  //         ),
+                  //       ),
+                  //     );
+                  //   }
+                  // }
+                  showModalBottomSheet(
+                    context: context,
+                    isScrollControlled: true,
+                    backgroundColor: Colors.transparent,
+                    builder: (ctx) {
+                      return BlocProvider<ProductCubit>.value(
+                        value: BlocProvider.of<ProductCubit>(context),
+                        child: ProductBottomSheet(product: model),
                       );
-                    } else {
-                      ScaffoldMessenger.of(context).clearSnackBars();
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(
-                          content: Text(
-                            'Thêm sản phẩm vào đơn hàng thành công',
-                          ),
-                        ),
-                      );
-                    }
-                  }
+                    },
+                  );
                 },
                 style: ButtonStyle(
                   backgroundColor: MaterialStateProperty.all(Colors.orange),

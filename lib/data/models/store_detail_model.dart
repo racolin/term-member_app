@@ -39,7 +39,6 @@ class StoreDetailModel {
   }
 
   factory StoreDetailModel.fromMap(Map<String, dynamic> map) {
-    print(map);
     return StoreDetailModel(
       id: map['id'] as String,
       openTime: map['openTime'] ?? txtNone,

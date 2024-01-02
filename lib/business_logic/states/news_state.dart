@@ -41,6 +41,6 @@ class NewsLoaded extends NewsState {
 class NewsFailure extends NewsState {
   final AppMessage message;
   NewsFailure({required this.message}) {
-    print(runtimeType);
+    // printruntimeType);
   }
 }

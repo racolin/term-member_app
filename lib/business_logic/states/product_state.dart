@@ -12,13 +12,13 @@ abstract class ProductState {}
 
 class ProductInitial extends ProductState {
   ProductInitial() {
-    print(runtimeType);
+    // printruntimeType);
   }
 }
 
 class ProductLoading extends ProductState {
   ProductLoading() {
-    print(runtimeType);
+    // printruntimeType);
   }
 }
 
@@ -49,7 +49,7 @@ class ProductLoaded extends ProductState {
         _unavailableOptions = unavailableOptions ?? [],
         _unavailableTypes = unavailableTypes ?? [],
         _favorites = favorites ?? [] {
-    print(runtimeType);
+    // printruntimeType);
   }
 
   ProductModel? getProductById(String id) {
@@ -171,6 +171,6 @@ class ProductFailure extends ProductState {
   final AppMessage message;
 
   ProductFailure({required this.message}) {
-    print(runtimeType);
+    // printruntimeType);
   }
 }

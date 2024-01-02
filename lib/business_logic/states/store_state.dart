@@ -39,6 +39,6 @@ class StoreLoaded extends StoreState {
 class StoreFailure extends StoreState {
   final AppMessage message;
   StoreFailure({required this.message}) {
-    print(runtimeType);
+    // printruntimeType);
   }
 }

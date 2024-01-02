@@ -5,13 +5,13 @@ abstract class CardState {}
 
 class CardInitial extends CardState {
   CardInitial() {
-    print(runtimeType);
+    // printruntimeType);
   }
 }
 
 class CardLoading extends CardState {
   CardLoading() {
-    print(runtimeType);
+    // printruntimeType);
   }
 }
 
@@ -21,7 +21,7 @@ class CardLoaded extends CardState {
   CardLoaded({
     required this.card,
   }) {
-    print(runtimeType);
+    // printruntimeType);
   }
 
   CardLoaded copyWith({
@@ -36,6 +36,6 @@ class CardLoaded extends CardState {
 class CardFailure extends CardState {
   final AppMessage message;
   CardFailure({required this.message}) {
-    print(runtimeType);
+    // printruntimeType);
   }
 }

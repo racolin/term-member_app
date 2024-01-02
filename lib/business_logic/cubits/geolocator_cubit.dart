@@ -14,7 +14,7 @@ class GeolocatorCubit extends Cubit<GeolocatorState> {
   final SecureStorage _storage = SecureStorage();
   GeolocatorCubit() : super(const GeolocatorState()) {
     _storage.getLatLng().then((res) {
-      print(res);
+      // printres);
       if (res.type == ResponseModelType.success) {
         emit(GeolocatorState(latLng: res.data));
       } else {
@@ -79,7 +79,7 @@ class GeolocatorCubit extends Cubit<GeolocatorState> {
     var pos = await Geolocator.getCurrentPosition();
     emit(state.copyWith(latLng: LatLng(pos.latitude, pos.longitude)));
     _storage.persistLatLng(LatLng(pos.latitude, pos.longitude));
-    print(LatLng(pos.latitude, pos.longitude).toJson());
+    // printLatLng(pos.latitude, pos.longitude).toJson());
     return null;
   }
 

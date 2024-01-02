@@ -44,9 +44,9 @@ class StoreCubit extends Cubit<StoreState> implements IntervalSubmit<StoreModel>
   }
 
   void changeIsMap() {
-    print(111);
+    // print111);
     if (state is StoreLoaded) {
-      print(111);
+      // print111);
       emit((state as StoreLoaded).copyWith(isMap: !(state as StoreLoaded).isMap));
     }
   }

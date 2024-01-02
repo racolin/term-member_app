@@ -11,7 +11,7 @@ class SliderCubit extends Cubit<SliderState> {
       : _repository = repository,
         super(SliderInitial()) {
     emit(SliderLoading());
-    print('object12121');
+    // print'object12121');
     _repository.gets().then((res) {
       if (res.type == ResponseModelType.success) {
         emit(SliderLoaded(list: res.data, index: 0));

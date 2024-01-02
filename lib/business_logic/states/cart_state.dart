@@ -92,11 +92,11 @@ class CartLoaded extends CartState {
         products.fold(
           0,
           (pre, e)  {
-            print(pre);
-            print(e.amount * e.cost);
-            print(e.amount);
-            print(e.cost);
-            print('******');
+            // printpre);
+            // printe.amount * e.cost);
+            // printe.amount);
+            // printe.cost);
+            // print'******');
             return pre + e.cost;
           },
         );

@@ -33,6 +33,6 @@ class SliderLoaded extends SliderState {
 class SliderFailure extends SliderState {
   final AppMessage message;
   SliderFailure({required this.message}) {
-    print(runtimeType);
+    // printruntimeType);
   }
 }

@@ -29,6 +29,6 @@ class NotifyLoaded extends NotifyState {
 class NotifyFailure extends NotifyState {
   final AppMessage message;
   NotifyFailure({required this.message}) {
-    print(runtimeType);
+    // printruntimeType);
   }
 }

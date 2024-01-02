@@ -138,7 +138,7 @@ class _CartDetailScreenState extends State<CartDetailScreen> {
               return const LoadingPage();
             case CartDetailLoaded:
               state as CartDetailLoaded;
-              print(state.cart.toMap());
+              // printstate.cart.toMap());
               return SingleChildScrollView(
                 child: Column(
                   children: [

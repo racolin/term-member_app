@@ -310,8 +310,8 @@ class CartCubit extends Cubit<CartState> {
     }
 
     var state = this.state as CartLoaded;
-    print(payType);
-    print('payType');
+    // printpayType);
+    // print'payType');
     emit(state.copyWith(
       payType: payType,
     ));
@@ -531,8 +531,8 @@ class CartCubit extends Cubit<CartState> {
       }
     }
 
-    print(products.map((e) => e.toMap()).toList());
-    print(state.products.map((e) => e.toMap()).toList());
+    // printproducts.map((e) => e.toMap()).toList());
+    // printstate.products.map((e) => e.toMap()).toList());
     emit(state);
     return null;
   }

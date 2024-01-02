@@ -388,7 +388,7 @@ class SettingApiRepository extends SettingRepository {
         origin: origin,
         components: [Component('country', 'vn')],
       );
-      print(result.predictions.map((e) => e.toJson()));
+      // printresult.predictions.map((e) => e.toJson()));
       if (result.status == "OK") {
         return ResponseModel<List<AddressEntity>>(
           type: ResponseModelType.success,
@@ -430,7 +430,7 @@ class SettingApiRepository extends SettingRepository {
         language: 'vi',
       );
       for (var e in result.results) {
-        print(e.toJson());
+        // printe.toJson());
       }
       if (result.status == "OK") {
         return ResponseModel<List<AddressEntity>>(

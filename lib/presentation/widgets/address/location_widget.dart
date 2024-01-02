@@ -20,7 +20,7 @@ class LocationWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print(model.toMap());
+    // printmodel.toMap());
     var distance = model.meters ?? 0;
     if (model.meters == null) {
       var latLngAddress = LatLng(model.lat!, model.lng!);
